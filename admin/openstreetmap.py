@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from superlachaise.models import *
-from superlachaise.admin.utils import AdminUtils
+from superlachaise.admin import admin_utils
 
 @admin.register(OpenStreetMapElement)
 class OpenStreetMapElementAdmin(admin.ModelAdmin):
@@ -17,5 +17,5 @@ class OpenStreetMapElementAdmin(admin.ModelAdmin):
     readonly_fields = ('openstreetmap_link',)
 
     def openstreetmap_link(self, obj):
-        return AdminUtils.html_link(obj.openstreetmap_url())
+        return admin_utils.html_link(obj.openstreetmap_url())
     openstreetmap_link.allow_tags = True

@@ -1,5 +1,6 @@
 __all__ = [
-    "openstreetmap"
+    "openstreetmap",
+    "admin_utils"
 ]
 
 from superlachaise.admin import *
