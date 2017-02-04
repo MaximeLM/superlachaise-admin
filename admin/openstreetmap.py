@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from superlachaise_back.models import *
-from superlachaise_back.admin.utils import AdminUtils
+from superlachaise.models import *
+from superlachaise.admin.utils import AdminUtils
 
 @admin.register(OpenStreetMapElement)
 class OpenStreetMapElementAdmin(admin.ModelAdmin):

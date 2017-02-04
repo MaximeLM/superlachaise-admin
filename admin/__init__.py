@@ -2,4 +2,4 @@ __all__ = [
     "openstreetmap"
 ]
 
-from superlachaise_back.admin import *
+from superlachaise.admin import *

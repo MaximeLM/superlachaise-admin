@@ -2,7 +2,7 @@ import json
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from superlachaise_back.models import *
+from superlachaise.models import *
 
 class OpenStreetMapElementTestCase(TestCase):
 

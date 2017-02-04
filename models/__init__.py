@@ -1,4 +1,4 @@
-from superlachaise_back.models.openstreetmap import *
+from superlachaise.models.openstreetmap import *
 
 __all__ = [
     'OpenStreetMapElement'

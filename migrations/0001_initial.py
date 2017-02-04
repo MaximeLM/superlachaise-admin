@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import superlachaise_back.models.openstreetmap
+import superlachaise.models.openstreetmap
 
 
 class Migration(migrations.Migration):
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('openstreetmap_id', models.BigIntegerField(db_index=True, verbose_name='OpenStreetMap ID')),
                 ('latitude', models.DecimalField(decimal_places=7, default=0, max_digits=10)),
                 ('longitude', models.DecimalField(decimal_places=7, default=0, max_digits=10)),
-                ('raw_tags', models.TextField(default='{}', validators=[superlachaise_back.models.openstreetmap.validate_JSON])),
+                ('raw_tags', models.TextField(default='{}', validators=[superlachaise.models.openstreetmap.validate_JSON])),
             ],
             options={
                 'verbose_name': 'OpenStreetMap element',
