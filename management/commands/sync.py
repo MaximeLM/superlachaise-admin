@@ -1,8 +1,10 @@
 import sys
+import logging
 from django.core.management.base import BaseCommand
 
-import superlachaise.sync
 from superlachaise.sync import *
+
+logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
 
@@ -18,6 +20,12 @@ class Command(BaseCommand):
             help='The specific target to sync',
         )
         parser.add_argument(
+            '--ids',
+            type=str,
+            dest='ids',
+            help='The IDs of the objects to sync (unavailable for all target), separated by |',
+        )
+        parser.add_argument(
             '--reset', '-r',
             action='store_true',
             dest='reset',
@@ -26,5 +34,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        module_name = "superlachaise.sync.sync_{}".format(options['target'])
-        sys.modules[module_name].sync(options['reset'])
+        target = options['target']
+        module_name = "superlachaise.sync.sync_{}".format(target)
+        try:
+            sys.modules[module_name].sync(**options)
+        except Exception as e:
+            logger.critical(e)

@@ -39,17 +39,17 @@ class SyncOpenstreetmapTestCase(TestCase):
 
     # make_overpass_elements_subqueries
 
-    def test_make_overpass_elements_subqueries_with_no_openstreetmap_elements_returns_empty_array(self):
+    def test_make_overpass_elements_subqueries_with_no_ids_returns_empty_array(self):
         self.assertEqual(sync_openstreetmap.make_overpass_elements_subqueries([]),[])
 
     def test_make_overpass_elements_subqueries_returns_subqueries_with_format(self):
-        openstreetmap_elements = [
-            OpenStreetMapElement(id="way/123456"),
-            OpenStreetMapElement(id="relation/654321"),
-            OpenStreetMapElement(id="node/789654"),
+        ids = [
+            "way/123456",
+            "relation/654321",
+            "node/789654",
         ]
         self.assertEqual(
-            sync_openstreetmap.make_overpass_elements_subqueries(openstreetmap_elements),
+            sync_openstreetmap.make_overpass_elements_subqueries(ids),
             [
             sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="way", id="123456"),
             sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="relation", id="654321"),
