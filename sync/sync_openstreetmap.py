@@ -94,7 +94,7 @@ def get_or_create_openstreetmap_element(
             coordinate_node = overpass_element
         openstreetmap_element.latitude = coordinate_node["lat"]
         openstreetmap_element.longitude = coordinate_node["lon"]
-        openstreetmap_element.raw_tags = json.dumps(overpass_element["tags"])
+        openstreetmap_element.raw_tags = json.dumps(overpass_element["tags"], ensure_ascii=False, indent=4, separators=(',', ': '))
         openstreetmap_element.save()
         return (openstreetmap_element, created)
 
