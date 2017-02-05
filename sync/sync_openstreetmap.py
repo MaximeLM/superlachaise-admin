@@ -2,6 +2,7 @@ import logging
 import os
 import importlib.machinery
 import requests
+import json
 from django.conf import settings
 from requests.exceptions import RequestException
 from json.decoder import JSONDecodeError
@@ -29,6 +30,12 @@ def sync(reset=False, ids=None, **kwargs):
     overpass_elements = request_overpass_elements(overpass_query)
 
     logger.info("Fetched {} elements".format(len(overpass_elements)))
+
+    created, updated, deleted = update_model(overpass_elements, get_local_openstreetmap_elements(ids))
+
+    logger.info("Created {} elements".format(created))
+    logger.info("Updated {} elements".format(updated))
+    logger.info("Deleted {} elements".format(deleted))
 
     logger.info('== end sync openstreetmap ==')
 
@@ -70,3 +77,53 @@ def request_overpass_elements(overpass_query):
 
     # Get elements from JSON
     return result.json()["elements"]
+
+# Update model
+
+def get_or_create_openstreetmap_element(
+    overpass_element,
+    excluded_identifiers=config.openstreetmap.EXCLUDE_IDENTIFIERS):
+    id = "{type}/{id}".format(type=overpass_element["type"], id=overpass_element["id"])
+    if id in excluded_identifiers:
+        return (None, False)
+    else:
+        openstreetmap_element, created = OpenStreetMapElement.objects.get_or_create(id=id)
+        if "center" in overpass_element:
+            coordinate_node = overpass_element["center"]
+        else:
+            coordinate_node = overpass_element
+        openstreetmap_element.latitude = coordinate_node["lat"]
+        openstreetmap_element.longitude = coordinate_node["lon"]
+        openstreetmap_element.raw_tags = json.dumps(overpass_element["tags"])
+        openstreetmap_element.save()
+        return (openstreetmap_element, created)
+
+def get_local_openstreetmap_elements(ids=None):
+    if ids:
+        return list(OpenStreetMapElement.objects.filter(id__in=ids))
+    else:
+        return list(OpenStreetMapElement.objects.all())
+
+def update_model(overpass_elements, local_openstreetmap_elements):
+    created = 0
+    updated = 0
+    deleted = 0
+
+    for overpass_element in overpass_elements:
+        openstreetmap_element, was_created = get_or_create_openstreetmap_element(overpass_element)
+        if openstreetmap_element:
+            if was_created:
+                logger.debug("Created OpenStreetMapElement "+openstreetmap_element.id)
+                created = created + 1
+            else:
+                logger.debug("Updated OpenStreetMapElement "+openstreetmap_element.id)
+                updated = updated + 1
+            if openstreetmap_element in local_openstreetmap_elements:
+                local_openstreetmap_elements.remove(openstreetmap_element)
+
+    for openstreetmap_element in local_openstreetmap_elements:
+        logger.debug("Deleted OpenStreetMapElement "+openstreetmap_element.id)
+        deleted = deleted + 1
+        openstreetmap_element.delete()
+
+    return (created, updated, deleted)
