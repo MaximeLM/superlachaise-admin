@@ -8,66 +8,45 @@ class OpenStreetMapElementTestCase(TestCase):
 
     # validation
 
-    def test_validation_succeeds_if_type_and_openstreetmap_id_are_not_none(self):
-        openstreetmap_element = OpenStreetMapElement(
-            type="node",
-            openstreetmap_id="123456")
+    def test_validation_succeeds_if_id_is_not_none(self):
+        openstreetmap_element = OpenStreetMapElement(id="node/123456")
         openstreetmap_element.full_clean()
 
-    def test_validation_fails_if_type_is_none(self):
-        openstreetmap_element = OpenStreetMapElement(
-            openstreetmap_id="123456")
-        with self.assertRaises(ValidationError):
-            openstreetmap_element.full_clean()
-
-    def test_validation_fails_if_type_is_outside_choices(self):
-        openstreetmap_element = OpenStreetMapElement(
-            type="other",
-            openstreetmap_id="123456")
-        with self.assertRaises(ValidationError):
-            openstreetmap_element.full_clean()
-
-    def test_validation_fails_if_openstreetmap_id_is_none(self):
-        openstreetmap_element = OpenStreetMapElement(
-            type="node")
+    def test_validation_fails_if_id_is_none(self):
+        openstreetmap_element = OpenStreetMapElement(id=None)
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
 
     def test_validation_fails_if_latitude_is_none(self):
         openstreetmap_element = OpenStreetMapElement(
-            type="node",
-            openstreetmap_id="123456",
+            id="node/123456",
             latitude=None)
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
 
-    def test_validation_fails_if_latitude_is_none(self):
+    def test_validation_fails_if_longitude_is_none(self):
         openstreetmap_element = OpenStreetMapElement(
-            type="node",
-            openstreetmap_id="123456",
+            id="node/123456",
             longitude=None)
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
 
     def test_validation_succeeds_if_raw_tags_is_valid_JSON(self):
         openstreetmap_element = OpenStreetMapElement(
-            type="node",
-            openstreetmap_id="123456",
+            id="node/123456",
             raw_tags=json.dumps({"key": "value"}))
         openstreetmap_element.full_clean()
 
     def test_validation_fails_if_raw_tags_is_none(self):
         openstreetmap_element = OpenStreetMapElement(
-            type="node",
-            openstreetmap_id="123456",
+            id="node/123456",
             raw_tags=None)
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
 
     def test_validation_fails_if_raw_tags_is_invalid_JSON(self):
         openstreetmap_element = OpenStreetMapElement(
-            type="node",
-            openstreetmap_id="123456",
+            id="node/123456",
             raw_tags="tags")
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
@@ -92,20 +71,11 @@ class OpenStreetMapElementTestCase(TestCase):
 
     # openstreetmap_url
 
-    def test_openstreetmap_url_returns_openstreetmap_url_format_if_type_and_openstreetmap_id_are_not_none(self):
-        type = "node"
-        openstreetmap_id = "123456"
-        openstreetmap_element = OpenStreetMapElement(
-            type=type,
-            openstreetmap_id=openstreetmap_id)
-        self.assertEqual(OpenStreetMapElement.URL_FORMAT.format(type=type, openstreetmap_id=openstreetmap_id), openstreetmap_element.openstreetmap_url())
+    def test_openstreetmap_url_returns_openstreetmap_url_format_if_id_is_not_none(self):
+        id = "node/123456"
+        openstreetmap_element = OpenStreetMapElement(id=id)
+        self.assertEqual(OpenStreetMapElement.URL_FORMAT.format(id=id), openstreetmap_element.openstreetmap_url())
 
-    def test_openstreetmap_url_returns_none_if_type_is_none(self):
-        openstreetmap_element = OpenStreetMapElement(
-            openstreetmap_id="123456")
-        self.assertIsNone(openstreetmap_element.openstreetmap_url())
-
-    def test_openstreetmap_url_returns_none_if_openstreetmap_id_is_none(self):
-        openstreetmap_element = OpenStreetMapElement(
-            type="node")
+    def test_openstreetmap_url_returns_none_if_id_is_none(self):
+        openstreetmap_element = OpenStreetMapElement(id=None)
         self.assertIsNone(openstreetmap_element.openstreetmap_url())

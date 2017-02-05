@@ -11,16 +11,10 @@ def validate_JSON(value):
 class OpenStreetMapElement(models.Model):
     """ An OpenStreetMap element """
 
-    TYPE_CHOICES = (
-        ('node', 'node'),
-        ('way', 'way'),
-        ('relation', 'relation'),
-    )
+    URL_FORMAT = u'https://www.openstreetmap.org/{id}'
 
-    URL_FORMAT = u'https://www.openstreetmap.org/{type}/{openstreetmap_id}'
-
-    type = models.CharField(db_index=True, max_length=255, choices=TYPE_CHOICES)
-    openstreetmap_id = models.BigIntegerField(db_index=True, verbose_name='OpenStreetMap ID')
+    # type and numeric id separeted by /, eg "node/123456"
+    id = models.CharField(primary_key=True, db_index=True, max_length=255)
 
     latitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
@@ -34,14 +28,13 @@ class OpenStreetMapElement(models.Model):
             return None
 
     def openstreetmap_url(self):
-        if self.type and self.openstreetmap_id:
-            return OpenStreetMapElement.URL_FORMAT.format(type=self.type, openstreetmap_id=self.openstreetmap_id)
+        if self.id:
+            return OpenStreetMapElement.URL_FORMAT.format(id=self.id)
 
     def __str__(self):
-        return "{}:{}".format(self.type, self.openstreetmap_id)
+        return self.id
 
     class Meta:
-        unique_together = ('type', 'openstreetmap_id',)
-        ordering = ['type', 'openstreetmap_id']
+        ordering = ['id']
         verbose_name = 'OpenStreetMap element'
         verbose_name_plural = 'OpenStreetMap elements'

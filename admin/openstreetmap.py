@@ -5,12 +5,11 @@ from superlachaise.admin import admin_utils
 
 @admin.register(OpenStreetMapElement)
 class OpenStreetMapElementAdmin(admin.ModelAdmin):
-    list_display = ('type', 'openstreetmap_id', 'openstreetmap_link')
-    list_filter = ('type',)
-    search_fields = ('type', 'openstreetmap_id',)
+    list_display = ('id', 'openstreetmap_link')
+    search_fields = ('id',)
 
     fieldsets = [
-        (None, {'fields': ['type', 'openstreetmap_id', 'openstreetmap_link']}),
+        (None, {'fields': ['id', 'openstreetmap_link']}),
         (None, {'fields': ['latitude', 'longitude']}),
         (None, {'fields': ['raw_tags']}),
     ]
