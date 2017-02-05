@@ -1,4 +1,5 @@
 import json
+from json.decoder import JSONDecodeError
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -8,9 +9,14 @@ class OpenStreetMapElementTestCase(TestCase):
 
     # validation
 
-    def test_validation_succeeds_if_id_is_not_none(self):
+    def test_validation_succeeds_if_id_has_slash(self):
         openstreetmap_element = OpenStreetMapElement(id="node/123456")
         openstreetmap_element.full_clean()
+
+    def test_validation_fails_if_id_has_no_slash(self):
+        openstreetmap_element = OpenStreetMapElement(id="123456")
+        with self.assertRaises(ValidationError):
+            openstreetmap_element.full_clean()
 
     def test_validation_fails_if_id_is_none(self):
         openstreetmap_element = OpenStreetMapElement(id=None)
@@ -64,10 +70,11 @@ class OpenStreetMapElementTestCase(TestCase):
             raw_tags=None)
         self.assertIsNone(openstreetmap_element.tags())
 
-    def test_tags_returns_none_if_raw_tags_is_invalid_JSON(self):
+    def test_tags_fails_if_raw_tags_is_invalid_JSON(self):
         openstreetmap_element = OpenStreetMapElement(
             raw_tags="tags")
-        self.assertIsNone(openstreetmap_element.tags())
+        with self.assertRaises(JSONDecodeError):
+            openstreetmap_element.tags()
 
     # openstreetmap_url
 
