@@ -13,21 +13,21 @@ class SyncOpenstreetmapTestCase(TestCase):
         sync_openstreetmap.delete_objects()
         self.assertEqual(OpenStreetMapElement.objects.all().count(), 0)
 
-    # overpass_area_subqueries
+    # make_overpass_area_subqueries
 
-    def test_overpass_area_subqueries_with_no_fetched_tags_returns_empty_array(self):
+    def test_make_overpass_area_subqueries_with_no_fetched_tags_returns_empty_array(self):
         bounding_box = ((48.8575, 2.3877), (48.8649, 2.4006))
         fetched_tags = []
         self.assertEqual(
-            sync_openstreetmap.overpass_area_subqueries(bounding_box, fetched_tags),
+            sync_openstreetmap.make_overpass_area_subqueries(bounding_box, fetched_tags),
             [])
 
-    def test_overpass_area_subqueries_returns_combined_subqueries(self):
+    def test_make_overpass_area_subqueries_returns_combined_subqueries_with_format(self):
         bounding_box = ((48.8575, 2.3877), (48.8649, 2.4006))
         fetched_tags = ["historic=tomb", "historic=memorial"]
         expected_bounding_box_string="48.8575,2.3877,48.8649,2.4006"
         self.assertEqual(
-            sync_openstreetmap.overpass_area_subqueries(bounding_box, fetched_tags),
+            sync_openstreetmap.make_overpass_area_subqueries(bounding_box, fetched_tags),
             [
             sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="node", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
             sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="way", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
@@ -37,21 +37,39 @@ class SyncOpenstreetmapTestCase(TestCase):
             sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="relation", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
             ])
 
-    # overpass_elements_subqueries
+    # make_overpass_elements_subqueries
 
-    def test_overpass_elements_subqueries_with_no_openstreetmap_elements_returns_empty_array(self):
-        self.assertEqual(sync_openstreetmap.overpass_elements_subqueries([]),[])
+    def test_make_overpass_elements_subqueries_with_no_openstreetmap_elements_returns_empty_array(self):
+        self.assertEqual(sync_openstreetmap.make_overpass_elements_subqueries([]),[])
 
-    def test_overpass_elements_subqueries_returns_subqueries_for_openstreetmap_elements(self):
+    def test_make_overpass_elements_subqueries_returns_subqueries_with_format(self):
         openstreetmap_elements = [
             OpenStreetMapElement(id="way/123456"),
             OpenStreetMapElement(id="relation/654321"),
             OpenStreetMapElement(id="node/789654"),
         ]
         self.assertEqual(
-            sync_openstreetmap.overpass_elements_subqueries(openstreetmap_elements),
+            sync_openstreetmap.make_overpass_elements_subqueries(openstreetmap_elements),
             [
             sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="way", id="123456"),
             sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="relation", id="654321"),
             sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="node", id="789654"),
             ])
+
+    # make_overpass_query
+
+    def test_make_overpass_query_with_no_subqueries_returns_no_subqueries_with_format(self):
+        self.assertEqual(
+            sync_openstreetmap.make_overpass_query([]),
+            sync_openstreetmap.OVERPASS_QUERY_FORMAT.format(subqueries="")
+        )
+
+    def test_make_overpass_query_returns_subqueries_with_format(self):
+        subqueries = [
+            "subquery1;",
+            "subquery2;"
+        ]
+        self.assertEqual(
+            sync_openstreetmap.make_overpass_query(subqueries),
+            sync_openstreetmap.OVERPASS_QUERY_FORMAT.format(subqueries="subquery1;subquery2;")
+        )

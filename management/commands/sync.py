@@ -6,11 +6,15 @@ from superlachaise.sync import *
 
 class Command(BaseCommand):
 
+    TARGETS = [
+        "openstreetmap",
+    ]
+
     def add_arguments(self, parser):
         parser.add_argument(
             'target',
             type=str,
-            choices=[module.split('sync_')[1] for module in superlachaise.sync.__all__ if module.startswith('sync_')],
+            choices=Command.TARGETS,
             help='The specific target to sync',
         )
         parser.add_argument(
