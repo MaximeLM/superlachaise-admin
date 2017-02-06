@@ -29,7 +29,7 @@ def sync(reset=False, ids=None, **kwargs):
     overpass_query = make_overpass_query(overpass_subqueries)
     overpass_elements = request_overpass_elements(overpass_query)
 
-    logger.info("Fetched {} elements".format(len(overpass_elements)))
+    logger.info("Update model")
 
     created, updated, deleted = update_model(overpass_elements, get_local_openstreetmap_elements(ids))
 
@@ -88,6 +88,11 @@ def get_or_create_openstreetmap_element(
         return (None, False)
     else:
         openstreetmap_element, created = OpenStreetMapElement.objects.get_or_create(id=id)
+        if "name" in overpass_element["tags"]:
+            openstreetmap_element.name = overpass_element["tags"]["name"]
+        else:
+            logger.warning("Name is missing for {}".format(id))
+            openstreetmap_element.name = ""
         if "center" in overpass_element:
             coordinate_node = overpass_element["center"]
         else:

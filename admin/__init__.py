@@ -1,6 +1,7 @@
 __all__ = [
+    "admin_utils",
     "openstreetmap",
-    "admin_utils"
+    "wikidata",
 ]
 
 from superlachaise.admin import *

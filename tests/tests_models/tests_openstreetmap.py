@@ -23,6 +23,10 @@ class OpenStreetMapElementTestCase(TestCase):
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
 
+    def test_validation_succeeds_if_name_is_blank(self):
+        openstreetmap_element = OpenStreetMapElement(id="node/123456", name="")
+        openstreetmap_element.full_clean()
+
     def test_validation_fails_if_latitude_is_none(self):
         openstreetmap_element = OpenStreetMapElement(
             id="node/123456",
@@ -81,7 +85,7 @@ class OpenStreetMapElementTestCase(TestCase):
     def test_openstreetmap_url_returns_openstreetmap_url_format_if_id_is_not_none(self):
         id = "node/123456"
         openstreetmap_element = OpenStreetMapElement(id=id)
-        self.assertEqual(OpenStreetMapElement.URL_FORMAT.format(id=id), openstreetmap_element.openstreetmap_url())
+        self.assertEqual(OpenStreetMapElement.OPENSTREETMAP_URL_FORMAT.format(id=id), openstreetmap_element.openstreetmap_url())
 
     def test_openstreetmap_url_returns_none_if_id_is_none(self):
         openstreetmap_element = OpenStreetMapElement(id=None)

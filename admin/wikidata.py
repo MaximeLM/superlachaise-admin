@@ -1,0 +1,19 @@
+from django.contrib import admin
+
+from superlachaise.models import *
+from superlachaise.admin import admin_utils
+
+@admin.register(WikidataEntry)
+class WikidataEntryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'wikidata_link')
+    search_fields = ('id',)
+
+    fieldsets = [
+        (None, {'fields': ['id', 'wikidata_link']}),
+        (None, {'fields': ['raw_json']}),
+    ]
+    readonly_fields = ('wikidata_link',)
+
+    def wikidata_link(self, obj):
+        return admin_utils.html_link(obj.wikidata_url())
+    wikidata_link.allow_tags = True

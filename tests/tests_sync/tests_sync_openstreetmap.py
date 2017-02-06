@@ -37,7 +37,6 @@ OVERPASS_ELEMENT_2 = {
     "tags": {
         "building": "yes",
         "historic": "tomb",
-        "name": "René Panhard",
         "sorting_name": "Panhard",
         "wikidata": "Q266561",
         "wikimedia_commons": "Category:Grave of Panhard (Père-Lachaise, division 36)",
@@ -145,9 +144,15 @@ class SyncOpenstreetmapTestCase(TestCase):
         overpass_element = OVERPASS_ELEMENT_1
         openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(openstreetmap_element.id, "node/2765555563")
+        self.assertEqual(openstreetmap_element.name, "Étienne Lamy")
         self.assertEqual(openstreetmap_element.latitude, 48.8618534)
         self.assertEqual(openstreetmap_element.longitude, 2.3934719)
         self.assertEqual(openstreetmap_element.tags(), overpass_element["tags"])
+
+    def test_get_or_create_openstreetmap_element_updates_name_without_name(self):
+        overpass_element = OVERPASS_ELEMENT_2
+        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        self.assertEqual(openstreetmap_element.name, "")
 
     def test_get_or_create_openstreetmap_element_updates_coordinate_without_center(self):
         overpass_element = OVERPASS_ELEMENT_1
