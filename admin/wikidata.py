@@ -5,11 +5,11 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikidataEntry)
 class WikidataEntryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'wikidata_link')
-    search_fields = ('id',)
+    list_display = ('id', 'name', 'wikidata_link')
+    search_fields = ('id', 'name')
 
     fieldsets = [
-        (None, {'fields': ['id', 'wikidata_link']}),
+        (None, {'fields': ['id', 'name', 'wikidata_link']}),
         (None, {'fields': ['raw_json']}),
     ]
     readonly_fields = ('wikidata_link',)

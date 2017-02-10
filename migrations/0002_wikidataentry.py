@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
             name='WikidataEntry',
             fields=[
                 ('id', models.CharField(db_index=True, max_length=255, primary_key=True, serialize=False, validators=[superlachaise.models.model_validators.validate_wikidata_id])),
+                ('name', models.CharField(blank=True, max_length=255)),
                 ('raw_json', models.TextField(default='{}', validators=[superlachaise.models.model_validators.validate_JSON], verbose_name='raw JSON')),
             ],
             options={
