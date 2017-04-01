@@ -24,4 +24,4 @@ def sync(reset=False, ids=None, **kwargs):
     logger.info('== end sync wikidata ==')
 
 def delete_objects():
-    pass
+    WikidataEntry.objects.all().delete()
