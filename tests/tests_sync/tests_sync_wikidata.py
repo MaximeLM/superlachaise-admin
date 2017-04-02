@@ -55,32 +55,9 @@ class SyncWikidataTestCase(TestCase):
         sync_wikidata.delete_objects()
         self.assertEqual(WikidataEntry.objects.all().count(), 0)
 
-    # get_first_matching_wikidata_id
-
-    def test_get_first_matching_wikidata_id_returns_first_openstreetmap_id_tag_value_if_present(self):
-        wikidata_id = sync_wikidata.get_first_matching_wikidata_id(
-            OPENSTREETMAP_ELEMENT_1(),
-            ["wikidata", "name:wikidata"]
-        )
-        self.assertEqual(wikidata_id, "Q1218474")
-
-    def test_get_first_matching_wikidata_id_returns_next_openstreetmap_id_tag_value_if_present_and_first_tag_is_not_present(self):
-        wikidata_id = sync_wikidata.get_first_matching_wikidata_id(
-            OPENSTREETMAP_ELEMENT_2(),
-            ["wikidata", "name:wikidata"]
-        )
-        self.assertEqual(wikidata_id, "Q266561")
-
-    def test_get_first_matching_wikidata_id_returns_none_if_no_openstreetmap_id_tag_is_present(self):
-        wikidata_id = sync_wikidata.get_first_matching_wikidata_id(
-            OPENSTREETMAP_ELEMENT_1(),
-            ["myTag", "myOtherTag"]
-        )
-        self.assertIsNone(wikidata_id)
-
     # get_or_create_wikidata_entries_from_openstreetmap_elements
 
-    def test_get_or_create_wikidata_entries_from_openstreetmap_elements_returns_wikidata_entries_with_first_matching_wikidata_id(self):
+    def test_get_or_create_wikidata_entries_from_openstreetmap_elements_returns_wikidata_entries_with_first_present_wikidata_id(self):
         wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_from_openstreetmap_elements(
             [OPENSTREETMAP_ELEMENT_1(), OPENSTREETMAP_ELEMENT_2(), OPENSTREETMAP_ELEMENT_3()],
             ["wikidata", "name:wikidata"]
@@ -95,7 +72,7 @@ class SyncWikidataTestCase(TestCase):
         )
         self.assertEqual(created, 1)
 
-    def test_get_or_create_wikidata_entries_from_openstreetmap_elements_sets_relation_to_matching_wikidata_entry_relation_if_found(self):
+    def test_get_or_create_wikidata_entries_from_openstreetmap_elements_sets_relation_to_present_wikidata_entry_if_found(self):
         openstreetmap_element_1 = OPENSTREETMAP_ELEMENT_1()
         wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_from_openstreetmap_elements(
             [openstreetmap_element_1, OPENSTREETMAP_ELEMENT_2(), OPENSTREETMAP_ELEMENT_3()],
@@ -103,7 +80,7 @@ class SyncWikidataTestCase(TestCase):
         )
         self.assertEqual(openstreetmap_element_1.wikidata_entry, wikidata_entries[0])
 
-    def test_get_or_create_wikidata_entries_from_openstreetmap_elements_sets_relation_to_none_if_no_match_is_found(self):
+    def test_get_or_create_wikidata_entries_from_openstreetmap_elements_sets_relation_to_none_if_no_wikidata_entry_is_found(self):
         openstreetmap_element_3 = OPENSTREETMAP_ELEMENT_3()
         openstreetmap_element_3.wikidata_entry = WikidataEntry(id="Q123456")
         wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_from_openstreetmap_elements(

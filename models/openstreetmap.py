@@ -22,6 +22,13 @@ class OpenStreetMapElement(models.Model):
         if self.id:
             return OpenStreetMapElement.OPENSTREETMAP_URL_FORMAT.format(id=self.id)
 
+    def get_first_tag_value(self, tag_names):
+        tags = self.tags()
+        if tags:
+            for tag_name in tag_names:
+                if tag_name in tags:
+                    return tags[tag_name]
+
     def __str__(self):
         return self.id
 

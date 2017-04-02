@@ -35,21 +35,12 @@ def delete_objects():
 
 # Prepare model
 
-def get_first_matching_wikidata_id(openstreetmap_element, openstreetmap_id_tags):
-    tags = openstreetmap_element.tags()
-    if tags:
-        for openstreetmap_id_tag in openstreetmap_id_tags:
-            if openstreetmap_id_tag in tags:
-                return tags[openstreetmap_id_tag]
-    else:
-        logger.error("Invalid tags for OpenStreetMap element {} - {}".format(openstreetmap_element.id, openstreetmap_element.name))
-
 def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_elements, openstreetmap_id_tags):
     wikidata_entries = []
     created = 0
 
     for openstreetmap_element in openstreetmap_elements:
-        wikidata_id = get_first_matching_wikidata_id(openstreetmap_element, openstreetmap_id_tags)
+        wikidata_id = openstreetmap_element.get_first_tag_value(openstreetmap_id_tags)
         if wikidata_id:
             wikidata_entry, was_created = WikidataEntry.objects.get_or_create(id=wikidata_id)
             wikidata_entries.append(wikidata_entry)
