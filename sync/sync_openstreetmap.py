@@ -103,7 +103,7 @@ def get_or_create_openstreetmap_element(
         openstreetmap_element.save()
         return (openstreetmap_element, created)
 
-def get_local_openstreetmap_elements(ids=None):
+def get_local_openstreetmap_elements(ids):
     if ids:
         return list(OpenStreetMapElement.objects.filter(id__in=ids))
     else:
