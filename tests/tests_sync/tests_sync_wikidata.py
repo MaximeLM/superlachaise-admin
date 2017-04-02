@@ -118,12 +118,26 @@ class SyncWikidataTestCase(TestCase):
         OPENSTREETMAP_ELEMENT_1().save()
         OPENSTREETMAP_ELEMENT_2().save()
         OPENSTREETMAP_ELEMENT_3().save()
-        wikidata_entries = sync_wikidata.get_or_create_wikidata_entries_to_refresh(None)
+        wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_to_refresh(None)
         self.assertEqual([wikidata_entry.id for wikidata_entry in wikidata_entries], ["Q1218474", "Q266561"])
+
+    def test_get_or_create_wikidata_entries_to_refresh_returns_created_wikidata_entries_if_ids_is_none(self):
+        OPENSTREETMAP_ELEMENT_1().save()
+        OPENSTREETMAP_ELEMENT_2().save()
+        OPENSTREETMAP_ELEMENT_3().save()
+        wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_to_refresh(None)
+        self.assertEqual(created, 2)
 
     def test_get_or_create_wikidata_entries_to_refresh_returns_wikidata_entries_for_ids_if_ids_is_not_none(self):
         ids = ["Q1218474", "Q266561"]
         for id in ids:
             WikidataEntry(id=id).save()
-        wikidata_entries = sync_wikidata.get_or_create_wikidata_entries_to_refresh(ids)
+        wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_to_refresh(ids)
         self.assertEqual([wikidata_entry.id for wikidata_entry in wikidata_entries], ids)
+
+    def test_get_or_create_wikidata_entries_to_refresh_returns_0_created_if_ids_is_not_none(self):
+        ids = ["Q1218474", "Q266561"]
+        for id in ids:
+            WikidataEntry(id=id).save()
+        wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_to_refresh(ids)
+        self.assertEqual(created, 0)

@@ -21,6 +21,10 @@ def sync(reset=False, ids=None, **kwargs):
         logger.info('Delete existing objects')
         delete_objects()
 
+    wikidata_entries_to_refresh, created = get_or_create_wikidata_entries_to_refresh(ids)
+
+    logger.info("Created {} entries".format(created))
+
     logger.info('== end sync wikidata ==')
 
 def delete_objects():
@@ -35,7 +39,7 @@ def get_first_matching_wikidata_id(openstreetmap_element, openstreetmap_id_tags)
             if openstreetmap_id_tag in tags:
                 return tags[openstreetmap_id_tag]
     else:
-        logger.error("Invalid tags for OpenStreetMap element {}".format(openstreetmap_element.id))
+        logger.error("Invalid tags for OpenStreetMap element {} - {}".format(openstreetmap_element.id, openstreetmap_element.name))
 
 def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_elements, openstreetmap_id_tags):
     wikidata_entries = []
@@ -53,16 +57,15 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
                 logger.debug("Matched WikidataEntry "+wikidata_entry.id)
             openstreetmap_element.wikidata_entry = wikidata_entry
         else:
-            logger.warning("No Wikidata ID found for OpenStreetMap element {}".format(openstreetmap_element.id))
+            logger.warning("No Wikidata ID found for OpenStreetMap element {} - {}".format(openstreetmap_element.id, openstreetmap_element.name))
             openstreetmap_element.wikidata_entry = None
+        openstreetmap_element.save()
 
     return (wikidata_entries, created)
 
 def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.wikidata.OPENSTREETMAP_ID_TAGS):
     if ids:
-        return list(WikidataEntry.objects.filter(id__in=ids))
+        return (list(WikidataEntry.objects.filter(id__in=ids)), 0)
     else:
-        wikidata_entries, created = get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
-        logger.info("Created {} entries".format(created))
-        logger.info("Matched {} entries".format(len(wikidata_entries) - created))
-        return wikidata_entries
+        logger.info('List Wikidata entries from OpenStreetMap elements')
+        return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
