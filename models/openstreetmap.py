@@ -8,11 +8,10 @@ class OpenStreetMapElement(models.Model):
     # type and numeric id separeted by /, eg "node/123456"
     id = models.CharField(primary_key=True, db_index=True, max_length=255, validators=[model_validators.validate_openstreetmap_id])
     name = models.CharField(max_length=255, blank=True)
-
     latitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
-
     raw_tags = models.TextField(default='{}', validators=[model_validators.validate_JSON])
+    wikidata_entry = models.ForeignKey('WikidataEntry', null=True, blank=True, on_delete=models.SET_NULL)
 
     def tags(self):
         if self.raw_tags:
