@@ -141,3 +141,45 @@ class SyncWikidataTestCase(TestCase):
             WikidataEntry(id=id).save()
         wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_to_refresh(ids)
         self.assertEqual(created, 0)
+
+    # make_chunks
+
+    def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):
+        wikidata_entries = [
+            WikidataEntry(id="Q1"),
+            WikidataEntry(id="Q2"),
+            WikidataEntry(id="Q3"),
+            WikidataEntry(id="Q4"),
+            WikidataEntry(id="Q5"),
+        ]
+        self.assertEqual(sync_wikidata.make_chunks(wikidata_entries, 2), [
+            [wikidata_entries[0], wikidata_entries[1]],
+            [wikidata_entries[2], wikidata_entries[3]],
+            [wikidata_entries[4]],
+        ])
+
+    # make_wikidata_query_params
+
+    def test_make_wikidata_query_params_returns_ids_key_with_wikidata_entries_ids_separated_by_pipes(self):
+        wikidata_entries = [
+            WikidataEntry(id="Q1218474"),
+            WikidataEntry(id="Q266561"),
+        ]
+        languages = [
+            "fr",
+            "en",
+        ]
+        params = sync_wikidata.make_wikidata_query_params(wikidata_entries, languages)
+        self.assertEqual(params["ids"], "Q1218474|Q266561")
+
+    def test_make_wikidata_query_params_returns_languages_key_with_languages_separated_by_pipes(self):
+        wikidata_entries = [
+            WikidataEntry(id="Q1218474"),
+            WikidataEntry(id="Q266561"),
+        ]
+        languages = [
+            "fr",
+            "en",
+        ]
+        params = sync_wikidata.make_wikidata_query_params(wikidata_entries, languages)
+        self.assertEqual(params["languages"], "fr|en")

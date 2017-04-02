@@ -1,7 +1,6 @@
 import logging
 import os
 import importlib.machinery
-import requests
 import json
 from django.conf import settings
 from requests.exceptions import RequestException
@@ -22,6 +21,10 @@ def sync(reset=False, ids=None, **kwargs):
         delete_objects()
 
     wikidata_entries_to_refresh, created = get_or_create_wikidata_entries_to_refresh(ids)
+
+    logger.info('Request Wikidata API')
+    for wikidata_entries in make_chunks(wikidata_entries_to_refresh):
+        entities = request_wikidata_entities(make_wikidata_query_params(wikidata_entries))
 
     logger.info("Created {} entries".format(created))
 
@@ -69,3 +72,29 @@ def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.
     else:
         logger.info('List Wikidata entries from OpenStreetMap elements')
         return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
+
+# Request Wikidata
+
+def make_chunks(wikidata_entries, chunk_size=50):
+    """ Cut the list in chunks of a specified size """
+    return [wikidata_entries[i:i+chunk_size] for i in range(0, len(wikidata_entries), chunk_size)]
+
+def make_wikidata_query_params(wikidata_entries, languages=config.wikidata.LANGUAGES):
+    return {
+        'action': 'wbgetentities',
+        'ids': '|'.join([wikidata_entry.id for wikidata_entry in wikidata_entries]),
+        'props': '|'.join(['labels', 'descriptions', 'claims', 'sitelinks']),
+        'languages': '|'.join(languages),
+        'format': 'json',
+    }
+
+WIKIDATA_API_BASE_URL = "https://www.wikidata.org/w/api.php"
+def request_wikidata_entities(wikidata_query_params):
+    logger.debug("Wikidata query params:")
+    logger.debug(wikidata_query_params)
+
+    # Request data
+    result = sync_utils.request(WIKIDATA_API_BASE_URL, params=wikidata_query_params)
+
+    # Return JSON
+    return result.json()

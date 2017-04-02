@@ -1,7 +1,6 @@
 import logging
 import os
 import importlib.machinery
-import requests
 import json
 from django.conf import settings
 from requests.exceptions import RequestException
