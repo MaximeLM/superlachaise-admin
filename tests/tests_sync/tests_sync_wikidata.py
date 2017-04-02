@@ -55,6 +55,26 @@ class SyncWikidataTestCase(TestCase):
         sync_wikidata.delete_objects()
         self.assertEqual(WikidataEntry.objects.all().count(), 0)
 
+    # get_local_wikidata_entries
+
+    def test_get_local_wikidata_entries_returns_all_existing_objects_if_ids_is_none(self):
+        wikidata_entry_1 = WikidataEntry(id="Q1218474")
+        wikidata_entry_1.save()
+        wikidata_entry_2 = WikidataEntry(id="Q266561")
+        wikidata_entry_2.save()
+        self.assertEqual(
+            sync_wikidata.get_local_wikidata_entries(None),
+            [wikidata_entry_1, wikidata_entry_2])
+
+    def test_get_local_wikidata_entries_returns_existing_objects_for_ids(self):
+        wikidata_entry_1 = WikidataEntry(id="Q1218474")
+        wikidata_entry_1.save()
+        wikidata_entry_2 = WikidataEntry(id="Q266561")
+        wikidata_entry_2.save()
+        self.assertEqual(
+            sync_wikidata.get_local_wikidata_entries(["Q1218474", "Q123456"]),
+            [wikidata_entry_1])
+
     # get_or_create_wikidata_entries_from_openstreetmap_elements
 
     def test_get_or_create_wikidata_entries_from_openstreetmap_elements_returns_wikidata_entries_with_first_present_wikidata_id(self):
@@ -74,11 +94,12 @@ class SyncWikidataTestCase(TestCase):
 
     def test_get_or_create_wikidata_entries_from_openstreetmap_elements_sets_relation_to_present_wikidata_entry_if_found(self):
         openstreetmap_element_1 = OPENSTREETMAP_ELEMENT_1()
+        wikidata_entry = WikidataEntry(id="Q1218474")
         wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_from_openstreetmap_elements(
             [openstreetmap_element_1, OPENSTREETMAP_ELEMENT_2(), OPENSTREETMAP_ELEMENT_3()],
             ["wikidata", "name:wikidata"]
         )
-        self.assertEqual(openstreetmap_element_1.wikidata_entry, wikidata_entries[0])
+        self.assertEqual(openstreetmap_element_1.wikidata_entry, wikidata_entry)
 
     def test_get_or_create_wikidata_entries_from_openstreetmap_elements_sets_relation_to_none_if_no_wikidata_entry_is_found(self):
         openstreetmap_element_3 = OPENSTREETMAP_ELEMENT_3()
