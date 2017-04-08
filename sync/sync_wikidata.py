@@ -20,7 +20,7 @@ def sync(reset=False, ids=None, **kwargs):
         logger.info('Delete existing objects')
         delete_objects()
 
-    orphaned_wikidata_entries = get_local_wikidata_entries(ids)
+    orphaned_wikidata_entries = [] if ids else list(WikidataEntry.objects.all())
 
     wikidata_entries_to_refresh, created = get_or_create_wikidata_entries_to_refresh(ids)
     logger.info("Found {} Wikidata entries to refresh (created {})".format(len(wikidata_entries_to_refresh), created))
@@ -39,12 +39,6 @@ def sync(reset=False, ids=None, **kwargs):
 
 def delete_objects():
     WikidataEntry.objects.all().delete()
-
-def get_local_wikidata_entries(ids):
-    if ids:
-        return list(WikidataEntry.objects.filter(id__in=ids))
-    else:
-        return list(WikidataEntry.objects.all())
 
 # Prepare model
 
