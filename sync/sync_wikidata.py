@@ -47,14 +47,15 @@ def get_local_wikidata_entries(ids):
 # Prepare model
 
 def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_elements, openstreetmap_id_tags):
-    wikidata_entries = set()
+    wikidata_entries = []
     created = 0
 
     for openstreetmap_element in openstreetmap_elements:
         wikidata_id = openstreetmap_element.get_first_tag_value(openstreetmap_id_tags)
         if wikidata_id:
             wikidata_entry, was_created = WikidataEntry.objects.get_or_create(id=wikidata_id)
-            wikidata_entries.add(wikidata_entry)
+            if not wikidata_entry in wikidata_entries:
+                wikidata_entries.append(wikidata_entry)
             if was_created:
                 logger.debug("Created WikidataEntry "+wikidata_entry.id)
                 created = created + 1
@@ -70,7 +71,7 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
 
 def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.wikidata.OPENSTREETMAP_ID_TAGS):
     if ids:
-        return (set(WikidataEntry.objects.filter(id__in=ids)), 0)
+        return (list(WikidataEntry.objects.filter(id__in=ids)), 0)
     else:
         logger.info('List Wikidata entries from OpenStreetMap elements')
         return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
