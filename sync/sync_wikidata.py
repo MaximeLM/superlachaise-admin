@@ -70,7 +70,7 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
 
 def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.wikidata.OPENSTREETMAP_ID_TAGS):
     if ids:
-        return (list(WikidataEntry.objects.filter(id__in=ids)), 0)
+        return (set(WikidataEntry.objects.filter(id__in=ids)), 0)
     else:
         logger.info('List Wikidata entries from OpenStreetMap elements')
         return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
