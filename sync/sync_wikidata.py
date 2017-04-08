@@ -141,7 +141,7 @@ def handle_wikidata_api_result(result, wikidata_entries):
             wikidata_id = result['error']['id']
             for wikidata_entry in wikidata_entries:
                 if wikidata_entry.id == wikidata_id:
-                    logger.warning("No such entity for Wikidata ID {}: deleting".format(wikidata_id))
+                    logger.warning("No such entity for Wikidata ID {}".format(wikidata_id))
                     wikidata_entry.delete()
                     raise WikidataNoSuchEntityError(result['error']['info'], wikidata_entry)
         raise WikidataError(result['error']['info'])

@@ -14,6 +14,8 @@ class WikidataEntry(models.Model):
     raw_claims = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_sitelinks = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
+    secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False)
+
     # JSON fields
 
     def labels(self):
