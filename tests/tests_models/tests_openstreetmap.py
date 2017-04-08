@@ -76,10 +76,10 @@ class OpenstreetmapElementTestCase(TestCase):
             raw_tags=json.dumps({"key": "value"}))
         openstreetmap_element.full_clean()
 
-    def test_validation_fails_if_raw_tags_is_none(self):
+    def test_validation_fails_if_raw_tags_is_empty(self):
         openstreetmap_element = OpenstreetmapElement(
             id="node/123456",
-            raw_tags=None)
+            raw_tags="")
         with self.assertRaises(ValidationError):
             openstreetmap_element.full_clean()
 

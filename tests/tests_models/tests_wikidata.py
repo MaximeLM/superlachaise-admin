@@ -29,10 +29,10 @@ class WikidataEntryTestCase(TestCase):
             raw_labels=json.dumps({"key": "value"}))
         wikidata_entry.full_clean()
 
-    def test_validation_fails_if_raw_labels_is_none(self):
+    def test_validation_fails_if_raw_labels_is_empty(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_labels=None)
+            raw_labels="")
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
@@ -49,10 +49,10 @@ class WikidataEntryTestCase(TestCase):
             raw_descriptions=json.dumps({"key": "value"}))
         wikidata_entry.full_clean()
 
-    def test_validation_fails_if_raw_descriptions_is_none(self):
+    def test_validation_fails_if_raw_descriptions_is_empty(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_descriptions=None)
+            raw_descriptions="")
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
@@ -69,10 +69,10 @@ class WikidataEntryTestCase(TestCase):
             raw_claims=json.dumps({"key": "value"}))
         wikidata_entry.full_clean()
 
-    def test_validation_fails_if_raw_claims_is_none(self):
+    def test_validation_fails_if_raw_claims_is_empty(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_claims=None)
+            raw_claims="")
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
@@ -89,10 +89,10 @@ class WikidataEntryTestCase(TestCase):
             raw_sitelinks=json.dumps({"key": "value"}))
         wikidata_entry.full_clean()
 
-    def test_validation_fails_if_raw_sitelinks_is_none(self):
+    def test_validation_fails_if_raw_sitelinks_is_empty(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_sitelinks=None)
+            raw_sitelinks="")
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
