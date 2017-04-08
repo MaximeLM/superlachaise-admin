@@ -146,7 +146,10 @@ def handle_wikidata_api_result(result, wikidata_entries, orphaned_wikidata_entri
         else:
             logger.warning("Name is missing for Wikidata ID {}".format(id))
             wikidata_entry.name = ""
-        wikidata_entry.raw_json = json.dumps(entity, ensure_ascii=False, indent=4, separators=(',', ': '))
+        wikidata_entry.raw_labels = json.dumps(entity['labels'], ensure_ascii=False, indent=4, separators=(',', ': '))
+        wikidata_entry.raw_descriptions = json.dumps(entity['descriptions'], ensure_ascii=False, indent=4, separators=(',', ': '))
+        wikidata_entry.raw_claims = json.dumps(entity['claims'], ensure_ascii=False, indent=4, separators=(',', ': '))
+        wikidata_entry.raw_sitelinks = json.dumps(entity['sitelinks'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.save()
         if wikidata_entry in orphaned_wikidata_entries:
             orphaned_wikidata_entries.remove(wikidata_entry)

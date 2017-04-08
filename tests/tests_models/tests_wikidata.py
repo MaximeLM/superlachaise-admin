@@ -23,44 +23,161 @@ class WikidataEntryTestCase(TestCase):
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
-    def test_validation_succeeds_if_raw_json_is_valid_JSON(self):
+    def test_validation_succeeds_if_raw_labels_is_valid_JSON(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_json=json.dumps({"key": "value"}))
+            raw_labels=json.dumps({"key": "value"}))
         wikidata_entry.full_clean()
 
-    def test_validation_fails_if_raw_json_is_none(self):
+    def test_validation_fails_if_raw_labels_is_none(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_json=None)
+            raw_labels=None)
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
-    def test_validation_fails_if_raw_json_is_invalid_JSON(self):
+    def test_validation_fails_if_raw_labels_is_invalid_JSON(self):
         wikidata_entry = WikidataEntry(
             id="Q123456",
-            raw_json="json")
+            raw_labels="json")
         with self.assertRaises(ValidationError):
             wikidata_entry.full_clean()
 
-    # json
+    def test_validation_succeeds_if_raw_descriptions_is_valid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_descriptions=json.dumps({"key": "value"}))
+        wikidata_entry.full_clean()
 
-    def test_json_returns_object_if_raw_json_is_valid_JSON(self):
+    def test_validation_fails_if_raw_descriptions_is_none(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_descriptions=None)
+        with self.assertRaises(ValidationError):
+            wikidata_entry.full_clean()
+
+    def test_validation_fails_if_raw_descriptions_is_invalid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_descriptions="json")
+        with self.assertRaises(ValidationError):
+            wikidata_entry.full_clean()
+
+    def test_validation_succeeds_if_raw_claims_is_valid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_claims=json.dumps({"key": "value"}))
+        wikidata_entry.full_clean()
+
+    def test_validation_fails_if_raw_claims_is_none(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_claims=None)
+        with self.assertRaises(ValidationError):
+            wikidata_entry.full_clean()
+
+    def test_validation_fails_if_raw_claims_is_invalid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_claims="json")
+        with self.assertRaises(ValidationError):
+            wikidata_entry.full_clean()
+
+    def test_validation_succeeds_if_raw_sitelinks_is_valid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_sitelinks=json.dumps({"key": "value"}))
+        wikidata_entry.full_clean()
+
+    def test_validation_fails_if_raw_sitelinks_is_none(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_sitelinks=None)
+        with self.assertRaises(ValidationError):
+            wikidata_entry.full_clean()
+
+    def test_validation_fails_if_raw_sitelinks_is_invalid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            id="Q123456",
+            raw_sitelinks="json")
+        with self.assertRaises(ValidationError):
+            wikidata_entry.full_clean()
+
+    # labels
+
+    def test_labels_returns_object_if_raw_labels_is_valid_JSON(self):
         object = {"key": "value"}
         wikidata_entry = WikidataEntry(
-            raw_json=json.dumps(object))
-        self.assertEqual(wikidata_entry.json(), object)
+            raw_labels=json.dumps(object))
+        self.assertEqual(wikidata_entry.labels(), object)
 
-    def test_json_returns_none_if_raw_json_is_none(self):
+    def test_labels_returns_none_if_raw_labels_is_none(self):
         wikidata_entry = WikidataEntry(
-            raw_json=None)
-        self.assertIsNone(wikidata_entry.json())
+            raw_labels=None)
+        self.assertIsNone(wikidata_entry.labels())
 
-    def test_json_fails_if_raw_json_is_invalid_JSON(self):
+    def test_labels_fails_if_raw_labels_is_invalid_JSON(self):
         wikidata_entry = WikidataEntry(
-            raw_json="json")
+            raw_labels="json")
         with self.assertRaises(JSONDecodeError):
-            wikidata_entry.json()
+            wikidata_entry.labels()
+
+    # descriptions
+
+    def test_descriptions_returns_object_if_raw_descriptions_is_valid_JSON(self):
+        object = {"key": "value"}
+        wikidata_entry = WikidataEntry(
+            raw_descriptions=json.dumps(object))
+        self.assertEqual(wikidata_entry.descriptions(), object)
+
+    def test_descriptions_returns_none_if_raw_descriptions_is_none(self):
+        wikidata_entry = WikidataEntry(
+            raw_descriptions=None)
+        self.assertIsNone(wikidata_entry.descriptions())
+
+    def test_descriptions_fails_if_raw_descriptions_is_invalid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            raw_descriptions="json")
+        with self.assertRaises(JSONDecodeError):
+            wikidata_entry.descriptions()
+
+    # claims
+
+    def test_claims_returns_object_if_raw_claims_is_valid_JSON(self):
+        object = {"key": "value"}
+        wikidata_entry = WikidataEntry(
+            raw_claims=json.dumps(object))
+        self.assertEqual(wikidata_entry.claims(), object)
+
+    def test_claims_returns_none_if_raw_claims_is_none(self):
+        wikidata_entry = WikidataEntry(
+            raw_claims=None)
+        self.assertIsNone(wikidata_entry.claims())
+
+    def test_claims_fails_if_raw_claims_is_invalid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            raw_claims="json")
+        with self.assertRaises(JSONDecodeError):
+            wikidata_entry.claims()
+
+    # sitelinks
+
+    def test_sitelinks_returns_object_if_raw_sitelinks_is_valid_JSON(self):
+        object = {"key": "value"}
+        wikidata_entry = WikidataEntry(
+            raw_sitelinks=json.dumps(object))
+        self.assertEqual(wikidata_entry.sitelinks(), object)
+
+    def test_sitelinks_returns_none_if_raw_sitelinks_is_none(self):
+        wikidata_entry = WikidataEntry(
+            raw_sitelinks=None)
+        self.assertIsNone(wikidata_entry.sitelinks())
+
+    def test_sitelinks_fails_if_raw_sitelinks_is_invalid_JSON(self):
+        wikidata_entry = WikidataEntry(
+            raw_sitelinks="json")
+        with self.assertRaises(JSONDecodeError):
+            wikidata_entry.sitelinks()
 
     # wikidata_url
 

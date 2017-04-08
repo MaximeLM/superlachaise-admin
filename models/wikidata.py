@@ -9,11 +9,26 @@ class WikidataEntry(models.Model):
     id = models.CharField(primary_key=True, db_index=True, max_length=255, validators=[model_validators.validate_wikidata_id])
     name = models.CharField(max_length=255, blank=True)
 
-    raw_json = models.TextField(default='{}', validators=[model_validators.validate_JSON], verbose_name="raw JSON")
+    raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
+    raw_descriptions = models.TextField(default='{}', validators=[model_validators.validate_JSON])
+    raw_claims = models.TextField(default='{}', validators=[model_validators.validate_JSON])
+    raw_sitelinks = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
-    def json(self):
-        if self.raw_json:
-            return json.loads(self.raw_json)
+    def labels(self):
+        if self.raw_labels:
+            return json.loads(self.raw_labels)
+
+    def descriptions(self):
+        if self.raw_descriptions:
+            return json.loads(self.raw_descriptions)
+
+    def claims(self):
+        if self.raw_claims:
+            return json.loads(self.raw_claims)
+
+    def sitelinks(self):
+        if self.raw_sitelinks:
+            return json.loads(self.raw_sitelinks)
 
     WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
     def wikidata_url(self):

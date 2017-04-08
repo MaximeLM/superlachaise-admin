@@ -10,7 +10,7 @@ class WikidataEntryAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None, {'fields': ['id', 'name', 'wikidata_link']}),
-        (None, {'fields': ['raw_json']}),
+        (None, {'fields': ['raw_labels', 'raw_descriptions', 'raw_claims', 'raw_sitelinks']}),
     ]
     readonly_fields = ('wikidata_link',)
 
