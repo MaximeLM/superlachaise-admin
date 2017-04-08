@@ -253,3 +253,26 @@ class WikidataEntryTestCase(TestCase):
             }
         ))
         self.assertIsNone(wikidata_entry.get_description("de"))
+
+    # secondary_entries
+
+    def test_secondary_entry_is_removed_from_secondary_entries_if_deleted(self):
+        wikidata_entry=WikidataEntry(id="Q123456")
+        secondary_wikidata_entry=WikidataEntry(id="Q654321")
+        wikidata_entry.secondary_entries.add(secondary_wikidata_entry)
+        secondary_wikidata_entry.save()
+        wikidata_entry.save()
+        self.assertEqual(wikidata_entry.secondary_entries.count(), 1)
+        secondary_wikidata_entry.delete()
+        wikidata_entry = WikidataEntry.objects.get(id="Q123456")
+        self.assertEqual(wikidata_entry.secondary_entries.count(), 0)
+
+    def test_secondary_entry_is_not_deleted_if_wikidata_entry_is_deleted(self):
+        wikidata_entry=WikidataEntry(id="Q123456")
+        secondary_wikidata_entry=WikidataEntry(id="Q654321")
+        wikidata_entry.secondary_entries.add(secondary_wikidata_entry)
+        secondary_wikidata_entry.save()
+        wikidata_entry.save()
+        self.assertEqual(WikidataEntry.objects.filter(id="Q654321").count(), 1)
+        wikidata_entry.delete()
+        self.assertEqual(WikidataEntry.objects.filter(id="Q654321").count(), 1)
