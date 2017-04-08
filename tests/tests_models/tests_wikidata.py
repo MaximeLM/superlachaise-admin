@@ -189,3 +189,88 @@ class WikidataEntryTestCase(TestCase):
     def test_wikidata_url_returns_none_if_id_is_none(self):
         wikidata_entry = WikidataEntry(id=None)
         self.assertIsNone(wikidata_entry.wikidata_url())
+
+    # get_first_label
+
+    def test_get_first_label_returns_first_label_if_it_exists(self):
+        wikidata_entry = WikidataEntry(raw_labels=json.dumps(
+            {
+                "en": {
+                    "language": "en",
+                    "value": "Annie Girardot (en)"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "Annie Girardot (fr)"
+                }
+            }
+        ))
+        self.assertEqual(wikidata_entry.get_first_label(), "Annie Girardot (en)")
+
+    def test_get_first_label_returns_none_if_no_label_exists(self):
+        wikidata_entry = WikidataEntry()
+        self.assertIsNone(wikidata_entry.get_first_label())
+
+    # get_label
+
+    def test_get_label_returns_label_for_language_if_it_exists(self):
+        wikidata_entry = WikidataEntry(raw_labels=json.dumps(
+            {
+                "en": {
+                    "language": "en",
+                    "value": "Annie Girardot (en)"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "Annie Girardot (fr)"
+                }
+            }
+        ))
+        self.assertEqual(wikidata_entry.get_label("en"), "Annie Girardot (en)")
+
+    def test_get_label_returns_none_for_language_if_it_does_not_exist(self):
+        wikidata_entry = WikidataEntry(raw_labels=json.dumps(
+            {
+                "en": {
+                    "language": "en",
+                    "value": "Annie Girardot (fr)"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "Annie Girardot (en)"
+                }
+            }
+        ))
+        self.assertIsNone(wikidata_entry.get_label("de"))
+
+    # get_description
+
+    def test_get_description_returns_description_for_language_if_it_exists(self):
+        wikidata_entry = WikidataEntry(raw_descriptions=json.dumps(
+            {
+                "fr": {
+                    "language": "fr",
+                    "value": "actrice française"
+                },
+                "en": {
+                    "language": "en",
+                    "value": "French actress"
+                }
+            }
+        ))
+        self.assertEqual(wikidata_entry.get_description("en"), "French actress")
+
+    def test_get_description_returns_none_for_language_if_it_does_not_exist(self):
+        wikidata_entry = WikidataEntry(raw_descriptions=json.dumps(
+            {
+                "fr": {
+                    "language": "fr",
+                    "value": "actrice française"
+                },
+                "en": {
+                    "language": "en",
+                    "value": "French actress"
+                }
+            }
+        ))
+        self.assertIsNone(wikidata_entry.get_description("de"))

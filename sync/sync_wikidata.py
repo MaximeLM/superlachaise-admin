@@ -140,17 +140,14 @@ def handle_wikidata_api_result(result, wikidata_entries, orphaned_wikidata_entri
         raise WikidataError(result['error']['info'])
     for wikidata_entry in wikidata_entries:
         entity = result['entities'][wikidata_entry.id]
-        labels = entity['labels']
-        if len(labels) > 0:
-            # Get any label from the list
-            wikidata_entry.name = next(iter(labels.values()))['value']
-        else:
-            logger.warning("Name is missing for Wikidata ID {}".format(id))
-            wikidata_entry.name = ""
         wikidata_entry.raw_labels = json.dumps(entity['labels'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_descriptions = json.dumps(entity['descriptions'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_claims = json.dumps(entity['claims'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_sitelinks = json.dumps(entity['sitelinks'], ensure_ascii=False, indent=4, separators=(',', ': '))
+        wikidata_entry.name = wikidata_entry.get_first_label()
+        if not wikidata_entry.name:
+            logger.warning("No label for Wikidata ID {}".format(wikidata_entry.id))
+            wikidata_entry.name = ""
         wikidata_entry.save()
         if wikidata_entry in orphaned_wikidata_entries:
             orphaned_wikidata_entries.remove(wikidata_entry)

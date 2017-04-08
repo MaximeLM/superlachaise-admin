@@ -14,6 +14,8 @@ class WikidataEntry(models.Model):
     raw_claims = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_sitelinks = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
+    # JSON fields
+
     def labels(self):
         if self.raw_labels:
             return json.loads(self.raw_labels)
@@ -29,6 +31,25 @@ class WikidataEntry(models.Model):
     def sitelinks(self):
         if self.raw_sitelinks:
             return json.loads(self.raw_sitelinks)
+
+    # Fields access
+
+    def get_first_label(self):
+        labels = self.labels()
+        if labels and len(labels) > 0:
+            first_label = next(iter(labels.values()))
+            if 'value' in first_label:
+                return first_label['value']
+
+    def get_label(self, language):
+        labels = self.labels()
+        if labels and language in labels and 'value' in labels[language]:
+            return labels[language]['value']
+
+    def get_description(self, language):
+        descriptions = self.descriptions()
+        if descriptions and language in descriptions and 'value' in descriptions[language]:
+            return descriptions[language]['value']
 
     WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
     def wikidata_url(self):
