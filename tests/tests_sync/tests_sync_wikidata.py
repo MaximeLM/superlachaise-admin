@@ -227,6 +227,33 @@ class SyncWikidataTestCase(TestCase):
         wikidata_entries, created = sync_wikidata.get_or_create_wikidata_entries_to_refresh(ids)
         self.assertEqual(created, 0)
 
+    # get_or_create_secondary_wikidata_entries
+
+    def test_get_or_create_secondary_wikidata_entries_returns_secondary_entries_for_primary_entries(self):
+        def get_secondary_wikidata_entries(wikidata_entry):
+            return [wikidata_entry.id + "1", wikidata_entry.id + "2"]
+        wikidata_entry = WikidataEntry(id="Q123456")
+        wikidata_entry.save()
+        secondary_entries, created = sync_wikidata.get_or_create_secondary_wikidata_entries([wikidata_entry], get_secondary_wikidata_entries)
+        self.assertEqual([wikidata_entry.id for wikidata_entry in secondary_entries], ["Q1234561", "Q1234562"])
+
+    def test_get_or_create_secondary_wikidata_entries_increments_created_if_wikidata_entry_was_created(self):
+        def get_secondary_wikidata_entries(wikidata_entry):
+            return [wikidata_entry.id + "1", wikidata_entry.id + "2"]
+        wikidata_entry = WikidataEntry(id="Q123456")
+        wikidata_entry.save()
+        WikidataEntry(id="Q1234561").save()
+        secondary_entries, created = sync_wikidata.get_or_create_secondary_wikidata_entries([wikidata_entry], get_secondary_wikidata_entries)
+        self.assertEqual(created, 1)
+
+    def test_get_or_create_secondary_wikidata_entries_sets_secondary_entries_relation(self):
+        def get_secondary_wikidata_entries(wikidata_entry):
+            return [wikidata_entry.id + "1", wikidata_entry.id + "2"]
+        wikidata_entry = WikidataEntry(id="Q123456")
+        wikidata_entry.save()
+        sync_wikidata.get_or_create_secondary_wikidata_entries([wikidata_entry], get_secondary_wikidata_entries)
+        self.assertEqual([wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_entries.all()], ["Q1234561", "Q1234562"])
+
     # make_chunks
 
     def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):

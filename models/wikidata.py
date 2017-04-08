@@ -52,7 +52,7 @@ class WikidataEntry(models.Model):
             return WikidataEntry.WIKIDATA_URL_FORMAT.format(id=self.id)
 
     def __str__(self):
-        return self.id + " - " + self.name
+        return self.id + ((" - " + self.name) if self.name else "")
 
     class Meta:
         ordering = ['id']

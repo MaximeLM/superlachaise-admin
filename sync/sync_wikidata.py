@@ -30,6 +30,14 @@ def sync(reset=False, ids=None, **kwargs):
     logger.info('Request Wikidata API')
     request_wikidata_entries(wikidata_entries_to_refresh)
 
+    secondary_wikidata_entries, created = get_or_create_secondary_wikidata_entries(wikidata_entries_to_refresh)
+    logger.info("Found {} secondary Wikidata entries to refresh (created {})".format(len(secondary_wikidata_entries), created))
+
+    logger.info('Request Wikidata API for secondary entries')
+    request_wikidata_entries(secondary_wikidata_entries)
+
+    orphaned_wikidata_entries = [wikidata_entry for wikidata_entry in orphaned_wikidata_entries if wikidata_entry not in secondary_wikidata_entries]
+
     for wikidata_entry in orphaned_wikidata_entries:
         logger.debug("Deleted WikidataEntry "+wikidata_entry.id)
         wikidata_entry.delete()
@@ -72,6 +80,24 @@ def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.
         logger.info('List Wikidata entries from OpenStreetMap elements')
         return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
 
+def get_or_create_secondary_wikidata_entries(primary_wikidata_entries, get_secondary_wikidata_entries=config.wikidata.get_secondary_wikidata_entries):
+    created = 0
+    secondary_wikidata_entries = []
+    for primary_wikidata_entry in primary_wikidata_entries:
+        secondary_entries_for_primary_wikidata_entry = []
+        for wikidata_id in get_secondary_wikidata_entries(primary_wikidata_entry):
+            secondary_wikidata_entry, was_created = WikidataEntry.objects.get_or_create(id=wikidata_id)
+            if not secondary_wikidata_entry in secondary_entries_for_primary_wikidata_entry:
+                secondary_entries_for_primary_wikidata_entry.append(secondary_wikidata_entry)
+            if was_created:
+                logger.debug("Created WikidataEntry "+secondary_wikidata_entry.id)
+                created = created + 1
+            else:
+                logger.debug("Matched WikidataEntry "+secondary_wikidata_entry.id)
+        primary_wikidata_entry.secondary_entries.set(secondary_entries_for_primary_wikidata_entry)
+        secondary_wikidata_entries.extend([wikidata_entry for wikidata_entry in secondary_entries_for_primary_wikidata_entry if wikidata_entry not in secondary_wikidata_entries])
+    return (secondary_wikidata_entries, created)
+
 # Request Wikidata
 
 def make_chunks(wikidata_entries, chunk_size=50):
@@ -100,9 +126,10 @@ def request_wikidata_api(wikidata_query_params):
 
 def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAGES):
     entry_count = 0
+    entry_total = len(wikidata_entries)
     no_such_entity_entry_count = 0
     for wikidata_entries_chunk in make_chunks(list(wikidata_entries)):
-        logger.info(str(entry_count)+"/"+str(len(wikidata_entries)))
+        logger.info(str(entry_count)+"/"+str(entry_total))
         entry_count = entry_count + len(wikidata_entries_chunk)
 
         retry = True
@@ -115,9 +142,10 @@ def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAG
                 no_such_entity_entry_count = no_such_entity_entry_count + 1
                 if error.wikidata_entry in wikidata_entries_chunk:
                     wikidata_entries_chunk.remove(error.wikidata_entry)
+                    wikidata_entries.remove(error.wikidata_entry)
                     retry = True
 
-    logger.info(str(entry_count)+"/"+str(len(wikidata_entries)))
+    logger.info(str(entry_count)+"/"+str(entry_total))
     if no_such_entity_entry_count > 0:
         logger.info("Deleted {} wikidata entries not found on Wikidata".format(no_such_entity_entry_count))
 
@@ -150,11 +178,11 @@ def handle_wikidata_api_result(result, wikidata_entries, languages):
         name = None
         for language in languages:
             if not language in entity['labels']:
-                logger.warning("Label for language {} is missing for wikidata ID {}".format(language, wikidata_entry.id))
+                logger.warning("Label for language '{}' is missing for wikidata ID {}".format(language, wikidata_entry.id))
             elif not name:
                 name = entity['labels'][language]['value']
             if not language in entity['descriptions']:
-                logger.warning("Description for language {} is missing for wikidata ID {}".format(language, wikidata_entry.id))
+                logger.warning("Description for language '{}' is missing for wikidata ID {}".format(language, wikidata_entry.id))
 
         wikidata_entry.name = name if name else ""
         wikidata_entry.save()

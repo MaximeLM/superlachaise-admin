@@ -30,7 +30,7 @@ class OpenStreetMapElement(models.Model):
                     return tags[tag_name]
 
     def __str__(self):
-        return self.id + " - " + self.name
+        return self.id + ((" - " + self.name) if self.name else "")
 
     class Meta:
         ordering = ['id']
