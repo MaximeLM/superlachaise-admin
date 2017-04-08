@@ -1,5 +1,8 @@
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+from django.core.management import call_command
+from django.core.management.base import CommandError
 
 HTML_LINK_FORMAT = "<a href='{url}'>{name}</a>"
 def html_link(url, name=None):
@@ -16,3 +19,11 @@ def change_page_url(object):
         reverse_path = REVERSE_PATH_FORMAT.format(app_name, reverse_name)
         url = reverse(reverse_path, args=(object.pk,))
         return url
+
+def sync(request, target, args={}):
+    """ Execute a sync command and add success/error messages to the request """
+    try:
+        call_command('sync', target, **args)
+        messages.success(request, "done")
+    except CommandError as err:
+        messages.error(request, err)

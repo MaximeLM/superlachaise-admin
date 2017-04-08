@@ -22,7 +22,7 @@ def sync(reset=False, ids=None, **kwargs):
 
     logger.info('Request Overpass API')
     if ids:
-        overpass_subqueries = make_overpass_elements_subqueries(ids.split('|'))
+        overpass_subqueries = make_overpass_elements_subqueries(ids)
     else:
         overpass_subqueries = make_overpass_area_subqueries()
     overpass_query = make_overpass_query(overpass_subqueries)

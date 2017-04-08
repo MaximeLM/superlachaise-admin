@@ -1,6 +1,6 @@
 import sys
 import logging
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from superlachaise.sync import *
 
@@ -36,8 +36,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         target = options['target']
+        if options['ids']:
+            options['ids'] = options['ids'].split('|')
         module_name = "superlachaise.sync.sync_{}".format(target)
         try:
             sys.modules[module_name].sync(**options)
-        except Exception as e:
-            logger.critical(e)
+        except Exception as err:
+            logger.critical(err)
+            raise CommandError(err)
