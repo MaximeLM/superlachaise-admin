@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from superlachaise.sync import *
 from superlachaise.models import *
+from superlachaise.sync.sync_wikidata import WikidataError, WikidataNoSuchEntityError
 
 # Fixtures
 
@@ -44,6 +45,112 @@ def OPENSTREETMAP_ELEMENT_3():
             "wikipedia": "fr:René Panhard"
         })
     )
+
+WIKIDATA_API_RESULT_NO_SUCH_ENTITY = {
+    "error": {
+        "code": "no-such-entity",
+        "info": "Could not find such an entity. (Invalid id: Q1235630;Q3144796)",
+        "id": "Q1235630;Q3144796",
+        "messages": [
+            {
+                "name": "wikibase-api-no-such-entity",
+                "parameters": [],
+                "html": {
+                    "*": "Could not find such an entity."
+                }
+            }
+        ],
+        "*": "See https://www.wikidata.org/w/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes."
+    },
+    "servedby": "mw1197"
+}
+
+WIKIDATA_API_RESULT_ERROR = {
+    "error": {
+        "code": "maxlagapparams",
+        "info": "prlevel may not be used without prtype",
+        "*": "See https://www.mediawiki.org/w/api.php for API usage."
+    }
+}
+
+WIKIDATA_API_RESULT_NO_LABELS = {
+    "entities": {
+        "Q3426652": {
+            "type": "item",
+            "id": "Q3426652",
+            "labels": {},
+            "descriptions": {},
+            "claims": {},
+            "sitelinks": {}
+        }
+    },
+    "success": 1
+}
+
+WIKIDATA_API_RESULT_1 = {
+    "entities": {
+        "Q3426652": {
+            "type": "item",
+            "id": "Q3426652",
+            "labels": {
+                "fr": {
+                    "language": "fr",
+                    "value": "René Mouchotte"
+                },
+                "en": {
+                    "language": "en",
+                    "value": "René Mouchotte"
+                }
+            },
+            "descriptions": {
+                "en": {
+                    "language": "en",
+                    "value": "World War II pilot of the French Air Force"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "aviateur français de la Seconde Guerre mondiale et une figure de la France libre"
+                }
+            },
+            "claims": {
+                "P2732": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P2732",
+                            "datavalue": {
+                                "value": "47863",
+                                "type": "string"
+                            },
+                            "datatype": "external-id"
+                        },
+                        "type": "statement",
+                        "id": "Q3426652$515C6B2E-A3BC-4C79-BA44-E713EC498DFD",
+                        "rank": "normal"
+                    }
+                ]
+            },
+            "sitelinks": {
+                "commonswiki": {
+                    "site": "commonswiki",
+                    "title": "Category:René Mouchotte",
+                    "badges": []
+                },
+                "enwiki": {
+                    "site": "enwiki",
+                    "title": "René Mouchotte",
+                    "badges": []
+                },
+                "frwiki": {
+                    "site": "frwiki",
+                    "title": "René Mouchotte",
+                    "badges": []
+                }
+            }
+        }
+    },
+    "success": 1
+}
 
 class SyncWikidataTestCase(TestCase):
 
@@ -181,3 +288,52 @@ class SyncWikidataTestCase(TestCase):
         ]
         params = sync_wikidata.make_wikidata_query_params(wikidata_entries, languages)
         self.assertEqual(params["languages"], "fr|en")
+
+    # handle_wikidata_api_result
+
+    def test_handle_wikidata_api_result_raises_no_such_entity_error_with_failing_wikidata_entry(self):
+        wikidata_entry = WikidataEntry(id="Q1235630;Q3144796")
+        try:
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry])
+        except WikidataNoSuchEntityError as error:
+            self.assertEqual(error.wikidata_entry, wikidata_entry)
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikidata_api_result_deletes_wikidata_entry_for_no_such_entity_errors(self):
+        wikidata_entry = WikidataEntry(id="Q1235630;Q3144796")
+        wikidata_entry.save()
+        self.assertEqual(WikidataEntry.objects.all().count(), 1)
+        try:
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry])
+        except WikidataNoSuchEntityError as error:
+            self.assertEqual(WikidataEntry.objects.all().count(), 0)
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikidata_api_result_raises_wikidata_errors_with_error_info(self):
+        wikidata_entry = WikidataEntry(id="Q1235630")
+        try:
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_ERROR, [wikidata_entry])
+        except WikidataError as error:
+            self.assertEqual(str(error), "prlevel may not be used without prtype")
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikidata_api_result_updates_wikidata_entries_with_result(self):
+        wikidata_entry = WikidataEntry(id="Q3426652")
+        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_1, [wikidata_entry])
+        self.assertEqual(wikidata_entry.labels(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['labels'])
+        self.assertEqual(wikidata_entry.descriptions(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['descriptions'])
+        self.assertEqual(wikidata_entry.claims(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['claims'])
+        self.assertEqual(wikidata_entry.sitelinks(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['sitelinks'])
+
+    def test_handle_wikidata_api_result_updates_wikidata_entries_name_with_first_label_if_it_exists(self):
+        wikidata_entry = WikidataEntry(id="Q3426652")
+        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_1, [wikidata_entry])
+        self.assertEqual(wikidata_entry.name, "René Mouchotte")
+
+    def test_handle_wikidata_api_result_updates_wikidata_entries_name_with_empty_string_if_no_label_exists(self):
+        wikidata_entry = WikidataEntry(id="Q3426652")
+        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_LABELS, [wikidata_entry])
+        self.assertEqual(wikidata_entry.name, "")
