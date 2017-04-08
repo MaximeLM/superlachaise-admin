@@ -84,7 +84,7 @@ def make_chunks(wikidata_entries, chunk_size=50):
     """ Cut the list in chunks of a specified size """
     return [wikidata_entries[i:i+chunk_size] for i in range(0, len(wikidata_entries), chunk_size)]
 
-def make_wikidata_query_params(wikidata_entries, languages=config.wikidata.LANGUAGES):
+def make_wikidata_query_params(wikidata_entries, languages):
     return {
         'action': 'wbgetentities',
         'ids': '|'.join([wikidata_entry.id for wikidata_entry in wikidata_entries]),
@@ -104,7 +104,7 @@ def request_wikidata_api(wikidata_query_params):
     # Return JSON
     return result.json()
 
-def request_wikidata_entries(wikidata_entries):
+def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAGES):
     entry_count = 0
     no_such_entity_entry_count = 0
     for wikidata_entries_chunk in make_chunks(list(wikidata_entries)):
@@ -114,9 +114,9 @@ def request_wikidata_entries(wikidata_entries):
         retry = True
         while retry:
             retry = False
-            result = request_wikidata_api(make_wikidata_query_params(wikidata_entries_chunk))
+            result = request_wikidata_api(make_wikidata_query_params(wikidata_entries_chunk, languages))
             try:
-                handle_wikidata_api_result(result, wikidata_entries_chunk)
+                handle_wikidata_api_result(result, wikidata_entries_chunk, languages)
             except WikidataNoSuchEntityError as error:
                 no_such_entity_entry_count = no_such_entity_entry_count + 1
                 if error.wikidata_entry in wikidata_entries_chunk:
@@ -135,7 +135,7 @@ class WikidataNoSuchEntityError(WikidataError):
         super(WikidataNoSuchEntityError, self).__init__(message)
         self.wikidata_entry = wikidata_entry
 
-def handle_wikidata_api_result(result, wikidata_entries):
+def handle_wikidata_api_result(result, wikidata_entries, languages):
     if 'error' in result:
         if result['error']['code'] == 'no-such-entity':
             wikidata_id = result['error']['id']
@@ -151,8 +151,16 @@ def handle_wikidata_api_result(result, wikidata_entries):
         wikidata_entry.raw_descriptions = json.dumps(entity['descriptions'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_claims = json.dumps(entity['claims'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_sitelinks = json.dumps(entity['sitelinks'], ensure_ascii=False, indent=4, separators=(',', ': '))
-        wikidata_entry.name = wikidata_entry.get_first_label()
-        if not wikidata_entry.name:
-            logger.warning("No label for Wikidata ID {}".format(wikidata_entry.id))
-            wikidata_entry.name = ""
+
+        # Check labels and descriptions for each language
+        name = None
+        for language in languages:
+            if not language in entity['labels']:
+                logger.warning("Label for language {} is missing for wikidata ID {}".format(language, wikidata_entry.id))
+            elif not name:
+                name = entity['labels'][language]['value']
+            if not language in entity['descriptions']:
+                logger.warning("Description for language {} is missing for wikidata ID {}".format(language, wikidata_entry.id))
+
+        wikidata_entry.name = name if name else ""
         wikidata_entry.save()

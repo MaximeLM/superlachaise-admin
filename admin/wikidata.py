@@ -5,7 +5,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikidataEntry)
 class WikidataEntryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('__str__',)
     search_fields = ('id', 'name')
 
     fieldsets = [

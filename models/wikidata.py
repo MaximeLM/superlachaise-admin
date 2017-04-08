@@ -36,13 +36,6 @@ class WikidataEntry(models.Model):
 
     # Fields access
 
-    def get_first_label(self):
-        labels = self.labels()
-        if labels and len(labels) > 0:
-            first_label = next(iter(labels.values()))
-            if 'value' in first_label:
-                return first_label['value']
-
     def get_label(self, language):
         labels = self.labels()
         if labels and language in labels and 'value' in labels[language]:
@@ -59,7 +52,7 @@ class WikidataEntry(models.Model):
             return WikidataEntry.WIKIDATA_URL_FORMAT.format(id=self.id)
 
     def __str__(self):
-        return self.id
+        return self.id + " - " + self.name
 
     class Meta:
         ordering = ['id']

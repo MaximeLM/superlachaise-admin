@@ -95,11 +95,11 @@ WIKIDATA_API_RESULT_1 = {
             "labels": {
                 "fr": {
                     "language": "fr",
-                    "value": "René Mouchotte"
+                    "value": "René Mouchotte (fr)"
                 },
                 "en": {
                     "language": "en",
-                    "value": "René Mouchotte"
+                    "value": "René Mouchotte (en)"
                 }
             },
             "descriptions": {
@@ -292,48 +292,54 @@ class SyncWikidataTestCase(TestCase):
     # handle_wikidata_api_result
 
     def test_handle_wikidata_api_result_raises_no_such_entity_error_with_failing_wikidata_entry(self):
+        languages = ["fr", "en"]
         wikidata_entry = WikidataEntry(id="Q1235630;Q3144796")
         try:
-            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry])
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry], languages)
         except WikidataNoSuchEntityError as error:
             self.assertEqual(error.wikidata_entry, wikidata_entry)
             return
         self.assertTrue(False)
 
     def test_handle_wikidata_api_result_deletes_wikidata_entry_for_no_such_entity_errors(self):
+        languages = ["fr", "en"]
         wikidata_entry = WikidataEntry(id="Q1235630;Q3144796")
         wikidata_entry.save()
         self.assertEqual(WikidataEntry.objects.all().count(), 1)
         try:
-            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry])
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry], languages)
         except WikidataNoSuchEntityError as error:
             self.assertEqual(WikidataEntry.objects.all().count(), 0)
             return
         self.assertTrue(False)
 
     def test_handle_wikidata_api_result_raises_wikidata_errors_with_error_info(self):
+        languages = ["fr", "en"]
         wikidata_entry = WikidataEntry(id="Q1235630")
         try:
-            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_ERROR, [wikidata_entry])
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_ERROR, [wikidata_entry], languages)
         except WikidataError as error:
             self.assertEqual(str(error), "prlevel may not be used without prtype")
             return
         self.assertTrue(False)
 
     def test_handle_wikidata_api_result_updates_wikidata_entries_with_result(self):
+        languages = ["fr", "en"]
         wikidata_entry = WikidataEntry(id="Q3426652")
-        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_1, [wikidata_entry])
+        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_1, [wikidata_entry], languages)
         self.assertEqual(wikidata_entry.labels(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['labels'])
         self.assertEqual(wikidata_entry.descriptions(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['descriptions'])
         self.assertEqual(wikidata_entry.claims(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['claims'])
         self.assertEqual(wikidata_entry.sitelinks(), WIKIDATA_API_RESULT_1['entities']['Q3426652']['sitelinks'])
 
-    def test_handle_wikidata_api_result_updates_wikidata_entries_name_with_first_label_if_it_exists(self):
+    def test_handle_wikidata_api_result_updates_wikidata_entries_name_with_first_present_language_label_if_it_exists(self):
+        languages = ["de", "en", "fr"]
         wikidata_entry = WikidataEntry(id="Q3426652")
-        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_1, [wikidata_entry])
-        self.assertEqual(wikidata_entry.name, "René Mouchotte")
+        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_1, [wikidata_entry], languages)
+        self.assertEqual(wikidata_entry.name, "René Mouchotte (en)")
 
-    def test_handle_wikidata_api_result_updates_wikidata_entries_name_with_empty_string_if_no_label_exists(self):
+    def test_handle_wikidata_api_result_updates_wikidata_entries_name_with_empty_string_if_no_label_exists_for_languages(self):
+        languages = ["fr", "en"]
         wikidata_entry = WikidataEntry(id="Q3426652")
-        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_LABELS, [wikidata_entry])
+        sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_LABELS, [wikidata_entry], languages)
         self.assertEqual(wikidata_entry.name, "")

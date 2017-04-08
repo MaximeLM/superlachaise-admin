@@ -5,7 +5,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(OpenStreetMapElement)
 class OpenStreetMapElementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'wikidata_entry_link')
+    list_display = ('__str__', 'openstreetmap_link', 'wikidata_entry_link')
     search_fields = ('id', 'name', 'raw_tags')
 
     fieldsets = [

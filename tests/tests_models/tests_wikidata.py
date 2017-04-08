@@ -190,27 +190,6 @@ class WikidataEntryTestCase(TestCase):
         wikidata_entry = WikidataEntry(id=None)
         self.assertIsNone(wikidata_entry.wikidata_url())
 
-    # get_first_label
-
-    def test_get_first_label_returns_first_label_if_it_exists(self):
-        wikidata_entry = WikidataEntry(raw_labels=json.dumps(
-            {
-                "en": {
-                    "language": "en",
-                    "value": "Annie Girardot (en)"
-                },
-                "fr": {
-                    "language": "fr",
-                    "value": "Annie Girardot (fr)"
-                }
-            }
-        ))
-        self.assertEqual(wikidata_entry.get_first_label(), "Annie Girardot (en)")
-
-    def test_get_first_label_returns_none_if_no_label_exists(self):
-        wikidata_entry = WikidataEntry()
-        self.assertIsNone(wikidata_entry.get_first_label())
-
     # get_label
 
     def test_get_label_returns_label_for_language_if_it_exists(self):
