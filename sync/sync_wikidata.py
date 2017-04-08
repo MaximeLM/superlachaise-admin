@@ -25,8 +25,10 @@ def sync(reset=False, ids=None, **kwargs):
     wikidata_entries_to_refresh, created = get_or_create_wikidata_entries_to_refresh(ids)
     logger.info("Found {} Wikidata entries to refresh (created {})".format(len(wikidata_entries_to_refresh), created))
 
+    orphaned_wikidata_entries = [wikidata_entry for wikidata_entry in orphaned_wikidata_entries if wikidata_entry not in wikidata_entries_to_refresh]
+
     logger.info('Request Wikidata API')
-    request_wikidata_entries(wikidata_entries_to_refresh, orphaned_wikidata_entries)
+    request_wikidata_entries(wikidata_entries_to_refresh)
 
     for wikidata_entry in orphaned_wikidata_entries:
         logger.debug("Deleted WikidataEntry "+wikidata_entry.id)
@@ -102,7 +104,7 @@ def request_wikidata_api(wikidata_query_params):
     # Return JSON
     return result.json()
 
-def request_wikidata_entries(wikidata_entries, orphaned_wikidata_entries):
+def request_wikidata_entries(wikidata_entries):
     entry_count = 0
     for wikidata_entries_chunk in make_chunks(list(wikidata_entries)):
         logger.info(str(entry_count)+"/"+str(len(wikidata_entries)))
@@ -113,7 +115,7 @@ def request_wikidata_entries(wikidata_entries, orphaned_wikidata_entries):
             retry = False
             result = request_wikidata_api(make_wikidata_query_params(wikidata_entries_chunk))
             try:
-                handle_wikidata_api_result(result, wikidata_entries_chunk, orphaned_wikidata_entries)
+                handle_wikidata_api_result(result, wikidata_entries_chunk)
             except WikidataNoSuchEntityError as error:
                 if error.wikidata_entry in wikidata_entries_chunk:
                     wikidata_entries_chunk.remove(error.wikidata_entry)
@@ -129,7 +131,7 @@ class WikidataNoSuchEntityError(WikidataError):
         super(WikidataNoSuchEntityError, self).__init__(message)
         self.wikidata_entry = wikidata_entry
 
-def handle_wikidata_api_result(result, wikidata_entries, orphaned_wikidata_entries):
+def handle_wikidata_api_result(result, wikidata_entries):
     if 'error' in result:
         if result['error']['code'] == 'no-such-entity':
             wikidata_id = result['error']['id']
@@ -149,5 +151,3 @@ def handle_wikidata_api_result(result, wikidata_entries, orphaned_wikidata_entri
             logger.warning("No label for Wikidata ID {}".format(wikidata_entry.id))
             wikidata_entry.name = ""
         wikidata_entry.save()
-        if wikidata_entry in orphaned_wikidata_entries:
-            orphaned_wikidata_entries.remove(wikidata_entry)
