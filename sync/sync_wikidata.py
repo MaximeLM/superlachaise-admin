@@ -138,7 +138,7 @@ def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAG
             result = request_wikidata_api(make_wikidata_query_params(wikidata_entries_chunk, languages))
             try:
                 handle_wikidata_api_result(result, wikidata_entries_chunk, languages)
-            except WikidataNoSuchEntityError as error:
+            except (WikidataNoSuchEntityError, WikidataMissingEntityError) as error:
                 no_such_entity_entry_count = no_such_entity_entry_count + 1
                 if error.wikidata_entry in wikidata_entries_chunk:
                     wikidata_entries_chunk.remove(error.wikidata_entry)
@@ -157,6 +157,11 @@ class WikidataNoSuchEntityError(WikidataError):
         super(WikidataNoSuchEntityError, self).__init__(message)
         self.wikidata_entry = wikidata_entry
 
+class WikidataMissingEntityError(WikidataError):
+    def __init__(self, wikidata_id, wikidata_entry):
+        super(WikidataMissingEntityError, self).__init__("missing entity {}".format(wikidata_id))
+        self.wikidata_entry = wikidata_entry
+
 def handle_wikidata_api_result(result, wikidata_entries, languages):
     if 'error' in result:
         if result['error']['code'] == 'no-such-entity':
@@ -169,6 +174,11 @@ def handle_wikidata_api_result(result, wikidata_entries, languages):
         raise WikidataError(result['error']['info'])
     for wikidata_entry in wikidata_entries:
         entity = result['entities'][wikidata_entry.id]
+        if 'missing' in entity:
+            wikidata_id = wikidata_entry.id
+            logger.warning("Missing entity for Wikidata ID {}".format(wikidata_id))
+            wikidata_entry.delete()
+            raise WikidataMissingEntityError(wikidata_id, wikidata_entry)
         wikidata_entry.raw_labels = json.dumps(entity['labels'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_descriptions = json.dumps(entity['descriptions'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_claims = json.dumps(entity['claims'], ensure_ascii=False, indent=4, separators=(',', ': '))

@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from superlachaise.sync import *
 from superlachaise.models import *
-from superlachaise.sync.sync_wikidata import WikidataError, WikidataNoSuchEntityError
+from superlachaise.sync.sync_wikidata import WikidataError, WikidataNoSuchEntityError, WikidataMissingEntityError
 
 # Fixtures
 
@@ -71,6 +71,16 @@ WIKIDATA_API_RESULT_ERROR = {
         "info": "prlevel may not be used without prtype",
         "*": "See https://www.mediawiki.org/w/api.php for API usage."
     }
+}
+
+WIKIDATA_API_RESULT_MISSING = {
+    "entities": {
+        "Q3426652": {
+            "id": "Q3426652",
+            "missing": ""
+        }
+    },
+    "success": 1
 }
 
 WIKIDATA_API_RESULT_NO_LABELS = {
@@ -316,6 +326,28 @@ class SyncWikidataTestCase(TestCase):
         try:
             sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry], languages)
         except WikidataNoSuchEntityError as error:
+            self.assertEqual(WikidataEntry.objects.all().count(), 0)
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikidata_api_result_raises_missing_entity_error_with_missing_wikidata_entry(self):
+        languages = ["fr", "en"]
+        wikidata_entry = WikidataEntry(id="Q3426652")
+        try:
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_MISSING, [wikidata_entry], languages)
+        except WikidataMissingEntityError as error:
+            self.assertEqual(error.wikidata_entry, wikidata_entry)
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikidata_api_result_deletes_wikidata_entry_for_missing_wikidata_entry(self):
+        languages = ["fr", "en"]
+        wikidata_entry = WikidataEntry(id="Q3426652")
+        wikidata_entry.save()
+        self.assertEqual(WikidataEntry.objects.all().count(), 1)
+        try:
+            sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_MISSING, [wikidata_entry], languages)
+        except WikidataMissingEntityError as error:
             self.assertEqual(WikidataEntry.objects.all().count(), 0)
             return
         self.assertTrue(False)
