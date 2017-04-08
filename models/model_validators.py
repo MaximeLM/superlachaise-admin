@@ -11,7 +11,7 @@ def validate_JSON(value):
 
 def validate_openstreetmap_id(value):
     if len(value.split('/')) != 2:
-        raise ValidationError("OpenStreetMap ID must have the format <type>/<numeric_id>")
+        raise ValidationError("Invalid Openstreetmap ID: expected <type>/<numeric_id>")
 
 WIKIDATA_ID_PATTERN = re.compile("^Q([0-9])+$")
 def validate_wikidata_id(value):

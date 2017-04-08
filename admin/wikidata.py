@@ -17,7 +17,6 @@ class WikidataEntryAdmin(admin.ModelAdmin):
 
     def wikidata_link(self, obj):
         return admin_utils.html_link(obj.wikidata_url())
-    wikidata_link.allow_tags = True
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
