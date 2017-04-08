@@ -33,7 +33,7 @@ def sync(reset=False, ids=None, **kwargs):
     for wikidata_entry in orphaned_wikidata_entries:
         logger.debug("Deleted WikidataEntry "+wikidata_entry.id)
         wikidata_entry.delete()
-    logger.info("Deleted {} elements".format(len(orphaned_wikidata_entries)))
+    logger.info("Deleted {} orphaned elements".format(len(orphaned_wikidata_entries)))
 
     logger.info('== end sync wikidata ==')
 
@@ -106,6 +106,7 @@ def request_wikidata_api(wikidata_query_params):
 
 def request_wikidata_entries(wikidata_entries):
     entry_count = 0
+    no_such_entity_entry_count = 0
     for wikidata_entries_chunk in make_chunks(list(wikidata_entries)):
         logger.info(str(entry_count)+"/"+str(len(wikidata_entries)))
         entry_count = entry_count + len(wikidata_entries_chunk)
@@ -117,11 +118,14 @@ def request_wikidata_entries(wikidata_entries):
             try:
                 handle_wikidata_api_result(result, wikidata_entries_chunk)
             except WikidataNoSuchEntityError as error:
+                no_such_entity_entry_count = no_such_entity_entry_count + 1
                 if error.wikidata_entry in wikidata_entries_chunk:
                     wikidata_entries_chunk.remove(error.wikidata_entry)
                     retry = True
 
     logger.info(str(entry_count)+"/"+str(len(wikidata_entries)))
+    if no_such_entity_entry_count > 0:
+        logger.info("Deleted {} wikidata entries not found on Wikidata".format(no_such_entity_entry_count))
 
 class WikidataError(Exception):
     pass
@@ -137,7 +141,8 @@ def handle_wikidata_api_result(result, wikidata_entries):
             wikidata_id = result['error']['id']
             for wikidata_entry in wikidata_entries:
                 if wikidata_entry.id == wikidata_id:
-                    logger.warning("No such entity for Wikidata ID {}".format(wikidata_id))
+                    logger.warning("No such entity for Wikidata ID {}: deleting".format(wikidata_id))
+                    wikidata_entry.delete()
                     raise WikidataNoSuchEntityError(result['error']['info'], wikidata_entry)
         raise WikidataError(result['error']['info'])
     for wikidata_entry in wikidata_entries:
