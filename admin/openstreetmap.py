@@ -4,8 +4,8 @@ import django.core.management
 from superlachaise.models import *
 from superlachaise.admin import admin_utils
 
-@admin.register(OpenStreetMapElement)
-class OpenStreetMapElementAdmin(admin.ModelAdmin):
+@admin.register(OpenstreetmapElement)
+class OpenstreetmapElementAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'openstreetmap_link', 'wikidata_entry_link')
     search_fields = ('id', 'name', 'raw_tags')
 
@@ -26,6 +26,6 @@ class OpenStreetMapElementAdmin(admin.ModelAdmin):
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
         admin_utils.sync(request, 'openstreetmap', {'ids': '|'.join(ids)})
-    sync_objects.short_description = 'Sync selected OpenStreetMap elements'
+    sync_objects.short_description = 'Sync selected Openstreetmap elements'
 
     actions = [sync_objects]

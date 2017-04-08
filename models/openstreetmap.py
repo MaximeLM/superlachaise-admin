@@ -3,7 +3,7 @@ from django.db import models
 
 from superlachaise.models import model_validators
 
-class OpenStreetMapElement(models.Model):
+class OpenstreetmapElement(models.Model):
 
     # type and numeric id separeted by /, eg "node/123456"
     id = models.CharField(primary_key=True, db_index=True, max_length=255, validators=[model_validators.validate_openstreetmap_id])
@@ -20,7 +20,7 @@ class OpenStreetMapElement(models.Model):
     OPENSTREETMAP_URL_FORMAT = "https://www.openstreetmap.org/{id}"
     def openstreetmap_url(self):
         if self.id:
-            return OpenStreetMapElement.OPENSTREETMAP_URL_FORMAT.format(id=self.id)
+            return OpenstreetmapElement.OPENSTREETMAP_URL_FORMAT.format(id=self.id)
 
     def get_first_tag_value(self, tag_names):
         tags = self.tags()
@@ -34,5 +34,5 @@ class OpenStreetMapElement(models.Model):
 
     class Meta:
         ordering = ['id']
-        verbose_name = 'OpenStreetMap element'
-        verbose_name_plural = 'OpenStreetMap elements'
+        verbose_name = 'Openstreetmap element'
+        verbose_name_plural = 'Openstreetmap elements'

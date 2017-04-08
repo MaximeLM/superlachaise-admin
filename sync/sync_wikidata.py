@@ -78,7 +78,7 @@ def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.
         return (list(WikidataEntry.objects.filter(id__in=ids)), 0)
     else:
         logger.info('List Wikidata entries from OpenStreetMap elements')
-        return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenStreetMapElement.objects.all()), openstreetmap_id_tags)
+        return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenstreetmapElement.objects.all()), openstreetmap_id_tags)
 
 def get_or_create_secondary_wikidata_entries(primary_wikidata_entries, get_secondary_wikidata_entries=config.wikidata.get_secondary_wikidata_entries):
     created = 0

@@ -3,6 +3,6 @@ from superlachaise.models.wikidata import *
 
 __all__ = [
     "model_validators",
-    "OpenStreetMapElement",
+    "OpenstreetmapElement",
     "WikidataEntry",
 ]

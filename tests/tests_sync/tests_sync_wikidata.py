@@ -8,7 +8,7 @@ from superlachaise.sync.sync_wikidata import WikidataError, WikidataNoSuchEntity
 # Fixtures
 
 def OPENSTREETMAP_ELEMENT_1():
-    return OpenStreetMapElement(
+    return OpenstreetmapElement(
         id="node/2765555563",
         raw_tags=json.dumps({
             "historic": "tomb",
@@ -22,7 +22,7 @@ def OPENSTREETMAP_ELEMENT_1():
     )
 
 def OPENSTREETMAP_ELEMENT_2():
-    return OpenStreetMapElement(
+    return OpenstreetmapElement(
         id="way/314136876",
         raw_tags=json.dumps({
             "building": "yes",
@@ -35,7 +35,7 @@ def OPENSTREETMAP_ELEMENT_2():
     )
 
 def OPENSTREETMAP_ELEMENT_3():
-    return OpenStreetMapElement(
+    return OpenstreetmapElement(
         id="relation/123456",
         raw_tags=json.dumps({
             "building": "yes",

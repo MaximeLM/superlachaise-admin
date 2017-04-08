@@ -25,7 +25,7 @@ class AdminUtilsTestCase(TestCase):
     # change_page_url
 
     def test_change_page_url_returns_not_none_if_object_is_not_none(self):
-        self.assertIsNotNone(admin_utils.change_page_url(OpenStreetMapElement(id="node/123456")))
+        self.assertIsNotNone(admin_utils.change_page_url(OpenstreetmapElement(id="node/123456")))
 
     def test_change_page_url_returns_none_if_object_is_none(self):
         self.assertIsNone(admin_utils.change_page_url(None))
