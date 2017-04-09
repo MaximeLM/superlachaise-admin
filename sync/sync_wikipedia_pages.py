@@ -176,7 +176,7 @@ def format_extract(extract):
     extract_lines = extract.split('\n')
 
     # Remove trailing white lines and empty paragraphs
-    while extract_lines[-1] == '' or extract_lines[-1] == '<p></p>':
+    while len(extract_lines) > 1 and extract_lines[-1] == '' or extract_lines[-1] == '<p></p>':
         extract_lines = extract_lines[:-1]
 
     return '\n'.join(extract_lines)
