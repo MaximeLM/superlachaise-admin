@@ -9,17 +9,20 @@ class WikipediaPage(models.Model):
 
     default_sort = models.CharField(default='', max_length=255, blank=True)
     extract = models.TextField(default='', blank=True)
-    wikidata_entry = models.ForeignKey('WikidataEntry', null=True, blank=True, on_delete=models.SET_NULL)
 
     def id_parts(self):
-        if self.id and len(self.id.split('|')) == 2:
-            return self.id.split('|')
+        """ Returns (language, title) from id """
+        if self.id:
+            split_id = self.id.split('|')
+            if len(split_id) == 2:
+                return (split_id[0], split_id[1])
+        return (None, None)
 
     WIKIPEDIA_URL_FORMAT = "https://{language}.wikipedia.org/wiki/{title}"
     def wikipedia_url(self):
-        id_parts = self.id_parts()
-        if id_parts:
-            return WikipediaPage.WIKIPEDIA_URL_FORMAT.format(language=id_parts[0], title=id_parts[1])
+        (language, title) = self.id_parts()
+        if language and title:
+            return WikipediaPage.WIKIPEDIA_URL_FORMAT.format(language=language, title=title)
 
     def __str__(self):
         return self.id

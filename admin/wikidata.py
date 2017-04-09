@@ -9,11 +9,11 @@ class WikidataEntryAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name')
 
     fieldsets = [
-        (None, {'fields': ['id', 'name', 'wikidata_link', 'secondary_entries']}),
+        (None, {'fields': ['id', 'name', 'wikidata_link', 'secondary_entries', 'wikipedia_pages']}),
         (None, {'fields': ['raw_labels', 'raw_descriptions', 'raw_claims', 'raw_sitelinks']}),
     ]
     readonly_fields = ('wikidata_link',)
-    filter_horizontal = ('secondary_entries',)
+    filter_horizontal = ('secondary_entries', 'wikipedia_pages')
 
     def wikidata_link(self, obj):
         return admin_utils.html_link(obj.wikidata_url())

@@ -16,6 +16,7 @@ class WikidataEntry(models.Model):
     raw_sitelinks = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
     secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False)
+    wikipedia_pages = models.ManyToManyField('WikipediaPage', blank=True)
 
     # JSON fields
 

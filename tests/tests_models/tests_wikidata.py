@@ -276,3 +276,26 @@ class WikidataEntryTestCase(TestCase):
         self.assertEqual(WikidataEntry.objects.filter(id="Q654321").count(), 1)
         wikidata_entry.delete()
         self.assertEqual(WikidataEntry.objects.filter(id="Q654321").count(), 1)
+
+    # wikipedia_pages
+
+    def test_wikipedia_page_is_removed_from_wikipedia_pages_if_deleted(self):
+        wikidata_entry=WikidataEntry(id="Q123456")
+        wikipedia_page=WikipediaPage(id="fr|Jim_Morrison")
+        wikidata_entry.wikipedia_pages.add(wikipedia_page)
+        wikipedia_page.save()
+        wikidata_entry.save()
+        self.assertEqual(wikidata_entry.wikipedia_pages.count(), 1)
+        wikipedia_page.delete()
+        wikidata_entry = WikidataEntry.objects.get(id="Q123456")
+        self.assertEqual(wikidata_entry.wikipedia_pages.count(), 0)
+
+    def test_wikipedia_page_is_not_deleted_if_wikidata_entry_is_deleted(self):
+        wikidata_entry=WikidataEntry(id="Q123456")
+        wikipedia_page=WikipediaPage(id="fr|Jim_Morrison")
+        wikidata_entry.wikipedia_pages.add(wikipedia_page)
+        wikipedia_page.save()
+        wikidata_entry.save()
+        self.assertEqual(WikipediaPage.objects.filter(id="fr|Jim_Morrison").count(), 1)
+        wikidata_entry.delete()
+        self.assertEqual(WikipediaPage.objects.filter(id="fr|Jim_Morrison").count(), 1)
