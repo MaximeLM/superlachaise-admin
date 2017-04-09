@@ -23,7 +23,8 @@ def sync(reset=False, ids=None, **kwargs):
     wikipedia_pages_to_refresh, created = get_or_create_wikipedia_pages_to_refresh(ids)
     logger.info("Found {} Wikipedia pages to refresh (created {})".format(sum(len(wikipedia_pages) for wikipedia_pages in wikipedia_pages_to_refresh.values()), created))
 
-    orphaned_wikipedia_pages = [wikipedia_page for wikipedia_page in orphaned_wikipedia_pages if wikipedia_page not in wikipedia_pages_to_refresh]
+    for (language, wikipedia_pages) in wikipedia_pages_to_refresh.items():
+        orphaned_wikipedia_pages = [wikipedia_page for wikipedia_page in orphaned_wikipedia_pages if wikipedia_page not in wikipedia_pages]
 
     request_wikipedia_pages(wikipedia_pages_to_refresh)
 
@@ -57,10 +58,10 @@ def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, langua
                     created = created + 1
                 else:
                     logger.debug("Matched WikipediaPage "+wikipedia_id)
+                if not wikipedia_page in wikipedia_pages[language]:
+                    wikipedia_pages[language].append(wikipedia_page)
             else:
                 logger.warning("Wikipedia page for language '{}' is missing for wikidata entry {}".format(language, str(wikidata_entry)))
-            if not wikipedia_page in wikipedia_pages[language]:
-                wikipedia_pages[language].append(wikipedia_page)
         wikidata_entry.wikipedia_pages.set(wikipedia_pages_for_wikidata_entry)
 
     return (wikipedia_pages, created)

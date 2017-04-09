@@ -23,6 +23,18 @@ def WIKIDATA_ENTRY_1():
         })
     )
 
+def WIKIDATA_ENTRY_2():
+    return WikidataEntry(
+        id="Q11984907",
+        raw_sitelinks=json.dumps({
+            "frwiki": {
+                "site": "frwiki",
+                "title": "Émile Oberkampf",
+                "badges": []
+            }
+        })
+    )
+
 class SyncWikipediaPagesTestCase(TestCase):
 
     # delete_objects
@@ -36,11 +48,13 @@ class SyncWikipediaPagesTestCase(TestCase):
     # get_or_create_wikipedia_pages_from_wikidata_entries
 
     def test_get_or_create_wikipedia_pages_from_wikidata_entries_returns_wikipedia_pages_by_language_for_languages_wiki_sites(self):
-        wikidata_entry = WIKIDATA_ENTRY_1()
-        wikidata_entry.save()
-        wikipedia_pages, created = sync_wikipedia_pages.get_or_create_wikipedia_pages_from_wikidata_entries([wikidata_entry], ["fr", "en"])
+        wikidata_entry_1 = WIKIDATA_ENTRY_1()
+        wikidata_entry_1.save()
+        wikidata_entry_2 = WIKIDATA_ENTRY_2()
+        wikidata_entry_2.save()
+        wikipedia_pages, created = sync_wikipedia_pages.get_or_create_wikipedia_pages_from_wikidata_entries([wikidata_entry_1, wikidata_entry_2], ["fr", "en"])
         self.assertEqual(set(wikipedia_pages.keys()), set(["fr", "en"]))
-        self.assertEqual([wikipedia_page.id for wikipedia_page in wikipedia_pages["fr"]], ["fr|Charles-Joseph Panckoucke (fr)"])
+        self.assertEqual([wikipedia_page.id for wikipedia_page in wikipedia_pages["fr"]], ["fr|Charles-Joseph Panckoucke (fr)", "fr|Émile Oberkampf"])
         self.assertEqual([wikipedia_page.id for wikipedia_page in wikipedia_pages["en"]], ["en|Charles-Joseph Panckoucke (en)"])
 
     def test_get_or_create_wikipedia_pages_from_wikidata_entries_increments_created_if_wikipedia_page_was_created(self):
