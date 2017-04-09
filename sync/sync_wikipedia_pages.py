@@ -159,7 +159,7 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
             wikitext = wikipedia_page_dict['revisions'][0]['*']
             wikipedia_page.default_sort = get_default_sort(wikitext)
         if 'extract' in wikipedia_page_dict:
-            wikipedia_page.extract = wikipedia_page_dict['extract']
+            wikipedia_page.extract = format_extract(wikipedia_page_dict['extract'])
     if len(wikipedia_pages_by_title) > 0:
         raise WikipediaAPIMissingPagesError(wikipedia_pages_by_title.values())
     if 'continue' in result:
@@ -171,3 +171,12 @@ def get_default_sort(wikitext):
         match = DEFAULT_SORT_PATTERN.match(line)
         if match:
             return match.group(1)
+
+def format_extract(extract):
+    extract_lines = extract.split('\n')
+
+    # Remove trailing white lines and empty paragraphs
+    while extract_lines[-1] == '' or extract_lines[-1] == '<p></p>':
+        extract_lines = extract_lines[:-1]
+
+    return '\n'.join(extract_lines)
