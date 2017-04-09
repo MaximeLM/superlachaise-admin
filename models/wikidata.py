@@ -48,6 +48,11 @@ class WikidataEntry(models.Model):
         if descriptions and language in descriptions and 'value' in descriptions[language]:
             return descriptions[language]['value']
 
+    def get_sitelink(self, site):
+        sitelinks = self.sitelinks()
+        if sitelinks and site in sitelinks and 'title' in sitelinks[site]:
+            return sitelinks[site]['title']
+
     WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
     def wikidata_url(self):
         if self.id:

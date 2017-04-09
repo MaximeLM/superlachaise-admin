@@ -262,7 +262,7 @@ class SyncWikidataTestCase(TestCase):
         wikidata_entry = WikidataEntry(id="Q123456")
         wikidata_entry.save()
         sync_wikidata.get_or_create_secondary_wikidata_entries([wikidata_entry], get_secondary_wikidata_entries)
-        self.assertEqual([wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_entries.all()], ["Q1234561", "Q1234562"])
+        self.assertEqual(set([wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_entries.all()]), set(["Q1234561", "Q1234562"]))
 
     # make_chunks
 

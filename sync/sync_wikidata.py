@@ -65,7 +65,7 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
                 logger.debug("Matched WikidataEntry "+wikidata_entry.id)
             openstreetmap_element.wikidata_entry = wikidata_entry
         else:
-            logger.warning("No Wikidata ID found for OpenStreetMap element {} - {}".format(openstreetmap_element.id, openstreetmap_element.name))
+            logger.warning("No Wikidata ID found for Openstreetmap element {} - {}".format(openstreetmap_element.id, openstreetmap_element.name))
             openstreetmap_element.wikidata_entry = None
         openstreetmap_element.save()
 
@@ -75,7 +75,7 @@ def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.
     if ids:
         return (list(WikidataEntry.objects.filter(id__in=ids)), 0)
     else:
-        logger.info('List Wikidata entries from OpenStreetMap elements')
+        logger.info('List Wikidata entries from Openstreetmap elements')
         return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenstreetmapElement.objects.all()), openstreetmap_id_tags)
 
 def get_or_create_secondary_wikidata_entries(primary_wikidata_entries, get_secondary_wikidata_entries=config.wikidata.get_secondary_wikidata_entries):

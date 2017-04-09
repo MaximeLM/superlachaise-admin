@@ -254,6 +254,42 @@ class WikidataEntryTestCase(TestCase):
         ))
         self.assertIsNone(wikidata_entry.get_description("de"))
 
+    # get_sitelink
+
+    def test_get_sitelink_returns_title_for_site_if_it_exists(self):
+        wikidata_entry = WikidataEntry(raw_sitelinks=json.dumps(
+            {
+                "enwiki": {
+                    "site": "enwiki",
+                    "title": "Charles-Joseph Panckoucke",
+                    "badges": []
+                },
+                "frwiki": {
+                    "site": "frwiki",
+                    "title": "Charles-Joseph Panckoucke",
+                    "badges": []
+                },
+            }
+        ))
+        self.assertEqual(wikidata_entry.get_sitelink("frwiki"), "Charles-Joseph Panckoucke")
+
+    def test_get_sitelink_returns_none_for_site_if_it_does_not_exist(self):
+        wikidata_entry = WikidataEntry(raw_sitelinks=json.dumps(
+            {
+                "enwiki": {
+                    "site": "enwiki",
+                    "title": "Charles-Joseph Panckoucke",
+                    "badges": []
+                },
+                "frwiki": {
+                    "site": "frwiki",
+                    "title": "Charles-Joseph Panckoucke",
+                    "badges": []
+                },
+            }
+        ))
+        self.assertIsNone(wikidata_entry.get_sitelink("dewiki"))
+
     # secondary_entries
 
     def test_secondary_entry_is_removed_from_secondary_entries_if_deleted(self):
