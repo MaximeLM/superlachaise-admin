@@ -11,6 +11,7 @@ class Command(BaseCommand):
     TARGETS = [
         "openstreetmap",
         "wikidata",
+        "wikipedia_pages",
     ]
 
     def add_arguments(self, parser):

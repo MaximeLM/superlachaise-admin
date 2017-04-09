@@ -3,8 +3,6 @@ import os
 import importlib.machinery
 import json
 from django.conf import settings
-from requests.exceptions import RequestException
-from json.decoder import JSONDecodeError
 
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
