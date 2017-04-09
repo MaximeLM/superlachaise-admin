@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from superlachaise.sync import *
 from superlachaise.models import *
+from superlachaise.sync.sync_wikipedia_pages import WikipediaAPIError, WikipediaAPIMissingPagesError
 
 # Fixtures
 
@@ -34,6 +35,46 @@ def WIKIDATA_ENTRY_2():
             }
         })
     )
+
+WIKIPEDIA_API_RESULT_1 = {
+    "batchcomplete":"",
+    "query": {
+        "pages": {
+            "6998361": {
+                'pageid': 6998361,
+                'ns': 0,
+                'title': 'Jacques-Henri Bernardin de Saint-Pierre',
+                'revisions': [{
+                    'contentformat': 'text/x-wiki',
+                    'contentmodel': 'wikitext',
+                    '*': "'''Jacques-Henri Bernardin de Saint-Pierre''' (also called '''Bernardin de St. Pierre''') (19 January 1737 [[Le Havre]]  &ndash; 21 January 1814 [[Éragny, Val-d'Oise|Éragny]], [[Val-d'Oise]]) was a [[France|French]] writer and [[botanist]]. He is best known for his 1788 novel ''[[Paul et Virginie]]'', now largely forgotten, but in the 19th century a very popular [[children's book]].\n\n{{DEFAULTSORT:    Bernardin de Saint-Pierre, Jacques-Henri}}\n[[Category:École des Ponts ParisTech alumni]]\n"
+                }]
+            }
+        }
+    }
+}
+
+WIKIPEDIA_API_RESULT_MISSING = {
+    "batchcomplete":"",
+    "query": {
+        "pages": {
+            "-1": {
+                'ns': 0,
+                'title': "Oscar Wilde's tomb",
+                'missing': ""
+            }
+        }
+    }
+}
+
+WIKIPEDIA_API_RESULT_ERROR = {
+   "error":{
+       "code":"unknown_action",
+       "info":"Unrecognized value for parameter \"action\": queryy.",
+       "*":"See https://fr.wikipedia.org/w/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes."
+   },
+   "servedby":"mw1197"
+}
 
 class SyncWikipediaPagesTestCase(TestCase):
 
@@ -126,3 +167,49 @@ class SyncWikipediaPagesTestCase(TestCase):
         ]
         params = sync_wikipedia_pages.make_wikipedia_query_params(wikipedia_pages)
         self.assertEqual(params["titles"], "Jim_1|Jim_2")
+
+    # handle_wikipedia_api_result
+
+    def test_handle_wikipedia_api_result_raises_missing_pages_error_for_wikipedia_pages_not_in_result(self):
+        wikipedia_page_1 = WikipediaPage(id="fr|Jim_Morrison")
+        wikipedia_page_2 = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
+        try:
+            sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_1, [wikipedia_page_1, wikipedia_page_2])
+        except WikipediaAPIMissingPagesError as error:
+            self.assertEqual([wikipedia_page.id for wikipedia_page in error.wikipedia_pages], ["fr|Jim_Morrison"])
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikipedia_api_result_raises_missing_pages_error_with_missing_wikipedia_page(self):
+        wikipedia_page_1 = WikipediaPage(id="en|Jim_Morrison")
+        wikipedia_page_2 = WikipediaPage(id="en|Oscar Wilde's tomb")
+        try:
+            sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_MISSING, [wikipedia_page_1, wikipedia_page_2])
+        except WikipediaAPIMissingPagesError as error:
+            self.assertEqual([wikipedia_page.id for wikipedia_page in error.wikipedia_pages], ["en|Oscar Wilde's tomb"])
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikipedia_api_result_raises_wikipedia_errors_with_error_info(self):
+        wikipedia_page = WikipediaPage(id="en|Jim_Morrison")
+        try:
+            sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_ERROR, [wikipedia_page])
+        except WikipediaAPIError as error:
+            self.assertEqual(str(error), "Unrecognized value for parameter \"action\": queryy.")
+            return
+        self.assertTrue(False)
+
+    def test_handle_wikipedia_api_result_updates_wikipedia_pages_with_default_sort(self):
+        wikipedia_page = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
+        sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_1, [wikipedia_page])
+        self.assertEqual(wikipedia_page.default_sort, "Bernardin de Saint-Pierre, Jacques-Henri")
+
+    # get_default_sort
+
+    def test_get_default_sort_returns_default_sort_if_present_in_wikitext(self):
+        wikitext = "'''Jacques-Henri Bernardin de Saint-Pierre''' (also called '''Bernardin de St. Pierre''') (19 January 1737 [[Le Havre]]  &ndash; 21 January 1814 [[Éragny, Val-d'Oise|Éragny]], [[Val-d'Oise]]) was a [[France|French]] writer and [[botanist]]. He is best known for his 1788 novel ''[[Paul et Virginie]]'', now largely forgotten, but in the 19th century a very popular [[children's book]].\n\n{{DEFAULTSORT:Bernardin de Saint-Pierre, Jacques-Henri}}\n[[Category:École des Ponts ParisTech alumni]]\n"
+        self.assertEqual(sync_wikipedia_pages.get_default_sort(wikitext), "Bernardin de Saint-Pierre, Jacques-Henri")
+
+    def test_get_default_sort_returns_none_if_not_present_in_wikitext(self):
+        wikitext = "'''Jacques-Henri Bernardin de Saint-Pierre''' (also called '''Bernardin de St. Pierre''') (19 January 1737 [[Le Havre]]  &ndash; 21 January 1814 [[Éragny, Val-d'Oise|Éragny]], [[Val-d'Oise]]) was a [[France|French]] writer and [[botanist]]. He is best known for his 1788 novel ''[[Paul et Virginie]]'', now largely forgotten, but in the 19th century a very popular [[children's book]].\n\n[[Category:École des Ponts ParisTech alumni]]\n"
+        self.assertIsNone(sync_wikipedia_pages.get_default_sort(wikitext))

@@ -28,6 +28,6 @@ class WikipediaPage(models.Model):
         return self.id
 
     class Meta:
-        ordering = ['id']
+        ordering = ['default_sort', 'id']
         verbose_name = 'Wikipedia page'
         verbose_name_plural = 'Wikipedia pages'

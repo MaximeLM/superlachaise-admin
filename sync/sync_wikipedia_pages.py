@@ -2,6 +2,7 @@ import logging
 import os
 import importlib.machinery
 import json
+import re
 from django.conf import settings
 
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
@@ -93,9 +94,6 @@ def make_wikipedia_query_params(wikipedia_pages):
         'titles': '|'.join([wikipedia_page.id_parts()[1] for wikipedia_page in wikipedia_pages]),
     }
 
-class WikipediaAPIError(Exception):
-    pass
-
 WIKIPEDIA_API_BASE_URL = "https://{language}.wikipedia.org/w/api.php"
 def request_wikipedia_api(wikipedia_query_params, language):
     logger.debug("wikipedia_query_params:")
@@ -116,4 +114,37 @@ def request_wikipedia_pages(wikipedia_pages):
             logger.info(str(entry_count)+"/"+str(entry_total))
             entry_count = entry_count + len(wikipedia_pages_chunk)
             result = request_wikipedia_api(make_wikipedia_query_params(wikipedia_pages_chunk), language)
+            handle_wikipedia_api_result(result, wikipedia_pages_chunk)
         logger.info(str(entry_count)+"/"+str(entry_total))
+
+class WikipediaAPIError(Exception):
+    pass
+
+class WikipediaAPIMissingPagesError(WikipediaAPIError):
+    def __init__(self, wikipedia_pages):
+        super(WikipediaAPIMissingPagesError, self).__init__("missing pages {}".format(str([wikipedia_page.id for wikipedia_page in wikipedia_pages])))
+        self.wikipedia_pages = wikipedia_pages
+
+def handle_wikipedia_api_result(result, wikipedia_pages):
+    if 'error' in result:
+        raise WikipediaAPIError(result['error']['info'])
+    wikipedia_pages_by_title = {wikipedia_page.id_parts()[1]:wikipedia_page for wikipedia_page in wikipedia_pages}
+    for wikipedia_page_dict in result['query']['pages'].values():
+        wikipedia_page = wikipedia_pages_by_title.pop(wikipedia_page_dict['title'])
+        if 'missing' in wikipedia_page_dict:
+            raise WikipediaAPIMissingPagesError([wikipedia_page])
+        wikitext = wikipedia_page_dict['revisions'][0]['*']
+        wikipedia_page.default_sort = get_default_sort(wikitext)
+        if not wikipedia_page.default_sort:
+            logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page.id))
+            wikipedia_page.default_sort = ''
+        wikipedia_page.save()
+    if len(wikipedia_pages_by_title) > 0:
+        raise WikipediaAPIMissingPagesError(wikipedia_pages_by_title.values())
+
+DEFAULT_SORT_PATTERN = re.compile("^{{DEFAULTSORT:[\s]*(.*)[\s]*}}$")
+def get_default_sort(wikitext):
+    for line in wikitext.split('\n'):
+        match = DEFAULT_SORT_PATTERN.match(line)
+        if match:
+            return match.group(1)
