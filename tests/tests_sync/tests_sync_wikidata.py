@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from superlachaise.sync import *
 from superlachaise.models import *
-from superlachaise.sync.sync_wikidata import WikidataError, WikidataNoSuchEntityError, WikidataMissingEntityError
+from superlachaise.sync.sync_wikidata import WikidataAPIError, WikidataAPINoSuchEntityError, WikidataAPIMissingEntityError
 
 # Fixtures
 
@@ -313,7 +313,7 @@ class SyncWikidataTestCase(TestCase):
         wikidata_entry = WikidataEntry(id="Q1235630;Q3144796")
         try:
             sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry], languages)
-        except WikidataNoSuchEntityError as error:
+        except WikidataAPINoSuchEntityError as error:
             self.assertEqual(error.wikidata_entry, wikidata_entry)
             return
         self.assertTrue(False)
@@ -325,7 +325,7 @@ class SyncWikidataTestCase(TestCase):
         self.assertEqual(WikidataEntry.objects.all().count(), 1)
         try:
             sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_NO_SUCH_ENTITY, [wikidata_entry], languages)
-        except WikidataNoSuchEntityError as error:
+        except WikidataAPINoSuchEntityError as error:
             self.assertEqual(WikidataEntry.objects.all().count(), 0)
             return
         self.assertTrue(False)
@@ -335,7 +335,7 @@ class SyncWikidataTestCase(TestCase):
         wikidata_entry = WikidataEntry(id="Q3426652")
         try:
             sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_MISSING, [wikidata_entry], languages)
-        except WikidataMissingEntityError as error:
+        except WikidataAPIMissingEntityError as error:
             self.assertEqual(error.wikidata_entry, wikidata_entry)
             return
         self.assertTrue(False)
@@ -347,7 +347,7 @@ class SyncWikidataTestCase(TestCase):
         self.assertEqual(WikidataEntry.objects.all().count(), 1)
         try:
             sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_MISSING, [wikidata_entry], languages)
-        except WikidataMissingEntityError as error:
+        except WikidataAPIMissingEntityError as error:
             self.assertEqual(WikidataEntry.objects.all().count(), 0)
             return
         self.assertTrue(False)
@@ -357,7 +357,7 @@ class SyncWikidataTestCase(TestCase):
         wikidata_entry = WikidataEntry(id="Q1235630")
         try:
             sync_wikidata.handle_wikidata_api_result(WIKIDATA_API_RESULT_ERROR, [wikidata_entry], languages)
-        except WikidataError as error:
+        except WikidataAPIError as error:
             self.assertEqual(str(error), "prlevel may not be used without prtype")
             return
         self.assertTrue(False)

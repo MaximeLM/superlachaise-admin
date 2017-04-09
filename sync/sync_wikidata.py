@@ -113,7 +113,7 @@ def make_wikidata_query_params(wikidata_entries, languages):
 
 WIKIDATA_API_BASE_URL = "https://www.wikidata.org/w/api.php"
 def request_wikidata_api(wikidata_query_params):
-    logger.debug("Wikidata query params:")
+    logger.debug("wikidata_query_params:")
     logger.debug(wikidata_query_params)
 
     # Request data
@@ -147,17 +147,17 @@ def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAG
     if no_such_entity_entry_count > 0:
         logger.info("Deleted {} wikidata entries not found on Wikidata".format(no_such_entity_entry_count))
 
-class WikidataError(Exception):
+class WikidataAPIError(Exception):
     pass
 
-class WikidataNoSuchEntityError(WikidataError):
+class WikidataAPINoSuchEntityError(WikidataAPIError):
     def __init__(self, message, wikidata_entry):
-        super(WikidataNoSuchEntityError, self).__init__(message)
+        super(WikidataAPINoSuchEntityError, self).__init__(message)
         self.wikidata_entry = wikidata_entry
 
-class WikidataMissingEntityError(WikidataError):
+class WikidataAPIMissingEntityError(WikidataAPIError):
     def __init__(self, wikidata_id, wikidata_entry):
-        super(WikidataMissingEntityError, self).__init__("missing entity {}".format(wikidata_id))
+        super(WikidataAPIMissingEntityError, self).__init__("missing entity {}".format(wikidata_id))
         self.wikidata_entry = wikidata_entry
 
 def handle_wikidata_api_result(result, wikidata_entries, languages):
@@ -168,15 +168,15 @@ def handle_wikidata_api_result(result, wikidata_entries, languages):
                 if wikidata_entry.id == wikidata_id:
                     logger.warning("No such entity for Wikidata ID {}".format(wikidata_id))
                     wikidata_entry.delete()
-                    raise WikidataNoSuchEntityError(result['error']['info'], wikidata_entry)
-        raise WikidataError(result['error']['info'])
+                    raise WikidataAPINoSuchEntityError(result['error']['info'], wikidata_entry)
+        raise WikidataAPIError(result['error']['info'])
     for wikidata_entry in wikidata_entries:
         entity = result['entities'][wikidata_entry.id]
         if 'missing' in entity:
             wikidata_id = wikidata_entry.id
             logger.warning("Missing entity for Wikidata ID {}".format(wikidata_id))
             wikidata_entry.delete()
-            raise WikidataMissingEntityError(wikidata_id, wikidata_entry)
+            raise WikidataAPIMissingEntityError(wikidata_id, wikidata_entry)
         wikidata_entry.raw_labels = json.dumps(entity['labels'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_descriptions = json.dumps(entity['descriptions'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_claims = json.dumps(entity['claims'], ensure_ascii=False, indent=4, separators=(',', ': '))

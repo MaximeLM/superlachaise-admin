@@ -63,7 +63,7 @@ def make_overpass_query(overpass_subqueries):
 
 OVERPASS_API_BASE_URL = "https://overpass-api.de/api/"
 def request_overpass_elements(overpass_query):
-    logger.debug("Overpass query:")
+    logger.debug("overpass_query:")
     logger.debug(overpass_query)
 
     # Kill any other query

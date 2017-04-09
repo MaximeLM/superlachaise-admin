@@ -21,9 +21,11 @@ def sync(reset=False, ids=None, **kwargs):
     orphaned_wikipedia_pages = [] if ids else list(WikipediaPage.objects.all())
 
     wikipedia_pages_to_refresh, created = get_or_create_wikipedia_pages_to_refresh(ids)
-    logger.info("Found {} Wikipedia pages to refresh (created {})".format(len(wikipedia_pages_to_refresh), created))
+    logger.info("Found {} Wikipedia pages to refresh (created {})".format(sum(len(wikipedia_pages) for wikipedia_pages in wikipedia_pages_to_refresh.values()), created))
 
     orphaned_wikipedia_pages = [wikipedia_page for wikipedia_page in orphaned_wikipedia_pages if wikipedia_page not in wikipedia_pages_to_refresh]
+
+    request_wikipedia_pages(wikipedia_pages_to_refresh)
 
     for wikipedia_page in orphaned_wikipedia_pages:
         logger.debug("Deleted WikipediaPage "+wikipedia_page.id)
@@ -38,7 +40,7 @@ def delete_objects():
 # Prepare model
 
 def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, languages):
-    wikipedia_pages = []
+    wikipedia_pages = {language:[] for language in languages}
     created = 0
 
     for wikidata_entry in wikidata_entries:
@@ -57,14 +59,60 @@ def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, langua
                     logger.debug("Matched WikipediaPage "+wikipedia_id)
             else:
                 logger.warning("Wikipedia page for language '{}' is missing for wikidata entry {}".format(language, str(wikidata_entry)))
+            if not wikipedia_page in wikipedia_pages[language]:
+                wikipedia_pages[language].append(wikipedia_page)
         wikidata_entry.wikipedia_pages.set(wikipedia_pages_for_wikidata_entry)
-        wikipedia_pages.extend([wikipedia_page for wikipedia_page in wikipedia_pages_for_wikidata_entry if wikipedia_page not in wikipedia_pages])
 
     return (wikipedia_pages, created)
 
 def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.wikidata.LANGUAGES):
     if ids:
-        return (list(WikipediaPage.objects.filter(id__in=ids)), 0)
+        wikipedia_pages = {language:[] for language in languages}
+        for wikipedia_page in WikipediaPage.objects.filter(id__in=ids):
+            (language, title) = wikipedia_page.id_parts()
+            if wikipedia_page not in wikipedia_pages[language]:
+                wikipedia_pages[language].append(wikipedia_page)
+        return (wikipedia_pages, 0)
     else:
         logger.info('List Wikipedia pages from Wikidata entries')
         return get_or_create_wikipedia_pages_from_wikidata_entries(list(WikidataEntry.objects.all()), languages)
+
+# Request Wikipedia API
+
+def make_chunks(wikipedia_pages, chunk_size=50):
+    """ Cut the list in chunks of a specified size """
+    return [wikipedia_pages[i:i+chunk_size] for i in range(0, len(wikipedia_pages), chunk_size)]
+
+def make_wikipedia_query_params(wikipedia_pages):
+    return {
+        'action': 'query',
+        'prop': 'revisions',
+        'rvprop': 'content',
+        'format': 'json',
+        'titles': '|'.join([wikipedia_page.id_parts()[1] for wikipedia_page in wikipedia_pages]),
+    }
+
+class WikipediaAPIError(Exception):
+    pass
+
+WIKIPEDIA_API_BASE_URL = "https://{language}.wikipedia.org/w/api.php"
+def request_wikipedia_api(wikipedia_query_params, language):
+    logger.debug("wikipedia_query_params:")
+    logger.debug(wikipedia_query_params)
+
+    # Request data
+    result = sync_utils.request(WIKIPEDIA_API_BASE_URL.format(language=language), params=wikipedia_query_params)
+
+    # Return JSON
+    return result.json()
+
+def request_wikipedia_pages(wikipedia_pages):
+    for (language, wikipedia_pages_for_language) in wikipedia_pages.items():
+        logger.info("Request '{}' Wikipedia API".format(language))
+        entry_count = 0
+        entry_total = len(wikipedia_pages_for_language)
+        for wikipedia_pages_chunk in make_chunks(list(wikipedia_pages_for_language)):
+            logger.info(str(entry_count)+"/"+str(entry_total))
+            entry_count = entry_count + len(wikipedia_pages_chunk)
+            result = request_wikipedia_api(make_wikipedia_query_params(wikipedia_pages_chunk), language)
+        logger.info(str(entry_count)+"/"+str(entry_total))

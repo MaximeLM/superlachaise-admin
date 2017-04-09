@@ -5,7 +5,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikipediaPage)
 class WikipediaPageAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'wikipedia_link')
+    list_display = ('__str__', 'wikipedia_link', 'default_sort', 'extract')
     search_fields = ('id',)
 
     fieldsets = [
