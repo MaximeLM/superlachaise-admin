@@ -36,19 +36,34 @@ def WIKIDATA_ENTRY_2():
         })
     )
 
-WIKIPEDIA_API_RESULT_1 = {
+def WIKIPEDIA_API_RESULT_REVISIONS():
+    return {
+        "batchcomplete":"",
+        "query": {
+            "pages": {
+                "6998361": {
+                    'pageid': 6998361,
+                    'ns': 0,
+                    'title': 'Jacques-Henri Bernardin de Saint-Pierre',
+                    'revisions': [{
+                        'contentformat': 'text/x-wiki',
+                        'contentmodel': 'wikitext',
+                        '*': "'''Jacques-Henri Bernardin de Saint-Pierre''' (also called '''Bernardin de St. Pierre''') (19 January 1737 [[Le Havre]]  &ndash; 21 January 1814 [[Éragny, Val-d'Oise|Éragny]], [[Val-d'Oise]]) was a [[France|French]] writer and [[botanist]]. He is best known for his 1788 novel ''[[Paul et Virginie]]'', now largely forgotten, but in the 19th century a very popular [[children's book]].\n\n{{DEFAULTSORT:    Bernardin de Saint-Pierre, Jacques-Henri}}\n[[Category:École des Ponts ParisTech alumni]]\n"
+                    }]
+                }
+            }
+        }
+    }
+
+WIKIPEDIA_API_RESULT_EXTRACT = {
     "batchcomplete":"",
     "query": {
         "pages": {
             "6998361": {
                 'pageid': 6998361,
                 'ns': 0,
-                'title': 'Jacques-Henri Bernardin de Saint-Pierre',
-                'revisions': [{
-                    'contentformat': 'text/x-wiki',
-                    'contentmodel': 'wikitext',
-                    '*': "'''Jacques-Henri Bernardin de Saint-Pierre''' (also called '''Bernardin de St. Pierre''') (19 January 1737 [[Le Havre]]  &ndash; 21 January 1814 [[Éragny, Val-d'Oise|Éragny]], [[Val-d'Oise]]) was a [[France|French]] writer and [[botanist]]. He is best known for his 1788 novel ''[[Paul et Virginie]]'', now largely forgotten, but in the 19th century a very popular [[children's book]].\n\n{{DEFAULTSORT:    Bernardin de Saint-Pierre, Jacques-Henri}}\n[[Category:École des Ponts ParisTech alumni]]\n"
-                }]
+                'title': 'Alexandre Ledru-Rollin',
+                'extract': "<p><b>Alexandre-Auguste Ledru-Rollin</b>, n\u00e9 le <time class=\"nowrap date-lien\" datetime=\"1807-02-02\">2 f\u00e9vrier 1807</time> \u00e0 Paris et mort le <time class=\"nowrap date-lien\" datetime=\"1874-12-31\">31 d\u00e9cembre 1874</time> \u00e0 Fontenay-aux-Roses (Seine, actuellement Hauts-de-Seine), est un avocat et homme politique fran\u00e7ais.</p>\n<p>R\u00e9publicain progressiste, il est l'un des chefs de file de la campagne des Banquets qui aboutit \u00e0 la r\u00e9volution de 1848 et \u00e0 la Deuxi\u00e8me R\u00e9publique. Comme Ministre de l'int\u00e9rieur du gouvernement provisoire alors institu\u00e9, il fait adopter par d\u00e9cret le suffrage universel masculin. Mais il n'obtient que 5\u00a0% des suffrages lors de l'\u00e9lection pr\u00e9sidentielle fran\u00e7aise de 1848.</p>\n<p></p>"
             }
         }
     }
@@ -174,7 +189,7 @@ class SyncWikipediaPagesTestCase(TestCase):
         wikipedia_page_1 = WikipediaPage(id="fr|Jim_Morrison")
         wikipedia_page_2 = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
         try:
-            sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_1, [wikipedia_page_1, wikipedia_page_2])
+            sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_REVISIONS(), [wikipedia_page_1, wikipedia_page_2])
         except WikipediaAPIMissingPagesError as error:
             self.assertEqual([wikipedia_page.id for wikipedia_page in error.wikipedia_pages], ["fr|Jim_Morrison"])
             return
@@ -199,10 +214,28 @@ class SyncWikipediaPagesTestCase(TestCase):
             return
         self.assertTrue(False)
 
-    def test_handle_wikipedia_api_result_updates_wikipedia_pages_with_default_sort(self):
+    def test_handle_wikipedia_api_result_sets_wikipedia_pages_default_sort_if_wikitext_is_present(self):
         wikipedia_page = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
-        sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_1, [wikipedia_page])
+        sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_REVISIONS(), [wikipedia_page])
         self.assertEqual(wikipedia_page.default_sort, "Bernardin de Saint-Pierre, Jacques-Henri")
+
+    def test_handle_wikipedia_api_result_sets_wikipedia_pages_extract_if_extract_is_present(self):
+        wikipedia_page = WikipediaPage(id="fr|Alexandre Ledru-Rollin")
+        sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_EXTRACT, [wikipedia_page])
+        self.assertEqual(wikipedia_page.extract, WIKIPEDIA_API_RESULT_EXTRACT['query']['pages']['6998361']['extract'])
+
+    def test_handle_wikipedia_api_result_returns_continue_if_present(self):
+        wikipedia_page = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
+        continue_dict = {
+            'myContinue': 'myContinue'
+        }
+        api_result = WIKIPEDIA_API_RESULT_REVISIONS()
+        api_result.update({'continue': continue_dict})
+        self.assertEqual(sync_wikipedia_pages.handle_wikipedia_api_result(api_result, [wikipedia_page]), continue_dict)
+
+    def test_handle_wikipedia_api_result_none_if_continue_is_not_present(self):
+        wikipedia_page = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
+        self.assertIsNone(sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_REVISIONS(), [wikipedia_page]))
 
     # get_default_sort
 

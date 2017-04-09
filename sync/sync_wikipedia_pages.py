@@ -88,8 +88,9 @@ def make_chunks(wikipedia_pages, chunk_size=50):
 def make_wikipedia_query_params(wikipedia_pages):
     return {
         'action': 'query',
-        'prop': 'revisions',
+        'prop': 'revisions|extracts',
         'rvprop': 'content',
+        'exintro': '',
         'format': 'json',
         'titles': '|'.join([wikipedia_page.id_parts()[1] for wikipedia_page in wikipedia_pages]),
     }
@@ -113,8 +114,29 @@ def request_wikipedia_pages(wikipedia_pages):
         for wikipedia_pages_chunk in make_chunks(list(wikipedia_pages_for_language)):
             logger.info(str(entry_count)+"/"+str(entry_total))
             entry_count = entry_count + len(wikipedia_pages_chunk)
-            result = request_wikipedia_api(make_wikipedia_query_params(wikipedia_pages_chunk), language)
-            handle_wikipedia_api_result(result, wikipedia_pages_chunk)
+
+            # Prepare wikipedia pages
+            for wikipedia_page in wikipedia_pages_chunk:
+                wikipedia_page.default_sort = None
+                wikipedia_page.extract = None
+
+            wikipedia_query_params = make_wikipedia_query_params(wikipedia_pages_chunk)
+            last_continue = {'continue': ''}
+            while last_continue:
+                logger.debug("last_continue: {}".format(last_continue))
+                wikipedia_query_params.update(last_continue)
+                result = request_wikipedia_api(wikipedia_query_params, language)
+                last_continue = handle_wikipedia_api_result(result, wikipedia_pages_chunk)
+
+            # Check and save wikipedia pages
+            for wikipedia_page in wikipedia_pages_chunk:
+                if not wikipedia_page.default_sort:
+                    logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page.id))
+                    wikipedia_page.default_sort = ''
+                if not wikipedia_page.extract:
+                    logger.warning("Extract is missing for Wikipedia page {}".format(wikipedia_page.id))
+                    wikipedia_page.extract = ''
+                wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
 
 class WikipediaAPIError(Exception):
@@ -133,14 +155,15 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
         wikipedia_page = wikipedia_pages_by_title.pop(wikipedia_page_dict['title'])
         if 'missing' in wikipedia_page_dict:
             raise WikipediaAPIMissingPagesError([wikipedia_page])
-        wikitext = wikipedia_page_dict['revisions'][0]['*']
-        wikipedia_page.default_sort = get_default_sort(wikitext)
-        if not wikipedia_page.default_sort:
-            logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page.id))
-            wikipedia_page.default_sort = ''
-        wikipedia_page.save()
+        if 'revisions' in wikipedia_page_dict:
+            wikitext = wikipedia_page_dict['revisions'][0]['*']
+            wikipedia_page.default_sort = get_default_sort(wikitext)
+        if 'extract' in wikipedia_page_dict:
+            wikipedia_page.extract = wikipedia_page_dict['extract']
     if len(wikipedia_pages_by_title) > 0:
         raise WikipediaAPIMissingPagesError(wikipedia_pages_by_title.values())
+    if 'continue' in result:
+        return result['continue']
 
 DEFAULT_SORT_PATTERN = re.compile("^{{DEFAULTSORT:[\s]*(.*)[\s]*}}$")
 def get_default_sort(wikitext):
