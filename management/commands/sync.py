@@ -23,9 +23,10 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             '--ids',
-            type=str,
+            action='append',
+            default=None,
             dest='ids',
-            help='The IDs of the objects to sync (unavailable for all target), separated by |',
+            help='The IDs of the objects to sync (unavailable for all target); use multiple times to add more IDs.',
         )
         parser.add_argument(
             '--reset', '-r',
@@ -37,8 +38,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         target = options['target']
-        if options['ids']:
-            options['ids'] = options['ids'].split('|')
         module_name = "superlachaise.sync.sync_{}".format(target)
         try:
             sys.modules[module_name].sync(**options)

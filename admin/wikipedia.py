@@ -19,7 +19,7 @@ class WikipediaPageAdmin(admin.ModelAdmin):
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
-        admin_utils.sync(request, 'wikipedia', {'ids': '|'.join(ids)})
+        admin_utils.sync(request, 'wikipedia_pages', {'ids': ids})
     sync_objects.short_description = 'Sync selected Wikipedia pages'
 
     actions = [sync_objects]
