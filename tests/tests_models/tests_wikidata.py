@@ -335,3 +335,13 @@ class WikidataEntryTestCase(TestCase):
         self.assertEqual(WikipediaPage.objects.filter(id="fr|Jim_Morrison").count(), 1)
         wikidata_entry.delete()
         self.assertEqual(WikipediaPage.objects.filter(id="fr|Jim_Morrison").count(), 1)
+
+    # commons_category
+
+    def test_commons_category_is_set_to_null_if_commons_category_is_deleted(self):
+        wikidata_entry=WikidataEntry(id="Q123456", commons_category=CommonsCategory(id="Jim Morrison"))
+        wikidata_entry.save()
+        self.assertIsNotNone(wikidata_entry.commons_category)
+        wikidata_entry.commons_category.delete()
+        wikidata_entry = WikidataEntry.objects.get(id="Q123456")
+        self.assertIsNone(wikidata_entry.commons_category)

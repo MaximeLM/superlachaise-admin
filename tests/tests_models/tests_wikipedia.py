@@ -1,5 +1,4 @@
 import json
-from json.decoder import JSONDecodeError
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -39,6 +38,6 @@ class WikipediaPageTestCase(TestCase):
         wikipedia_page = WikipediaPage(id="fr|Jim_Morrison")
         self.assertEqual(wikipedia_page.wikipedia_url(), WikipediaPage.WIKIPEDIA_URL_FORMAT.format(language="fr", title="Jim_Morrison"))
 
-    def test_wikipedia_url_returns_none_if_id_is_none(self):
+    def test_wikipedia_url_returns_none_if_id_is_invalid(self):
         wikipedia_page = WikipediaPage(id="123456")
         self.assertIsNone(wikipedia_page.wikipedia_url())
