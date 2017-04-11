@@ -3,6 +3,7 @@ __all__ = [
     "openstreetmap",
     "wikidata",
     "wikipedia",
+    "wikimediacommons",
 ]
 
 from superlachaise.admin import *
