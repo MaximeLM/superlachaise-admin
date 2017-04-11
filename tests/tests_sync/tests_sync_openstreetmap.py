@@ -168,37 +168,14 @@ class SyncOpenstreetmapTestCase(TestCase):
 
     # update_model
 
-    def test_update_model_creates_non_existing_objects(self):
+    def test_update_model_returns_openstreetmap_elements_for_overpass_elements(self):
         overpass_elements = [OVERPASS_ELEMENT_1, OVERPASS_ELEMENT_2]
-        result = sync_openstreetmap.update_model(overpass_elements, [])
-        self.assertEqual(OpenstreetmapElement.objects.all().count(), 2)
-        self.assertEqual(result, (2, 0, 0))
+        openstreetmap_elements, created = sync_openstreetmap.update_model(overpass_elements)
+        self.assertEqual([openstreetmap_element.id for openstreetmap_element in openstreetmap_elements], ["node/2765555563", "way/314136876"])
 
-    def test_update_model_updates_existing_objects(self):
+    def test_update_model_increments_created_if_openstreetmap_element_was_created(self):
         openstreetmap_element_1 = OpenstreetmapElement(id="node/2765555563")
         openstreetmap_element_1.save()
         overpass_elements = [OVERPASS_ELEMENT_1, OVERPASS_ELEMENT_2]
-        result = sync_openstreetmap.update_model(overpass_elements, [openstreetmap_element_1])
-        self.assertEqual(OpenstreetmapElement.objects.all().count(), 2)
-        self.assertEqual(result, (1, 1, 0))
-
-    def test_update_model_deletes_non_fetched_objects_from_local_openstreetmap_elements(self):
-        openstreetmap_element_1 = OpenstreetmapElement(id="node/2765555563")
-        openstreetmap_element_1.save()
-        openstreetmap_element_2 = OpenstreetmapElement(id="relation/314136876")
-        openstreetmap_element_2.save()
-        overpass_elements = [OVERPASS_ELEMENT_1, OVERPASS_ELEMENT_2]
-        result = sync_openstreetmap.update_model(overpass_elements, [openstreetmap_element_1, openstreetmap_element_2])
-        self.assertEqual(OpenstreetmapElement.objects.all().count(), 2)
-        self.assertEqual(result, (1, 1, 1))
-
-    def test_update_model_does_not_deletes_non_fetched_objects_not_in_local_openstreetmap_elements(self):
-        openstreetmap_element_1 = OpenstreetmapElement(id="node/2765555563")
-        openstreetmap_element_1.save()
-        openstreetmap_element_2 = OpenstreetmapElement(id="relation/314136876")
-        openstreetmap_element_2.save()
-        overpass_elements = [OVERPASS_ELEMENT_1, OVERPASS_ELEMENT_2]
-        orphaned_openstreetmap_elements = [openstreetmap_element_1]
-        result = sync_openstreetmap.update_model(overpass_elements, orphaned_openstreetmap_elements)
-        self.assertEqual(OpenstreetmapElement.objects.all().count(), 3)
-        self.assertEqual(result, (1, 1, 0))
+        openstreetmap_elements, created = sync_openstreetmap.update_model(overpass_elements)
+        self.assertEqual(created, 1)

@@ -19,20 +19,20 @@ def sync(reset=False, ids=None, **kwargs):
         logger.info('Delete existing objects')
         delete_objects()
 
-    orphaned_wikipedia_pages = [] if ids else list(WikipediaPage.objects.all())
+    orphaned_objects = [] if ids else list(WikipediaPage.objects.all())
 
     wikipedia_pages_to_refresh, created = get_or_create_wikipedia_pages_to_refresh(ids)
     logger.info("Found {} Wikipedia pages to refresh (created {})".format(sum(len(wikipedia_pages) for wikipedia_pages in wikipedia_pages_to_refresh.values()), created))
 
     for (language, wikipedia_pages) in wikipedia_pages_to_refresh.items():
-        orphaned_wikipedia_pages = [wikipedia_page for wikipedia_page in orphaned_wikipedia_pages if wikipedia_page not in wikipedia_pages]
+        orphaned_objects = [wikipedia_page for wikipedia_page in orphaned_objects if wikipedia_page not in wikipedia_pages]
 
     request_wikipedia_pages(wikipedia_pages_to_refresh)
 
-    for wikipedia_page in orphaned_wikipedia_pages:
+    for wikipedia_page in orphaned_objects:
         logger.debug("Deleted WikipediaPage "+wikipedia_page.id)
         wikipedia_page.delete()
-    logger.info("Deleted {} orphaned elements".format(len(orphaned_wikipedia_pages)))
+    logger.info("Deleted {} orphaned objects".format(len(orphaned_objects)))
 
     logger.info('== end sync wikipedia pages ==')
 

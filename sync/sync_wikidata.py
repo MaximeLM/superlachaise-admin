@@ -18,12 +18,12 @@ def sync(reset=False, ids=None, **kwargs):
         logger.info('Delete existing objects')
         delete_objects()
 
-    orphaned_wikidata_entries = [] if ids else list(WikidataEntry.objects.all())
+    orphaned_objects = [] if ids else list(WikidataEntry.objects.all())
 
     wikidata_entries_to_refresh, created = get_or_create_wikidata_entries_to_refresh(ids)
     logger.info("Found {} Wikidata entries to refresh (created {})".format(len(wikidata_entries_to_refresh), created))
 
-    orphaned_wikidata_entries = [wikidata_entry for wikidata_entry in orphaned_wikidata_entries if wikidata_entry not in wikidata_entries_to_refresh]
+    orphaned_objects = [wikidata_entry for wikidata_entry in orphaned_objects if wikidata_entry not in wikidata_entries_to_refresh]
 
     logger.info('Request Wikidata API')
     request_wikidata_entries(wikidata_entries_to_refresh)
@@ -34,12 +34,12 @@ def sync(reset=False, ids=None, **kwargs):
     logger.info('Request Wikidata API for secondary entries')
     request_wikidata_entries(secondary_wikidata_entries)
 
-    orphaned_wikidata_entries = [wikidata_entry for wikidata_entry in orphaned_wikidata_entries if wikidata_entry not in secondary_wikidata_entries]
+    orphaned_objects = [wikidata_entry for wikidata_entry in orphaned_objects if wikidata_entry not in secondary_wikidata_entries]
 
-    for wikidata_entry in orphaned_wikidata_entries:
+    for wikidata_entry in orphaned_objects:
         logger.debug("Deleted WikidataEntry "+wikidata_entry.id)
         wikidata_entry.delete()
-    logger.info("Deleted {} orphaned elements".format(len(orphaned_wikidata_entries)))
+    logger.info("Deleted {} orphaned objects".format(len(orphaned_objects)))
 
     logger.info('== end sync wikidata ==')
 
