@@ -136,7 +136,7 @@ def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAG
             result = request_wikidata_api(make_wikidata_query_params(wikidata_entries_chunk, languages))
             try:
                 handle_wikidata_api_result(result, wikidata_entries_chunk, languages)
-            except (WikidataNoSuchEntityError, WikidataMissingEntityError) as error:
+            except (WikidataAPINoSuchEntityError, WikidataAPIMissingEntityError) as error:
                 no_such_entity_entry_count = no_such_entity_entry_count + 1
                 if error.wikidata_entry in wikidata_entries_chunk:
                     wikidata_entries_chunk.remove(error.wikidata_entry)
