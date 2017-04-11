@@ -56,14 +56,14 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
         wikidata_id = openstreetmap_element.get_first_tag_value(openstreetmap_id_tags)
         if wikidata_id:
             wikidata_entry, was_created = WikidataEntry.objects.get_or_create(id=wikidata_id)
-            if not wikidata_entry in wikidata_entries:
-                wikidata_entries.append(wikidata_entry)
             if was_created:
                 logger.debug("Created WikidataEntry "+wikidata_entry.id)
                 created = created + 1
             else:
                 logger.debug("Matched WikidataEntry "+wikidata_entry.id)
             openstreetmap_element.wikidata_entry = wikidata_entry
+            if not wikidata_entry in wikidata_entries:
+                wikidata_entries.append(wikidata_entry)
         else:
             logger.warning("No Wikidata ID found for Openstreetmap element {} - {}".format(openstreetmap_element.id, openstreetmap_element.name))
             openstreetmap_element.wikidata_entry = None
