@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 
 from superlachaise.models import *
+from superlachaise.models.wikidata import *
 
 class WikidataEntryTestCase(TestCase):
 
@@ -345,3 +346,55 @@ class WikidataEntryTestCase(TestCase):
         wikidata_entry.commons_category.delete()
         wikidata_entry = WikidataEntry.objects.get(id="Q123456")
         self.assertIsNone(wikidata_entry.commons_category)
+
+    # get_property_value
+
+    def test_get_property_value_returns_value_if_present_in_dict(self):
+        property_dict = {
+            "snaktype": "value",
+            "property": "P2732",
+            "datavalue": {
+                "value": "47863",
+                "type": "string"
+            },
+            "datatype": "external-id"
+        }
+        self.assertEqual(get_property_value(property_dict), "47863")
+
+    def test_get_property_value_returns_none_if_not_present_in_dict(self):
+        property_dict = {
+            "snaktype": "value",
+            "property": "P2732",
+            "datatype": "external-id"
+        }
+        self.assertIsNone(get_property_value(property_dict))
+
+    # get_property_id
+
+    def test_get_property_id_returns_id_if_present_in_dict(self):
+        property_dict = {
+            "snaktype": "value",
+            "property": "P119",
+            "datavalue": {
+                "value": {
+                    "entity-type": "item",
+                    "numeric-id": 311,
+                    "id": "Q311"
+                },
+                "type": "wikibase-entityid"
+            },
+            "datatype": "wikibase-item"
+        }
+        self.assertEqual(get_property_id(property_dict), "Q311")
+
+    def test_get_property_id_returns_none_if_not_present_in_dict(self):
+        property_dict = {
+            "snaktype": "value",
+            "property": "P2732",
+            "datavalue": {
+                "value": "47863",
+                "type": "string"
+            },
+            "datatype": "external-id"
+        }
+        self.assertIsNone(get_property_id(property_dict))

@@ -1,30 +1,15 @@
 import logging
 from superlachaise.models import *
+from superlachaise.models.wikidata import *
 
-P_INSTANCE_OF = "P31"
 P_PLACE_OF_BURIAL = "P119"
 P_COMMONS_CATEGORY = "P373"
-
-F_MAINSNAK = "mainsnak"
-F_QUALIFIERS = "qualifiers"
 
 Q_HUMAN = "Q5"
 Q_PERE_LACHAISE_CEMETERY = "Q311"
 Q_PERE_LACHAISE_CREMATORIUM = "Q3006253"
 
 logger = logging.getLogger("superlachaise")
-
-def get_property_id(property_dict):
-    try:
-        return property_dict['datavalue']['value']['id']
-    except KeyError:
-        pass
-
-def get_property_value(property_dict):
-    try:
-        return property_dict['datavalue']['value']
-    except KeyError:
-        pass
 
 def get_commons_category_id(wikidata_entry):
     """ Returns a Commons category ID from a Wikidata entry """

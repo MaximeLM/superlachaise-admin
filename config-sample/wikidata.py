@@ -1,23 +1,14 @@
 from superlachaise.models import *
+from superlachaise.models.wikidata import *
 
 OPENSTREETMAP_ID_TAGS = [
     "wikidata",
     "name:wikidata"
 ]
 
-P_INSTANCE_OF = "P31"
 P_OF = "P642"
 
-F_MAINSNAK = "mainsnak"
-F_QUALIFIERS = "qualifiers"
-
 Q_TOMB = "Q173387"
-
-def get_property_id(property_dict):
-    try:
-        return property_dict['datavalue']['value']['id']
-    except KeyError:
-        pass
 
 def get_secondary_wikidata_entries(wikidata_entry):
     """ List other Wikidata entries IDs to sync for a primary Wikidata entry """

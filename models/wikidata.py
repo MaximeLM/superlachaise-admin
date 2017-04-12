@@ -66,3 +66,19 @@ class WikidataEntry(models.Model):
         ordering = ['id']
         verbose_name = 'Wikidata entry'
         verbose_name_plural = 'Wikidata entries'
+
+# Claims utils
+
+P_INSTANCE_OF = "P31"
+
+F_MAINSNAK = "mainsnak"
+F_QUALIFIERS = "qualifiers"
+
+def get_property_value(property_dict):
+    if 'datavalue' in property_dict and 'value' in property_dict['datavalue']:
+        return property_dict['datavalue']['value']
+
+def get_property_id(property_dict):
+    value = get_property_value(property_dict)
+    if value and 'id' in value:
+        return value['id']
