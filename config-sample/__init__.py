@@ -1,5 +1,5 @@
 __all__ = [
-    'common',
+    'base',
     'openstreetmap',
     'wikidata',
     'commons',

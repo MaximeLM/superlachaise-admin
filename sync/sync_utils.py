@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def request(url, verb="get", headers={}, params={}, data=None):
     if not headers:
         headers = {}
-    headers['User-Agent'] = "superlachaise-python/{version} ({contact_info})".format(version=apps.APP_VERSION, contact_info=config.common.CONTACT_INFO)
+    headers['User-Agent'] = "superlachaise-python/{version} ({contact_info})".format(version=apps.APP_VERSION, contact_info=config.base.CONTACT_INFO)
     action = getattr(requests, verb, None)
     logger.debug(verb+" "+url)
     response = action(url, headers=headers, params=params, data=data)
