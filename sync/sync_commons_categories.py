@@ -104,7 +104,9 @@ def request_commons_categories(commons_categories):
 
         # Prepare commons categories
         for commons_category in commons_categories_chunk:
-            commons_category.wikitext = None
+            commons_category.default_sort = None
+            commons_category.image = None
+            commons_category.redirect = None
 
         commons_query_params = make_commons_query_params(commons_categories_chunk)
         last_continue = {'continue': ''}
@@ -116,9 +118,14 @@ def request_commons_categories(commons_categories):
 
         # Check and save commons categories
         for commons_category in commons_categories_chunk:
-            if not commons_category.wikitext:
-                logger.warning("Wikitext is missing for Commons category {}".format(commons_category.id))
-                commons_category.wikitext = ''
+            if not commons_category.default_sort:
+                logger.warning("Default sort is missing for Commons category \"{}\"".format(commons_category.id))
+                commons_category.default_sort = ''
+            if not commons_category.image:
+                logger.warning("Image is missing for Commons category \"{}\"".format(commons_category.id))
+                commons_category.image = ''
+            if commons_category.redirect:
+                logger.warning("Commons category \"{}\" is a redirect for \"{}\"".format(commons_category.id, commons_category.redirect.id))
             commons_category.save()
     logger.info(str(entry_count)+"/"+str(entry_total))
 
@@ -146,8 +153,38 @@ def handle_commons_api_result(result, commons_categories):
             raise CommonsAPIMissingPagesError([commons_category])
         if 'revisions' in commons_category_dict:
             wikitext = commons_category_dict['revisions'][0]['*']
-            commons_category.wikitext = wikitext
+            commons_category.default_sort = get_default_sort(wikitext)
+            commons_category.image = get_image(wikitext)
+            redirect_id = get_redirect_id(wikitext)
+            if redirect_id:
+                redirect, was_created = CommonsCategory.objects.get_or_create(id=redirect_id)
+                if was_created:
+                    logger.debug("Created redirect CommonsCategory "+redirect.id)
+                else:
+                    logger.debug("Matched redirect CommonsCategory "+redirect.id)
+                commons_category.redirect = redirect
     if len(commons_categories_by_title) > 0:
         raise CommonsAPIMissingPagesError(commons_categories_by_title.values())
     if 'continue' in result:
         return result['continue']
+
+DEFAULT_SORT_PATTERN = re.compile("^{{DEFAULTSORT:[\s]*(.*)[\s]*}}$")
+def get_default_sort(wikitext):
+    for line in wikitext.split('\n'):
+        match = DEFAULT_SORT_PATTERN.match(line)
+        if match:
+            return match.group(1)
+
+IMAGE_PATTERN = re.compile("^\|image[\s]*=[\s]*(.*)[\s]*$")
+def get_image(wikitext):
+    for line in wikitext.split('\n'):
+        match = IMAGE_PATTERN.match(line)
+        if match:
+            return match.group(1)
+
+REDIRECT_PATTERN = re.compile("^{{Category redirect\|[\s]*Category:(.*)[\s]*}}$")
+def get_redirect_id(wikitext):
+    for line in wikitext.split('\n'):
+        match = REDIRECT_PATTERN.match(line)
+        if match:
+            return match.group(1)

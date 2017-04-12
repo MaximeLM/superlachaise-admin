@@ -214,7 +214,7 @@ class SyncWikipediaPagesTestCase(TestCase):
             return
         self.assertTrue(False)
 
-    def test_handle_wikipedia_api_result_sets_wikipedia_pages_default_sort_if_wikitext_is_present(self):
+    def test_handle_wikipedia_api_result_sets_wikipedia_pages_default_sort_if_present_in_wikitext(self):
         wikipedia_page = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
         sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_REVISIONS(), [wikipedia_page])
         self.assertEqual(wikipedia_page.default_sort, "Bernardin de Saint-Pierre, Jacques-Henri")
