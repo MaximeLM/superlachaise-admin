@@ -18,6 +18,8 @@ def sync(reset=False, ids=None, **kwargs):
         logger.info('Delete existing objects')
         delete_objects()
 
+    orphaned_objects = [] if ids else list(OpenstreetmapElement.objects.all())
+
     logger.info('Request Overpass API')
     if ids:
         overpass_subqueries = make_overpass_elements_subqueries(ids)
@@ -27,12 +29,15 @@ def sync(reset=False, ids=None, **kwargs):
     overpass_elements = request_overpass_elements(overpass_query)
 
     logger.info("Update model")
-    orphaned_openstreetmap_elements = [] if ids else list(OpenstreetmapElement.objects.all())
-    created, updated, deleted = update_model(overpass_elements, orphaned_openstreetmap_elements)
+    openstreetmap_elements, created = update_model(overpass_elements)
+    logger.info("Refreshed {} Openstreetmap elements to refresh (created {})".format(len(openstreetmap_elements), created))
 
-    logger.info("Created {} elements".format(created))
-    logger.info("Updated {} elements".format(updated))
-    logger.info("Deleted {} elements".format(deleted))
+    orphaned_objects = [openstreetmap_element for openstreetmap_element in orphaned_objects if openstreetmap_element not in openstreetmap_elements]
+
+    for openstreetmap_element in orphaned_objects:
+        logger.debug("Deleted OpenstreetmapElement "+openstreetmap_element.id)
+        openstreetmap_element.delete()
+    logger.info("Deleted {} orphaned objects".format(len(orphaned_objects)))
 
     logger.info('== end sync openstreetmap ==')
 
@@ -100,10 +105,9 @@ def get_or_create_openstreetmap_element(
         openstreetmap_element.save()
         return (openstreetmap_element, created)
 
-def update_model(overpass_elements, orphaned_openstreetmap_elements):
+def update_model(overpass_elements):
     created = 0
-    updated = 0
-    deleted = 0
+    openstreetmap_elements = []
 
     for overpass_element in overpass_elements:
         openstreetmap_element, was_created = get_or_create_openstreetmap_element(overpass_element)
@@ -112,14 +116,8 @@ def update_model(overpass_elements, orphaned_openstreetmap_elements):
                 logger.debug("Created OpenstreetmapElement "+openstreetmap_element.id)
                 created = created + 1
             else:
-                logger.debug("Updated OpenstreetmapElement "+openstreetmap_element.id)
-                updated = updated + 1
-            if openstreetmap_element in orphaned_openstreetmap_elements:
-                orphaned_openstreetmap_elements.remove(openstreetmap_element)
+                logger.debug("Matched OpenstreetmapElement "+openstreetmap_element.id)
+            if not openstreetmap_element in openstreetmap_elements:
+                openstreetmap_elements.append(openstreetmap_element)
 
-    for openstreetmap_element in orphaned_openstreetmap_elements:
-        logger.debug("Deleted orphaned OpenstreetmapElement "+openstreetmap_element.id)
-        deleted = deleted + 1
-        openstreetmap_element.delete()
-
-    return (created, updated, deleted)
+    return (openstreetmap_elements, created)

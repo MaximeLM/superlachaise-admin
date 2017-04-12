@@ -6,7 +6,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikipediaPage)
 class WikipediaPageAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'wikipedia_link', 'default_sort', 'extract_html')
+    list_display = ('id', 'default_sort', 'extract_html', 'wikipedia_link')
     search_fields = ('id',)
 
     fieldsets = [
@@ -21,6 +21,7 @@ class WikipediaPageAdmin(admin.ModelAdmin):
     def extract_html(self, obj):
         if obj.extract:
             return format_html(obj.extract)
+    extract_html.admin_order_field = 'extract'
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]

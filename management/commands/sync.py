@@ -12,6 +12,7 @@ class Command(BaseCommand):
         "openstreetmap",
         "wikidata",
         "wikipedia_pages",
+        "commons_categories",
     ]
 
     def add_arguments(self, parser):

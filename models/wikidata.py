@@ -6,7 +6,7 @@ from superlachaise.models import model_validators
 class WikidataEntry(models.Model):
 
     # Q<numeric_id>
-    id = models.CharField(primary_key=True, db_index=True, max_length=255, validators=[model_validators.validate_wikidata_id])
+    id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_id])
 
     name = models.CharField(max_length=255, blank=True)
 
@@ -17,6 +17,7 @@ class WikidataEntry(models.Model):
 
     secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False)
     wikipedia_pages = models.ManyToManyField('WikipediaPage', blank=True)
+    commons_category = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
 
     # JSON fields
 
