@@ -20,3 +20,7 @@ def request(url, verb="get", headers={}, params={}, data=None):
     logger.debug("{url} ({status_code}):".format(url=url, status_code=response.status_code))
     logger.debug(response.text)
     return response
+
+def make_chunks(objects, chunk_size=50):
+    """ Cut the list in chunks of a specified size """
+    return [objects[i:i+chunk_size] for i in range(0, len(objects), chunk_size)]

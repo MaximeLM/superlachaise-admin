@@ -98,10 +98,6 @@ def get_or_create_secondary_wikidata_entries(primary_wikidata_entries, get_secon
 
 # Request Wikidata
 
-def make_chunks(wikidata_entries, chunk_size=50):
-    """ Cut the list in chunks of a specified size """
-    return [wikidata_entries[i:i+chunk_size] for i in range(0, len(wikidata_entries), chunk_size)]
-
 def make_wikidata_query_params(wikidata_entries, languages):
     return {
         'action': 'wbgetentities',
@@ -126,7 +122,7 @@ def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAG
     entry_count = 0
     entry_total = len(wikidata_entries)
     no_such_entity_entry_count = 0
-    for wikidata_entries_chunk in make_chunks(list(wikidata_entries)):
+    for wikidata_entries_chunk in sync_utils.make_chunks(list(wikidata_entries)):
         logger.info(str(entry_count)+"/"+str(entry_total))
         entry_count = entry_count + len(wikidata_entries_chunk)
 

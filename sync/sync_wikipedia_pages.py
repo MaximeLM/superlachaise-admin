@@ -81,10 +81,6 @@ def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.wikidata.LANG
 
 # Request Wikipedia API
 
-def make_chunks(wikipedia_pages, chunk_size=50):
-    """ Cut the list in chunks of a specified size """
-    return [wikipedia_pages[i:i+chunk_size] for i in range(0, len(wikipedia_pages), chunk_size)]
-
 def make_wikipedia_query_params(wikipedia_pages):
     return {
         'action': 'query',
@@ -111,7 +107,7 @@ def request_wikipedia_pages(wikipedia_pages):
         logger.info("Request '{}' Wikipedia API".format(language))
         entry_count = 0
         entry_total = len(wikipedia_pages_for_language)
-        for wikipedia_pages_chunk in make_chunks(list(wikipedia_pages_for_language)):
+        for wikipedia_pages_chunk in sync_utils.make_chunks(list(wikipedia_pages_for_language)):
             logger.info(str(entry_count)+"/"+str(entry_total))
             entry_count = entry_count + len(wikipedia_pages_chunk)
 

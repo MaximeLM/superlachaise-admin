@@ -268,22 +268,6 @@ class SyncWikidataEntriesTestCase(TestCase):
         sync_wikidata_entries.get_or_create_secondary_wikidata_entries([wikidata_entry], get_secondary_wikidata_entries)
         self.assertEqual(set([wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_entries.all()]), set(["Q1234561", "Q1234562"]))
 
-    # make_chunks
-
-    def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):
-        wikidata_entries = [
-            WikidataEntry(id="Q1"),
-            WikidataEntry(id="Q2"),
-            WikidataEntry(id="Q3"),
-            WikidataEntry(id="Q4"),
-            WikidataEntry(id="Q5"),
-        ]
-        self.assertEqual(sync_wikidata_entries.make_chunks(wikidata_entries, 2), [
-            [wikidata_entries[0], wikidata_entries[1]],
-            [wikidata_entries[2], wikidata_entries[3]],
-            [wikidata_entries[4]],
-        ])
-
     # make_wikidata_query_params
 
     def test_make_wikidata_query_params_returns_ids_key_with_wikidata_entries_ids_separated_by_pipes(self):

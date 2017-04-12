@@ -85,10 +85,6 @@ def get_redirects(commons_categories):
 
 # Request Commons
 
-def make_chunks(commons_categories, chunk_size=50):
-    """ Cut the list in chunks of a specified size """
-    return [commons_categories[i:i+chunk_size] for i in range(0, len(commons_categories), chunk_size)]
-
 def make_commons_query_params(commons_categories):
     return {
         'action': 'query',
@@ -113,7 +109,7 @@ def request_commons_categories(commons_categories):
     logger.info("Request Commons API")
     entry_count = 0
     entry_total = len(commons_categories)
-    for commons_categories_chunk in make_chunks(list(commons_categories)):
+    for commons_categories_chunk in sync_utils.make_chunks(list(commons_categories)):
         logger.info(str(entry_count)+"/"+str(entry_total))
         entry_count = entry_count + len(commons_categories_chunk)
 
