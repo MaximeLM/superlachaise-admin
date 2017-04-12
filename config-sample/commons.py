@@ -4,6 +4,7 @@ from superlachaise.models.wikidata import *
 
 P_PLACE_OF_BURIAL = "P119"
 P_COMMONS_CATEGORY = "P373"
+P_PART_OF = "P361"
 
 Q_HUMAN = "Q5"
 Q_PERE_LACHAISE_CEMETERY = "Q311"
@@ -40,8 +41,14 @@ def get_commons_category_id(wikidata_entry):
                             if commons_category_id:
                                 return commons_category_id
     else:
-        # Then look for a root commons category
-        if claims and P_COMMONS_CATEGORY in claims:
+        # If the entry is a part of the Père Lachaise cemetery, look for a root commons category
+        location_accepted = False
+        if claims and P_PART_OF in claims:
+            for part_of in claims[P_PART_OF]:
+                if F_MAINSNAK in part_of and get_property_id(part_of[F_MAINSNAK]) in accepted_locations:
+                    location_accepted = True
+                    break
+        if location_accepted and P_COMMONS_CATEGORY in claims:
             commons_categories = claims[P_COMMONS_CATEGORY]
             if len(commons_categories) > 1:
                 logger.warning("Multiple commons categories for Wikidata entry {} - {}".format(wikidata_entry.id, wikidata_entry.name))
