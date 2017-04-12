@@ -3,8 +3,50 @@ from django.test import TestCase
 
 from superlachaise.sync import *
 from superlachaise.models import *
+from superlachaise.sync.sync_commons_categories import CommonsAPIError, CommonsAPIMissingPagesError
 
 # Fixtures
+
+def COMMONS_API_RESULT_1():
+    return {
+        "batchcomplete":"",
+        "query": {
+            "pages": {
+                "6998361": {
+                    'pageid': 6998361,
+                    'ns': 0,
+                    'title': 'Category:Jacques-Henri Bernardin de Saint-Pierre',
+                    'revisions': [{
+                        'contentformat': 'text/x-wiki',
+                        'contentmodel': 'wikitext',
+                        '*': "<onlyinclude>{{Mérimée|type=inscrit|PA00086780}}{{Category definition: Object\n|image            = Père-Lachaise - Division 32 - Moline 01.jpg\n|type             = tomb\n|artist           = \n|title            = {{tomb of|Alexandre Moline de Saint-Yon}} (1786-1870)\n|description      = \n|date             = \n|dimensions       = \n|medium           = \n|inscriptions     = {{inscription|medium=engraving|lang=fr|Alexandre Pierre Moline de S<sup>t</sup> Yon. général de division, décédé à Bordeaux le 17 novembre 1870, dans sa 85<sup>e</sup> année.}}{{inscription|medium=engraving|lang=fr|A<sup>{{illegible}}</sup> G<sup>elle</sup> Moline de S<sup>t</sup> Yon. morte le 28 {{illegible}} à l'âge de 93 ans.}}\n|object history   = \n|references       = \n|notes            = \n|gallery          = {{institution:Cimetière du Père-Lachaise}}\n|location         = {{Père Lachaise location |division=32|line=1 |Moiroux= |Salomon=JJ5 |street=chemin de la Bédoyère |concession=}}\n|wikidata         = \n}}{{Object location|48.858765|2.394809}}</onlyinclude>\n\n{{DEFAULTSORT:Moline de Saint-Yon}}\n[[Category:Graves in the Père-Lachaise Cemetery]]\n[[Category:Père-Lachaise Cemetery - Division 31]]\n[[Category:Monuments historiques in France (graves)]]\n[[Category:Monuments historiques inscrits in the Père-Lachaise Cemetery]]\n[[Category:Alexandre Moline de Saint-Yon|grave]]\n[[Category:Chemin de La Bédoyère (Père-Lachaise)]]\n[[Category:Alexandre Moline de Saint-Yon]]\n"
+                    }]
+                }
+            }
+        }
+    }
+
+COMMONS_API_RESULT_MISSING = {
+    "batchcomplete":"",
+    "query": {
+        "pages": {
+            "-1": {
+                'ns': 0,
+                'title': "Category:Jim_Morrison",
+                'missing': ""
+            }
+        }
+    }
+}
+
+COMMONS_API_RESULT_ERROR = {
+   "error":{
+       "code":"unknown_action",
+       "info":"Unrecognized value for parameter \"action\": queryy.",
+       "*":"See https://commons.wikimedia.org/w/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes."
+   },
+   "servedby":"mw1197"
+}
 
 class SyncCommonsCategoriesTestCase(TestCase):
 
@@ -91,3 +133,90 @@ class SyncCommonsCategoriesTestCase(TestCase):
             CommonsCategory(id=id).save()
         commons_categories, created = sync_commons_categories.get_or_create_commons_categories_to_refresh(ids, get_commons_category_id=get_commons_category_id)
         self.assertEqual(created, 0)
+
+    # make_chunks
+
+    def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):
+        commons_categories = [
+            CommonsCategory(id="Jim_1"),
+            CommonsCategory(id="Jim_2"),
+            CommonsCategory(id="Jim_3"),
+            CommonsCategory(id="Jim_4"),
+            CommonsCategory(id="Jim_5"),
+        ]
+        self.assertEqual(sync_commons_categories.make_chunks(commons_categories, 2), [
+            [commons_categories[0], commons_categories[1]],
+            [commons_categories[2], commons_categories[3]],
+            [commons_categories[4]],
+        ])
+
+    # make_commons_query_params
+
+    def test_make_commons_query_params_returns_titles_key_with_commons_categories_titles_prefixed_by_category_separated_by_pipes(self):
+        commons_categories = [
+            CommonsCategory(id="Jim_1"),
+            CommonsCategory(id="Jim_2"),
+        ]
+        params = sync_commons_categories.make_commons_query_params(commons_categories)
+        self.assertEqual(params["titles"], "Category:Jim_1|Category:Jim_2")
+
+    # handle_commons_api_result
+
+    def test_handle_commons_api_result_raises_missing_pages_error_for_commons_categories_not_in_result(self):
+        commons_category_1 = CommonsCategory(id="Jim_Morrison")
+        commons_category_2 = CommonsCategory(id="Jacques-Henri Bernardin de Saint-Pierre")
+        try:
+            sync_commons_categories.handle_commons_api_result(COMMONS_API_RESULT_1(), [commons_category_1, commons_category_2])
+        except CommonsAPIMissingPagesError as error:
+            self.assertEqual([commons_category.id for commons_category in error.commons_categories], ["Jim_Morrison"])
+            return
+        self.assertTrue(False)
+
+    def test_handle_commons_api_result_raises_missing_pages_error_with_missing_wikipedia_page(self):
+        commons_category_1 = CommonsCategory(id="Jim_Morrison")
+        commons_category_2 = CommonsCategory(id="Jacques-Henri Bernardin de Saint-Pierre")
+        try:
+            sync_commons_categories.handle_commons_api_result(COMMONS_API_RESULT_MISSING, [commons_category_1, commons_category_2])
+        except CommonsAPIMissingPagesError as error:
+            self.assertEqual([commons_category.id for commons_category in error.commons_categories], ["Jim_Morrison"])
+            return
+        self.assertTrue(False)
+
+    def test_handle_commons_api_result_raises_commons_errors_with_error_info(self):
+        commons_category = CommonsCategory(id="Jim_Morrison")
+        try:
+            sync_commons_categories.handle_commons_api_result(COMMONS_API_RESULT_ERROR, [commons_category])
+        except CommonsAPIError as error:
+            self.assertEqual(str(error), "Unrecognized value for parameter \"action\": queryy.")
+            return
+        self.assertTrue(False)
+
+    def test_handle_commons_api_result_sets_commons_categories_wikitext_if_present(self):
+        commons_category = CommonsCategory(id="Jacques-Henri Bernardin de Saint-Pierre")
+        api_result = COMMONS_API_RESULT_1()
+        sync_commons_categories.handle_commons_api_result(api_result, [commons_category])
+        self.assertEqual(commons_category.wikitext, api_result['query']['pages']['6998361']['revisions'][0]['*'])
+
+    def test_handle_commons_api_result_returns_continue_if_present(self):
+        commons_category = CommonsCategory(id="Jacques-Henri Bernardin de Saint-Pierre")
+        continue_dict = {
+            'myContinue': 'myContinue'
+        }
+        api_result = COMMONS_API_RESULT_1()
+        api_result.update({'continue': continue_dict})
+        self.assertEqual(sync_commons_categories.handle_commons_api_result(api_result, [commons_category]), continue_dict)
+
+    def test_handle_commons_api_result_returns_none_if_continue_is_not_present(self):
+        commons_category = CommonsCategory(id="Jacques-Henri Bernardin de Saint-Pierre")
+        self.assertIsNone(sync_commons_categories.handle_commons_api_result(COMMONS_API_RESULT_1(), [commons_category]))
+
+    def test_handle_commons_api_result_succeeds_if_title_was_normalized(self):
+        commons_category = CommonsCategory(id="Jacques-Henri_Bernardin_de_Saint-Pierre")
+        api_result = COMMONS_API_RESULT_1()
+        api_result['query'].update({
+            'normalized': [{
+                'from': 'Category:Jacques-Henri_Bernardin_de_Saint-Pierre',
+                'to': 'Category:Jacques-Henri Bernardin de Saint-Pierre'
+            }]
+        })
+        sync_commons_categories.handle_commons_api_result(api_result, [commons_category])
