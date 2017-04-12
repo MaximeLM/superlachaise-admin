@@ -5,7 +5,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikidataEntry)
 class WikidataEntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'wikidata_link', 'commons_category_link')
+    list_display = ('id', 'name', 'commons_category_link', 'wikidata_link')
     search_fields = ('id', 'name')
 
     fieldsets = [
@@ -22,6 +22,7 @@ class WikidataEntryAdmin(admin.ModelAdmin):
     def commons_category_link(self, obj):
         if obj.commons_category:
             return admin_utils.html_link(admin_utils.change_page_url(obj.commons_category), str(obj.commons_category))
+    commons_category_link.admin_order_field = 'commons_category'
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]

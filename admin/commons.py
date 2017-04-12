@@ -6,7 +6,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(CommonsCategory)
 class CommonsCategoryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'commons_link', 'redirect_link', 'image', 'default_sort')
+    list_display = ('id', 'redirect_link', 'image', 'default_sort', 'commons_link')
     search_fields = ('id',)
 
     fieldsets = [
@@ -22,6 +22,7 @@ class CommonsCategoryAdmin(admin.ModelAdmin):
     def redirect_link(self, obj):
         if obj.redirect:
             return admin_utils.html_link(admin_utils.change_page_url(obj.redirect), str(obj.redirect))
+    redirect_link.admin_order_field = 'redirect'
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]

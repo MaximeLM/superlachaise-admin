@@ -6,7 +6,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(OpenstreetmapElement)
 class OpenstreetmapElementAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'openstreetmap_link', 'wikidata_entry_link')
+    list_display = ('id', 'name', 'wikidata_entry_link', 'openstreetmap_link')
     search_fields = ('id', 'name', 'raw_tags')
 
     fieldsets = [
@@ -22,6 +22,7 @@ class OpenstreetmapElementAdmin(admin.ModelAdmin):
     def wikidata_entry_link(self, obj):
         if obj.wikidata_entry:
             return admin_utils.html_link(admin_utils.change_page_url(obj.wikidata_entry), str(obj.wikidata_entry))
+    wikidata_entry_link.admin_order_field = 'wikidata_entry'
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
