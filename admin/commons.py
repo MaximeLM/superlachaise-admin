@@ -6,7 +6,7 @@ from superlachaise.admin import admin_utils
 
 @admin.register(CommonsCategory)
 class CommonsCategoryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'commons_link', 'redirect_link')
+    list_display = ('__str__', 'commons_link', 'redirect_link', 'image', 'default_sort')
     search_fields = ('id',)
 
     fieldsets = [

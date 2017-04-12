@@ -152,6 +152,17 @@ class SyncCommonsCategoriesTestCase(TestCase):
         commons_categories, created = sync_commons_categories.get_or_create_commons_categories_to_refresh(ids, get_commons_category_id=get_commons_category_id)
         self.assertEqual(created, 0)
 
+    # get_redirects
+
+    def test_get_redirects_returns_redirects_from_commons_categories(self):
+        commons_categories = [
+            CommonsCategory(id="Jim_1", redirect=CommonsCategory(id="Jim_2")),
+            CommonsCategory(id="Jim_3"),
+            CommonsCategory(id="Jim_4", redirect=CommonsCategory(id="Jim_5")),
+        ]
+        redirects = sync_commons_categories.get_redirects(commons_categories)
+        self.assertEqual([redirect.id for redirect in redirects], ["Jim_2", "Jim_5"])
+
     # make_chunks
 
     def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):
@@ -261,7 +272,7 @@ class SyncCommonsCategoriesTestCase(TestCase):
     # get_image
 
     def test_get_image_returns_image_if_present_in_wikitext(self):
-        wikitext = "<onlyinclude>{{Mérimée|type=inscrit|PA00086780}}{{Category definition: Object\n|image            = Père-Lachaise - Division 32 - Moline 01.jpg\n|type             = tomb\n|artist           = \n|title            = {{tomb of|Alexandre Moline de Saint-Yon}} (1786-1870)\n|description      = \n|date             = \n|dimensions       = \n|medium           = \n|inscriptions     = {{inscription|medium=engraving|lang=fr|Alexandre Pierre Moline de S<sup>t</sup> Yon. général de division, décédé à Bordeaux le 17 novembre 1870, dans sa 85<sup>e</sup> année.}}{{inscription|medium=engraving|lang=fr|A<sup>{{illegible}}</sup> G<sup>elle</sup> Moline de S<sup>t</sup> Yon. morte le 28 {{illegible}} à l'âge de 93 ans.}}\n|object history   = \n|references       = \n|notes            = \n|gallery          = {{institution:Cimetière du Père-Lachaise}}\n|location         = {{Père Lachaise location |division=32|line=1 |Moiroux= |Salomon=JJ5 |street=chemin de la Bédoyère |concession=}}\n|wikidata         = \n}}{{Object location|48.858765|2.394809}}</onlyinclude>\n\n{{DEFAULTSORT:Moline de Saint-Yon}}\n[[Category:Graves in the Père-Lachaise Cemetery]]\n[[Category:Père-Lachaise Cemetery - Division 31]]\n[[Category:Monuments historiques in France (graves)]]\n[[Category:Monuments historiques inscrits in the Père-Lachaise Cemetery]]\n[[Category:Alexandre Moline de Saint-Yon|grave]]\n[[Category:Chemin de La Bédoyère (Père-Lachaise)]]\n[[Category:Alexandre Moline de Saint-Yon]]\n"
+        wikitext = "<onlyinclude>{{Mérimée|type=inscrit|PA00086780}}{{Category definition: Object\n |image            = Père-Lachaise - Division 32 - Moline 01.jpg\n|type             = tomb\n|artist           = \n|title            = {{tomb of|Alexandre Moline de Saint-Yon}} (1786-1870)\n|description      = \n|date             = \n|dimensions       = \n|medium           = \n|inscriptions     = {{inscription|medium=engraving|lang=fr|Alexandre Pierre Moline de S<sup>t</sup> Yon. général de division, décédé à Bordeaux le 17 novembre 1870, dans sa 85<sup>e</sup> année.}}{{inscription|medium=engraving|lang=fr|A<sup>{{illegible}}</sup> G<sup>elle</sup> Moline de S<sup>t</sup> Yon. morte le 28 {{illegible}} à l'âge de 93 ans.}}\n|object history   = \n|references       = \n|notes            = \n|gallery          = {{institution:Cimetière du Père-Lachaise}}\n|location         = {{Père Lachaise location |division=32|line=1 |Moiroux= |Salomon=JJ5 |street=chemin de la Bédoyère |concession=}}\n|wikidata         = \n}}{{Object location|48.858765|2.394809}}</onlyinclude>\n\n{{DEFAULTSORT:Moline de Saint-Yon}}\n[[Category:Graves in the Père-Lachaise Cemetery]]\n[[Category:Père-Lachaise Cemetery - Division 31]]\n[[Category:Monuments historiques in France (graves)]]\n[[Category:Monuments historiques inscrits in the Père-Lachaise Cemetery]]\n[[Category:Alexandre Moline de Saint-Yon|grave]]\n[[Category:Chemin de La Bédoyère (Père-Lachaise)]]\n[[Category:Alexandre Moline de Saint-Yon]]\n"
         self.assertEqual(sync_commons_categories.get_image(wikitext), "Père-Lachaise - Division 32 - Moline 01.jpg")
 
     def test_get_image_returns_none_if_not_present_in_wikitext(self):

@@ -23,10 +23,16 @@ def sync(reset=False, ids=None, **kwargs):
 
     commons_categories_to_refresh, created = get_or_create_commons_categories_to_refresh(ids)
     logger.info("Found {} Commons categories to refresh (created {})".format(len(commons_categories_to_refresh), created))
-
     orphaned_objects = [commons_category for commons_category in orphaned_objects if commons_category not in commons_categories_to_refresh]
 
     request_commons_categories(commons_categories_to_refresh)
+
+    redirects = get_redirects(commons_categories_to_refresh)
+    while len(redirects) > 0:
+        logger.info("Found {} redirect Commons categories to refresh".format(len(redirects)))
+        orphaned_objects = [commons_category for commons_category in orphaned_objects if commons_category not in redirects]
+        request_commons_categories(redirects)
+        redirects = get_redirects(redirects)
 
     for commons_category in orphaned_objects:
         logger.debug("Deleted CommonsCategory "+commons_category.id)
@@ -67,6 +73,15 @@ def get_or_create_commons_categories_to_refresh(ids, get_commons_category_id=con
     else:
         logger.info('List Commons categories from Wikidata entries')
         return get_or_create_commons_categories_from_wikidata_entries(list(WikidataEntry.objects.all()), get_commons_category_id)
+
+def get_redirects(commons_categories):
+    redirects = []
+
+    for commons_category in commons_categories:
+        if commons_category.redirect and not commons_category.redirect in redirects:
+            redirects.append(commons_category.redirect)
+
+    return redirects
 
 # Request Commons
 
@@ -175,7 +190,7 @@ def get_default_sort(wikitext):
         if match:
             return match.group(1)
 
-IMAGE_PATTERN = re.compile("^\|image[\s]*=[\s]*(.*)[\s]*$")
+IMAGE_PATTERN = re.compile("^[\s]*\|image[\s]*=[\s]*(.*)[\s]*$")
 def get_image(wikitext):
     for line in wikitext.split('\n'):
         match = IMAGE_PATTERN.match(line)
