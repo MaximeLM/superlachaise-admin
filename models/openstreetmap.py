@@ -6,9 +6,9 @@ from superlachaise.models import model_validators
 class OpenstreetmapElement(models.Model):
 
     # type and numeric id separeted by /, eg "node/123456"
-    id = models.CharField(primary_key=True, db_index=True, max_length=255, validators=[model_validators.validate_openstreetmap_id])
+    id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_openstreetmap_id])
 
-    name = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=1024, blank=True)
     latitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
     raw_tags = models.TextField(default='{}', validators=[model_validators.validate_JSON])
