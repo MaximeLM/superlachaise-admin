@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
 
     TARGETS = [
-        "openstreetmap",
-        "wikidata",
+        "openstreetmap_elements",
+        "wikidata_entries",
         "wikipedia_pages",
         "commons_categories",
     ]

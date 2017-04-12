@@ -44,14 +44,14 @@ OVERPASS_ELEMENT_2 = {
     }
 }
 
-class SyncOpenstreetmapTestCase(TestCase):
+class SyncOpenstreetmapElementsTestCase(TestCase):
 
     # delete_objects
 
     def test_delete_objects_deletes_existing_openstreetmap_elements(self):
         openstreetmap_element = OpenstreetmapElement(id="node/123456")
         openstreetmap_element.save()
-        sync_openstreetmap.delete_objects()
+        sync_openstreetmap_elements.delete_objects()
         self.assertEqual(OpenstreetmapElement.objects.all().count(), 0)
 
     # make_overpass_area_subqueries
@@ -60,7 +60,7 @@ class SyncOpenstreetmapTestCase(TestCase):
         bounding_box = ((48.8575, 2.3877), (48.8649, 2.4006))
         fetched_tags = []
         self.assertEqual(
-            sync_openstreetmap.make_overpass_area_subqueries(bounding_box, fetched_tags),
+            sync_openstreetmap_elements.make_overpass_area_subqueries(bounding_box, fetched_tags),
             [])
 
     def test_make_overpass_area_subqueries_returns_combined_subqueries_with_format(self):
@@ -68,20 +68,20 @@ class SyncOpenstreetmapTestCase(TestCase):
         fetched_tags = ["historic=tomb", "historic=memorial"]
         expected_bounding_box_string="48.8575,2.3877,48.8649,2.4006"
         self.assertEqual(
-            sync_openstreetmap.make_overpass_area_subqueries(bounding_box, fetched_tags),
+            sync_openstreetmap_elements.make_overpass_area_subqueries(bounding_box, fetched_tags),
             [
-            sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="node", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
-            sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="way", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
-            sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="relation", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
-            sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="node", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
-            sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="way", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
-            sync_openstreetmap.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="relation", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
+            sync_openstreetmap_elements.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="node", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
+            sync_openstreetmap_elements.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="way", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
+            sync_openstreetmap_elements.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="relation", tag=fetched_tags[0], bounding_box=expected_bounding_box_string),
+            sync_openstreetmap_elements.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="node", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
+            sync_openstreetmap_elements.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="way", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
+            sync_openstreetmap_elements.OVERPASS_AREA_SUBQUERY_FORMAT.format(type="relation", tag=fetched_tags[1], bounding_box=expected_bounding_box_string),
             ])
 
     # make_overpass_elements_subqueries
 
     def test_make_overpass_elements_subqueries_with_no_ids_returns_empty_array(self):
-        self.assertEqual(sync_openstreetmap.make_overpass_elements_subqueries([]),[])
+        self.assertEqual(sync_openstreetmap_elements.make_overpass_elements_subqueries([]),[])
 
     def test_make_overpass_elements_subqueries_returns_subqueries_with_format(self):
         ids = [
@@ -90,19 +90,19 @@ class SyncOpenstreetmapTestCase(TestCase):
             "node/789654",
         ]
         self.assertEqual(
-            sync_openstreetmap.make_overpass_elements_subqueries(ids),
+            sync_openstreetmap_elements.make_overpass_elements_subqueries(ids),
             [
-            sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="way", id="123456"),
-            sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="relation", id="654321"),
-            sync_openstreetmap.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="node", id="789654"),
+            sync_openstreetmap_elements.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="way", id="123456"),
+            sync_openstreetmap_elements.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="relation", id="654321"),
+            sync_openstreetmap_elements.OVERPASS_ELEMENT_SUBQUERY_FORMAT.format(type="node", id="789654"),
             ])
 
     # make_overpass_query
 
     def test_make_overpass_query_with_no_subqueries_returns_no_subqueries_with_format(self):
         self.assertEqual(
-            sync_openstreetmap.make_overpass_query([]),
-            sync_openstreetmap.OVERPASS_QUERY_FORMAT.format(subqueries="")
+            sync_openstreetmap_elements.make_overpass_query([]),
+            sync_openstreetmap_elements.OVERPASS_QUERY_FORMAT.format(subqueries="")
         )
 
     def test_make_overpass_query_returns_subqueries_with_format(self):
@@ -111,15 +111,15 @@ class SyncOpenstreetmapTestCase(TestCase):
             "subquery2;"
         ]
         self.assertEqual(
-            sync_openstreetmap.make_overpass_query(subqueries),
-            sync_openstreetmap.OVERPASS_QUERY_FORMAT.format(subqueries="subquery1;subquery2;")
+            sync_openstreetmap_elements.make_overpass_query(subqueries),
+            sync_openstreetmap_elements.OVERPASS_QUERY_FORMAT.format(subqueries="subquery1;subquery2;")
         )
 
     # get_or_create_openstreetmap_element
 
     def test_get_or_create_openstreetmap_element_creates_object_if_it_does_not_exist(self):
         overpass_element = OVERPASS_ELEMENT_1
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(OpenstreetmapElement.objects.all().count(), 1)
         self.assertIsNotNone(openstreetmap_element)
         self.assertTrue(created)
@@ -128,21 +128,21 @@ class SyncOpenstreetmapTestCase(TestCase):
         openstreetmap_element = OpenstreetmapElement(id="node/2765555563")
         openstreetmap_element.save()
         overpass_element = OVERPASS_ELEMENT_1
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(OpenstreetmapElement.objects.all().count(), 1)
         self.assertIsNotNone(openstreetmap_element)
         self.assertFalse(created)
 
     def test_get_or_create_openstreetmap_element_does_not_create_object_if_it_is_excluded(self):
         overpass_element = OVERPASS_ELEMENT_1
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element, ["node/2765555563"])
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element, ["node/2765555563"])
         self.assertEqual(OpenstreetmapElement.objects.all().count(), 0)
         self.assertIsNone(openstreetmap_element)
         self.assertFalse(created)
 
     def test_get_or_create_openstreetmap_element_updates_fields(self):
         overpass_element = OVERPASS_ELEMENT_1
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(openstreetmap_element.id, "node/2765555563")
         self.assertEqual(openstreetmap_element.name, "Étienne Lamy")
         self.assertEqual(openstreetmap_element.latitude, 48.8618534)
@@ -151,18 +151,18 @@ class SyncOpenstreetmapTestCase(TestCase):
 
     def test_get_or_create_openstreetmap_element_updates_name_without_name(self):
         overpass_element = OVERPASS_ELEMENT_2
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(openstreetmap_element.name, "")
 
     def test_get_or_create_openstreetmap_element_updates_coordinate_without_center(self):
         overpass_element = OVERPASS_ELEMENT_1
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(openstreetmap_element.latitude, 48.8618534)
         self.assertEqual(openstreetmap_element.longitude, 2.3934719)
 
     def test_get_or_create_openstreetmap_element_updates_coordinate_with_center(self):
         overpass_element = OVERPASS_ELEMENT_2
-        openstreetmap_element, created = sync_openstreetmap.get_or_create_openstreetmap_element(overpass_element)
+        openstreetmap_element, created = sync_openstreetmap_elements.get_or_create_openstreetmap_element(overpass_element)
         self.assertEqual(openstreetmap_element.latitude, 48.8583882)
         self.assertEqual(openstreetmap_element.longitude, 2.3956719)
 
@@ -170,12 +170,12 @@ class SyncOpenstreetmapTestCase(TestCase):
 
     def test_update_model_returns_openstreetmap_elements_for_overpass_elements(self):
         overpass_elements = [OVERPASS_ELEMENT_1, OVERPASS_ELEMENT_2]
-        openstreetmap_elements, created = sync_openstreetmap.update_model(overpass_elements)
+        openstreetmap_elements, created = sync_openstreetmap_elements.update_model(overpass_elements)
         self.assertEqual([openstreetmap_element.id for openstreetmap_element in openstreetmap_elements], ["node/2765555563", "way/314136876"])
 
     def test_update_model_increments_created_if_openstreetmap_element_was_created(self):
         openstreetmap_element_1 = OpenstreetmapElement(id="node/2765555563")
         openstreetmap_element_1.save()
         overpass_elements = [OVERPASS_ELEMENT_1, OVERPASS_ELEMENT_2]
-        openstreetmap_elements, created = sync_openstreetmap.update_model(overpass_elements)
+        openstreetmap_elements, created = sync_openstreetmap_elements.update_model(overpass_elements)
         self.assertEqual(created, 1)

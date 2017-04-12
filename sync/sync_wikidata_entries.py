@@ -12,7 +12,7 @@ from superlachaise.sync import sync_utils
 logger = logging.getLogger(__name__)
 
 def sync(reset=False, ids=None, **kwargs):
-    logger.info('== begin sync wikidata ==')
+    logger.info('== begin sync wikidata entries ==')
 
     if reset:
         logger.info('Delete existing objects')
@@ -41,7 +41,7 @@ def sync(reset=False, ids=None, **kwargs):
         wikidata_entry.delete()
     logger.info("Deleted {} orphaned objects".format(len(orphaned_objects)))
 
-    logger.info('== end sync wikidata ==')
+    logger.info('== end sync wikidata entries ==')
 
 def delete_objects():
     WikidataEntry.objects.all().delete()
