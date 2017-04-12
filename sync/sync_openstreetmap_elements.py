@@ -20,7 +20,7 @@ def sync(reset=False, ids=None, **kwargs):
 
     orphaned_objects = [] if ids else list(OpenstreetmapElement.objects.all())
 
-    logger.info('Request Overpass API')
+    logger.info("Request {}".format(OVERPASS_API_BASE_URL))
     if ids:
         overpass_subqueries = make_overpass_elements_subqueries(ids)
     else:

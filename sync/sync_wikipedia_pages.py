@@ -104,7 +104,7 @@ def request_wikipedia_api(wikipedia_query_params, language):
 
 def request_wikipedia_pages(wikipedia_pages):
     for (language, wikipedia_pages_for_language) in wikipedia_pages.items():
-        logger.info("Request '{}' Wikipedia API".format(language))
+        logger.info("Request {}".format(WIKIPEDIA_API_BASE_URL.format(language=language)))
         entry_count = 0
         entry_total = len(wikipedia_pages_for_language)
         for wikipedia_pages_chunk in sync_utils.make_chunks(list(wikipedia_pages_for_language)):

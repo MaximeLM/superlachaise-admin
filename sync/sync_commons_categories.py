@@ -106,7 +106,7 @@ def request_commons_api(commons_query_params):
     return result.json()
 
 def request_commons_categories(commons_categories):
-    logger.info("Request Commons API")
+    logger.info("Request {}".format(COMMONS_API_BASE_URL))
     entry_count = 0
     entry_total = len(commons_categories)
     for commons_categories_chunk in sync_utils.make_chunks(list(commons_categories)):

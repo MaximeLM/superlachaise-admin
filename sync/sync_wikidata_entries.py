@@ -25,7 +25,7 @@ def sync(reset=False, ids=None, **kwargs):
 
     orphaned_objects = [wikidata_entry for wikidata_entry in orphaned_objects if wikidata_entry not in wikidata_entries_to_refresh]
 
-    logger.info('Request Wikidata API')
+    logger.info("Request {}".format(WIKIDATA_API_BASE_URL))
     request_wikidata_entries(wikidata_entries_to_refresh)
 
     secondary_wikidata_entries, created = get_or_create_secondary_wikidata_entries(wikidata_entries_to_refresh)
