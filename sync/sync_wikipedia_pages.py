@@ -67,7 +67,7 @@ def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, langua
 
     return (wikipedia_pages, created)
 
-def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.wikidata.LANGUAGES):
+def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.base.LANGUAGES):
     if ids:
         wikipedia_pages = {language:[] for language in languages}
         for wikipedia_page in WikipediaPage.objects.filter(id__in=ids):

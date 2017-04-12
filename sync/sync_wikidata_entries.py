@@ -118,7 +118,7 @@ def request_wikidata_api(wikidata_query_params):
     # Return JSON
     return result.json()
 
-def request_wikidata_entries(wikidata_entries, languages=config.wikidata.LANGUAGES):
+def request_wikidata_entries(wikidata_entries, languages=config.base.LANGUAGES):
     entry_count = 0
     entry_total = len(wikidata_entries)
     no_such_entity_entry_count = 0

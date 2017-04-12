@@ -5,11 +5,6 @@ OPENSTREETMAP_ID_TAGS = [
     "name:wikidata"
 ]
 
-LANGUAGES = [
-    "fr",
-    "en"
-]
-
 P_INSTANCE_OF = "P31"
 P_OF = "P642"
 
