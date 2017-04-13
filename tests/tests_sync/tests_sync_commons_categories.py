@@ -163,22 +163,6 @@ class SyncCommonsCategoriesTestCase(TestCase):
         redirects = sync_commons_categories.get_redirects(commons_categories)
         self.assertEqual([redirect.id for redirect in redirects], ["Jim_2", "Jim_5"])
 
-    # make_chunks
-
-    def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):
-        commons_categories = [
-            CommonsCategory(id="Jim_1"),
-            CommonsCategory(id="Jim_2"),
-            CommonsCategory(id="Jim_3"),
-            CommonsCategory(id="Jim_4"),
-            CommonsCategory(id="Jim_5"),
-        ]
-        self.assertEqual(sync_commons_categories.make_chunks(commons_categories, 2), [
-            [commons_categories[0], commons_categories[1]],
-            [commons_categories[2], commons_categories[3]],
-            [commons_categories[4]],
-        ])
-
     # make_commons_query_params
 
     def test_make_commons_query_params_returns_titles_key_with_commons_categories_titles_prefixed_by_category_separated_by_pipes(self):

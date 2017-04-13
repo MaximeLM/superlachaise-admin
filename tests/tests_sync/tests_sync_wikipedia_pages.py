@@ -157,22 +157,6 @@ class SyncWikipediaPagesTestCase(TestCase):
         wikipedia_pages, created = sync_wikipedia_pages.get_or_create_wikipedia_pages_to_refresh(ids, ["fr", "en"])
         self.assertEqual(created, 0)
 
-    # make_chunks
-
-    def test_make_chunks_returns_ordered_elements_in_max_size_chunks(self):
-        wikipedia_pages = [
-            WikipediaPage(id="fr|Jim_1"),
-            WikipediaPage(id="fr|Jim_2"),
-            WikipediaPage(id="fr|Jim_3"),
-            WikipediaPage(id="fr|Jim_4"),
-            WikipediaPage(id="fr|Jim_5"),
-        ]
-        self.assertEqual(sync_wikipedia_pages.make_chunks(wikipedia_pages, 2), [
-            [wikipedia_pages[0], wikipedia_pages[1]],
-            [wikipedia_pages[2], wikipedia_pages[3]],
-            [wikipedia_pages[4]],
-        ])
-
     # make_wikipedia_query_params
 
     def test_make_wikipedia_query_params_returns_titles_key_with_wikipedia_pages_titles_separated_by_pipes(self):

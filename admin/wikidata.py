@@ -26,7 +26,7 @@ class WikidataEntryAdmin(admin.ModelAdmin):
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
-        admin_utils.sync(request, 'wikidata', {'ids': ids})
+        admin_utils.sync(request, 'wikidata_entries', {'ids': ids})
     sync_objects.short_description = 'Sync selected Wikidata entries'
 
     actions = [sync_objects]

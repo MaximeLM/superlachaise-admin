@@ -67,7 +67,7 @@ def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, langua
 
     return (wikipedia_pages, created)
 
-def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.wikidata.LANGUAGES):
+def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.base.LANGUAGES):
     if ids:
         wikipedia_pages = {language:[] for language in languages}
         for wikipedia_page in WikipediaPage.objects.filter(id__in=ids):
@@ -80,10 +80,6 @@ def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.wikidata.LANG
         return get_or_create_wikipedia_pages_from_wikidata_entries(list(WikidataEntry.objects.all()), languages)
 
 # Request Wikipedia API
-
-def make_chunks(wikipedia_pages, chunk_size=50):
-    """ Cut the list in chunks of a specified size """
-    return [wikipedia_pages[i:i+chunk_size] for i in range(0, len(wikipedia_pages), chunk_size)]
 
 def make_wikipedia_query_params(wikipedia_pages):
     return {
@@ -108,10 +104,10 @@ def request_wikipedia_api(wikipedia_query_params, language):
 
 def request_wikipedia_pages(wikipedia_pages):
     for (language, wikipedia_pages_for_language) in wikipedia_pages.items():
-        logger.info("Request '{}' Wikipedia API".format(language))
+        logger.info("Request {}".format(WIKIPEDIA_API_BASE_URL.format(language=language)))
         entry_count = 0
         entry_total = len(wikipedia_pages_for_language)
-        for wikipedia_pages_chunk in make_chunks(list(wikipedia_pages_for_language)):
+        for wikipedia_pages_chunk in sync_utils.make_chunks(list(wikipedia_pages_for_language)):
             logger.info(str(entry_count)+"/"+str(entry_total))
             entry_count = entry_count + len(wikipedia_pages_chunk)
 

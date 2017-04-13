@@ -21,6 +21,6 @@ class CommonsCategory(models.Model):
         return self.id
 
     class Meta:
-        ordering = ['id']
+        ordering = ['default_sort', 'id']
         verbose_name = 'Commons category'
         verbose_name_plural = 'Commons categories'

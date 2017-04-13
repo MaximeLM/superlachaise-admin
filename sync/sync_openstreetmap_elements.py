@@ -12,7 +12,7 @@ from superlachaise.sync import sync_utils
 logger = logging.getLogger(__name__)
 
 def sync(reset=False, ids=None, **kwargs):
-    logger.info('== begin sync openstreetmap ==')
+    logger.info('== begin sync openstreetmap elements ==')
 
     if reset:
         logger.info('Delete existing objects')
@@ -20,7 +20,7 @@ def sync(reset=False, ids=None, **kwargs):
 
     orphaned_objects = [] if ids else list(OpenstreetmapElement.objects.all())
 
-    logger.info('Request Overpass API')
+    logger.info("Request {}".format(OVERPASS_API_BASE_URL))
     if ids:
         overpass_subqueries = make_overpass_elements_subqueries(ids)
     else:
@@ -39,7 +39,7 @@ def sync(reset=False, ids=None, **kwargs):
         openstreetmap_element.delete()
     logger.info("Deleted {} orphaned objects".format(len(orphaned_objects)))
 
-    logger.info('== end sync openstreetmap ==')
+    logger.info('== end sync openstreetmap elements ==')
 
 def delete_objects():
     OpenstreetmapElement.objects.all().delete()

@@ -26,7 +26,7 @@ class OpenstreetmapElementAdmin(admin.ModelAdmin):
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
-        admin_utils.sync(request, 'openstreetmap', {'ids': (ids)})
+        admin_utils.sync(request, 'openstreetmap_elements', {'ids': (ids)})
     sync_objects.short_description = 'Sync selected Openstreetmap elements'
 
     actions = [sync_objects]
