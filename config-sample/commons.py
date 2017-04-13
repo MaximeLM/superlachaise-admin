@@ -47,8 +47,6 @@ def get_commons_category_id(wikidata_entry):
         location_accepted = False
         for location_qualifier in [P_PART_OF, P_LOCATION, P_PLACE_OF_BURIAL]:
             if location_qualifier in claims:
-                if wikidata_entry.id == 'Q24265482':
-                    print(location_qualifier)
                 for location in claims[location_qualifier]:
                     if F_MAINSNAK in location and get_property_id(location[F_MAINSNAK]) in accepted_locations:
                         location_accepted = True
