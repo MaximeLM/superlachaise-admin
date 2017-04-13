@@ -294,8 +294,8 @@ class WikidataEntryTestCase(TestCase):
     # secondary_entries
 
     def test_secondary_entry_is_removed_from_secondary_entries_if_deleted(self):
-        wikidata_entry=WikidataEntry(id="Q123456")
-        secondary_wikidata_entry=WikidataEntry(id="Q654321")
+        wikidata_entry = WikidataEntry(id="Q123456")
+        secondary_wikidata_entry = WikidataEntry(id="Q654321")
         wikidata_entry.secondary_entries.add(secondary_wikidata_entry)
         secondary_wikidata_entry.save()
         wikidata_entry.save()
@@ -305,8 +305,8 @@ class WikidataEntryTestCase(TestCase):
         self.assertEqual(wikidata_entry.secondary_entries.count(), 0)
 
     def test_secondary_entry_is_not_deleted_if_wikidata_entry_is_deleted(self):
-        wikidata_entry=WikidataEntry(id="Q123456")
-        secondary_wikidata_entry=WikidataEntry(id="Q654321")
+        wikidata_entry = WikidataEntry(id="Q123456")
+        secondary_wikidata_entry = WikidataEntry(id="Q654321")
         wikidata_entry.secondary_entries.add(secondary_wikidata_entry)
         secondary_wikidata_entry.save()
         wikidata_entry.save()
@@ -339,7 +339,7 @@ class WikidataEntryTestCase(TestCase):
 
     # commons_category
 
-    def test_commons_category_is_set_to_null_if_commons_category_is_deleted(self):
+    def test_commons_category_is_set_to_none_if_commons_category_is_deleted(self):
         wikidata_entry=WikidataEntry(id="Q123456", commons_category=CommonsCategory(id="Jim Morrison"))
         wikidata_entry.save()
         self.assertIsNotNone(wikidata_entry.commons_category)

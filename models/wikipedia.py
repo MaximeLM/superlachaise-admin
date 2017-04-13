@@ -7,7 +7,7 @@ class WikipediaPage(models.Model):
     # <language>|<title>
     id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikipedia_id])
 
-    default_sort = models.CharField(default='', max_length=1024, blank=True)
+    default_sort = models.CharField(default='', blank=True, max_length=1024)
     extract = models.TextField(default='', blank=True)
 
     def id_parts(self):

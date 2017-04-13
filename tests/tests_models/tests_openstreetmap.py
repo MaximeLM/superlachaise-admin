@@ -142,7 +142,7 @@ class OpenstreetmapElementTestCase(TestCase):
 
     # wikidata_entry
 
-    def test_wikidata_entry_is_set_to_null_if_wikidata_entry_is_deleted(self):
+    def test_wikidata_entry_is_set_to_none_if_wikidata_entry_is_deleted(self):
         openstreetmap_element = OpenstreetmapElement(id="node/123456", wikidata_entry=WikidataEntry(id="Q123456"))
         openstreetmap_element.save()
         self.assertIsNotNone(openstreetmap_element.wikidata_entry)

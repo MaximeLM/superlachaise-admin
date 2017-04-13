@@ -29,7 +29,7 @@ class CommonsCategoryTestCase(TestCase):
 
     # redirect
 
-    def test_redirect_is_set_to_null_if_redirect_is_deleted(self):
+    def test_redirect_is_set_to_none_if_redirect_is_deleted(self):
         commons_category = CommonsCategory(id="Jim Morrison (old)", redirect=CommonsCategory(id="Jim Morrison"))
         commons_category.save()
         self.assertIsNotNone(commons_category.redirect)
