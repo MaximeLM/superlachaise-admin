@@ -55,20 +55,6 @@ def WIKIPEDIA_API_RESULT_REVISIONS():
         }
     }
 
-WIKIPEDIA_API_RESULT_EXTRACT = {
-    "batchcomplete":"",
-    "query": {
-        "pages": {
-            "6998361": {
-                'pageid': 6998361,
-                'ns': 0,
-                'title': 'Alexandre Ledru-Rollin',
-                'extract': "<p><b>Alexandre-Auguste Ledru-Rollin</b>, n\u00e9 le <time class=\"nowrap date-lien\" datetime=\"1807-02-02\">2 f\u00e9vrier 1807</time> \u00e0 Paris et mort le <time class=\"nowrap date-lien\" datetime=\"1874-12-31\">31 d\u00e9cembre 1874</time> \u00e0 Fontenay-aux-Roses (Seine, actuellement Hauts-de-Seine), est un avocat et homme politique fran\u00e7ais.</p>\n<p>R\u00e9publicain progressiste, il est l'un des chefs de file de la campagne des Banquets qui aboutit \u00e0 la r\u00e9volution de 1848 et \u00e0 la Deuxi\u00e8me R\u00e9publique. Comme Ministre de l'int\u00e9rieur du gouvernement provisoire alors institu\u00e9, il fait adopter par d\u00e9cret le suffrage universel masculin. Mais il n'obtient que 5\u00a0% des suffrages lors de l'\u00e9lection pr\u00e9sidentielle fran\u00e7aise de 1848.</p>\n<p></p>"
-            }
-        }
-    }
-}
-
 WIKIPEDIA_API_RESULT_MISSING = {
     "batchcomplete":"",
     "query": {
@@ -203,11 +189,6 @@ class SyncWikipediaPagesTestCase(TestCase):
         sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_REVISIONS(), [wikipedia_page])
         self.assertEqual(wikipedia_page.default_sort, "Bernardin de Saint-Pierre, Jacques-Henri")
 
-    def test_handle_wikipedia_api_result_sets_wikipedia_pages_formatted_extract_if_extract_is_present(self):
-        wikipedia_page = WikipediaPage(id="fr|Alexandre Ledru-Rollin")
-        sync_wikipedia_pages.handle_wikipedia_api_result(WIKIPEDIA_API_RESULT_EXTRACT, [wikipedia_page])
-        self.assertEqual(wikipedia_page.extract, sync_wikipedia_pages.format_extract(WIKIPEDIA_API_RESULT_EXTRACT['query']['pages']['6998361']['extract']))
-
     def test_handle_wikipedia_api_result_returns_continue_if_present(self):
         wikipedia_page = WikipediaPage(id="fr|Jacques-Henri Bernardin de Saint-Pierre")
         continue_dict = {
@@ -230,23 +211,3 @@ class SyncWikipediaPagesTestCase(TestCase):
     def test_get_default_sort_returns_none_if_not_present_in_wikitext(self):
         wikitext = "'''Jacques-Henri Bernardin de Saint-Pierre''' (also called '''Bernardin de St. Pierre''') (19 January 1737 [[Le Havre]]  &ndash; 21 January 1814 [[Éragny, Val-d'Oise|Éragny]], [[Val-d'Oise]]) was a [[France|French]] writer and [[botanist]]. He is best known for his 1788 novel ''[[Paul et Virginie]]'', now largely forgotten, but in the 19th century a very popular [[children's book]].\n\n[[Category:École des Ponts ParisTech alumni]]\n"
         self.assertIsNone(sync_wikipedia_pages.get_default_sort(wikitext))
-
-    # format_extract
-
-    def test_format_extract_returns_regular_extract(self):
-        extract = "<p><b>Alain Bashung</b>, né <b>Alain Baschung</b> le <time class=\"nowrap date-lien\" datetime=\"1947-12-01\">1<sup>er</sup> décembre 1947</time> à Paris et mort dans cette même ville le <time class=\"nowrap date-lien dday\" datetime=\"2009-03-14\">14 mars 2009</time>, est un auteur-compositeur-interprète et comédien français d'origines bretonne et algérienne. Il est devenu, après un début de carrière difficile, une figure importante de la chanson et du rock français à partir du début des années 1980 et a influencé un grand nombre de chanteurs de la nouvelle scène française. Il est le chanteur le plus primé aux Victoires de la musique avec 12 victoires obtenues tout au long de sa carrière.</p>"
-        self.assertEqual(sync_wikipedia_pages.format_extract(extract), extract)
-
-    def test_format_extract_removes_trailing_white_lines(self):
-        extract = "<p><b>Alain Bashung</b>, né <b>Alain Baschung</b> le <time class=\"nowrap date-lien\" datetime=\"1947-12-01\">1<sup>er</sup> décembre 1947</time> à Paris et mort dans cette même ville le <time class=\"nowrap date-lien dday\" datetime=\"2009-03-14\">14 mars 2009</time>, est un auteur-compositeur-interprète et comédien français d'origines bretonne et algérienne. Il est devenu, après un début de carrière difficile, une figure importante de la chanson et du rock français à partir du début des années 1980 et a influencé un grand nombre de chanteurs de la nouvelle scène française. Il est le chanteur le plus primé aux Victoires de la musique avec 12 victoires obtenues tout au long de sa carrière.</p>\n"
-        expected_extract = "<p><b>Alain Bashung</b>, né <b>Alain Baschung</b> le <time class=\"nowrap date-lien\" datetime=\"1947-12-01\">1<sup>er</sup> décembre 1947</time> à Paris et mort dans cette même ville le <time class=\"nowrap date-lien dday\" datetime=\"2009-03-14\">14 mars 2009</time>, est un auteur-compositeur-interprète et comédien français d'origines bretonne et algérienne. Il est devenu, après un début de carrière difficile, une figure importante de la chanson et du rock français à partir du début des années 1980 et a influencé un grand nombre de chanteurs de la nouvelle scène française. Il est le chanteur le plus primé aux Victoires de la musique avec 12 victoires obtenues tout au long de sa carrière.</p>"
-        self.assertEqual(sync_wikipedia_pages.format_extract(extract), expected_extract)
-
-    def test_format_extract_removes_trailing_empty_paragraph(self):
-        extract = "<p><b>Alain Bashung</b>, né <b>Alain Baschung</b> le <time class=\"nowrap date-lien\" datetime=\"1947-12-01\">1<sup>er</sup> décembre 1947</time> à Paris et mort dans cette même ville le <time class=\"nowrap date-lien dday\" datetime=\"2009-03-14\">14 mars 2009</time>, est un auteur-compositeur-interprète et comédien français d'origines bretonne et algérienne. Il est devenu, après un début de carrière difficile, une figure importante de la chanson et du rock français à partir du début des années 1980 et a influencé un grand nombre de chanteurs de la nouvelle scène française. Il est le chanteur le plus primé aux Victoires de la musique avec 12 victoires obtenues tout au long de sa carrière.</p>\n<p></p>"
-        expected_extract = "<p><b>Alain Bashung</b>, né <b>Alain Baschung</b> le <time class=\"nowrap date-lien\" datetime=\"1947-12-01\">1<sup>er</sup> décembre 1947</time> à Paris et mort dans cette même ville le <time class=\"nowrap date-lien dday\" datetime=\"2009-03-14\">14 mars 2009</time>, est un auteur-compositeur-interprète et comédien français d'origines bretonne et algérienne. Il est devenu, après un début de carrière difficile, une figure importante de la chanson et du rock français à partir du début des années 1980 et a influencé un grand nombre de chanteurs de la nouvelle scène française. Il est le chanteur le plus primé aux Victoires de la musique avec 12 victoires obtenues tout au long de sa carrière.</p>"
-        self.assertEqual(sync_wikipedia_pages.format_extract(extract), expected_extract)
-
-    def test_format_extract_returns_extract_if_extract_is_empty(self):
-        extract = ""
-        self.assertEqual(sync_wikipedia_pages.format_extract(extract), "")

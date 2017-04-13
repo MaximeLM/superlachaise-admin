@@ -84,7 +84,7 @@ def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.base.LANGUAGE
 def make_wikipedia_query_params(wikipedia_pages):
     return {
         'action': 'query',
-        'prop': 'revisions|extracts',
+        'prop': 'revisions',
         'rvprop': 'content',
         'exintro': '',
         'format': 'json',
@@ -114,7 +114,6 @@ def request_wikipedia_pages(wikipedia_pages):
             # Prepare wikipedia pages
             for wikipedia_page in wikipedia_pages_chunk:
                 wikipedia_page.default_sort = None
-                wikipedia_page.extract = None
 
             wikipedia_query_params = make_wikipedia_query_params(wikipedia_pages_chunk)
             last_continue = {'continue': ''}
@@ -129,9 +128,6 @@ def request_wikipedia_pages(wikipedia_pages):
                 if not wikipedia_page.default_sort:
                     logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page.id))
                     wikipedia_page.default_sort = ''
-                if not wikipedia_page.extract:
-                    logger.warning("Extract is missing for Wikipedia page {}".format(wikipedia_page.id))
-                    wikipedia_page.extract = ''
                 wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
 
@@ -154,8 +150,6 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
         if 'revisions' in wikipedia_page_dict:
             wikitext = wikipedia_page_dict['revisions'][0]['*']
             wikipedia_page.default_sort = get_default_sort(wikitext)
-        if 'extract' in wikipedia_page_dict:
-            wikipedia_page.extract = format_extract(wikipedia_page_dict['extract'])
     if len(wikipedia_pages_by_title) > 0:
         raise WikipediaAPIMissingPagesError(wikipedia_pages_by_title.values())
     if 'continue' in result:
@@ -167,12 +161,3 @@ def get_default_sort(wikitext):
         match = DEFAULT_SORT_PATTERN.match(line)
         if match:
             return match.group(1)
-
-def format_extract(extract):
-    extract_lines = extract.split('\n')
-
-    # Remove trailing white lines and empty paragraphs
-    while len(extract_lines) > 1 and extract_lines[-1] == '' or extract_lines[-1] == '<p></p>':
-        extract_lines = extract_lines[:-1]
-
-    return '\n'.join(extract_lines)
