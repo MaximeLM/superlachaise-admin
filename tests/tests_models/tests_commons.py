@@ -36,3 +36,26 @@ class CommonsCategoryTestCase(TestCase):
         commons_category.redirect.delete()
         commons_category = CommonsCategory.objects.get(id="Jim Morrison (old)")
         self.assertIsNone(commons_category.redirect)
+
+class CommonsFileTestCase(TestCase):
+
+    # validation
+
+    def test_validation_succeeds_if_id_is_not_none(self):
+        commons_file = CommonsFile(id="Jim Morrison")
+        commons_file.full_clean()
+
+    def test_validation_fails_if_id_is_none(self):
+        commons_file = CommonsFile(id=None)
+        with self.assertRaises(ValidationError):
+            commons_file.full_clean()
+
+    # commons_url
+
+    def test_commons_url_returns_commons_url_format_if_id_is_valid(self):
+        commons_file = CommonsFile(id="Jim Morrison")
+        self.assertEqual(commons_file.commons_url(), CommonsFile.COMMONS_URL_FORMAT.format(id="Jim Morrison"))
+
+    def test_commons_url_returns_none_if_id_is_none(self):
+        commons_file = CommonsFile(id=None)
+        self.assertIsNone(commons_file.commons_url())

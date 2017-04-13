@@ -8,7 +8,7 @@ class WikidataEntry(models.Model):
     # Q<numeric_id>
     id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_id])
 
-    name = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=1024, blank=True)
 
     raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_descriptions = models.TextField(default='{}', validators=[model_validators.validate_JSON])

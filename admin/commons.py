@@ -30,3 +30,24 @@ class CommonsCategoryAdmin(admin.ModelAdmin):
     sync_objects.short_description = 'Sync selected Commons categories'
 
     actions = [sync_objects]
+
+@admin.register(CommonsFile)
+class CommonsFileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'license', 'author', 'commons_link')
+    search_fields = ('id',)
+
+    fieldsets = [
+        (None, {'fields': ['id', 'commons_link']}),
+        (None, {'fields': ['license', 'author']}),
+    ]
+    readonly_fields = ('commons_link',)
+
+    def commons_link(self, obj):
+        return admin_utils.html_link(obj.commons_url())
+
+    def sync_objects(self, request, queryset):
+        ids = [object.id for object in queryset]
+        admin_utils.sync(request, 'commons_files', {'ids': ids})
+    sync_objects.short_description = 'Sync selected Commons files'
+
+    actions = [sync_objects]
