@@ -6,7 +6,7 @@ from superlachaise.admin import admin_utils
 @admin.register(WikidataEntry)
 class WikidataEntryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'commons_category_link', 'wikidata_link')
-    search_fields = ('id', 'name')
+    search_fields = ('id', 'name', 'raw_claims')
 
     fieldsets = [
         (None, {'fields': ['id', 'name', 'wikidata_link', 'secondary_entries', 'wikipedia_pages']}),

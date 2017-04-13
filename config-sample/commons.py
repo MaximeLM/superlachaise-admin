@@ -5,17 +5,19 @@ from superlachaise.models.wikidata import *
 P_PLACE_OF_BURIAL = "P119"
 P_COMMONS_CATEGORY = "P373"
 P_PART_OF = "P361"
+P_LOCATION = "P276"
 
 Q_HUMAN = "Q5"
 Q_PERE_LACHAISE_CEMETERY = "Q311"
 Q_PERE_LACHAISE_CREMATORIUM = "Q3006253"
+Q_GRAVE_OF_JIM_MORRISON = "Q24265482"
 
 logger = logging.getLogger("superlachaise")
 
 def get_commons_category_id(wikidata_entry):
     """ Returns a Commons category ID from a Wikidata entry """
 
-    accepted_locations = [Q_PERE_LACHAISE_CEMETERY, Q_PERE_LACHAISE_CREMATORIUM]
+    accepted_locations = [Q_PERE_LACHAISE_CEMETERY, Q_PERE_LACHAISE_CREMATORIUM, Q_GRAVE_OF_JIM_MORRISON]
     claims = wikidata_entry.claims()
 
     # Get instance_of values from entry
@@ -40,14 +42,17 @@ def get_commons_category_id(wikidata_entry):
                             commons_category_id = get_property_value(commons_category)
                             if commons_category_id:
                                 return commons_category_id
-    else:
+    elif claims:
         # If the entry is a part of the Père Lachaise cemetery, look for a root commons category
         location_accepted = False
-        if claims and P_PART_OF in claims:
-            for part_of in claims[P_PART_OF]:
-                if F_MAINSNAK in part_of and get_property_id(part_of[F_MAINSNAK]) in accepted_locations:
-                    location_accepted = True
-                    break
+        for location_qualifier in [P_PART_OF, P_LOCATION, P_PLACE_OF_BURIAL]:
+            if location_qualifier in claims:
+                if wikidata_entry.id == 'Q24265482':
+                    print(location_qualifier)
+                for location in claims[location_qualifier]:
+                    if F_MAINSNAK in location and get_property_id(location[F_MAINSNAK]) in accepted_locations:
+                        location_accepted = True
+                        break
         if location_accepted and P_COMMONS_CATEGORY in claims:
             commons_categories = claims[P_COMMONS_CATEGORY]
             if len(commons_categories) > 1:
