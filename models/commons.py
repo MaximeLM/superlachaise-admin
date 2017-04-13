@@ -12,6 +12,9 @@ class CommonsCategory(models.Model):
 
     redirect = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
 
+    main_commons_file = models.ForeignKey('CommonsFile', null=True, blank=True, on_delete=models.SET_NULL, related_name='main_file_of')
+    commons_files = models.ManyToManyField('CommonsFile', blank=True, related_name='file_of')
+
     COMMONS_URL_FORMAT = "https://commons.wikimedia.org/wiki/Category:{id}"
     def commons_url(self):
         if self.id:

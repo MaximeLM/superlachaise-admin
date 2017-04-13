@@ -6,18 +6,25 @@ from superlachaise.admin import admin_utils
 
 @admin.register(CommonsCategory)
 class CommonsCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'default_sort', 'image', 'redirect_link', 'commons_link')
+    list_display = ('id', 'default_sort', 'main_commons_file_link', 'redirect_link', 'commons_link')
     search_fields = ('id',)
 
     fieldsets = [
         (None, {'fields': ['id', 'commons_link']}),
+        (None, {'fields': ['main_commons_file', 'main_commons_file_link', 'commons_files']}),
         (None, {'fields': ['redirect', 'redirect_link']}),
         (None, {'fields': ['image', 'default_sort']}),
     ]
-    readonly_fields = ('commons_link', 'redirect_link')
+    readonly_fields = ('commons_link', 'main_commons_file_link', 'redirect_link')
+    filter_horizontal = ('commons_files',)
 
     def commons_link(self, obj):
         return admin_utils.html_link(obj.commons_url())
+
+    def main_commons_file_link(self, obj):
+        if obj.main_commons_file:
+            return admin_utils.html_link(admin_utils.change_page_url(obj.main_commons_file), str(obj.main_commons_file))
+    main_commons_file_link.admin_order_field = 'main_commons_file'
 
     def redirect_link(self, obj):
         if obj.redirect:
