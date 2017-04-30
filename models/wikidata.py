@@ -18,6 +18,7 @@ class WikidataEntry(models.Model):
     secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False)
     wikipedia_pages = models.ManyToManyField('WikipediaPage', blank=True)
     commons_category = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
+    wikidata_categories = models.ManyToManyField('WikidataCategory', blank=True)
 
     # JSON fields
 
