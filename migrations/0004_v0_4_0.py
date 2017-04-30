@@ -10,7 +10,7 @@ import superlachaise.models.model_validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('superlachaise', '0003_auto_20170430_1356'),
+        ('superlachaise', '0003_v0_3_0'),
     ]
 
     operations = [
