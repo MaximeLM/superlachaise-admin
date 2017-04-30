@@ -1,12 +1,13 @@
-CATEGORIES = {
-    "sample": {
-        "kind": "sample",
+CATEGORIES = [
+    {
+        "id": "sample",
+        "kind": "instance_of",
         "labels": {
-            "fr": "exemple",
-            "en": "sample"
+            "en": "sample",
+            "fr": "exemple"
         },
-        "wikidata_categories": [
-            "instance_of/Q179700",
+        "wikidata_entries": [
+            "Q179700"
         ]
     }
-}
+]

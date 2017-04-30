@@ -35,7 +35,8 @@ class Category(models.Model):
 
     def json_object(self):
         return {
+            "id": self.id,
             "kind": self.kind,
             "labels": self.labels(),
-            "wikidata_categories": [wikidata_category.id for wikidata_category in self.wikidata_categories.all()]
+            "wikidata_entries": [wikidata_category.wikidata_id() for wikidata_category in self.wikidata_categories.all()]
         }

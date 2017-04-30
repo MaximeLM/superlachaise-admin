@@ -42,8 +42,8 @@ def get_or_create_categories_to_refresh(ids, configured_categories):
     else:
         categories = list(Category.objects.all())
         created = 0
-        for category_id in configured_categories.keys():
-            category, was_created = Category.objects.get_or_create(id=category_id)
+        for category_dict in configured_categories:
+            category, was_created = Category.objects.get_or_create(id=category_dict['id'])
             if not category in categories:
                 categories.append(category)
             if was_created:
@@ -53,25 +53,32 @@ def get_or_create_categories_to_refresh(ids, configured_categories):
                 logger.debug("Matched Category "+category.id)
         return (categories, created)
 
-def refresh_categories(categories_to_refresh, configured_categories):
+def refresh_categories(categories_to_refresh, configured_categories, languages=config.base.LANGUAGES):
+    configured_categories_by_id = {category_dict['id']: category_dict for category_dict in configured_categories}
     for category in categories_to_refresh:
-        if category.id in configured_categories:
+        if category.id in configured_categories_by_id:
+            category_dict = configured_categories_by_id[category.id]
             logger.debug("Refresh Category {category_id} from configured categories".format(category_id=category.id))
-            category_dict = configured_categories[category.id]
             category.kind = category_dict['kind']
             category.raw_labels = json.dumps(category_dict['labels'], ensure_ascii=False, indent=4, separators=(',', ': '))
+            for language in languages:
+                if not language in category_dict['labels']:
+                    logger.warning("Label for language '{}' is missing for category {}".format(language, category.id))
             category.save()
-            for wikidata_category_id in category_dict['wikidata_categories']:
+            for wikidata_entry_id in category_dict['wikidata_entries']:
+                wikidata_category_id = category.kind + '/' + wikidata_entry_id
                 try:
                    wikidata_category = WikidataCategory.objects.get(id=wikidata_category_id)
                    if not wikidata_category.category:
                        wikidata_category.category = category
                        wikidata_category.save()
                 except WikidataCategory.DoesNotExist:
-                   logger.warning("No such Wikidata occupation {}".format(wikidata_category_id))
+                   logger.warning("No such Wikidata category {}".format(wikidata_category_id))
 
 def export_categories(categories):
-    categories_object = {category.id: category.json_object() for category in categories}
+    categories_object = {
+        "categories": [category.json_object() for category in categories]
+    }
 
     with open(os.path.join(settings.SUPERLACHAISE_EXPORTS, 'categories.json'), 'w') as export_file:
         export_file.write(json.dumps(categories_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
