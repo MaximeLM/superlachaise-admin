@@ -13,6 +13,7 @@ class Command(BaseCommand):
         "wikidata_entries",
         "wikipedia_pages",
         "commons_categories",
+        "wikidata_categories",
     ]
 
     def add_arguments(self, parser):

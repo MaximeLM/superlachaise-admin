@@ -7,6 +7,8 @@ OPENSTREETMAP_ID_TAGS = [
 ]
 
 P_OF = "P642"
+P_SEX_OR_GENDER = "P21"
+P_OCCUPATION = "P106"
 
 Q_TOMB = "Q173387"
 
@@ -26,3 +28,21 @@ def get_secondary_wikidata_entries(wikidata_entry):
                             wikidata_entries.append(grave_of_id)
 
     return wikidata_entries
+
+def get_wikidata_categories(wikidata_entry):
+    """ List Wikidata properties that can be used to categorize the wikidata entry """
+    wikidata_categories = []
+
+    claims_for_categories = [P_INSTANCE_OF, P_SEX_OR_GENDER, P_OCCUPATION]
+
+    claims = wikidata_entry.claims()
+    if claims:
+        for claim in claims_for_categories:
+            if claim in claims:
+                for category in claims[claim]:
+                    if F_MAINSNAK in category:
+                        category_id = get_property_id(category[F_MAINSNAK])
+                        if category_id and category_id not in wikidata_categories:
+                            wikidata_categories.append(category_id)
+
+    return wikidata_categories
