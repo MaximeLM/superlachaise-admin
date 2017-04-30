@@ -82,3 +82,38 @@ def get_property_id(property_dict):
     value = get_property_value(property_dict)
     if value and 'id' in value:
         return value['id']
+
+class WikidataCategory(models.Model):
+
+    # Q<numeric_id>
+    id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_id])
+
+    name = models.CharField(max_length=1024, blank=True)
+
+    raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
+
+    # JSON fields
+
+    def labels(self):
+        if self.raw_labels:
+            return json.loads(self.raw_labels)
+
+    # Fields access
+
+    def get_label(self, language):
+        labels = self.labels()
+        if labels and language in labels and 'value' in labels[language]:
+            return labels[language]['value']
+
+    WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
+    def wikidata_url(self):
+        if self.id:
+            return WikidataCategory.WIKIDATA_URL_FORMAT.format(id=self.id)
+
+    def __str__(self):
+        return self.id + ((" - " + self.name) if self.name else "")
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Wikidata category'
+        verbose_name_plural = 'Wikidata categories'

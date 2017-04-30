@@ -30,3 +30,24 @@ class WikidataEntryAdmin(admin.ModelAdmin):
     sync_objects.short_description = 'Sync selected Wikidata entries'
 
     actions = [sync_objects]
+
+@admin.register(WikidataCategory)
+class WikidataCategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'wikidata_link')
+    search_fields = ('id', 'name')
+
+    fieldsets = [
+        (None, {'fields': ['id', 'name', 'wikidata_link']}),
+        (None, {'fields': ['raw_labels']}),
+    ]
+    readonly_fields = ('wikidata_link',)
+
+    def wikidata_link(self, obj):
+        return admin_utils.html_link(obj.wikidata_url())
+
+    def sync_objects(self, request, queryset):
+        ids = [object.id for object in queryset]
+        admin_utils.sync(request, 'wikidata_categories', {'ids': ids})
+    sync_objects.short_description = 'Sync selected Wikidata categories'
+
+    actions = [sync_objects]

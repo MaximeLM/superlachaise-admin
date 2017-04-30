@@ -398,3 +398,103 @@ class WikidataEntryTestCase(TestCase):
             "datatype": "external-id"
         }
         self.assertIsNone(get_property_id(property_dict))
+
+class WikidataCategoryTestCase(TestCase):
+
+    # validation
+
+    def test_validation_succeeds_if_id_has_valid_format(self):
+        wikidata_category = WikidataCategory(id="Q123456")
+        wikidata_category.full_clean()
+
+    def test_validation_fails_if_id_has_invalid_format(self):
+        wikidata_category = WikidataCategory(id="123456")
+        with self.assertRaises(ValidationError):
+            wikidata_category.full_clean()
+
+    def test_validation_fails_if_id_is_none(self):
+        wikidata_category = WikidataCategory(id=None)
+        with self.assertRaises(ValidationError):
+            wikidata_category.full_clean()
+
+    def test_validation_succeeds_if_raw_labels_is_valid_JSON(self):
+        wikidata_category = WikidataCategory(
+            id="Q123456",
+            raw_labels=json.dumps({"key": "value"}))
+        wikidata_category.full_clean()
+
+    def test_validation_fails_if_raw_labels_is_empty(self):
+        wikidata_category = WikidataCategory(
+            id="Q123456",
+            raw_labels="")
+        with self.assertRaises(ValidationError):
+            wikidata_category.full_clean()
+
+    def test_validation_fails_if_raw_labels_is_invalid_JSON(self):
+        wikidata_category = WikidataCategory(
+            id="Q123456",
+            raw_labels="json")
+        with self.assertRaises(ValidationError):
+            wikidata_category.full_clean()
+
+    # labels
+
+    def test_labels_returns_object_if_raw_labels_is_valid_JSON(self):
+        object = {"key": "value"}
+        wikidata_category = WikidataCategory(
+            raw_labels=json.dumps(object))
+        self.assertEqual(wikidata_category.labels(), object)
+
+    def test_labels_returns_none_if_raw_labels_is_none(self):
+        wikidata_category = WikidataCategory(
+            raw_labels=None)
+        self.assertIsNone(wikidata_category.labels())
+
+    def test_labels_fails_if_raw_labels_is_invalid_JSON(self):
+        wikidata_category = WikidataCategory(
+            raw_labels="json")
+        with self.assertRaises(JSONDecodeError):
+            wikidata_category.labels()
+
+    # wikidata_url
+
+    def test_wikidata_url_returns_wikidata_url_format_if_id_is_not_none(self):
+        id = "Q123456"
+        wikidata_category = WikidataCategory(id=id)
+        self.assertEqual(WikidataCategory.WIKIDATA_URL_FORMAT.format(id=id), wikidata_category.wikidata_url())
+
+    def test_wikidata_url_returns_none_if_id_is_none(self):
+        wikidata_category = WikidataCategory(id=None)
+        self.assertIsNone(wikidata_category.wikidata_url())
+
+    # get_label
+
+    def test_get_label_returns_label_for_language_if_it_exists(self):
+        wikidata_category = WikidataCategory(raw_labels=json.dumps(
+            {
+                "en": {
+                    "language": "en",
+                    "value": "Annie Girardot (en)"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "Annie Girardot (fr)"
+                }
+            }
+        ))
+        self.assertEqual(wikidata_category.get_label("en"), "Annie Girardot (en)")
+
+    def test_get_label_returns_none_for_language_if_it_does_not_exist(self):
+        wikidata_category = WikidataCategory(raw_labels=json.dumps(
+            {
+                "en": {
+                    "language": "en",
+                    "value": "Annie Girardot (fr)"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "Annie Girardot (en)"
+                }
+            }
+        ))
+        self.assertIsNone(wikidata_category.get_label("de"))
