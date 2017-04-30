@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-APP_VERSION = '0.3'
+APP_VERSION = '0.4'
 
 class SuperlachaiseConfig(AppConfig):
     name = 'superlachaise'
