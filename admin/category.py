@@ -5,11 +5,11 @@ from superlachaise.admin import admin_utils
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id',)
-    search_fields = ('id',)
+    list_display = ('id', 'kind')
+    search_fields = ('id', 'kind')
 
     fieldsets = [
-        (None, {'fields': ['id']}),
+        (None, {'fields': ['id', 'kind']}),
         (None, {'fields': ['raw_labels']}),
     ]
 
