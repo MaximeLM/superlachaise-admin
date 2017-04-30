@@ -4,6 +4,7 @@ __all__ = [
     "wikidata",
     "wikipedia",
     "commons",
+    "category",
 ]
 
 from superlachaise.admin import *

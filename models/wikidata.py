@@ -88,10 +88,11 @@ class WikidataCategory(models.Model):
 
     # <kind>/Q<numeric_id>
     id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_category_id])
-
     name = models.CharField(max_length=1024, blank=True)
 
     raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
+
+    category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
 
     # JSON fields
 
