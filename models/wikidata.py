@@ -92,7 +92,7 @@ class WikidataCategory(models.Model):
 
     raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
-    category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL, related_name="wikidata_categories")
 
     # JSON fields
 

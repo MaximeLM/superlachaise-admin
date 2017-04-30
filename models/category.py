@@ -30,3 +30,12 @@ class Category(models.Model):
         ordering = ['id']
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
+
+    # Export
+
+    def json_object(self):
+        return {
+            "kind": self.kind,
+            "labels": self.labels(),
+            "wikidata_categories": [wikidata_category.id for wikidata_category in self.wikidata_categories.all()]
+        }

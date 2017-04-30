@@ -25,6 +25,10 @@ def sync(reset=False, ids=None, **kwargs):
 
     refresh_categories(categories_to_refresh, configured_categories)
 
+    if not ids:
+        logger.info('Export categories')
+        export_categories(categories_to_refresh)
+
     logger.info('== end sync categories ==')
 
 def delete_objects():
@@ -65,3 +69,9 @@ def refresh_categories(categories_to_refresh, configured_categories):
                        wikidata_category.save()
                 except WikidataCategory.DoesNotExist:
                    logger.warning("No such Wikidata occupation {}".format(wikidata_category_id))
+
+def export_categories(categories):
+    categories_object = {category.id: category.json_object() for category in categories}
+
+    with open(os.path.join(settings.SUPERLACHAISE_EXPORTS, 'categories.json'), 'w') as export_file:
+        export_file.write(json.dumps(categories_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
