@@ -33,17 +33,25 @@ class WikidataEntryAdmin(admin.ModelAdmin):
 
 @admin.register(WikidataCategory)
 class WikidataCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'wikidata_link')
-    search_fields = ('id', 'name')
+    list_display = ('id', 'name', 'category', 'wikidata_link')
+    search_fields = ('id', 'name', 'category__id')
+    list_editable = ('category',)
+    list_filter = ('category',)
 
     fieldsets = [
         (None, {'fields': ['id', 'name', 'wikidata_link']}),
+        (None, {'fields': ['category', 'category_link']}),
         (None, {'fields': ['raw_labels']}),
     ]
-    readonly_fields = ('wikidata_link',)
+    readonly_fields = ('wikidata_link', 'category_link')
 
     def wikidata_link(self, obj):
         return admin_utils.html_link(obj.wikidata_url())
+
+    def category_link(self, obj):
+        if obj.category:
+            return admin_utils.html_link(admin_utils.change_page_url(obj.category), str(obj.category))
+    category_link.admin_order_field = 'category'
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
