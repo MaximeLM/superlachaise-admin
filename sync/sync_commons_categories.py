@@ -156,7 +156,7 @@ def handle_commons_api_result(result, commons_categories):
         for normalize in result['query']['normalized']:
             from_title = normalize['from']
             to_title = normalize['to']
-            logger.warning("Commons category was normalized from {} to {}".format(from_title, to_title))
+            logger.warning("Commons category was normalized from \"{}\" to \"{}\"".format(from_title, to_title))
             commons_categories_by_title[to_title] = commons_categories_by_title.pop(from_title)
     for commons_category_dict in result['query']['pages'].values():
         commons_category = commons_categories_by_title.pop(commons_category_dict['title'])

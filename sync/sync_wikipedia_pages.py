@@ -29,6 +29,16 @@ def sync(reset=False, ids=None, **kwargs):
 
     request_wikipedia_pages(wikipedia_pages_to_refresh)
 
+    redirects = get_redirects(wikipedia_pages_to_refresh)
+    redirects_len = sum(len(wikipedia_pages) for wikipedia_pages in redirects.values())
+    while redirects_len > 0:
+        logger.info("Found {} redirect Wikipedia pages to refresh".format(redirects_len))
+        for (language, wikipedia_pages) in redirects.items():
+            orphaned_objects = [wikipedia_page for wikipedia_page in orphaned_objects if wikipedia_page not in wikipedia_pages]
+        request_wikipedia_pages(redirects)
+        redirects = get_redirects(redirects)
+        redirects_len = sum(len(wikipedia_pages) for wikipedia_pages in redirects.values())
+
     for wikipedia_page in orphaned_objects:
         logger.debug("Deleted WikipediaPage "+wikipedia_page.id)
         wikipedia_page.delete()
@@ -79,6 +89,17 @@ def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.base.LANGUAGE
         logger.info('List Wikipedia pages from Wikidata entries')
         return get_or_create_wikipedia_pages_from_wikidata_entries(list(WikidataEntry.objects.all()), languages)
 
+def get_redirects(wikipedia_pages, languages=config.base.LANGUAGES):
+    redirects = {language:[] for language in languages}
+
+    for (language, wikipedia_pages_for_language) in wikipedia_pages.items():
+        for wikipedia_page in wikipedia_pages_for_language:
+            if wikipedia_page.redirect:
+                if not wikipedia_page.redirect in redirects[language]:
+                    redirects[language].append(wikipedia_page.redirect)
+
+    return redirects
+
 # Request Wikipedia API
 
 def make_wikipedia_query_params(wikipedia_pages):
@@ -86,7 +107,6 @@ def make_wikipedia_query_params(wikipedia_pages):
         'action': 'query',
         'prop': 'revisions',
         'rvprop': 'content',
-        'exintro': '',
         'format': 'json',
         'titles': '|'.join([wikipedia_page.id_parts()[1] for wikipedia_page in wikipedia_pages]),
     }
@@ -114,6 +134,7 @@ def request_wikipedia_pages(wikipedia_pages):
             # Prepare wikipedia pages
             for wikipedia_page in wikipedia_pages_chunk:
                 wikipedia_page.default_sort = None
+                wikipedia_page.redirect = None
 
             wikipedia_query_params = make_wikipedia_query_params(wikipedia_pages_chunk)
             last_continue = {'continue': ''}
@@ -128,6 +149,8 @@ def request_wikipedia_pages(wikipedia_pages):
                 if not wikipedia_page.default_sort:
                     logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page.id))
                     wikipedia_page.default_sort = ''
+                if wikipedia_page.redirect:
+                    logger.warning("Wikipedia page \"{}\" is a redirect for \"{}\"".format(wikipedia_page.id, wikipedia_page.redirect.id))
                 wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
 
@@ -143,6 +166,12 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
     if 'error' in result:
         raise WikipediaAPIError(result['error']['info'])
     wikipedia_pages_by_title = {wikipedia_page.id_parts()[1]:wikipedia_page for wikipedia_page in wikipedia_pages}
+    if 'normalized' in result['query']:
+        for normalize in result['query']['normalized']:
+            from_title = normalize['from']
+            to_title = normalize['to']
+            logger.warning("Wikipedia page was normalized from \"{}\" to \"{}\"".format(from_title, to_title))
+            wikipedia_pages_by_title[to_title] = wikipedia_pages_by_title.pop(from_title)
     for wikipedia_page_dict in result['query']['pages'].values():
         wikipedia_page = wikipedia_pages_by_title.pop(wikipedia_page_dict['title'])
         if 'missing' in wikipedia_page_dict:
@@ -150,6 +179,15 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
         if 'revisions' in wikipedia_page_dict:
             wikitext = wikipedia_page_dict['revisions'][0]['*']
             wikipedia_page.default_sort = get_default_sort(wikitext)
+            redirect_id = get_redirect_id(wikitext)
+            if redirect_id:
+                wikipedia_id = wikipedia_page.id_parts()[0] + '|' + redirect_id
+                redirect, was_created = WikipediaPage.objects.get_or_create(id=wikipedia_id)
+                if was_created:
+                    logger.debug("Created redirect WikipediaPage "+redirect.id)
+                else:
+                    logger.debug("Matched redirect WikipediaPage "+redirect.id)
+                wikipedia_page.redirect = redirect
     if len(wikipedia_pages_by_title) > 0:
         raise WikipediaAPIMissingPagesError(wikipedia_pages_by_title.values())
     if 'continue' in result:
@@ -159,5 +197,12 @@ DEFAULT_SORT_PATTERN = re.compile("^{{DEFAULTSORT:[\s]*(.*)[\s]*}}$")
 def get_default_sort(wikitext):
     for line in wikitext.split('\n'):
         match = DEFAULT_SORT_PATTERN.match(line)
+        if match:
+            return match.group(1)
+
+REDIRECT_PATTERN = re.compile("^[\s]*#REDIRECT[\s]*\[\[(.*)\]\][\s]*$")
+def get_redirect_id(wikitext):
+    for line in wikitext.split('\n'):
+        match = REDIRECT_PATTERN.match(line)
         if match:
             return match.group(1)

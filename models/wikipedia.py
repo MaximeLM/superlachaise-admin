@@ -9,6 +9,8 @@ class WikipediaPage(models.Model):
 
     default_sort = models.CharField(default='', blank=True, max_length=1024)
 
+    redirect = models.ForeignKey('WikipediaPage', null=True, blank=True, on_delete=models.SET_NULL)
+
     def id_parts(self):
         """ Returns (language, title) from id """
         if self.id:
