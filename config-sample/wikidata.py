@@ -33,15 +33,15 @@ def get_wikidata_categories(wikidata_entry):
     """ List Wikidata properties that can be used to categorize the wikidata entry """
     wikidata_categories = []
 
-    claims_for_categories = [P_INSTANCE_OF, P_SEX_OR_GENDER, P_OCCUPATION]
+    claims_for_categories = [(P_INSTANCE_OF, "instance_of"), (P_SEX_OR_GENDER, "sex_or_gender"), (P_OCCUPATION, "occupation")]
 
     claims = wikidata_entry.claims()
     if claims:
-        for claim in claims_for_categories:
+        for (claim, kind) in claims_for_categories:
             if claim in claims:
                 for category in claims[claim]:
                     if F_MAINSNAK in category:
-                        category_id = get_property_id(category[F_MAINSNAK])
+                        category_id = kind + '/' + get_property_id(category[F_MAINSNAK])
                         if category_id and category_id not in wikidata_categories:
                             wikidata_categories.append(category_id)
 

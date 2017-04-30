@@ -45,8 +45,8 @@ def get_or_create_wikidata_categories_from_wikidata_entries(wikidata_entries, ge
     wikidata_categories = []
     for wikidata_entry in wikidata_entries:
         wikidata_categories_for_wikidata_entry = []
-        for wikidata_id in get_wikidata_categories(wikidata_entry):
-            wikidata_category, was_created = WikidataCategory.objects.get_or_create(id=wikidata_id)
+        for wikidata_category_id in get_wikidata_categories(wikidata_entry):
+            wikidata_category, was_created = WikidataCategory.objects.get_or_create(id=wikidata_category_id)
             if not wikidata_category in wikidata_categories_for_wikidata_entry:
                 wikidata_categories_for_wikidata_entry.append(wikidata_category)
             if was_created:
@@ -70,7 +70,7 @@ def get_or_create_wikidata_categories_to_refresh(ids):
 def make_wikidata_query_params(wikidata_categories, languages):
     return {
         'action': 'wbgetentities',
-        'ids': '|'.join([wikidata_category.id for wikidata_category in wikidata_categories]),
+        'ids': '|'.join([wikidata_category.wikidata_id() for wikidata_category in wikidata_categories]),
         'props': '|'.join(['labels']),
         'languages': '|'.join(languages),
         'format': 'json',
@@ -130,15 +130,15 @@ def handle_wikidata_api_result(result, wikidata_categories, languages):
         if result['error']['code'] == 'no-such-entity':
             wikidata_id = result['error']['id']
             for wikidata_category in wikidata_categories:
-                if wikidata_category.id == wikidata_id:
+                if wikidata_category.wikidata_id() == wikidata_id:
                     logger.warning("No such entity for Wikidata ID {}".format(wikidata_id))
                     wikidata_category.delete()
                     raise WikidataAPINoSuchEntityError(result['error']['info'], wikidata_category)
         raise WikidataAPIError(result['error']['info'])
     for wikidata_category in wikidata_categories:
-        entity = result['entities'][wikidata_category.id]
+        entity = result['entities'][wikidata_category.wikidata_id()]
         if 'missing' in entity:
-            wikidata_id = wikidata_category.id
+            wikidata_id = wikidata_category.wikidata_id()
             logger.warning("Missing entity for Wikidata ID {}".format(wikidata_id))
             wikidata_category.delete()
             raise WikidataAPIMissingEntityError(wikidata_id, wikidata_category)
@@ -148,7 +148,7 @@ def handle_wikidata_api_result(result, wikidata_categories, languages):
         name = None
         for language in languages:
             if not language in entity['labels']:
-                logger.warning("Label for language '{}' is missing for wikidata ID {}".format(language, wikidata_category.id))
+                logger.warning("Label for language '{}' is missing for wikidata ID {}".format(language, wikidata_category.wikidata_id()))
             elif not name:
                 name = entity['labels'][language]['value']
 

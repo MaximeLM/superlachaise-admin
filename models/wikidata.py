@@ -86,8 +86,8 @@ def get_property_id(property_dict):
 
 class WikidataCategory(models.Model):
 
-    # Q<numeric_id>
-    id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_id])
+    # <kind>/Q<numeric_id>
+    id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_category_id])
 
     name = models.CharField(max_length=1024, blank=True)
 
@@ -101,6 +101,12 @@ class WikidataCategory(models.Model):
 
     # Fields access
 
+    def wikidata_id(self):
+        if self.id:
+            split_id = self.id.split('/')
+            if len(split_id) == 2:
+                return split_id[1]
+
     def get_label(self, language):
         labels = self.labels()
         if labels and language in labels and 'value' in labels[language]:
@@ -108,8 +114,9 @@ class WikidataCategory(models.Model):
 
     WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
     def wikidata_url(self):
-        if self.id:
-            return WikidataCategory.WIKIDATA_URL_FORMAT.format(id=self.id)
+        wikidata_id = self.wikidata_id()
+        if wikidata_id:
+            return WikidataCategory.WIKIDATA_URL_FORMAT.format(id=wikidata_id)
 
     def __str__(self):
         return self.id + ((" - " + self.name) if self.name else "")

@@ -18,6 +18,13 @@ def validate_wikidata_id(value):
     if not WIKIDATA_ID_PATTERN.match(value):
         raise ValidationError("Invalid Wikidata ID: expected Q<numeric_id>")
 
+def validate_wikidata_category_id(value):
+    split_id = value.split('/')
+    if len(split_id) != 2:
+        raise ValidationError("Invalid Wikidata category ID: expected <type>/Q<numeric_id>")
+    if not WIKIDATA_ID_PATTERN.match(split_id[1]):
+        raise ValidationError("Invalid Wikidata category ID: expected <type>/Q<numeric_id>")
+
 def validate_wikipedia_id(value):
     if len(value.split('|')) != 2:
         raise ValidationError("Invalid Wikipedia ID: expected <language>|<title>")
