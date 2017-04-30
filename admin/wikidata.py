@@ -36,6 +36,7 @@ class WikidataCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'wikidata_link')
     search_fields = ('id', 'name', 'category__id')
     list_editable = ('category',)
+    list_filter = ('category',)
 
     fieldsets = [
         (None, {'fields': ['id', 'name', 'wikidata_link']}),
