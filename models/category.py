@@ -33,10 +33,10 @@ class Category(models.Model):
 
     # Export
 
-    def json_object(self):
+    def config_object(self):
         return {
             "id": self.id,
             "kind": self.kind,
             "labels": self.labels(),
-            "wikidata_entries": [wikidata_category.wikidata_id() for wikidata_category in self.wikidata_categories.all()]
+            "wikidata_categories": [wikidata_category.wikidata_id() for wikidata_category in self.wikidata_categories.all()]
         }

@@ -6,7 +6,7 @@ CATEGORIES = [
             "en": "sample",
             "fr": "exemple"
         },
-        "wikidata_entries": [
+        "wikidata_categories": [
             "Q179700"
         ]
     }

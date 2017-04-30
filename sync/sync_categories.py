@@ -65,8 +65,8 @@ def refresh_categories(categories_to_refresh, configured_categories, languages=c
                 if not language in category_dict['labels']:
                     logger.warning("Label for language '{}' is missing for category {}".format(language, category.id))
             category.save()
-            for wikidata_entry_id in category_dict['wikidata_entries']:
-                wikidata_category_id = category.kind + '/' + wikidata_entry_id
+            for wikidata_id in category_dict['wikidata_categories']:
+                wikidata_category_id = category.kind + '/' + wikidata_id
                 try:
                    wikidata_category = WikidataCategory.objects.get(id=wikidata_category_id)
                    if not wikidata_category.category:
@@ -76,9 +76,7 @@ def refresh_categories(categories_to_refresh, configured_categories, languages=c
                    logger.warning("No such Wikidata category {}".format(wikidata_category_id))
 
 def export_categories(categories):
-    categories_object = {
-        "categories": [category.json_object() for category in categories]
-    }
+    config_object = [category.config_object() for category in categories]
 
-    with open(os.path.join(settings.SUPERLACHAISE_EXPORTS, 'categories.json'), 'w') as export_file:
-        export_file.write(json.dumps(categories_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
+    with open(os.path.join(settings.SUPERLACHAISE_CONFIG, 'categories_exported.py'), 'w') as export_file:
+        export_file.write("CATEGORIES = " + json.dumps(config_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
