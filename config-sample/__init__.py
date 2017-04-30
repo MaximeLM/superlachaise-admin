@@ -3,4 +3,5 @@ __all__ = [
     'openstreetmap',
     'wikidata',
     'commons',
+    'category',
 ]

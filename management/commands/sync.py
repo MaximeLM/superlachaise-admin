@@ -14,6 +14,7 @@ class Command(BaseCommand):
         "wikipedia_pages",
         "commons_categories",
         "wikidata_categories",
+        "categories",
     ]
 
     def add_arguments(self, parser):

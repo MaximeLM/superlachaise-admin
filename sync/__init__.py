@@ -5,4 +5,5 @@ __all__ = [
     "sync_wikipedia_pages",
     "sync_commons_categories",
     "sync_wikidata_categories",
+    "sync_categories",
 ]
