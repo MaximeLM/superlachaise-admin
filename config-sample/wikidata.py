@@ -20,6 +20,7 @@ P_DATE_OF_BIRTH = "P569"
 P_DATE_OF_DEATH = "P570"
 P_INSTANCE_OF = WikidataEntry.P_INSTANCE_OF
 P_COMMEMORATES = "P547"
+P_MAIN_SUBJECT = "P921"
 
 Q_HUMAN = "Q5"
 Q_GRAVE = "Q173387"
@@ -112,11 +113,13 @@ def get_secondary_wikidata_entries(wikidata_entry):
                         wikidata_entries.append(grave_of_id)
 
     # Add "commemorates" wikidata entries
-    if wikidata_entry.kind == KIND_MONUMENT and P_COMMEMORATES in claims:
-        for commemorates in claims[P_COMMEMORATES]:
-            commemorates_id = wikidata_entry.get_property_id(commemorates[F_MAINSNAK])
-            if commemorates_id:
-                wikidata_entries.append(commemorates_id)
+    if wikidata_entry.kind == KIND_MONUMENT:
+        for monument_claim in [P_COMMEMORATES, P_MAIN_SUBJECT]:
+            if monument_claim in claims:
+                for claim in claims[monument_claim]:
+                    claim_id = wikidata_entry.get_property_id(claim[F_MAINSNAK])
+                    if claim_id:
+                        wikidata_entries.append(claim_id)
 
     return wikidata_entries
 
