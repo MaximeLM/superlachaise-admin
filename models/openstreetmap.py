@@ -14,6 +14,12 @@ class OpenstreetmapElement(models.Model):
     raw_tags = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     wikidata_entry = models.ForeignKey('WikidataEntry', null=True, blank=True, on_delete=models.SET_NULL)
 
+    def split_id(self):
+        if self.id:
+            split_id = self.id.split('/')
+            if len(split_id) == 2:
+                return (split_id[0], split_id[1])
+
     def tags(self):
         if self.raw_tags:
             return json.loads(self.raw_tags)
