@@ -67,7 +67,7 @@ def get_or_create_commons_categories_from_wikidata_entries(wikidata_entries, get
         wikidata_entry.save()
     return (commons_categories, created)
 
-def get_or_create_commons_categories_to_refresh(ids, get_commons_category_id=config.commons.get_commons_category_id):
+def get_or_create_commons_categories_to_refresh(ids, get_commons_category_id=config.wikidata.get_commons_category_id):
     if ids:
         return (list(CommonsCategory.objects.filter(id__in=ids)), 0)
     else:

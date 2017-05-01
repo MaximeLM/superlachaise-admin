@@ -1,7 +1,13 @@
 import json
+import datetime
+import time
+import logging
 from django.db import models
+import dateutil.parser
 
 from superlachaise.models import model_validators
+
+logger = logging.getLogger("superlachaise")
 
 class WikidataEntry(models.Model):
 
@@ -55,6 +61,89 @@ class WikidataEntry(models.Model):
         if sitelinks and site in sitelinks and 'title' in sitelinks[site]:
             return sitelinks[site]['title']
 
+    def get_wikipedia_page(self, language, follow_redirects=True):
+        for wikipedia_page in self.wikipedia_pages.filter(id__startswith=language):
+            if follow_redirects:
+                while wikipedia_page.redirect:
+                    wikipedia_page = wikipedia_page.redirect
+            return wikipedia_page
+
+    def get_commons_category(self, follow_redirects=True):
+        commons_category = self.commons_category
+        if follow_redirects:
+            while commons_category and commons_category.redirect:
+                commons_category = commons_category.redirect
+        return commons_category
+
+    def get_default_sort(self, language):
+        # Use default sort from wikipedia page if available
+        wikipedia_page = self.get_wikipedia_page(language)
+        if wikipedia_page and wikipedia_page.default_sort:
+            return wikipedia_page.default_sort
+        # Use default sort from commons category if available
+        commons_category = self.get_commons_category()
+        if commons_category and commons_category.default_sort:
+            return commons_category.default_sort
+        # Use label
+        return self.get_label(language)
+
+    def get_categories(self):
+        return [wikidata_category.category for wikidata_category in self.wikidata_categories.all() if wikidata_category.category]
+
+    # Claims utils
+
+    P_INSTANCE_OF = "P31"
+
+    F_MAINSNAK = "mainsnak"
+    F_QUALIFIERS = "qualifiers"
+
+    def get_property_value(self, property_dict):
+        if 'datavalue' in property_dict and 'value' in property_dict['datavalue']:
+            return property_dict['datavalue']['value']
+
+    def get_property_id(self, property_dict):
+        value = self.get_property_value(property_dict)
+        if value and 'id' in value:
+            return value['id']
+
+    def get_instance_of_ids(self, claims):
+        instance_of_ids = []
+        if claims and WikidataEntry.P_INSTANCE_OF in claims:
+            for instance_of in claims[WikidataEntry.P_INSTANCE_OF]:
+                if WikidataEntry.F_MAINSNAK in instance_of:
+                    instance_of_id = self.get_property_id(instance_of[WikidataEntry.F_MAINSNAK])
+                    if instance_of_id:
+                        instance_of_ids.append(instance_of_id)
+        return instance_of_ids
+
+    def get_date(self, claims, claim, warn_if_missing=False):
+        if claim in claims:
+            # Take the date with the highest precision
+            best_date_value = None
+            for date_claim in claims[claim]:
+                if WikidataEntry.F_MAINSNAK in date_claim:
+                    date_value = self.get_property_value(date_claim[WikidataEntry.F_MAINSNAK])
+                    if not best_date_value or best_date_value['precision'] < date_value['precision']:
+                        best_date_value = date_value
+
+            if best_date_value:
+                date_string = best_date_value['time']
+                precision = best_date_value['precision']
+
+                date = datetime.date(*time.strptime(date_string[1:11], "%Y-%m-%d")[:3])
+                if precision == 9:
+                    return (date.year, None, None)
+                elif precision == 10:
+                    return (date.year, date.month, None)
+                elif precision == 11:
+                    return (date.year, date.month, date.day)
+                else:
+                    logger.warning("Unsupported date precision {} for Wikidata entry {}".format(precision, self))
+
+        if warn_if_missing:
+            logger.warning("{} is missing for Wikidata entry {}".format(claim, self))
+        return (None, None, None)
+
     WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
     def wikidata_url(self):
         if self.id:
@@ -67,22 +156,6 @@ class WikidataEntry(models.Model):
         ordering = ['id']
         verbose_name = 'Wikidata entry'
         verbose_name_plural = 'Wikidata entries'
-
-# Claims utils
-
-P_INSTANCE_OF = "P31"
-
-F_MAINSNAK = "mainsnak"
-F_QUALIFIERS = "qualifiers"
-
-def get_property_value(property_dict):
-    if 'datavalue' in property_dict and 'value' in property_dict['datavalue']:
-        return property_dict['datavalue']['value']
-
-def get_property_id(property_dict):
-    value = get_property_value(property_dict)
-    if value and 'id' in value:
-        return value['id']
 
 class WikidataCategory(models.Model):
 
