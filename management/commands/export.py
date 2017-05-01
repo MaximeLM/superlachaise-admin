@@ -17,9 +17,8 @@ class Command(BaseCommand):
     TARGETS = {
         "openstreetmap": config.openstreetmap.get_openstreetmap_export_object,
         "wikidata": config.wikidata.get_wikidata_export_object,
-        #"wikipedia": [],
-        #"commons": [],
-        #"category": [],
+        "commons": config.commons.get_commons_export_object,
+        "category": config.category.get_category_export_object,
         "all": [],
     }
 
