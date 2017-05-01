@@ -11,14 +11,9 @@ FETCHED_TAGS = [
     "historic=memorial",
 ]
 
-WIKIDATA_TAGS = [
-    "wikidata",
-    "name:wikidata",
-]
-
 def post_refresh_openstreetmap_elements(openstreetmap_elements):
     exclude_ids = [
-        "node/1688357881",  # not in the cemetery
+        "node/1688357881", # not in the cemetery
     ]
     filtered_openstreetmap_elements = []
     for openstreetmap_element in openstreetmap_elements:
@@ -28,6 +23,22 @@ def post_refresh_openstreetmap_elements(openstreetmap_elements):
         else:
             filtered_openstreetmap_elements.append(openstreetmap_element)
     return filtered_openstreetmap_elements
+
+def get_wikidata_entry_id(openstreetmap_element):
+    map_ids = {
+        "Q22075397": "Q3089740", # not interested in the sculpture
+    }
+    tags = openstreetmap_element.tags()
+    wikidata_tag = None
+    if "wikidata" in tags:
+        wikidata_tag = tags["wikidata"]
+    if not wikidata_tag and "name:wikidata" in tags:
+        wikidata_tag = tags["name:wikidata"]
+    if wikidata_tag and wikidata_tag in map_ids:
+        new_tag = map_ids[wikidata_tag]
+        logger.debug("Replacing {} with {}".format(wikidata_tag, new_tag))
+        wikidata_tag = new_tag
+    return wikidata_tag
 
 def get_openstreetmap_export_object(config):
     openstreetmap_elements = OpenstreetmapElement.objects.filter(wikidata_entry__isnull=False)

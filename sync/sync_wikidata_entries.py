@@ -45,12 +45,12 @@ def delete_objects():
 
 # Prepare model
 
-def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_elements, openstreetmap_id_tags):
+def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_elements, get_wikidata_entry_id=config.openstreetmap.get_wikidata_entry_id):
     wikidata_entries = []
     created = 0
 
     for openstreetmap_element in openstreetmap_elements:
-        wikidata_id = openstreetmap_element.get_first_tag_value(openstreetmap_id_tags)
+        wikidata_id = get_wikidata_entry_id(openstreetmap_element)
         if wikidata_id:
             wikidata_entry, was_created = WikidataEntry.objects.get_or_create(id=wikidata_id)
             if was_created:
@@ -62,18 +62,18 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
             if not wikidata_entry in wikidata_entries:
                 wikidata_entries.append(wikidata_entry)
         else:
-            logger.debug("No Wikidata ID found for Openstreetmap element {}".format(openstreetmap_element.id))
+            logger.debug("No Wikidata ID found for Openstreetmap element {}".format(openstreetmap_element))
             openstreetmap_element.wikidata_entry = None
         openstreetmap_element.save()
 
     return (wikidata_entries, created)
 
-def get_or_create_wikidata_entries_to_refresh(ids, openstreetmap_id_tags=config.openstreetmap.WIKIDATA_TAGS):
+def get_or_create_wikidata_entries_to_refresh(ids):
     if ids:
         return (list(WikidataEntry.objects.filter(id__in=ids)), 0)
     else:
         logger.info('List Wikidata entries from Openstreetmap elements')
-        return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenstreetmapElement.objects.all()), openstreetmap_id_tags)
+        return get_or_create_wikidata_entries_from_openstreetmap_elements(list(OpenstreetmapElement.objects.all()))
 
 def get_or_create_secondary_wikidata_entries(primary_wikidata_entries, get_secondary_wikidata_entries=config.wikidata.get_secondary_wikidata_entries):
     created = 0

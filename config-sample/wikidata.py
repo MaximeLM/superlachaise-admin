@@ -25,11 +25,13 @@ Q_GRAVE = "Q173387"
 Q_TOMB = "Q381885"
 Q_PERE_LACHAISE_CEMETERY = "Q311"
 Q_PERE_LACHAISE_CREMATORIUM = "Q3006253"
+Q_MONUMENT = "Q4989906"
+Q_MEMORIAL = "Q5003624"
 Q_WAR_MEMORIAL = "Q575759"
 Q_CARDIOTAPH = "Q18168545"
 
 accepted_locations = [Q_PERE_LACHAISE_CEMETERY, Q_PERE_LACHAISE_CREMATORIUM]
-accepted_instances_of = [Q_HUMAN, Q_GRAVE, Q_TOMB, Q_WAR_MEMORIAL, Q_CARDIOTAPH]
+accepted_instances_of = [Q_HUMAN, Q_GRAVE, Q_TOMB, Q_MONUMENT, Q_MEMORIAL, Q_WAR_MEMORIAL, Q_CARDIOTAPH]
 
 def get_secondary_wikidata_entries(wikidata_entry):
     """ List other Wikidata entries IDs to sync for a primary Wikidata entry """
