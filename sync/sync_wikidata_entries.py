@@ -62,7 +62,7 @@ def get_or_create_wikidata_entries_from_openstreetmap_elements(openstreetmap_ele
             if not wikidata_entry in wikidata_entries:
                 wikidata_entries.append(wikidata_entry)
         else:
-            logger.debug("No Wikidata ID found for Openstreetmap element {}".format(openstreetmap_element))
+            logger.warning("No Wikidata ID found for Openstreetmap element {}".format(openstreetmap_element))
             openstreetmap_element.wikidata_entry = None
         openstreetmap_element.save()
 

@@ -38,7 +38,7 @@ def get_secondary_wikidata_entries(wikidata_entry):
     wikidata_entries = []
 
     claims = wikidata_entry.claims()
-    if not claims or not wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
         return []
 
     # Add "grave of" wikidata entries
@@ -55,10 +55,9 @@ def get_secondary_wikidata_entries(wikidata_entry):
 
 def post_sync_wikidata_entries(wikidata_entries):
     for wikidata_entry in wikidata_entries:
-        if not wikidata_entry_is_valid(wikidata_entry):
-            logger.warning("Wikidata entry {} is not valid".format(wikidata_entry))
+        check_wikidata_entry_is_valid(wikidata_entry, warn=True)
 
-def wikidata_entry_is_valid(wikidata_entry, claims=None):
+def check_wikidata_entry_is_valid(wikidata_entry, claims=None, warn=False):
     if not claims:
         claims = wikidata_entry.claims()
     if not claims:
@@ -71,6 +70,8 @@ def wikidata_entry_is_valid(wikidata_entry, claims=None):
             accepted_instance_of = True
             break
     if not accepted_instance_of:
+        if warn:
+            logger.warning("Wikidata entry {} does not have not a recognized instance_of".format(wikidata_entry))
         return False
 
     accepted_location = False
@@ -85,7 +86,7 @@ def wikidata_entry_is_valid(wikidata_entry, claims=None):
                     location_wikidata_entries = WikidataEntry.objects.filter(id=location_id)
                     if location_wikidata_entries.count() == 1:
                         location_wikidata_entry = location_wikidata_entries[0]
-                        accepted_location = wikidata_entry_is_valid(location_wikidata_entry, location_wikidata_entry.claims())
+                        accepted_location = check_wikidata_entry_is_valid(location_wikidata_entry, location_wikidata_entry.claims())
     else:
         for location_qualifier in [P_PART_OF, P_LOCATION, P_PLACE_OF_BURIAL]:
             if location_qualifier in claims:
@@ -98,14 +99,16 @@ def wikidata_entry_is_valid(wikidata_entry, claims=None):
                         location_wikidata_entries = WikidataEntry.objects.filter(id=location_id)
                         if location_wikidata_entries.count() == 1:
                             location_wikidata_entry = location_wikidata_entries[0]
-                            accepted_location = wikidata_entry_is_valid(location_wikidata_entry, location_wikidata_entry.claims())
+                            accepted_location = check_wikidata_entry_is_valid(location_wikidata_entry, location_wikidata_entry.claims())
+    if not accepted_location and warn:
+        logger.warning("Wikidata entry {} is not located in a accepted location".format(wikidata_entry))
     return accepted_location
 
 def get_commons_category_id(wikidata_entry):
     """ Returns a Commons category ID from a Wikidata entry """
 
     claims = wikidata_entry.claims()
-    if not claims or not wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
         return None
 
     if Q_HUMAN in wikidata_entry.get_instance_of_ids(claims):
@@ -137,7 +140,7 @@ def get_wikidata_categories(wikidata_entry):
     wikidata_categories = []
 
     claims = wikidata_entry.claims()
-    if not claims or not wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
         return []
 
     claims_for_categories = [(P_INSTANCE_OF, "instance_of"), (P_SEX_OR_GENDER, "sex_or_gender"), (P_OCCUPATION, "occupation")]
@@ -171,7 +174,7 @@ def get_wikidata_export_object(config):
 
 def get_wikidata_entry_export_object(wikidata_entry, languages):
     claims = wikidata_entry.claims()
-    if not claims or not wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
         return {}
 
     export_object = {

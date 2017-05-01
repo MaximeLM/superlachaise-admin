@@ -26,7 +26,7 @@ def post_refresh_openstreetmap_elements(openstreetmap_elements):
 
 def get_wikidata_entry_id(openstreetmap_element):
     map_ids = {
-        "Q22075397": "Q3089740", # not interested in the sculpture
+
     }
     tags = openstreetmap_element.tags()
     wikidata_tag = None
