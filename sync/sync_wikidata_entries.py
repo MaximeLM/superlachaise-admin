@@ -154,7 +154,7 @@ class WikidataAPIMissingEntityError(WikidataAPIError):
         super(WikidataAPIMissingEntityError, self).__init__("missing entity {}".format(wikidata_id))
         self.wikidata_entry = wikidata_entry
 
-def handle_wikidata_api_result(result, wikidata_entries, languages):
+def handle_wikidata_api_result(result, wikidata_entries, languages, get_kind=config.wikidata.get_kind):
     if 'error' in result:
         if result['error']['code'] == 'no-such-entity':
             wikidata_id = result['error']['id']
@@ -175,6 +175,10 @@ def handle_wikidata_api_result(result, wikidata_entries, languages):
         wikidata_entry.raw_descriptions = json.dumps(entity['descriptions'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_claims = json.dumps(entity['claims'], ensure_ascii=False, indent=4, separators=(',', ': '))
         wikidata_entry.raw_sitelinks = json.dumps(entity['sitelinks'], ensure_ascii=False, indent=4, separators=(',', ': '))
+        wikidata_entry.kind = get_kind(wikidata_entry)
+        if not wikidata_entry.kind:
+            logger.warning("Wikidata entry {} does not have not a recognized kind".format(wikidata_entry))
+            wikidata_entry.kind = ""
 
         # Check labels and descriptions for each language
         name = None

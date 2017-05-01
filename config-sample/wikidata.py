@@ -19,6 +19,7 @@ P_LOCATION = "P276"
 P_DATE_OF_BIRTH = "P569"
 P_DATE_OF_DEATH = "P570"
 P_INSTANCE_OF = WikidataEntry.P_INSTANCE_OF
+P_COMMEMORATES = "P547"
 
 Q_HUMAN = "Q5"
 Q_GRAVE = "Q173387"
@@ -33,85 +34,103 @@ Q_CARDIOTAPH = "Q18168545"
 accepted_locations = [Q_PERE_LACHAISE_CEMETERY, Q_PERE_LACHAISE_CREMATORIUM]
 accepted_instances_of = [Q_HUMAN, Q_GRAVE, Q_TOMB, Q_MONUMENT, Q_MEMORIAL, Q_WAR_MEMORIAL, Q_CARDIOTAPH]
 
-def get_secondary_wikidata_entries(wikidata_entry):
-    """ List other Wikidata entries IDs to sync for a primary Wikidata entry """
-    wikidata_entries = []
+KIND_HUMAN = "human"
+KIND_TOMB = "tomb"
+KIND_MONUMENT = "monument"
+KIND_MONUMENT_SUBJECT = "monument_subject"
+accepted_kinds = {
+    KIND_HUMAN: [Q_HUMAN],
+    KIND_TOMB: [Q_GRAVE, Q_TOMB, Q_CARDIOTAPH],
+    KIND_MONUMENT: [Q_MONUMENT, Q_MEMORIAL, Q_WAR_MEMORIAL],
+}
 
+def get_kind(wikidata_entry):
     claims = wikidata_entry.claims()
-    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
-        return []
-
-    # Add "grave of" wikidata entries
-    if P_INSTANCE_OF in claims:
-        for instance_of in claims[P_INSTANCE_OF]:
-            if wikidata_entry.get_property_id(instance_of[F_MAINSNAK]) in [Q_GRAVE, Q_TOMB]:
-                if F_QUALIFIERS in instance_of and P_OF in instance_of[F_QUALIFIERS]:
-                    for grave_of in instance_of[F_QUALIFIERS][P_OF]:
-                        grave_of_id = wikidata_entry.get_property_id(grave_of)
-                        if grave_of_id:
-                            wikidata_entries.append(grave_of_id)
-
-    return wikidata_entries
-
-def post_sync_wikidata_entries(wikidata_entries):
-    for wikidata_entry in wikidata_entries:
-        check_wikidata_entry_is_valid(wikidata_entry, warn=True)
-
-def check_wikidata_entry_is_valid(wikidata_entry, claims=None, warn=False):
     if not claims:
-        claims = wikidata_entry.claims()
-    if not claims:
-        return False
+        return None
 
+    kind = None
     instance_of_ids = wikidata_entry.get_instance_of_ids(claims)
-    accepted_instance_of = False
     for instance_of_id in instance_of_ids:
-        if instance_of_id in accepted_instances_of:
-            accepted_instance_of = True
-            break
-    if not accepted_instance_of:
-        if warn:
-            logger.warning("Wikidata entry {} does not have not a recognized instance_of".format(wikidata_entry))
-        return False
+        for accepted_kind, accepted_instances_of in accepted_kinds.items():
+            if instance_of_id in accepted_instances_of:
+                if not kind:
+                    kind = accepted_kind
+
+    if not kind:
+        # See if it's a monument subject
+        if wikidata_entry.primary_entries.filter(kind=KIND_MONUMENT).count() > 0:
+            return KIND_MONUMENT_SUBJECT
+
+    if not kind:
+        return None
 
     accepted_location = False
-    if Q_HUMAN in instance_of_ids:
+    if kind == KIND_HUMAN:
         if P_PLACE_OF_BURIAL in claims:
             for place_of_burial in claims[P_PLACE_OF_BURIAL]:
                 location_id = wikidata_entry.get_property_id(place_of_burial[F_MAINSNAK])
                 if location_id in accepted_locations:
-                    accepted_location = True
-                    break
+                    return kind
                 else:
                     location_wikidata_entries = WikidataEntry.objects.filter(id=location_id)
                     if location_wikidata_entries.count() == 1:
                         location_wikidata_entry = location_wikidata_entries[0]
-                        accepted_location = check_wikidata_entry_is_valid(location_wikidata_entry, location_wikidata_entry.claims())
+                        if get_kind(location_wikidata_entry):
+                            return kind
     else:
         for location_qualifier in [P_PART_OF, P_LOCATION, P_PLACE_OF_BURIAL]:
             if location_qualifier in claims:
                 for location in claims[location_qualifier]:
                     location_id = wikidata_entry.get_property_id(location[F_MAINSNAK])
                     if location_id in accepted_locations:
-                        accepted_location = True
-                        break
+                        return kind
                     else:
                         location_wikidata_entries = WikidataEntry.objects.filter(id=location_id)
                         if location_wikidata_entries.count() == 1:
                             location_wikidata_entry = location_wikidata_entries[0]
-                            accepted_location = check_wikidata_entry_is_valid(location_wikidata_entry, location_wikidata_entry.claims())
-    if not accepted_location and warn:
-        logger.warning("Wikidata entry {} is not located in a accepted location".format(wikidata_entry))
-    return accepted_location
+                            if get_kind(location_wikidata_entry):
+                                return kind
+    logger.warning("Wikidata entry {} is not located in a accepted location".format(wikidata_entry))
+    return None
+
+def get_secondary_wikidata_entries(wikidata_entry):
+    """ List other Wikidata entries IDs to sync for a primary Wikidata entry """
+    wikidata_entries = []
+
+    claims = wikidata_entry.claims()
+    if not claims or not wikidata_entry.kind:
+        return []
+
+    # Add "grave of" wikidata entries
+    if wikidata_entry.kind == KIND_TOMB and P_INSTANCE_OF in claims:
+        for instance_of in claims[P_INSTANCE_OF]:
+            if F_QUALIFIERS in instance_of and P_OF in instance_of[F_QUALIFIERS]:
+                for grave_of in instance_of[F_QUALIFIERS][P_OF]:
+                    grave_of_id = wikidata_entry.get_property_id(grave_of)
+                    if grave_of_id:
+                        wikidata_entries.append(grave_of_id)
+
+    # Add "commemorates" wikidata entries
+    if wikidata_entry.kind == KIND_MONUMENT and P_COMMEMORATES in claims:
+        for commemorates in claims[P_COMMEMORATES]:
+            commemorates_id = wikidata_entry.get_property_id(commemorates[F_MAINSNAK])
+            if commemorates_id:
+                wikidata_entries.append(commemorates_id)
+
+    return wikidata_entries
+
+def post_sync_wikidata_entries(wikidata_entries):
+    pass
 
 def get_commons_category_id(wikidata_entry):
     """ Returns a Commons category ID from a Wikidata entry """
 
     claims = wikidata_entry.claims()
-    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not wikidata_entry.kind:
         return None
 
-    if Q_HUMAN in wikidata_entry.get_instance_of_ids(claims):
+    if wikidata_entry.kind == KIND_HUMAN:
         # If the entry is a human, look for "place of burial" claim
         if P_PLACE_OF_BURIAL in claims:
             for place_of_burial in claims[P_PLACE_OF_BURIAL]:
@@ -140,10 +159,12 @@ def get_wikidata_categories(wikidata_entry):
     wikidata_categories = []
 
     claims = wikidata_entry.claims()
-    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not wikidata_entry.kind:
         return []
 
-    claims_for_categories = [(P_INSTANCE_OF, "instance_of"), (P_SEX_OR_GENDER, "sex_or_gender"), (P_OCCUPATION, "occupation")]
+    claims_for_categories = [(P_INSTANCE_OF, "instance_of")]
+    if wikidata_entry.kind == KIND_HUMAN:
+        claims_for_categories.extend([(P_SEX_OR_GENDER, "sex_or_gender"), (P_OCCUPATION, "occupation")])
 
     for (claim, kind) in claims_for_categories:
         if claim in claims:
@@ -174,11 +195,12 @@ def get_wikidata_export_object(config):
 
 def get_wikidata_entry_export_object(wikidata_entry, languages):
     claims = wikidata_entry.claims()
-    if not claims or not check_wikidata_entry_is_valid(wikidata_entry, claims):
+    if not claims or not wikidata_entry.kind:
         return {}
 
     export_object = {
         "id": wikidata_entry.id,
+        "kind": wikidata_entry.kind,
     }
 
     for language in languages:
@@ -196,7 +218,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object["categories"] = [category.id for category in wikidata_entry.get_categories()]
     export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
 
-    if Q_HUMAN in wikidata_entry.get_instance_of_ids(claims):
+    if wikidata_entry.kind == KIND_HUMAN:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
             date_dict = wikidata_entry.get_date_dict(claim, claims)
             export_object[date_field] = date_dict

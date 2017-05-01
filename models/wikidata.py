@@ -12,13 +12,14 @@ class WikidataEntry(models.Model):
     id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikidata_id])
 
     name = models.CharField(max_length=1024, blank=True)
+    kind = models.CharField(max_length=1024, blank=True)
 
     raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_descriptions = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_claims = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_sitelinks = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
-    secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False)
+    secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False, related_name="primary_entries")
     wikipedia_pages = models.ManyToManyField('WikipediaPage', blank=True)
     commons_category = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
     wikidata_categories = models.ManyToManyField('WikidataCategory', blank=True)

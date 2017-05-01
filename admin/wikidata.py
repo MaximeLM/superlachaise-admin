@@ -5,11 +5,12 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikidataEntry)
 class WikidataEntryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'commons_category_link', 'wikidata_link')
-    search_fields = ('id', 'name', 'raw_claims')
+    list_display = ('id', 'name', 'kind', 'commons_category_link', 'wikidata_link')
+    search_fields = ('id', 'name', 'kind', 'raw_claims')
+    list_filter = ('kind',)
 
     fieldsets = [
-        (None, {'fields': ['id', 'name', 'wikidata_link', 'secondary_entries', 'wikipedia_pages', 'wikidata_categories']}),
+        (None, {'fields': ['id', 'name', 'kind', 'wikidata_link', 'secondary_entries', 'wikipedia_pages', 'wikidata_categories']}),
         (None, {'fields': ['commons_category', 'commons_category_link']}),
         (None, {'fields': ['raw_labels', 'raw_descriptions', 'raw_claims', 'raw_sitelinks']}),
     ]
