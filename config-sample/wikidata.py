@@ -139,12 +139,10 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
 
     if Q_HUMAN in wikidata_entry.get_instance_of_ids(claims):
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
-            date = wikidata_entry.get_date(claims, claim, True)
-            export_object[date_field] = {
-                "year": date[0],
-                "month": date[1],
-                "day": date[2],
-            } if date else None
+            date_dict = wikidata_entry.get_date_dict(claims, claim)
+            export_object[date_field] = date_dict
+            if not date_dict:
+                logger.warning("{} is missing for Wikidata entry {}".format(date_field, wikidata_entry))
 
     return export_object
 

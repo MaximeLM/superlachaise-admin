@@ -116,7 +116,7 @@ class WikidataEntry(models.Model):
                         instance_of_ids.append(instance_of_id)
         return instance_of_ids
 
-    def get_date(self, claims, claim, warn_if_missing=False):
+    def get_date_dict(self, claims, claim):
         if claim in claims:
             # Take the date with the highest precision
             best_date_value = None
@@ -128,21 +128,29 @@ class WikidataEntry(models.Model):
 
             if best_date_value:
                 date_string = best_date_value['time']
-                precision = best_date_value['precision']
+                precision_int = best_date_value['precision']
 
                 date = datetime.date(*time.strptime(date_string[1:11], "%Y-%m-%d")[:3])
-                if precision == 9:
-                    return (date.year, None, None)
-                elif precision == 10:
-                    return (date.year, date.month, None)
-                elif precision == 11:
-                    return (date.year, date.month, date.day)
+                date_dict = {
+                    "year": None,
+                    "month": None,
+                    "day": None,
+                    "precision": None,
+                }
+                precision = None
+                if precision_int >= 9:
+                    date_dict["precision"] = "year"
+                    date_dict["year"] = date.year
+                if precision_int >= 10:
+                    date_dict["precision"] = "month"
+                    date_dict["month"] = date.month
+                if precision_int >= 11:
+                    date_dict["precision"] = "day"
+                    date_dict["day"] = date.day
+                if "precision" in date_dict:
+                    return date_dict
                 else:
-                    logger.warning("Unsupported date precision {} for Wikidata entry {}".format(precision, self))
-
-        if warn_if_missing:
-            logger.warning("{} is missing for Wikidata entry {}".format(claim, self))
-        return (None, None, None)
+                    logger.warning("Unsupported date precision {} for Wikidata entry {}".format(precision_int, self))
 
     WIKIDATA_URL_FORMAT = "https://www.wikidata.org/wiki/{id}"
     def wikidata_url(self):
