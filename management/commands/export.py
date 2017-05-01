@@ -21,11 +21,10 @@ class Command(BaseCommand):
                 "get_export_object": config.openstreetmap.get_openstreetmap_element_export_object,
             }
         },
-        #"wikidata_entries": [],
-        #"wikipedia_pages": [],
-        #"commons_categories": [],
-        #"wikidata_categories": [],
-        #"categories": [],
+        #"wikidata": [],
+        #"wikipedia": [],
+        #"commons": [],
+        #"category": [],
         "all": [],
     }
 

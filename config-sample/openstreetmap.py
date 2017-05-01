@@ -14,9 +14,9 @@ def get_openstreetmap_element_export_object(openstreetmap_element):
     (type, id) = openstreetmap_element.split_id()
     return {
         "type": type,
-        "id": id,
+        "id": int(id),
         "name": openstreetmap_element.name,
-        "latitude": str(openstreetmap_element.latitude),
-        "longitude": str(openstreetmap_element.longitude),
+        "latitude": float(openstreetmap_element.latitude),
+        "longitude": float(openstreetmap_element.longitude),
         "wikidata_entry": openstreetmap_element.wikidata_entry.id if openstreetmap_element.wikidata_entry else None,
     }
