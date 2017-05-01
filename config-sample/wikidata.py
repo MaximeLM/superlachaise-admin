@@ -29,6 +29,9 @@ def get_secondary_wikidata_entries(wikidata_entry):
 
     return wikidata_entries
 
+def post_sync_wikidata_entries(wikidata_entries):
+    pass
+
 def get_wikidata_categories(wikidata_entry):
     """ List Wikidata properties that can be used to categorize the wikidata entry """
     wikidata_categories = []
@@ -46,3 +49,6 @@ def get_wikidata_categories(wikidata_entry):
                             wikidata_categories.append(category_id)
 
     return wikidata_categories
+
+def post_sync_wikidata_categories(wikidata_categories):
+    pass

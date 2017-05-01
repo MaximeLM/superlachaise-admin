@@ -60,3 +60,6 @@ def get_commons_category_id(wikidata_entry):
                     commons_category_id = get_property_value(commons_category[F_MAINSNAK])
                     if commons_category_id:
                         return commons_category_id
+
+def post_sync_commons_categories(commons_categories):
+    pass

@@ -31,6 +31,7 @@ def sync(reset=False, ids=None, **kwargs):
     logger.info("Update model")
     openstreetmap_elements, created = update_model(overpass_elements)
     logger.info("Refreshed {} Openstreetmap elements to refresh (created {})".format(len(openstreetmap_elements), created))
+    config.openstreetmap.post_sync_openstreetmap_elements(openstreetmap_elements)
 
     orphaned_objects = [openstreetmap_element for openstreetmap_element in orphaned_objects if openstreetmap_element not in openstreetmap_elements]
 
@@ -82,28 +83,23 @@ def request_overpass_elements(overpass_query):
 
 # Update model
 
-def get_or_create_openstreetmap_element(
-    overpass_element,
-    excluded_identifiers=config.openstreetmap.EXCLUDE_IDENTIFIERS):
-    id = "{type}/{id}".format(type=overpass_element["type"], id=overpass_element["id"])
-    if id in excluded_identifiers:
-        return (None, False)
+def get_or_create_openstreetmap_element(overpass_element):
+    openstreetmap_id = "{type}/{id}".format(type=overpass_element["type"], id=overpass_element["id"])
+    openstreetmap_element, created = OpenstreetmapElement.objects.get_or_create(id=openstreetmap_id)
+    if "name" in overpass_element["tags"]:
+        openstreetmap_element.name = overpass_element["tags"]["name"]
     else:
-        openstreetmap_element, created = OpenstreetmapElement.objects.get_or_create(id=id)
-        if "name" in overpass_element["tags"]:
-            openstreetmap_element.name = overpass_element["tags"]["name"]
-        else:
-            logger.warning("Name is missing for {}".format(id))
-            openstreetmap_element.name = ""
-        if "center" in overpass_element:
-            coordinate_node = overpass_element["center"]
-        else:
-            coordinate_node = overpass_element
-        openstreetmap_element.latitude = coordinate_node["lat"]
-        openstreetmap_element.longitude = coordinate_node["lon"]
-        openstreetmap_element.raw_tags = json.dumps(overpass_element["tags"], ensure_ascii=False, indent=4, separators=(',', ': '))
-        openstreetmap_element.save()
-        return (openstreetmap_element, created)
+        logger.warning("Name is missing for {}".format(openstreetmap_id))
+        openstreetmap_element.name = ""
+    if "center" in overpass_element:
+        coordinate_node = overpass_element["center"]
+    else:
+        coordinate_node = overpass_element
+    openstreetmap_element.latitude = coordinate_node["lat"]
+    openstreetmap_element.longitude = coordinate_node["lon"]
+    openstreetmap_element.raw_tags = json.dumps(overpass_element["tags"], ensure_ascii=False, indent=4, separators=(',', ': '))
+    openstreetmap_element.save()
+    return (openstreetmap_element, created)
 
 def update_model(overpass_elements):
     created = 0

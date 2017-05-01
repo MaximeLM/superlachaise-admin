@@ -111,6 +111,7 @@ def request_wikidata_categories(wikidata_categories, languages=config.base.LANGU
     logger.info(str(entry_count)+"/"+str(entry_total))
     if no_such_entity_entry_count > 0:
         logger.info("Deleted {} wikidata categories not found on Wikidata".format(no_such_entity_entry_count))
+    config.wikidata.post_sync_wikidata_categories(wikidata_categories)
 
 class WikidataAPIError(Exception):
     pass

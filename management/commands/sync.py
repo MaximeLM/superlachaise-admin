@@ -15,15 +15,14 @@ class Command(BaseCommand):
         "commons_categories",
         "wikidata_categories",
         "categories",
+        "all",
     ]
 
     def add_arguments(self, parser):
-        targets = Command.TARGETS
-        targets.append("all")
         parser.add_argument(
             'target',
             type=str,
-            choices=targets,
+            choices=Command.TARGETS,
             help='The specific target to sync',
         )
         parser.add_argument(
@@ -50,7 +49,8 @@ class Command(BaseCommand):
         try:
             if target == "all":
                 for target in Command.TARGETS:
-                    self.sync(target, **options)
+                    if target != "all":
+                        self.sync(target, **options)
             else:
                 self.sync(target, **options)
         except Exception as err:

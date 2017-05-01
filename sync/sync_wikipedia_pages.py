@@ -153,6 +153,7 @@ def request_wikipedia_pages(wikipedia_pages):
                     logger.warning("Wikipedia page \"{}\" is a redirect for \"{}\"".format(wikipedia_page.id, wikipedia_page.redirect.id))
                 wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
+        config.wikipedia.post_sync_wikipedia_pages(wikipedia_pages_for_language)
 
 class WikipediaAPIError(Exception):
     pass

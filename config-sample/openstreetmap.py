@@ -1,3 +1,5 @@
+from superlachaise.models import *
+
 BOUNDING_BOX = ((48.8575, 2.3877), (48.8649, 2.4006))
 
 FETCHED_TAGS = [
@@ -5,6 +7,5 @@ FETCHED_TAGS = [
     "historic=memorial"
 ]
 
-EXCLUDE_IDENTIFIERS = [
-    "node/1688357881",
-]
+def post_sync_openstreetmap_elements(openstreetmap_elements):
+    pass
