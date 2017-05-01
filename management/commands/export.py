@@ -1,8 +1,4 @@
-import sys
-import logging
-import importlib.machinery
-import json
-import os
+import sys, logging, importlib.machinery, json, os
 from datetime import datetime
 from dateutil.tz import *
 from django.conf import settings

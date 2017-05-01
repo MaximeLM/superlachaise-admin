@@ -1,4 +1,5 @@
 import logging
+
 from superlachaise.models import *
 from superlachaise.models.wikidata import *
 

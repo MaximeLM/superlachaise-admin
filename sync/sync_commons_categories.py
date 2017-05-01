@@ -1,8 +1,4 @@
-import logging
-import os
-import importlib.machinery
-import json
-import re
+import logging, os, importlib.machinery, json, re
 from django.conf import settings
 
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()

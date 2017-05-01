@@ -1,7 +1,4 @@
-import requests
-import logging
-import importlib.machinery
-import os
+import requests, logging, importlib.machinery, os
 from django.conf import settings
 
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()

@@ -1,7 +1,4 @@
-import json
-import datetime
-import time
-import logging
+import json, datetime, time, logging
 from django.db import models
 import dateutil.parser
 

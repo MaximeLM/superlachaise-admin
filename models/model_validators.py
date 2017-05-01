@@ -1,5 +1,4 @@
-import json
-import re
+import json, re
 from json.decoder import JSONDecodeError
 from django.core.exceptions import ValidationError
 

@@ -1,5 +1,4 @@
-import sys
-import logging
+import sys, logging
 from django.core.management.base import BaseCommand, CommandError
 
 from superlachaise.sync import *

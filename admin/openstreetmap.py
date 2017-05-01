@@ -1,5 +1,4 @@
 from django.contrib import admin
-import django.core.management
 
 from superlachaise.models import *
 from superlachaise.admin import admin_utils
