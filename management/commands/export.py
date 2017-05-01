@@ -15,18 +15,19 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
 
     TARGETS = {
-        "openstreetmap": {
-            "openstreetmap_elements": {
-                "entity": OpenstreetmapElement,
-                "get_export_object": config.openstreetmap.get_openstreetmap_element_export_object,
-            }
-        },
-        #"wikidata": [],
+        "openstreetmap": config.openstreetmap.get_openstreetmap_export_object,
+        "wikidata": config.wikidata.get_wikidata_export_object,
         #"wikipedia": [],
         #"commons": [],
         #"category": [],
         "all": [],
     }
+
+    def export(self, target, getter):
+        export_object = {}
+        export_object.update(getter(config))
+        with open(os.path.join(settings.SUPERLACHAISE_EXPORTS, target+'.json'), 'w') as export_file:
+            export_file.write(json.dumps(export_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -36,19 +37,11 @@ class Command(BaseCommand):
             help='The specific target to export',
         )
 
-    def export(self, target, models):
-        export_object = {}
-        for (model, conf) in models.items():
-            objects = conf["entity"].objects.all()
-            export_object[model] = [conf["get_export_object"](object) for object in objects]
-        with open(os.path.join(settings.SUPERLACHAISE_EXPORTS, target+'.json'), 'w') as export_file:
-            export_file.write(json.dumps(export_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
-
     def handle(self, *args, **options):
         target = options.pop('target')
         if target == "all":
-            for (target, models) in Command.TARGETS.items():
+            for (target, getter) in Command.TARGETS.items():
                 if target != "all":
-                    self.export(target, models)
+                    self.export(target, getter)
         else:
             self.export(target, Command.TARGETS[target])

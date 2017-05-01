@@ -18,6 +18,10 @@ class Command(BaseCommand):
         "all",
     ]
 
+    def sync(self, target, **options):
+        module_name = "superlachaise.sync.sync_{}".format(target)
+        sys.modules[module_name].sync(**options)
+
     def add_arguments(self, parser):
         parser.add_argument(
             'target',
@@ -39,10 +43,6 @@ class Command(BaseCommand):
             default=False,
             help='Delete existing data before syncing',
         )
-
-    def sync(self, target, **options):
-        module_name = "superlachaise.sync.sync_{}".format(target)
-        sys.modules[module_name].sync(**options)
 
     def handle(self, *args, **options):
         target = options.pop('target')
