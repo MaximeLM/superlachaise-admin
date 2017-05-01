@@ -116,7 +116,7 @@ def request_commons_categories(commons_categories):
         # Prepare commons categories
         for commons_category in commons_categories_chunk:
             commons_category.default_sort = None
-            commons_category.image = None
+            commons_category.main_image = None
             commons_category.redirect = None
 
         commons_query_params = make_commons_query_params(commons_categories_chunk)
@@ -132,9 +132,9 @@ def request_commons_categories(commons_categories):
             if not commons_category.default_sort:
                 logger.warning("Default sort is missing for Commons category \"{}\"".format(commons_category.id))
                 commons_category.default_sort = ''
-            if not commons_category.image:
-                logger.warning("Image is missing for Commons category \"{}\"".format(commons_category.id))
-                commons_category.image = ''
+            if not commons_category.main_image:
+                logger.warning("Main image is missing for Commons category \"{}\"".format(commons_category.id))
+                commons_category.main_image = ''
             if commons_category.redirect:
                 logger.warning("Commons category \"{}\" is a redirect for \"{}\"".format(commons_category.id, commons_category.redirect.id))
             commons_category.save()
@@ -166,7 +166,7 @@ def handle_commons_api_result(result, commons_categories):
         if 'revisions' in commons_category_dict:
             wikitext = commons_category_dict['revisions'][0]['*']
             commons_category.default_sort = get_default_sort(wikitext)
-            commons_category.image = get_image(wikitext)
+            commons_category.main_image = get_main_image(wikitext)
             redirect_id = get_redirect_id(wikitext)
             if redirect_id:
                 redirect, was_created = CommonsCategory.objects.get_or_create(id=redirect_id)
@@ -188,7 +188,7 @@ def get_default_sort(wikitext):
             return match.group(1)
 
 IMAGE_PATTERN = re.compile("^[\s]*\|image[\s]*=[\s]*(.*)[\s]*$")
-def get_image(wikitext):
+def get_main_image(wikitext):
     for line in wikitext.split('\n'):
         match = IMAGE_PATTERN.match(line)
         if match:

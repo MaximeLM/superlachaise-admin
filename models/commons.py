@@ -8,7 +8,7 @@ class CommonsCategory(models.Model):
     id = models.CharField(primary_key=True, db_index=True, max_length=1024)
 
     default_sort = models.CharField(default='', max_length=1024, blank=True)
-    image = models.CharField(default='', max_length=1024, blank=True)
+    main_image = models.CharField(default='', max_length=1024, blank=True)
 
     redirect = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
 
@@ -18,9 +18,9 @@ class CommonsCategory(models.Model):
             return CommonsCategory.COMMONS_CATEGORY_URL_FORMAT.format(id=self.id)
 
     COMMONS_IMAGE_URL_FORMAT = "https://commons.wikimedia.org/wiki/File:{id}"
-    def image_commons_url(self):
-        if self.image:
-            return CommonsCategory.COMMONS_IMAGE_URL_FORMAT.format(id=self.image)
+    def main_image_commons_url(self):
+        if self.main_image:
+            return CommonsCategory.COMMONS_IMAGE_URL_FORMAT.format(id=self.main_image)
 
     def __str__(self):
         return self.id
