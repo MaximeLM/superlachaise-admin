@@ -103,25 +103,31 @@ class WikidataEntry(models.Model):
         if value and 'id' in value:
             return value['id']
 
-    def get_instance_of_ids(self, claims):
+    def get_instance_of_ids(self, claims=None):
+        if not claims:
+            claims = self.claims()
+        if not claims:
+            return []
         instance_of_ids = []
-        if claims and WikidataEntry.P_INSTANCE_OF in claims:
+        if WikidataEntry.P_INSTANCE_OF in claims:
             for instance_of in claims[WikidataEntry.P_INSTANCE_OF]:
-                if WikidataEntry.F_MAINSNAK in instance_of:
-                    instance_of_id = self.get_property_id(instance_of[WikidataEntry.F_MAINSNAK])
-                    if instance_of_id:
-                        instance_of_ids.append(instance_of_id)
+                instance_of_id = self.get_property_id(instance_of[WikidataEntry.F_MAINSNAK])
+                if instance_of_id:
+                    instance_of_ids.append(instance_of_id)
         return instance_of_ids
 
-    def get_date_dict(self, claims, claim):
+    def get_date_dict(self, claim, claims=None):
+        if not claims:
+            claims = self.claims()
+        if not claims:
+            return []
         if claim in claims:
             # Take the date with the highest precision
             best_date_value = None
             for date_claim in claims[claim]:
-                if WikidataEntry.F_MAINSNAK in date_claim:
-                    date_value = self.get_property_value(date_claim[WikidataEntry.F_MAINSNAK])
-                    if not best_date_value or best_date_value['precision'] < date_value['precision']:
-                        best_date_value = date_value
+                date_value = self.get_property_value(date_claim[WikidataEntry.F_MAINSNAK])
+                if not best_date_value or best_date_value['precision'] < date_value['precision']:
+                    best_date_value = date_value
 
             if best_date_value:
                 date_string = best_date_value['time']
