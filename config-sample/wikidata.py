@@ -191,7 +191,7 @@ def get_wikidata_export_object(config):
         "wikidata_entries": {},
     }
 
-    for wikidata_entry in WikidataEntry.objects.all():
+    for wikidata_entry in WikidataEntry.objects.exclude(kind__exact=''):
         export_object.update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
 
     return export_object
@@ -204,6 +204,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object = {
         "id": wikidata_entry.id,
         "kind": wikidata_entry.kind,
+        "secondary_entries": [wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_entries.exclude(kind__exact='')]
     }
 
     for language in languages:
@@ -219,7 +220,8 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object["commons_category"] = commons_category.id if commons_category else None
 
     export_object["categories"] = [category.id for category in wikidata_entry.get_categories()]
-    export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
+    if wikidata_entry.kind != KIND_MONUMENT_SUBJECT:
+        export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
 
     if wikidata_entry.kind == KIND_HUMAN:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:

@@ -13,7 +13,7 @@ FETCHED_TAGS = [
 
 def post_refresh_openstreetmap_elements(openstreetmap_elements):
     exclude_ids = [
-        "node/1688357881", # not in the cemetery
+        #"node/1688357881", # not in the cemetery
     ]
     filtered_openstreetmap_elements = []
     for openstreetmap_element in openstreetmap_elements:
