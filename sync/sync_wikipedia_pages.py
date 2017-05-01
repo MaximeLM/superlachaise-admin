@@ -147,6 +147,8 @@ def request_wikipedia_pages(wikipedia_pages):
                     wikipedia_page.default_sort = ''
                 if wikipedia_page.redirect:
                     logger.warning("Wikipedia page \"{}\" is a redirect for \"{}\"".format(wikipedia_page.id, wikipedia_page.redirect.id))
+                    if '#' in wikipedia_page.redirect.id:
+                        logger.warning("Redirect page \"{}\" contains an anchor '#'".format(wikipedia_page.redirect.id))
                 wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
         config.wikipedia.post_sync_wikipedia_pages(wikipedia_pages_for_language)
