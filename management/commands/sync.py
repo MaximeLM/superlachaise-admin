@@ -18,10 +18,12 @@ class Command(BaseCommand):
     ]
 
     def add_arguments(self, parser):
+        targets = Command.TARGETS
+        targets.append("all")
         parser.add_argument(
             'target',
             type=str,
-            choices=Command.TARGETS,
+            choices=targets,
             help='The specific target to sync',
         )
         parser.add_argument(
@@ -39,11 +41,18 @@ class Command(BaseCommand):
             help='Delete existing data before syncing',
         )
 
-    def handle(self, *args, **options):
-        target = options['target']
+    def sync(self, target, **options):
         module_name = "superlachaise.sync.sync_{}".format(target)
+        sys.modules[module_name].sync(**options)
+
+    def handle(self, *args, **options):
+        target = options.pop('target')
         try:
-            sys.modules[module_name].sync(**options)
+            if target == "all":
+                for target in Command.TARGETS:
+                    self.sync(target, **options)
+            else:
+                self.sync(target, **options)
         except Exception as err:
             logger.critical(err)
             raise CommandError(err)
