@@ -14,14 +14,6 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
 
-    TARGETS = {
-        "openstreetmap": config.openstreetmap.get_openstreetmap_export_object,
-        "wikidata": config.wikidata.get_wikidata_export_object,
-        "commons": config.commons.get_commons_export_object,
-        "category": config.category.get_category_export_object,
-        "all": [],
-    }
-
     def export(self, target, getter):
         export_object = {}
         export_object.update(getter(config))
@@ -29,18 +21,20 @@ class Command(BaseCommand):
             export_file.write(json.dumps(export_object, ensure_ascii=False, indent=4, separators=(',', ': '), sort_keys=True))
 
     def add_arguments(self, parser):
+        targets = config.base.export_targets(config)
+        targets["all"] = None
         parser.add_argument(
             'target',
             type=str,
-            choices=Command.TARGETS.keys(),
+            choices=targets.keys(),
             help='The specific target to export',
         )
 
     def handle(self, *args, **options):
+        targets = config.base.export_targets(config)
         target = options.pop('target')
         if target == "all":
-            for (target, getter) in Command.TARGETS.items():
-                if target != "all":
-                    self.export(target, getter)
+            for (target, getter) in targets.items():
+                self.export(target, getter)
         else:
-            self.export(target, Command.TARGETS[target])
+            self.export(target, targets[target])
