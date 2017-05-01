@@ -16,7 +16,7 @@ def post_sync_openstreetmap_elements(openstreetmap_elements):
     pass
 
 def get_openstreetmap_export_object(config):
-    openstreetmap_elements = OpenstreetmapElement.objects.all()
+    openstreetmap_elements = OpenstreetmapElement.objects.filter(wikidata_entry__isnull=False)
     return {
         "about": {
             "source": "http://www.openstreetmap.org/",
