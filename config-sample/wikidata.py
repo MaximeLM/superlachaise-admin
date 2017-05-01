@@ -108,6 +108,10 @@ def post_sync_wikidata_categories(wikidata_categories):
 def get_wikidata_export_object(config):
     wikidata_entries = WikidataEntry.objects.all()
     return {
+        "about": {
+            "source": "https://www.wikidata.org/",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        },
         "wikidata_entries": {wikidata_entry.id: get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES) for wikidata_entry in wikidata_entries},
     }
 
@@ -131,7 +135,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object["commons_category"] = commons_category.id if commons_category else None
 
     export_object["categories"] = [category.id for category in wikidata_entry.get_categories()]
-    export_object["division"] = get_division(wikidata_entry, claims)
+    export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
 
     if Q_HUMAN in wikidata_entry.get_instance_of_ids(claims):
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
@@ -144,7 +148,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
 
     return export_object
 
-def get_division(wikidata_entry, claims):
+def get_burial_plot_reference(wikidata_entry, claims):
     if P_BURIAL_PLOT_REFERENCE in claims:
         if len(claims[P_BURIAL_PLOT_REFERENCE]) > 1:
             logger.warning("Multiple burial plot references for Wikidata entry {}".format(wikidata_entry))

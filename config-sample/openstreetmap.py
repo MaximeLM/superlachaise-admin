@@ -18,6 +18,10 @@ def post_sync_openstreetmap_elements(openstreetmap_elements):
 def get_openstreetmap_export_object(config):
     openstreetmap_elements = OpenstreetmapElement.objects.all()
     return {
+        "about": {
+            "source": "http://www.openstreetmap.org/",
+            "license": "http://www.openstreetmap.org/copyright/",
+        },
         "openstreetmap_elements": {openstreetmap_element.id: get_openstreetmap_element_export_object(openstreetmap_element) for openstreetmap_element in openstreetmap_elements},
     }
 
