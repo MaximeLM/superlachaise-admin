@@ -55,7 +55,9 @@ def get_kind(wikidata_entry):
     for instance_of_id in instance_of_ids:
         for accepted_kind, accepted_instances_of in accepted_kinds.items():
             if instance_of_id in accepted_instances_of:
-                if not kind:
+                if kind and kind != accepted_kind:
+                    logger.warning("Duplicate kinds {} and {} for Wikidata entry {}, using {}".format(kind, accepted_kind, wikidata_entry, kind))
+                else:
                     kind = accepted_kind
 
     if not kind:
