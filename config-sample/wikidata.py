@@ -33,15 +33,14 @@ Q_WAR_MEMORIAL = "Q575759"
 Q_CARDIOTAPH = "Q18168545"
 
 accepted_locations = [Q_PERE_LACHAISE_CEMETERY, Q_PERE_LACHAISE_CREMATORIUM]
-accepted_instances_of = [Q_HUMAN, Q_GRAVE, Q_TOMB, Q_MONUMENT, Q_MEMORIAL, Q_WAR_MEMORIAL, Q_CARDIOTAPH]
 
-KIND_HUMAN = "human"
-KIND_TOMB = "tomb"
+KIND_GRAVE_OF = "grave_of"
+KIND_GRAVE = "grave"
 KIND_MONUMENT = "monument"
 KIND_SUBJECT = "subject"
 accepted_kinds = {
-    KIND_HUMAN: [Q_HUMAN],
-    KIND_TOMB: [Q_GRAVE, Q_TOMB, Q_CARDIOTAPH],
+    KIND_GRAVE_OF: [Q_HUMAN],
+    KIND_GRAVE: [Q_GRAVE, Q_TOMB, Q_CARDIOTAPH],
     KIND_MONUMENT: [Q_MONUMENT, Q_MEMORIAL, Q_WAR_MEMORIAL],
 }
 
@@ -60,12 +59,13 @@ def get_kind(wikidata_entry):
                 else:
                     kind = accepted_kind
 
-    if wikidata_entry.openstreetmap_elements.count() > 0:
-        # For main entries, check that the location is accepted
-        if not kind:
-            return None
+    if wikidata_entry.openstreetmap_elements.count() == 0 and wikidata_entry.primary_wikidata_entries.filter(kind=KIND_GRAVE).count() == 0:
+        # A non primary wikidata entry which is not a secondary entry of a grave is a subject
+        return KIND_SUBJECT
+    elif kind:
+        # For other entries, check that the location is accepted
         accepted_location = False
-        if kind == KIND_HUMAN:
+        if kind == KIND_GRAVE_OF:
             if P_PLACE_OF_BURIAL in claims:
                 for place_of_burial in claims[P_PLACE_OF_BURIAL]:
                     location_id = wikidata_entry.get_property_id(place_of_burial[F_MAINSNAK])
@@ -92,8 +92,6 @@ def get_kind(wikidata_entry):
                                     return kind
         logger.warning("Wikidata entry {} is not located in a accepted location".format(wikidata_entry))
         return None
-    else:
-        return KIND_SUBJECT
 
 def get_secondary_wikidata_entries(wikidata_entry):
     """ List other Wikidata entries IDs to sync for a primary Wikidata entry """
@@ -104,7 +102,7 @@ def get_secondary_wikidata_entries(wikidata_entry):
         return []
 
     # Add "grave of" wikidata entries
-    if wikidata_entry.kind == KIND_TOMB and P_INSTANCE_OF in claims:
+    if wikidata_entry.kind == KIND_GRAVE and P_INSTANCE_OF in claims:
         for instance_of in claims[P_INSTANCE_OF]:
             if F_QUALIFIERS in instance_of and P_OF in instance_of[F_QUALIFIERS]:
                 for grave_of in instance_of[F_QUALIFIERS][P_OF]:
@@ -133,7 +131,7 @@ def get_commons_category_id(wikidata_entry):
     if not claims or not wikidata_entry.kind:
         return None
 
-    if wikidata_entry.kind == KIND_HUMAN:
+    if wikidata_entry.kind == KIND_GRAVE_OF:
         # If the entry is a human, look for "place of burial" claim
         if P_PLACE_OF_BURIAL in claims:
             for place_of_burial in claims[P_PLACE_OF_BURIAL]:
@@ -146,7 +144,7 @@ def get_commons_category_id(wikidata_entry):
                             commons_category_id = wikidata_entry.get_property_value(commons_category)
                             if commons_category_id:
                                 return commons_category_id
-    else:
+    elif wikidata_entry.kind in [KIND_GRAVE, KIND_MONUMENT]:
         # If the entry is a part of the Père Lachaise cemetery, look for a root commons category
         if P_COMMONS_CATEGORY in claims:
             commons_categories = claims[P_COMMONS_CATEGORY]
@@ -166,7 +164,7 @@ def get_wikidata_categories(wikidata_entry):
         return []
 
     claims_for_categories = [(P_INSTANCE_OF, "instance_of")]
-    if wikidata_entry.kind == KIND_HUMAN:
+    if wikidata_entry.kind == KIND_GRAVE_OF:
         claims_for_categories.extend([(P_SEX_OR_GENDER, "sex_or_gender"), (P_OCCUPATION, "occupation")])
 
     for (claim, kind) in claims_for_categories:
@@ -223,7 +221,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     if wikidata_entry.kind != KIND_SUBJECT:
         export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
 
-    if wikidata_entry.kind == KIND_HUMAN:
+    if wikidata_entry.kind == KIND_GRAVE_OF:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
             date_dict = wikidata_entry.get_date_dict(claim, claims)
             export_object[date_field] = date_dict
