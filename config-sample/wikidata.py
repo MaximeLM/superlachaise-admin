@@ -256,11 +256,10 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
 
 def get_notable_wikidata_entry(wikidata_entry):
     if wikidata_entry.kind == KIND_GRAVE:
-        # Replace grave with no wikipedia page with single grave_of with wikipedia page
-        if wikidata_entry.wikipedia_pages.count() == 0:
-            notable_grave_of = get_notable_secondary_entries(wikidata_entry)
-            if len(notable_grave_of) == 1:
-                return notable_grave_of[0]
+        # Replace grave with single grave_of with wikipedia page
+        notable_grave_of = get_notable_secondary_entries(wikidata_entry)
+        if len(notable_grave_of) == 1:
+            return notable_grave_of[0]
     if wikidata_entry.kind == KIND_GRAVE_OF:
         # Skip grave of with no wikipedia pages
         if wikidata_entry.wikipedia_pages.count() == 0:
@@ -272,7 +271,8 @@ def get_notable_secondary_entries(wikidata_entry):
         # Skip grave of with no wikipedia pages
         grave_of_wikidata_entries = list(wikidata_entry.secondary_wikidata_entries.filter(kind=KIND_GRAVE_OF))
         grave_of_wikidata_entries = [wikidata_entry for wikidata_entry in grave_of_wikidata_entries if get_notable_wikidata_entry(wikidata_entry)]
-        return grave_of_wikidata_entries
+        if len(grave_of_wikidata_entries) > 0:
+            return grave_of_wikidata_entries
     return list(wikidata_entry.secondary_wikidata_entries.exclude(kind__exact=''))
 
 def get_burial_plot_reference(wikidata_entry, claims):
