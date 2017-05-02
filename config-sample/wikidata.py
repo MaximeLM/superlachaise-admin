@@ -163,7 +163,9 @@ def get_wikidata_categories(wikidata_entry):
     if not claims or not wikidata_entry.kind:
         return []
 
-    claims_for_categories = [(P_INSTANCE_OF, "instance_of")]
+    claims_for_categories = []
+    if wikidata_entry.kind in [KIND_GRAVE, KIND_MONUMENT]:
+        claims_for_categories.append((P_INSTANCE_OF, "instance_of"))
     if wikidata_entry.kind == KIND_GRAVE_OF:
         claims_for_categories.extend([(P_SEX_OR_GENDER, "sex_or_gender"), (P_OCCUPATION, "occupation")])
 
@@ -202,7 +204,6 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object = {
         "id": wikidata_entry.id,
         "kind": wikidata_entry.kind,
-        "secondary_wikidata_entries": [wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_wikidata_entries.exclude(kind__exact='')]
     }
 
     for language in languages:
@@ -214,12 +215,15 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
             "default_sort": wikidata_entry.get_default_sort(language),
         }
 
-    commons_category = wikidata_entry.get_commons_category()
-    export_object["commons_category"] = commons_category.id if commons_category else None
-
-    export_object["categories"] = [category.id for category in wikidata_entry.get_categories()]
     if wikidata_entry.kind != KIND_SUBJECT:
-        export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
+        export_object["categories"] = [category.id for category in wikidata_entry.get_categories()]
+        commons_category = wikidata_entry.get_commons_category()
+        burial_plot_reference = get_burial_plot_reference(wikidata_entry, claims)
+        export_object["commons_category"] = commons_category.id if commons_category else None
+        export_object["burial_plot_reference"] = burial_plot_reference
+        if wikidata_entry.kind != KIND_GRAVE_OF:
+            check_secondary_wikidata_entries_fields_match(wikidata_entry, commons_category, burial_plot_reference)
+            export_object["secondary_wikidata_entries"] = [wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_wikidata_entries.exclude(kind__exact='')]
 
     if wikidata_entry.kind == KIND_GRAVE_OF:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
@@ -247,3 +251,12 @@ def get_burial_plot_reference(wikidata_entry, claims):
                         logger.warning("Multiple burial plot references for Wikidata entry {}".format(wikidata_entry))
                     return wikidata_entry.get_property_value(burial_plot_references[0])
     logger.warning("No burial plot reference for Wikidata entry {}".format(wikidata_entry))
+
+def check_secondary_wikidata_entries_fields_match(wikidata_entry, commons_category, burial_plot_reference):
+    for secondary_wikidata_entry in wikidata_entry.secondary_wikidata_entries.exclude(kind__exact=KIND_SUBJECT):
+        secondary_commons_category = secondary_wikidata_entry.get_commons_category()
+        secondary_burial_plot_reference = get_burial_plot_reference(secondary_wikidata_entry, secondary_wikidata_entry.claims())
+        if commons_category != secondary_commons_category:
+            logger.warning("Commons category for Wikidata entry {} does not match secondary entry {}".format(wikidata_entry, secondary_wikidata_entry))
+        if burial_plot_reference != secondary_burial_plot_reference:
+            logger.warning("Burial plot reference for Wikidata entry {} does not match secondary entry {}".format(wikidata_entry, secondary_wikidata_entry))

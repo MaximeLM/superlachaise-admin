@@ -78,6 +78,9 @@ class WikidataEntry(models.Model):
         wikipedia_page = self.get_wikipedia_page(language)
         if wikipedia_page and wikipedia_page.default_sort:
             return wikipedia_page.default_sort
+        # Use default sort from any wikipedia page if available
+        for wikipedia_page in self.wikipedia_pages.exclude(default_sort__exact=''):
+            return wikipedia_page.default_sort
         # Use default sort from commons category if available
         commons_category = self.get_commons_category()
         if commons_category and commons_category.default_sort:

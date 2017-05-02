@@ -135,7 +135,6 @@ def request_commons_categories(commons_categories):
                 logger.warning("Commons category \"{}\" is a redirect for \"{}\"".format(commons_category.id, commons_category.redirect.id))
             commons_category.save()
     logger.info(str(entry_count)+"/"+str(entry_total))
-    config.commons.post_sync_commons_categories(commons_categories)
 
 class CommonsAPIError(Exception):
     pass

@@ -1,8 +1,5 @@
 from superlachaise.models import *
 
-def post_sync_commons_categories(commons_categories):
-    pass
-
 def get_commons_export_object(config):
     commons_categories = CommonsCategory.objects.filter(redirect=None)
     return {
