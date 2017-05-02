@@ -196,7 +196,7 @@ def get_wikidata_export_object(config):
     }
 
     for wikidata_entry in WikidataEntry.objects.exclude(kind__exact=''):
-        export_object.update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
+        export_object["wikidata_entries"].update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
 
     return export_object
 
