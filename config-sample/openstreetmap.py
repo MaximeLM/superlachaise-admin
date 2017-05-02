@@ -47,16 +47,17 @@ def get_openstreetmap_export_object(config):
             "source": "http://www.openstreetmap.org/",
             "license": "http://www.openstreetmap.org/copyright/",
         },
-        "openstreetmap_elements": {openstreetmap_element.id: get_openstreetmap_element_export_object(openstreetmap_element) for openstreetmap_element in openstreetmap_elements},
+        "openstreetmap_elements": {openstreetmap_element.id: get_openstreetmap_element_export_object(openstreetmap_element, config) for openstreetmap_element in openstreetmap_elements},
     }
 
-def get_openstreetmap_element_export_object(openstreetmap_element):
+def get_openstreetmap_element_export_object(openstreetmap_element, config):
     (type, id) = openstreetmap_element.split_id()
+    wikidata_entry = config.wikidata.get_notable_wikidata_entry(openstreetmap_element.wikidata_entry) if openstreetmap_element.wikidata_entry else None
     return {
         "type": type,
         "id": int(id),
         "name": openstreetmap_element.name,
         "latitude": float(openstreetmap_element.latitude),
         "longitude": float(openstreetmap_element.longitude),
-        "wikidata_entry": openstreetmap_element.wikidata_entry.id if openstreetmap_element.wikidata_entry else None,
+        "wikidata_entry": wikidata_entry.id if wikidata_entry else None,
     }

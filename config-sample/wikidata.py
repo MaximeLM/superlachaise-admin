@@ -205,6 +205,9 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     if not claims or not wikidata_entry.kind:
         return {}
 
+    if get_notable_wikidata_entry(wikidata_entry) != wikidata_entry:
+        return {}
+
     export_object = {
         "id": wikidata_entry.id,
         "kind": wikidata_entry.kind,
@@ -226,7 +229,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
         export_object["commons_category"] = commons_category.id if commons_category else None
         export_object["burial_plot_reference"] = burial_plot_reference
 
-        secondary_wikidata_entries = list(wikidata_entry.secondary_wikidata_entries.exclude(kind__exact=''))
+        secondary_wikidata_entries = get_notable_secondary_entries(wikidata_entry)
         # If the entry has no wikipedia page and a single subject, use it as wikipedia page
         if wikidata_entry.wikipedia_pages.count() == 0:
             subject_wikidata_entries = wikidata_entry.secondary_wikidata_entries.filter(kind=KIND_SUBJECT)
@@ -250,6 +253,27 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     return {
         wikidata_entry.id: export_object,
     }
+
+def get_notable_wikidata_entry(wikidata_entry):
+    if wikidata_entry.kind == KIND_GRAVE:
+        # Replace grave with no wikipedia page with single grave_of with wikipedia page
+        if wikidata_entry.wikipedia_pages.count() == 0:
+            notable_grave_of = get_notable_secondary_entries(wikidata_entry)
+            if len(notable_grave_of) == 1:
+                return notable_grave_of[0]
+    if wikidata_entry.kind == KIND_GRAVE_OF:
+        # Skip grave of with no wikipedia pages
+        if wikidata_entry.wikipedia_pages.count() == 0:
+            return None
+    return wikidata_entry
+
+def get_notable_secondary_entries(wikidata_entry):
+    if wikidata_entry.kind == KIND_GRAVE:
+        # Skip grave of with no wikipedia pages
+        grave_of_wikidata_entries = list(wikidata_entry.secondary_wikidata_entries.filter(kind=KIND_GRAVE_OF))
+        grave_of_wikidata_entries = [wikidata_entry for wikidata_entry in grave_of_wikidata_entries if get_notable_wikidata_entry(wikidata_entry)]
+        return grave_of_wikidata_entries
+    return list(wikidata_entry.secondary_wikidata_entries.exclude(kind__exact=''))
 
 def get_burial_plot_reference(wikidata_entry, claims):
     if P_BURIAL_PLOT_REFERENCE in claims:
