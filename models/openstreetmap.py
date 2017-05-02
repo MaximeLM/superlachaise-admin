@@ -12,7 +12,7 @@ class OpenstreetmapElement(models.Model):
     latitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, default=0, decimal_places=7)
     raw_tags = models.TextField(default='{}', validators=[model_validators.validate_JSON])
-    wikidata_entry = models.ForeignKey('WikidataEntry', null=True, blank=True, on_delete=models.SET_NULL)
+    wikidata_entry = models.ForeignKey('WikidataEntry', null=True, blank=True, on_delete=models.SET_NULL, related_name="openstreetmap_elements")
 
     def split_id(self):
         if self.id:

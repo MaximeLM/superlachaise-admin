@@ -38,7 +38,7 @@ accepted_instances_of = [Q_HUMAN, Q_GRAVE, Q_TOMB, Q_MONUMENT, Q_MEMORIAL, Q_WAR
 KIND_HUMAN = "human"
 KIND_TOMB = "tomb"
 KIND_MONUMENT = "monument"
-KIND_MONUMENT_SUBJECT = "monument_subject"
+KIND_SUBJECT = "subject"
 accepted_kinds = {
     KIND_HUMAN: [Q_HUMAN],
     KIND_TOMB: [Q_GRAVE, Q_TOMB, Q_CARDIOTAPH],
@@ -60,32 +60,15 @@ def get_kind(wikidata_entry):
                 else:
                     kind = accepted_kind
 
-    if not kind:
-        # See if it's a monument subject
-        if wikidata_entry.primary_entries.filter(kind=KIND_MONUMENT).count() > 0:
-            return KIND_MONUMENT_SUBJECT
-
-    if not kind:
-        return None
-
-    accepted_location = False
-    if kind == KIND_HUMAN:
-        if P_PLACE_OF_BURIAL in claims:
-            for place_of_burial in claims[P_PLACE_OF_BURIAL]:
-                location_id = wikidata_entry.get_property_id(place_of_burial[F_MAINSNAK])
-                if location_id in accepted_locations:
-                    return kind
-                else:
-                    location_wikidata_entries = WikidataEntry.objects.filter(id=location_id)
-                    if location_wikidata_entries.count() == 1:
-                        location_wikidata_entry = location_wikidata_entries[0]
-                        if get_kind(location_wikidata_entry):
-                            return kind
-    else:
-        for location_qualifier in [P_PART_OF, P_LOCATION, P_PLACE_OF_BURIAL]:
-            if location_qualifier in claims:
-                for location in claims[location_qualifier]:
-                    location_id = wikidata_entry.get_property_id(location[F_MAINSNAK])
+    if wikidata_entry.openstreetmap_elements.count() > 0:
+        # For main entries, check that the location is accepted
+        if not kind:
+            return None
+        accepted_location = False
+        if kind == KIND_HUMAN:
+            if P_PLACE_OF_BURIAL in claims:
+                for place_of_burial in claims[P_PLACE_OF_BURIAL]:
+                    location_id = wikidata_entry.get_property_id(place_of_burial[F_MAINSNAK])
                     if location_id in accepted_locations:
                         return kind
                     else:
@@ -94,8 +77,23 @@ def get_kind(wikidata_entry):
                             location_wikidata_entry = location_wikidata_entries[0]
                             if get_kind(location_wikidata_entry):
                                 return kind
-    logger.warning("Wikidata entry {} is not located in a accepted location".format(wikidata_entry))
-    return None
+        else:
+            for location_qualifier in [P_PART_OF, P_LOCATION, P_PLACE_OF_BURIAL]:
+                if location_qualifier in claims:
+                    for location in claims[location_qualifier]:
+                        location_id = wikidata_entry.get_property_id(location[F_MAINSNAK])
+                        if location_id in accepted_locations:
+                            return kind
+                        else:
+                            location_wikidata_entries = WikidataEntry.objects.filter(id=location_id)
+                            if location_wikidata_entries.count() == 1:
+                                location_wikidata_entry = location_wikidata_entries[0]
+                                if get_kind(location_wikidata_entry):
+                                    return kind
+        logger.warning("Wikidata entry {} is not located in a accepted location".format(wikidata_entry))
+        return None
+    else:
+        return KIND_SUBJECT
 
 def get_secondary_wikidata_entries(wikidata_entry):
     """ List other Wikidata entries IDs to sync for a primary Wikidata entry """
@@ -222,7 +220,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object["commons_category"] = commons_category.id if commons_category else None
 
     export_object["categories"] = [category.id for category in wikidata_entry.get_categories()]
-    if wikidata_entry.kind != KIND_MONUMENT_SUBJECT:
+    if wikidata_entry.kind != KIND_SUBJECT:
         export_object["burial_plot_reference"] = get_burial_plot_reference(wikidata_entry, claims)
 
     if wikidata_entry.kind == KIND_HUMAN:
