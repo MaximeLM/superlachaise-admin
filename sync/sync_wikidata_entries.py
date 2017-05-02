@@ -79,18 +79,18 @@ def get_or_create_secondary_wikidata_entries(primary_wikidata_entries, get_secon
     created = 0
     secondary_wikidata_entries = []
     for primary_wikidata_entry in primary_wikidata_entries:
-        secondary_entries_for_primary_wikidata_entry = []
+        secondary_wikidata_entries_for_primary_wikidata_entry = []
         for wikidata_id in get_secondary_wikidata_entries(primary_wikidata_entry):
             secondary_wikidata_entry, was_created = WikidataEntry.objects.get_or_create(id=wikidata_id)
-            if not secondary_wikidata_entry in secondary_entries_for_primary_wikidata_entry:
-                secondary_entries_for_primary_wikidata_entry.append(secondary_wikidata_entry)
+            if not secondary_wikidata_entry in secondary_wikidata_entries_for_primary_wikidata_entry:
+                secondary_wikidata_entries_for_primary_wikidata_entry.append(secondary_wikidata_entry)
             if was_created:
                 logger.debug("Created WikidataEntry "+secondary_wikidata_entry.id)
                 created = created + 1
             else:
                 logger.debug("Matched WikidataEntry "+secondary_wikidata_entry.id)
-        primary_wikidata_entry.secondary_entries.set(secondary_entries_for_primary_wikidata_entry)
-        secondary_wikidata_entries.extend([wikidata_entry for wikidata_entry in secondary_entries_for_primary_wikidata_entry if wikidata_entry not in secondary_wikidata_entries])
+        primary_wikidata_entry.secondary_wikidata_entries.set(secondary_wikidata_entries_for_primary_wikidata_entry)
+        secondary_wikidata_entries.extend([wikidata_entry for wikidata_entry in secondary_wikidata_entries_for_primary_wikidata_entry if wikidata_entry not in secondary_wikidata_entries])
     return (secondary_wikidata_entries, created)
 
 # Request Wikidata

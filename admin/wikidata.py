@@ -10,12 +10,12 @@ class WikidataEntryAdmin(admin.ModelAdmin):
     list_filter = ('kind',)
 
     fieldsets = [
-        (None, {'fields': ['id', 'name', 'kind', 'wikidata_link', 'secondary_entries', 'wikipedia_pages', 'wikidata_categories']}),
+        (None, {'fields': ['id', 'name', 'kind', 'wikidata_link', 'secondary_wikidata_entries', 'wikipedia_pages', 'wikidata_categories']}),
         (None, {'fields': ['commons_category', 'commons_category_link']}),
         (None, {'fields': ['raw_labels', 'raw_descriptions', 'raw_claims', 'raw_sitelinks']}),
     ]
     readonly_fields = ('wikidata_link', 'commons_category_link')
-    filter_horizontal = ('secondary_entries', 'wikipedia_pages', 'wikidata_categories')
+    filter_horizontal = ('secondary_wikidata_entries', 'wikipedia_pages', 'wikidata_categories')
 
     def wikidata_link(self, obj):
         return admin_utils.html_link(obj.wikidata_url())

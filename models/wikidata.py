@@ -19,7 +19,7 @@ class WikidataEntry(models.Model):
     raw_claims = models.TextField(default='{}', validators=[model_validators.validate_JSON])
     raw_sitelinks = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
-    secondary_entries = models.ManyToManyField('self', blank=True, symmetrical=False, related_name="primary_entries")
+    secondary_wikidata_entries = models.ManyToManyField('self', blank=True, symmetrical=False, related_name="primary_wikidata_entries")
     wikipedia_pages = models.ManyToManyField('WikipediaPage', blank=True)
     commons_category = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
     wikidata_categories = models.ManyToManyField('WikidataCategory', blank=True)

@@ -204,7 +204,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object = {
         "id": wikidata_entry.id,
         "kind": wikidata_entry.kind,
-        "secondary_entries": [wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_entries.exclude(kind__exact='')]
+        "secondary_wikidata_entries": [wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_wikidata_entries.exclude(kind__exact='')]
     }
 
     for language in languages:
