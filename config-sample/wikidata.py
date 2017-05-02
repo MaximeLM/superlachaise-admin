@@ -109,6 +109,8 @@ def get_secondary_wikidata_entries(wikidata_entry):
                     grave_of_id = wikidata_entry.get_property_id(grave_of)
                     if grave_of_id:
                         wikidata_entries.append(grave_of_id)
+        if len(wikidata_entries) == 0:
+            logger.warning("Wikidata entry {} of kind grave has no secondary entries".format(wikidata_entry))
 
     # Add "commemorates" wikidata entries
     if wikidata_entry.kind == KIND_MONUMENT:
