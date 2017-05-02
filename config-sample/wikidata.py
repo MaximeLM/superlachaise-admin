@@ -110,7 +110,7 @@ def get_secondary_wikidata_entries(wikidata_entry):
                     if grave_of_id:
                         wikidata_entries.append(grave_of_id)
         if len(wikidata_entries) == 0:
-            logger.warning("Wikidata entry {} of kind grave has no secondary entries".format(wikidata_entry))
+            logger.warning("Wikidata entry {} of kind {} has no secondary entries".format(wikidata_entry, wikidata_entry.kind))
 
     # Add "commemorates" wikidata entries
     if wikidata_entry.kind == KIND_MONUMENT:
@@ -120,6 +120,8 @@ def get_secondary_wikidata_entries(wikidata_entry):
                     claim_id = wikidata_entry.get_property_id(claim[F_MAINSNAK])
                     if claim_id:
                         wikidata_entries.append(claim_id)
+        if len(wikidata_entries) == 0:
+            logger.warning("Wikidata entry {} of kind {} has no secondary entries".format(wikidata_entry, wikidata_entry.kind))
 
     return wikidata_entries
 
@@ -223,9 +225,20 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
         burial_plot_reference = get_burial_plot_reference(wikidata_entry, claims)
         export_object["commons_category"] = commons_category.id if commons_category else None
         export_object["burial_plot_reference"] = burial_plot_reference
-        if wikidata_entry.kind != KIND_GRAVE_OF:
-            check_secondary_wikidata_entries_fields_match(wikidata_entry, commons_category, burial_plot_reference)
-            export_object["secondary_wikidata_entries"] = [wikidata_entry.id for wikidata_entry in wikidata_entry.secondary_wikidata_entries.exclude(kind__exact='')]
+
+        secondary_wikidata_entries = list(wikidata_entry.secondary_wikidata_entries.exclude(kind__exact=''))
+        # If the entry has no wikipedia page and a single subject, use it as wikipedia page
+        if wikidata_entry.wikipedia_pages.count() == 0:
+            subject_wikidata_entries = wikidata_entry.secondary_wikidata_entries.filter(kind=KIND_SUBJECT)
+            if len(subject_wikidata_entries) == 1:
+                subject_wikidata_entry = subject_wikidata_entries[0]
+                wikipedia_page = subject_wikidata_entry.get_wikipedia_page(language)
+                for language in languages:
+                    export_object[language]["wikipedia_page"] = wikipedia_page.id_parts()[1] if wikipedia_page else None
+                secondary_wikidata_entries.remove(subject_wikidata_entry)
+
+        check_secondary_wikidata_entries_fields_match(wikidata_entry, commons_category, burial_plot_reference)
+        export_object["secondary_wikidata_entries"] = [wikidata_entry.id for wikidata_entry in secondary_wikidata_entries]
 
     if wikidata_entry.kind == KIND_GRAVE_OF:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
