@@ -241,8 +241,9 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
 
     for language in languages:
         wikipedia_page = wikidata_entry.get_wikipedia_page(language)
+        label = wikidata_entry.get_label(language)
         export_object[language] = {
-            "label": wikidata_entry.get_label(language),
+            "label": (label[0].upper() + label[1:]) if label else None,
             "default_sort": wikidata_entry.get_default_sort(language),
         }
         if wikidata_entry.kind != KIND_GRAVE:
@@ -255,7 +256,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object["commons_category"] = commons_category.id if commons_category else None
     export_object["burial_plot_reference"] = burial_plot_reference
     check_secondary_wikidata_entries_fields_match(wikidata_entry, commons_category, burial_plot_reference)
-    
+
     if wikidata_entry.kind == KIND_GRAVE_OF:
         categories_ids = get_categories_ids(wikidata_entry)
         if len(categories_ids) == 0:
