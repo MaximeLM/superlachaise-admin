@@ -1,4 +1,4 @@
-import json, datetime, time, logging
+import json, logging
 from django.db import models
 import dateutil.parser
 
@@ -137,25 +137,36 @@ class WikidataEntry(models.Model):
                 date_string = best_date_value['time']
                 precision_int = best_date_value['precision']
 
-                date = datetime.date(*time.strptime(date_string[1:11], "%Y-%m-%d")[:3])
                 date_dict = {
                     "year": None,
                     "month": None,
                     "day": None,
                     "precision": None,
                 }
-                precision = None
-                if precision_int >= 9:
-                    date_dict["precision"] = "year"
-                    date_dict["year"] = date.year
-                if precision_int >= 10:
-                    date_dict["precision"] = "month"
-                    date_dict["month"] = date.month
-                if precision_int >= 11:
-                    date_dict["precision"] = "day"
-                    date_dict["day"] = date.day
-                if "precision" in date_dict:
-                    return date_dict
+                if precision_int == 9:
+                    date = dateutil.parser.parse(date_string[1:5])
+                    return {
+                        "year": date.year,
+                        "month": None,
+                        "day": None,
+                        "precision": "year",
+                    }
+                elif precision_int == 10:
+                    date = dateutil.parser.parse(date_string[1:8])
+                    return {
+                        "year": date.year,
+                        "month": date.month,
+                        "day": None,
+                        "precision": "month",
+                    }
+                elif precision_int == 11:
+                    date = dateutil.parser.parse(date_string[1:11])
+                    return {
+                        "year": date.year,
+                        "month": date.month,
+                        "day": date.day,
+                        "precision": "day",
+                    }
                 else:
                     logger.warning("Unsupported date precision {} for Wikidata entry {}".format(precision_int, self))
 
