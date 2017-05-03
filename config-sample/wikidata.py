@@ -290,6 +290,8 @@ def get_notable_wikidata_entry(wikidata_entry):
         notable_grave_of = get_notable_secondary_entries(wikidata_entry)
         if len(notable_grave_of) == 1:
             return notable_grave_of[0]
+        if len(notable_grave_of) == 0:
+            logger.warning("Wikidata entry {} has no notable secondary entry".format(wikidata_entry))
     return wikidata_entry
 
 def get_notable_secondary_entries(wikidata_entry):
