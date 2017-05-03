@@ -201,11 +201,15 @@ def get_wikidata_export_object(config):
             "source": "https://www.wikidata.org/",
             "license": "https://creativecommons.org/publicdomain/zero/1.0/",
         },
-        "wikidata_entries": {},
+        "wikidata_entries": {
+            KIND_MONUMENT: {},
+            KIND_GRAVE: {},
+            KIND_GRAVE_OF: {},
+        },
     }
 
-    for wikidata_entry in WikidataEntry.objects.exclude(kind__exact=''):
-        export_object["wikidata_entries"].update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
+    for wikidata_entry in WikidataEntry.objects.exclude(kind__exact='').exclude(kind=KIND_SUBJECT):
+        export_object["wikidata_entries"][wikidata_entry.kind].update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
 
     return export_object
 
@@ -247,13 +251,17 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     # If the entry has no wikipedia page and a single subject, use it as wikipedia page
     if wikidata_entry.kind != KIND_GRAVE and wikidata_entry.wikipedia_pages.count() == 0:
         subject_wikidata_entries = wikidata_entry.secondary_wikidata_entries.filter(kind=KIND_SUBJECT)
-        if len(subject_wikidata_entries) == 1:
+        if len(subject_wikidata_entries) > 1:
+            logger.warning("Wikidata entry {} has more than one subject".format(wikidata_entry))
+        if len(subject_wikidata_entries) >= 1:
             subject_wikidata_entry = subject_wikidata_entries[0]
             wikipedia_page = subject_wikidata_entry.get_wikipedia_page(language)
             for language in languages:
                 export_object[language]["wikipedia_page"] = wikipedia_page.id_parts()[1] if wikipedia_page else None
-            secondary_wikidata_entries.remove(subject_wikidata_entry)
-    export_object["secondary_wikidata_entries"] = [wikidata_entry.id for wikidata_entry in secondary_wikidata_entries]
+        else:
+            logger.warning("Wikidata entry {} has no wikipedia page".format(wikidata_entry))
+    if wikidata_entry.kind == KIND_GRAVE:
+        export_object["secondary_wikidata_entries"] = [wikidata_entry.id for wikidata_entry in secondary_wikidata_entries]
 
     if wikidata_entry.kind == KIND_GRAVE_OF:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:
