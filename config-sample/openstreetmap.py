@@ -42,22 +42,32 @@ def get_wikidata_entry_id(openstreetmap_element):
 
 def get_openstreetmap_export_object(config):
     openstreetmap_elements = OpenstreetmapElement.objects.filter(wikidata_entry__isnull=False)
-    return {
+    export_object = {
         "about": {
             "source": "http://www.openstreetmap.org/",
             "license": "http://www.openstreetmap.org/copyright/",
         },
-        "openstreetmap_elements": {openstreetmap_element.id: get_openstreetmap_element_export_object(openstreetmap_element, config) for openstreetmap_element in openstreetmap_elements},
+        "openstreetmap_elements": {}
     }
+    
+    for openstreetmap_element in openstreetmap_elements:
+        openstreetmap_element_dict = get_openstreetmap_element_export_object(openstreetmap_element, config)
+        export_object["openstreetmap_elements"].update(openstreetmap_element_dict)
+    
+    return export_object
 
 def get_openstreetmap_element_export_object(openstreetmap_element, config):
     (type, id) = openstreetmap_element.split_id()
     wikidata_entry = config.wikidata.get_notable_wikidata_entry(openstreetmap_element.wikidata_entry) if openstreetmap_element.wikidata_entry else None
+    if not wikidata_entry:
+        return {}
     return {
-        "type": type,
-        "id": int(id),
-        "name": openstreetmap_element.name,
-        "latitude": float(openstreetmap_element.latitude),
-        "longitude": float(openstreetmap_element.longitude),
-        "wikidata_entry": wikidata_entry.id if wikidata_entry else None,
+        openstreetmap_element.id:{
+            "type": type,
+            "id": int(id),
+            "name": openstreetmap_element.name,
+            "latitude": float(openstreetmap_element.latitude),
+            "longitude": float(openstreetmap_element.longitude),
+            "wikidata_entry": wikidata_entry.id if wikidata_entry else None,
+        }
     }

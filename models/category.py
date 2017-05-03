@@ -6,7 +6,6 @@ from superlachaise.models import model_validators
 class Category(models.Model):
 
     id = models.CharField(primary_key=True, db_index=True, max_length=1024)
-    kind = models.CharField(max_length=1024, blank=True)
 
     raw_labels = models.TextField(default='{}', validators=[model_validators.validate_JSON])
 
@@ -30,13 +29,3 @@ class Category(models.Model):
         ordering = ['id']
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
-
-    # Export
-
-    def config_object(self):
-        return {
-            "id": self.id,
-            "kind": self.kind,
-            "labels": self.labels(),
-            "wikidata_categories": [wikidata_category.wikidata_id() for wikidata_category in self.wikidata_categories.all()]
-        }

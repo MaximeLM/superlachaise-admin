@@ -69,7 +69,7 @@ def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, langua
                     if not wikipedia_page in wikipedia_pages[language]:
                         wikipedia_pages[language].append(wikipedia_page)
                 else:
-                    logger.debug("Wikipedia page for language '{}' is missing for wikidata entry {}".format(language, str(wikidata_entry)))
+                    logger.debug("Wikipedia page for language '{}' is missing for wikidata entry {}".format(language, wikidata_entry))
         wikidata_entry.wikipedia_pages.set(wikipedia_pages_for_wikidata_entry)
 
     return (wikipedia_pages, created)
@@ -143,13 +143,10 @@ def request_wikipedia_pages(wikipedia_pages):
 
             # Check and save wikipedia pages
             for wikipedia_page in wikipedia_pages_chunk:
-                if not wikipedia_page.default_sort:
-                    logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page.id))
-                    wikipedia_page.default_sort = ''
                 if wikipedia_page.redirect:
-                    logger.warning("Wikipedia page \"{}\" is a redirect for \"{}\"".format(wikipedia_page.id, wikipedia_page.redirect.id))
+                    logger.warning("Wikipedia page \"{}\" is a redirect for \"{}\"".format(wikipedia_page, wikipedia_page.redirect))
                     if '#' in wikipedia_page.redirect.id:
-                        logger.warning("Redirect page \"{}\" contains an anchor '#'".format(wikipedia_page.redirect.id))
+                        logger.warning("Redirect page \"{}\" contains an anchor '#'".format(wikipedia_page.redirect))
                 wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
         config.wikipedia.post_sync_wikipedia_pages(wikipedia_pages_for_language)
@@ -178,7 +175,11 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
             raise WikipediaAPIMissingPagesError([wikipedia_page])
         if 'revisions' in wikipedia_page_dict:
             wikitext = wikipedia_page_dict['revisions'][0]['*']
-            wikipedia_page.default_sort = get_default_sort(wikitext)
+            default_sort = get_default_sort(wikitext)
+            if not default_sort:
+                default_sort = wikipedia_page_dict['title']
+                logger.warning("Default sort is missing for Wikipedia page {}".format(wikipedia_page))
+            wikipedia_page.default_sort = default_sort
             redirect_id = get_redirect_id(wikitext)
             if redirect_id:
                 wikipedia_id = wikipedia_page.id_parts()[0] + '|' + redirect_id
@@ -194,9 +195,13 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
         return result['continue']
 
 DEFAULT_SORT_PATTERN = re.compile("^{{DEFAULTSORT:[\s]*(.*)[\s]*}}$")
+CLEDETRI_PATTERN = re.compile("^{{CLEDETRI:[\s]*(.*)[\s]*}}$")
 def get_default_sort(wikitext):
     for line in wikitext.split('\n'):
         match = DEFAULT_SORT_PATTERN.match(line)
+        if match:
+            return match.group(1)
+        match = CLEDETRI_PATTERN.match(line)
         if match:
             return match.group(1)
 
