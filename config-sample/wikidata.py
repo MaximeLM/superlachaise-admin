@@ -280,17 +280,13 @@ def get_notable_wikidata_entry(wikidata_entry):
         notable_grave_of = get_notable_secondary_entries(wikidata_entry)
         if len(notable_grave_of) == 1:
             return notable_grave_of[0]
-    if wikidata_entry.kind == KIND_GRAVE_OF:
-        # Skip grave of with no wikipedia pages
-        if wikidata_entry.wikipedia_pages.count() == 0:
-            return None
     return wikidata_entry
 
 def get_notable_secondary_entries(wikidata_entry):
     if wikidata_entry.kind == KIND_GRAVE:
         # Skip grave of with no wikipedia pages
         grave_of_wikidata_entries = list(wikidata_entry.secondary_wikidata_entries.filter(kind=KIND_GRAVE_OF))
-        grave_of_wikidata_entries = [wikidata_entry for wikidata_entry in grave_of_wikidata_entries if get_notable_wikidata_entry(wikidata_entry)]
+        grave_of_wikidata_entries = [wikidata_entry for wikidata_entry in grave_of_wikidata_entries if wikidata_entry.wikipedia_pages.count() > 0]
         if len(grave_of_wikidata_entries) > 0:
             return grave_of_wikidata_entries
     return list(wikidata_entry.secondary_wikidata_entries.exclude(kind__exact=''))
