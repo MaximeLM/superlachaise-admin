@@ -139,7 +139,6 @@ def request_wikidata_entries(wikidata_entries, languages=config.base.LANGUAGES):
     logger.info(str(entry_count)+"/"+str(entry_total))
     if no_such_entity_entry_count > 0:
         logger.info("Deleted {} wikidata entries not found on Wikidata".format(no_such_entity_entry_count))
-    config.wikidata.post_sync_wikidata_entries(wikidata_entries)
 
 class WikidataAPIError(Exception):
     pass

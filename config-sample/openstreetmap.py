@@ -11,19 +11,6 @@ FETCHED_TAGS = [
     "historic=memorial",
 ]
 
-def post_refresh_openstreetmap_elements(openstreetmap_elements):
-    exclude_ids = [
-        #"node/1688357881", # not in the cemetery
-    ]
-    filtered_openstreetmap_elements = []
-    for openstreetmap_element in openstreetmap_elements:
-        if openstreetmap_element.id in exclude_ids:
-            logger.debug("Deleted exluded Openstreetmap element "+openstreetmap_element.id)
-            openstreetmap_element.delete()
-        else:
-            filtered_openstreetmap_elements.append(openstreetmap_element)
-    return filtered_openstreetmap_elements
-
 def get_wikidata_entry_id(openstreetmap_element):
     map_ids = {
 
@@ -49,11 +36,11 @@ def get_openstreetmap_export_object(config):
         },
         "openstreetmap_elements": {}
     }
-    
+
     for openstreetmap_element in openstreetmap_elements:
         openstreetmap_element_dict = get_openstreetmap_element_export_object(openstreetmap_element, config)
         export_object["openstreetmap_elements"].update(openstreetmap_element_dict)
-    
+
     return export_object
 
 def get_openstreetmap_element_export_object(openstreetmap_element, config):

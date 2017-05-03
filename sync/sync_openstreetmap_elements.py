@@ -28,7 +28,6 @@ def sync(reset=False, ids=None, **kwargs):
     logger.info("Update model")
     openstreetmap_elements, created = update_model(overpass_elements)
     logger.info("Refreshed {} Openstreetmap elements to refresh (created {})".format(len(openstreetmap_elements), created))
-    openstreetmap_elements = config.openstreetmap.post_refresh_openstreetmap_elements(openstreetmap_elements)
 
     orphaned_objects = [openstreetmap_element for openstreetmap_element in orphaned_objects if openstreetmap_element not in openstreetmap_elements]
 

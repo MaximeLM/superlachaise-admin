@@ -132,9 +132,6 @@ def get_secondary_wikidata_entries(wikidata_entry):
 
     return wikidata_entries
 
-def post_sync_wikidata_entries(wikidata_entries):
-    pass
-
 def should_sync_wikipedia_pages_for_wikidata_entry(wikidata_entry):
     return wikidata_entry.kind in [KIND_GRAVE_OF, KIND_MONUMENT, KIND_SUBJECT]
 

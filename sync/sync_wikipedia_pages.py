@@ -149,7 +149,6 @@ def request_wikipedia_pages(wikipedia_pages):
                         logger.warning("Redirect page \"{}\" contains an anchor '#'".format(wikipedia_page.redirect))
                 wikipedia_page.save()
         logger.info(str(entry_count)+"/"+str(entry_total))
-        config.wikipedia.post_sync_wikipedia_pages(wikipedia_pages_for_language)
 
 class WikipediaAPIError(Exception):
     pass
