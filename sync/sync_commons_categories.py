@@ -58,7 +58,6 @@ def get_or_create_commons_categories_from_wikidata_entries(wikidata_entries, get
             if not commons_category in commons_categories:
                 commons_categories.append(commons_category)
         else:
-            logger.warning("No Commons category ID found for Wikidata entry {} - {}".format(wikidata_entry.id, wikidata_entry.name))
             wikidata_entry.commons_category = None
         wikidata_entry.save()
     return (commons_categories, created)

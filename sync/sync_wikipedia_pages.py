@@ -47,28 +47,29 @@ def delete_objects():
 
 # Prepare model
 
-def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, languages):
+def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, languages, should_sync_wikipedia_pages_for_wikidata_entry=config.wikidata.should_sync_wikipedia_pages_for_wikidata_entry):
     wikipedia_pages = {language:[] for language in languages}
     created = 0
 
     for wikidata_entry in wikidata_entries:
         wikipedia_pages_for_wikidata_entry = []
-        for language in languages:
-            title = wikidata_entry.get_sitelink("{}wiki".format(language))
-            if title:
-                wikipedia_id = "{}|{}".format(language, title)
-                wikipedia_page, was_created = WikipediaPage.objects.get_or_create(id=wikipedia_id)
-                if not wikipedia_page in wikipedia_pages_for_wikidata_entry:
-                    wikipedia_pages_for_wikidata_entry.append(wikipedia_page)
-                if was_created:
-                    logger.debug("Created WikipediaPage "+wikipedia_id)
-                    created = created + 1
+        if should_sync_wikipedia_pages_for_wikidata_entry(wikidata_entry):
+            for language in languages:
+                title = wikidata_entry.get_sitelink("{}wiki".format(language))
+                if title:
+                    wikipedia_id = "{}|{}".format(language, title)
+                    wikipedia_page, was_created = WikipediaPage.objects.get_or_create(id=wikipedia_id)
+                    if not wikipedia_page in wikipedia_pages_for_wikidata_entry:
+                        wikipedia_pages_for_wikidata_entry.append(wikipedia_page)
+                    if was_created:
+                        logger.debug("Created WikipediaPage "+wikipedia_id)
+                        created = created + 1
+                    else:
+                        logger.debug("Matched WikipediaPage "+wikipedia_id)
+                    if not wikipedia_page in wikipedia_pages[language]:
+                        wikipedia_pages[language].append(wikipedia_page)
                 else:
-                    logger.debug("Matched WikipediaPage "+wikipedia_id)
-                if not wikipedia_page in wikipedia_pages[language]:
-                    wikipedia_pages[language].append(wikipedia_page)
-            else:
-                logger.warning("Wikipedia page for language '{}' is missing for wikidata entry {}".format(language, str(wikidata_entry)))
+                    logger.debug("Wikipedia page for language '{}' is missing for wikidata entry {}".format(language, str(wikidata_entry)))
         wikidata_entry.wikipedia_pages.set(wikipedia_pages_for_wikidata_entry)
 
     return (wikipedia_pages, created)
