@@ -123,6 +123,13 @@ def get_secondary_wikidata_entries(wikidata_entry):
         if len(wikidata_entries) == 0:
             logger.warning("Wikidata entry {} of kind {} has no secondary entries".format(wikidata_entry, wikidata_entry.kind))
 
+    # Add special cases
+    secondary_entries_mapping = {
+        "Q15860323": ["Q16204221"], # Malik Oussekine
+    }
+    if wikidata_entry.id in secondary_entries_mapping:
+        wikidata_entries.extend(secondary_entries_mapping[wikidata_entry.id])
+
     return wikidata_entries
 
 def post_sync_wikidata_entries(wikidata_entries):
