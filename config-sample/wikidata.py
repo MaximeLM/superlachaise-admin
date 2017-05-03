@@ -209,7 +209,11 @@ def get_wikidata_export_object(config):
     }
 
     for wikidata_entry in WikidataEntry.objects.exclude(kind__exact='').exclude(kind=KIND_SUBJECT):
-        export_object["wikidata_entries"][wikidata_entry.kind].update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
+        if wikidata_entry.openstreetmap_elements.count() > 0:
+            export_object["wikidata_entries"][wikidata_entry.kind].update(get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES))
+            if wikidata_entry.kind == KIND_GRAVE:
+                for secondary_wikidata_entry in wikidata_entry.secondary_wikidata_entries.all():
+                    export_object["wikidata_entries"][secondary_wikidata_entry.kind].update(get_wikidata_entry_export_object(secondary_wikidata_entry, config.base.LANGUAGES))
 
     return export_object
 
