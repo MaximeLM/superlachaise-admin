@@ -54,3 +54,10 @@ class CommonsFileAdmin(admin.ModelAdmin):
 
     def image_url_link(self, obj):
         return admin_utils.html_link(obj.image_url)
+
+    def sync_objects(self, request, queryset):
+        ids = [object.id for object in queryset]
+        admin_utils.sync(request, 'commons_files', {'ids': ids})
+    sync_objects.short_description = 'Sync selected Commons files'
+
+    actions = [sync_objects]

@@ -45,6 +45,7 @@ def get_commons_files_from_commons_categories(commons_categories):
             commons_files_for_category, created_for_category = get_commons_files_from_commons_category(commons_category)
             commons_files.extend([commons_file for commons_file in commons_files_for_category if commons_file not in commons_files])
             created = created + created_for_category
+    logger.info(str(entry_count)+"/"+str(entry_total))
 
     return (commons_files, created)
 
@@ -64,6 +65,8 @@ def get_commons_files_from_commons_category(commons_category):
             logger.debug("Matched CommonsFile "+main_commons_file.id)
         commons_category.main_commons_file = main_commons_file
         commons_category.save()
+    else:
+        logger.warning("No main Commons file for Commons category {}".format(commons_category))
 
     return (commons_files, created)
 
