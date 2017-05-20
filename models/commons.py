@@ -1,3 +1,4 @@
+import re
 from django.db import models
 
 from superlachaise.models import model_validators
@@ -24,6 +25,14 @@ class CommonsCategory(models.Model):
     def main_image_commons_url(self):
         if self.main_image:
             return CommonsCategory.COMMONS_IMAGE_URL_FORMAT.format(id=self.main_image)
+
+    IMAGE_PATTERN = re.compile("^[\s]*\|image[\s]*=[\s]*(.*)[\s]*$")
+    def get_main_commons_file_id(self):
+        if self.wikitext:
+            for line in self.wikitext.split('\n'):
+                match = CommonsCategory.IMAGE_PATTERN.match(line)
+                if match:
+                    return match.group(1)
 
     def __str__(self):
         return self.id

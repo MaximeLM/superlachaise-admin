@@ -125,13 +125,13 @@ def request_commons_categories(commons_categories):
         # Check and save commons categories
         for commons_category in commons_categories_chunk:
             if not commons_category.default_sort:
-                logger.warning("Default sort is missing for Commons category \"{}\"".format(commons_category.id))
+                logger.warning("Default sort is missing for Commons category \"{}\"".format(commons_category))
                 commons_category.default_sort = ''
             if not commons_category.wikitext:
-                logger.warning("Wikitext is missing for Commons category \"{}\"".format(commons_category.id))
+                logger.warning("Wikitext is missing for Commons category \"{}\"".format(commons_category))
                 commons_category.wikitext = ''
             if commons_category.redirect:
-                logger.warning("Commons category \"{}\" is a redirect for \"{}\"".format(commons_category.id, commons_category.redirect.id))
+                logger.warning("Commons category \"{}\" is a redirect for \"{}\"".format(commons_category, commons_category.redirect.id))
             commons_category.save()
     logger.info(str(entry_count)+"/"+str(entry_total))
 
