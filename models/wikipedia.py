@@ -8,6 +8,7 @@ class WikipediaPage(models.Model):
     id = models.CharField(primary_key=True, db_index=True, max_length=1024, validators=[model_validators.validate_wikipedia_id])
 
     default_sort = models.CharField(default='', blank=True, max_length=1024)
+    extract = models.TextField(default='', blank=True)
 
     redirect = models.ForeignKey('WikipediaPage', null=True, blank=True, on_delete=models.SET_NULL)
 

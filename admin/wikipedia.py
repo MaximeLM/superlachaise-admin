@@ -6,18 +6,23 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikipediaPage)
 class WikipediaPageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'default_sort', 'redirect_link', 'wikipedia_link')
+    list_display = ('id', 'default_sort', 'extract_html', 'redirect_link', 'wikipedia_link')
     search_fields = ('id',)
 
     fieldsets = [
         (None, {'fields': ['id', 'wikipedia_link']}),
-        (None, {'fields': ['default_sort']}),
+        (None, {'fields': ['default_sort', 'extract', 'extract_html']}),
         (None, {'fields': ['redirect', 'redirect_link']}),
     ]
-    readonly_fields = ('wikipedia_link', 'redirect_link')
+    readonly_fields = ('wikipedia_link', 'extract_html', 'redirect_link')
 
     def wikipedia_link(self, obj):
         return admin_utils.html_link(obj.wikipedia_url())
+
+    def extract_html(self, obj):
+        if obj.extract:
+            return format_html(obj.extract)
+    extract_html.admin_order_field = 'extract'
 
     def redirect_link(self, obj):
         if obj.redirect:

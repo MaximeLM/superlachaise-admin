@@ -102,8 +102,9 @@ def get_redirects(wikipedia_pages, languages=config.base.LANGUAGES):
 def make_wikipedia_query_params(wikipedia_pages):
     return {
         'action': 'query',
-        'prop': 'revisions',
+        'prop': 'revisions|extracts',
         'rvprop': 'content',
+        'exintro': '',
         'format': 'json',
         'titles': '|'.join([wikipedia_page.id_parts()[1] for wikipedia_page in wikipedia_pages]),
     }
@@ -131,6 +132,7 @@ def request_wikipedia_pages(wikipedia_pages):
             # Prepare wikipedia pages
             for wikipedia_page in wikipedia_pages_chunk:
                 wikipedia_page.default_sort = None
+                wikipedia_page.extract = None
                 wikipedia_page.redirect = None
 
             wikipedia_query_params = make_wikipedia_query_params(wikipedia_pages_chunk)
@@ -143,6 +145,9 @@ def request_wikipedia_pages(wikipedia_pages):
 
             # Check and save wikipedia pages
             for wikipedia_page in wikipedia_pages_chunk:
+                if not wikipedia_page.extract:
+                    logger.warning("Extract is missing for Wikipedia page {}".format(wikipedia_page))
+                    wikipedia_page.extract = ''
                 if wikipedia_page.redirect:
                     logger.warning("Wikipedia page \"{}\" is a redirect for \"{}\"".format(wikipedia_page, wikipedia_page.redirect))
                     if '#' in wikipedia_page.redirect.id:
@@ -188,6 +193,8 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
                 else:
                     logger.debug("Matched redirect WikipediaPage "+redirect.id)
                 wikipedia_page.redirect = redirect
+        if 'extract' in wikipedia_page_dict:
+            wikipedia_page.extract = format_extract(wikipedia_page_dict['extract'])
     if len(wikipedia_pages_by_title) > 0:
         raise WikipediaAPIMissingPagesError(wikipedia_pages_by_title.values())
     if 'continue' in result:
@@ -203,6 +210,15 @@ def get_default_sort(wikitext):
         match = CLEDETRI_PATTERN.match(line)
         if match:
             return match.group(1)
+
+def format_extract(extract):
+    extract_lines = extract.split('\n')
+
+    # Remove trailing white lines and empty paragraphs
+    while len(extract_lines) > 1 and extract_lines[-1] == '' or extract_lines[-1] == '<p></p>':
+        extract_lines = extract_lines[:-1]
+
+    return '\n'.join(extract_lines)
 
 REDIRECT_PATTERN = re.compile("^[\s]*#REDIRECT[\s]*\[\[(.*)\]\][\s]*$")
 def get_redirect_id(wikitext):
