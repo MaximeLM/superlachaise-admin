@@ -82,6 +82,8 @@ def request_overpass_elements(overpass_query):
 def get_or_create_openstreetmap_element(overpass_element):
     openstreetmap_id = "{type}/{id}".format(type=overpass_element["type"], id=overpass_element["id"])
     openstreetmap_element, created = OpenstreetmapElement.objects.get_or_create(id=openstreetmap_id)
+    openstreetmap_element.element_type = overpass_element["type"]
+    openstreetmap_element.numeric_id = int(overpass_element["id"])
     if "name" in overpass_element["tags"]:
         openstreetmap_element.name = overpass_element["tags"]["name"]
     else:

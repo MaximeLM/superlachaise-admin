@@ -44,14 +44,13 @@ def get_openstreetmap_export_object(config):
     return export_object
 
 def get_openstreetmap_element_export_object(openstreetmap_element, config):
-    (type, id) = openstreetmap_element.split_id()
     wikidata_entry = config.wikidata.get_notable_wikidata_entry(openstreetmap_element.wikidata_entry) if openstreetmap_element.wikidata_entry else None
     if not wikidata_entry:
         return {}
     return {
         openstreetmap_element.id:{
-            "type": type,
-            "id": int(id),
+            "element_type": openstreetmap_element.element_type,
+            "numeric_id": openstreetmap_element.numeric_id,
             "name": openstreetmap_element.name,
             "latitude": float(openstreetmap_element.latitude),
             "longitude": float(openstreetmap_element.longitude),
