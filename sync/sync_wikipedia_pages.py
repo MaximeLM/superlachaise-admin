@@ -111,13 +111,7 @@ def make_wikipedia_query_params(wikipedia_pages):
 
 WIKIPEDIA_API_BASE_URL = "https://{language}.wikipedia.org/w/api.php"
 def request_wikipedia_api(wikipedia_query_params, language):
-    logger.debug("wikipedia_query_params:")
-    logger.debug(wikipedia_query_params)
-
-    # Request data
     result = sync_utils.request(WIKIPEDIA_API_BASE_URL.format(language=language), params=wikipedia_query_params)
-
-    # Return JSON
     return result.json()
 
 def request_wikipedia_pages(wikipedia_pages):

@@ -10,6 +10,7 @@ __all__ = [
     "WikidataEntry",
     "WikipediaPage",
     "CommonsCategory",
+    "CommonsFile",
     "WikidataCategory",
     "Category",
 ]

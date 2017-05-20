@@ -12,6 +12,7 @@ class Command(BaseCommand):
         "wikidata_entries",
         "wikipedia_pages",
         "commons_categories",
+        "commons_files",
         "wikidata_categories",
         "categories",
         "all",

@@ -12,7 +12,9 @@ def request(url, verb="get", headers={}, params={}, data=None):
         headers = {}
     headers['User-Agent'] = "superlachaise-python/{version} ({contact_info})".format(version=apps.APP_VERSION, contact_info=config.base.CONTACT_INFO)
     action = getattr(requests, verb, None)
-    logger.debug(verb+" "+url)
+    params_string = '&'.join([key+'='+str(value) for (key, value) in params.items()])
+    params_string = '?'+params_string if params_string else ''
+    logger.debug(verb+" "+url+params_string)
     response = action(url, headers=headers, params=params, data=data)
     logger.debug("{url} ({status_code}):".format(url=url, status_code=response.status_code))
     logger.debug(response.text)

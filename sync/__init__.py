@@ -4,6 +4,7 @@ __all__ = [
     "sync_wikidata_entries",
     "sync_wikipedia_pages",
     "sync_commons_categories",
+    "sync_commons_files",
     "sync_wikidata_categories",
     "sync_categories",
 ]
