@@ -19,7 +19,7 @@ class CommonsCategoryAdmin(admin.ModelAdmin):
     filter_horizontal = ('commons_files',)
 
     def commons_link(self, obj):
-        return admin_utils.html_link(obj.commons_url())
+        return admin_utils.html_link(obj.commons_url(), "Commons link")
 
     def redirect_link(self, obj):
         if obj.redirect:
@@ -40,7 +40,7 @@ class CommonsCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(CommonsFile)
 class CommonsFileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'author', 'license', 'width', 'height', 'commons_link')
+    list_display = ('id', 'author', 'license', 'width', 'height', 'image_url_link', 'commons_link')
     search_fields = ('id',)
 
     fieldsets = [
@@ -51,10 +51,10 @@ class CommonsFileAdmin(admin.ModelAdmin):
     readonly_fields = ('commons_link', 'image_url_link')
 
     def commons_link(self, obj):
-        return admin_utils.html_link(obj.commons_url())
+        return admin_utils.html_link(obj.commons_url(), "Commons link")
 
     def image_url_link(self, obj):
-        return admin_utils.html_link(obj.image_url)
+        return admin_utils.html_link(obj.image_url, "Image link")
 
     def sync_objects(self, request, queryset):
         ids = [object.id for object in queryset]
