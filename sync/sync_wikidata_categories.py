@@ -75,13 +75,7 @@ def make_wikidata_query_params(wikidata_categories, languages):
 
 WIKIDATA_API_BASE_URL = "https://www.wikidata.org/w/api.php"
 def request_wikidata_api(wikidata_query_params):
-    logger.debug("wikidata_query_params:")
-    logger.debug(wikidata_query_params)
-
-    # Request data
     result = sync_utils.request(WIKIDATA_API_BASE_URL, params=wikidata_query_params)
-
-    # Return JSON
     return result.json()
 
 def request_wikidata_categories(wikidata_categories, languages=config.base.LANGUAGES):

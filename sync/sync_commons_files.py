@@ -1,5 +1,7 @@
 import logging, os, importlib.machinery, json, re
+from xml.etree import ElementTree
 from django.conf import settings
+from django.utils.html import strip_tags
 
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
@@ -21,6 +23,8 @@ def sync(reset=False, ids=None, **kwargs):
     logger.info("Found {} Commons files to refresh (created {})".format(len(commons_files_to_refresh), created))
     orphaned_objects = [commons_file for commons_file in orphaned_objects if commons_file not in commons_files_to_refresh]
 
+    request_image_info(commons_files_to_refresh)
+
     for commons_file in orphaned_objects:
         logger.debug("Deleted CommonsFile "+commons_file.id)
         commons_file.delete()
@@ -34,7 +38,7 @@ def delete_objects():
 def get_commons_files_from_commons_categories(commons_categories):
     commons_files, created = ([], 0)
 
-    logger.info("Request {}".format(COMMONS_API_BASE_URL))
+    logger.info("Request {} for category members".format(COMMONS_API_BASE_URL))
     entry_count = 0
     entry_total = len(commons_categories)
     for commons_categories_chunk in sync_utils.make_chunks(list(commons_categories)):
@@ -77,23 +81,22 @@ def get_or_create_commons_categories_to_refresh(ids):
         logger.info('Get Commons files from Commons categories')
         return get_commons_files_from_commons_categories(list(CommonsCategory.objects.all()))
 
-# Request Commons
+# Commons API
 
 COMMONS_API_BASE_URL = "https://commons.wikimedia.org/w/api.php"
 def request_commons_api(commons_query_params):
-    logger.debug("commons_query_params:")
-    logger.debug(commons_query_params)
-
-    # Request data
     result = sync_utils.request(COMMONS_API_BASE_URL, params=commons_query_params)
-
-    # Return JSON
     return result.json()
 
 class CommonsAPIError(Exception):
     pass
 
-# Category members
+class CommonsAPIMissingFilesError(CommonsAPIError):
+    def __init__(self, commons_files):
+        super(CommonsAPIMissingFilesError, self).__init__("missing files {}".format(str([commons_file.id for commons_file in commons_files])))
+        self.commons_files = commons_files
+
+# Request Category members
 
 def make_category_members_query_params(commons_category):
     return {
@@ -144,3 +147,141 @@ def handle_category_members_result(result):
         if not commons_file in commons_files:
             commons_files.append(commons_file)
     return (result.get('continue', None), commons_files, created)
+
+# Request Image info
+
+def make_image_info_query_params(commons_files):
+    return {
+        'action': 'query',
+        'prop': 'imageinfo',
+        'iiprop': 'url|size|extmetadata',
+        'format': 'json',
+        'iiurlwidth': 5,
+        'titles': '|'.join(['File:'+commons_file.id for commons_file in commons_files]),
+    }
+
+def request_image_info(commons_files):
+    logger.info("Request {} for image info".format(COMMONS_API_BASE_URL))
+    entry_count = 0
+    entry_total = len(commons_files)
+    for commons_files_chunk in sync_utils.make_chunks(list(commons_files), chunk_size=5):
+        logger.info(str(entry_count)+"/"+str(entry_total))
+        entry_count = entry_count + len(commons_files_chunk)
+
+        # Prepare commons files
+        for commons_file in commons_files_chunk:
+            commons_file.author = None
+            commons_file.license = None
+            commons_file.width = None
+            commons_file.height = None
+            commons_file.image_url = None
+            commons_file.thumbnail_url_template = None
+
+        image_info_query_params = make_image_info_query_params(commons_files_chunk)
+        last_continue = {'continue': ''}
+        while last_continue:
+            logger.debug("last_continue: {}".format(last_continue))
+            image_info_query_params.update(last_continue)
+            result = request_commons_api(image_info_query_params)
+            last_continue = handle_image_info_result(result, commons_files_chunk)
+
+        # Check and save commons categories
+        for commons_file in commons_files_chunk:
+            if not commons_file.author:
+                commons_file.author = ''
+            if not commons_file.license:
+                commons_file.license = ''
+            if not commons_file.width:
+                logger.warning("Width is missing for Commons file \"{}\"".format(commons_file))
+            if not commons_file.height:
+                logger.warning("Height is missing for Commons file \"{}\"".format(commons_file))
+            if not commons_file.image_url:
+                logger.warning("Image url is missing for Commons file \"{}\"".format(commons_file))
+                commons_file.image_url = ''
+            if not commons_file.thumbnail_url_template:
+                logger.warning("Thumbnail url template is missing for Commons file \"{}\"".format(commons_file))
+                commons_file.thumbnail_url_template = ''
+            commons_file.save()
+
+    logger.info(str(entry_count)+"/"+str(entry_total))
+
+def handle_image_info_result(result, commons_files_chunk):
+    commons_files_by_id = {'File:'+commons_file.id: commons_file for commons_file in commons_files_chunk}
+    if 'error' in result:
+        raise CommonsAPIError(result['error']['info'])
+    if 'normalized' in result['query']:
+        for normalize in result['query']['normalized']:
+            from_title = normalize['from']
+            to_title = normalize['to']
+            logger.warning("Commons category was normalized from \"{}\" to \"{}\"".format(from_title, to_title))
+            commons_files_by_id[to_title] = commons_files_by_id.pop(from_title)
+    for commons_file_dict in result['query']['pages'].values():
+        commons_file = commons_files_by_id.pop(commons_file_dict['title'])
+        if 'missing' in commons_file_dict:
+            raise CommonsAPIMissingFilesError([commons_category])
+        if 'imageinfo' in commons_file_dict:
+            for image_info_dict in commons_file_dict['imageinfo']:
+                if 'extmetadata' in image_info_dict:
+                    if 'LicenseShortName' in image_info_dict['extmetadata']:
+                        commons_file.license = image_info_dict['extmetadata']['LicenseShortName']['value']
+                    if 'Artist' in image_info_dict['extmetadata']:
+                        commons_file.author = clean_author(image_info_dict['extmetadata']['Artist']['value'])
+                if 'width' in image_info_dict:
+                    commons_file.width = image_info_dict['width']
+                if 'height' in image_info_dict:
+                    commons_file.height = image_info_dict['height']
+                if 'url' in image_info_dict:
+                    commons_file.image_url = image_info_dict['url']
+                if 'thumburl' in image_info_dict:
+                    thumbnail_url = image_info_dict['thumburl']
+                    if '/5px-' in thumbnail_url:
+                        commons_file.thumbnail_url_template = thumbnail_url.replace('/5px-', '/{{width}}px-')
+                    else:
+                        logger.warning("Invalid thumbnail URL template for Commons file {}".format(commons_file))
+    if len(commons_files_by_id) > 0:
+        raise CommonsAPIMissingFilesError(commons_files_by_id.values())
+    if 'continue' in result:
+        return result['continue']
+
+def clean_author(author):
+
+    # Strip HTML
+    author = strip_tags(author)
+
+    # Extract creator template
+    match_obj = re.search(r'(.*)&#160;.*', author)
+    while match_obj:
+        author = match_obj.group(1).strip()
+        match_obj = re.search(r'(.*)&#160;.*', author)
+
+    # Remove extra information
+    match_obj = re.search(r'(.*);.*', author)
+    while match_obj:
+        author = match_obj.group(1).strip()
+        match_obj = re.search(r'(.*)&#160;.*', author)
+
+    # Extract derivative work
+    match_obj = re.search(r'.*[Dd]erivative work:(.*)$', author)
+    if match_obj:
+        author = match_obj.group(1).strip()
+
+    # Extract user
+    match_obj = re.search(r'.*[Uu]ser:(.*)$', author)
+    if match_obj:
+        author = match_obj.group(1).strip()
+
+    # Remove talk link
+    author = author.replace('(talk)', '')
+
+    # Remove new lines, strip
+    author = author.replace('\n', ' ').strip()
+
+    # Remove leading ~
+    if len(author) > 1 and author[0] == '~':
+        author = author[1:]
+
+    # Remove multiple spaces
+    while '  ' in author:
+        author = author.replace('  ', ' ')
+
+    return author

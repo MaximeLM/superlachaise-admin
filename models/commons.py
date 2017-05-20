@@ -50,8 +50,11 @@ class CommonsFile(models.Model):
     author = models.CharField(default='', max_length=1024, blank=True)
     license = models.CharField(default='', max_length=1024, blank=True)
 
+    width = models.IntegerField(blank=True, null=True)
+    height = models.IntegerField(blank=True, null=True)
+
     image_url = models.TextField(default='', blank=True)
-    thumbnail_url_template = models.TextField(default='', blank=True)
+    thumbnail_url_template = models.TextField(default='', blank=True) # Replace {{width}} with the desired width
 
     COMMONS_CATEGORY_URL_FORMAT = "https://commons.wikimedia.org/wiki/File:{id}"
     def commons_url(self):

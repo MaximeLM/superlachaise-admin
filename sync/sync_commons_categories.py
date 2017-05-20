@@ -91,13 +91,7 @@ def make_commons_query_params(commons_categories):
 
 COMMONS_API_BASE_URL = "https://commons.wikimedia.org/w/api.php"
 def request_commons_api(commons_query_params):
-    logger.debug("commons_query_params:")
-    logger.debug(commons_query_params)
-
-    # Request data
     result = sync_utils.request(COMMONS_API_BASE_URL, params=commons_query_params)
-
-    # Return JSON
     return result.json()
 
 def request_commons_categories(commons_categories):
@@ -138,9 +132,9 @@ def request_commons_categories(commons_categories):
 class CommonsAPIError(Exception):
     pass
 
-class CommonsAPIMissingPagesError(CommonsAPIError):
+class CommonsAPIMissingCategoriesError(CommonsAPIError):
     def __init__(self, commons_categories):
-        super(CommonsAPIMissingPagesError, self).__init__("missing pages {}".format(str([commons_category.id for commons_category in commons_categories])))
+        super(CommonsAPIMissingCategoriesError, self).__init__("missing categories {}".format(str([commons_category.id for commons_category in commons_categories])))
         self.commons_categories = commons_categories
 
 def handle_commons_api_result(result, commons_categories):
@@ -156,7 +150,7 @@ def handle_commons_api_result(result, commons_categories):
     for commons_category_dict in result['query']['pages'].values():
         commons_category = commons_categories_by_title.pop(commons_category_dict['title'])
         if 'missing' in commons_category_dict:
-            raise CommonsAPIMissingPagesError([commons_category])
+            raise CommonsAPIMissingCategoriesError([commons_category])
         if 'revisions' in commons_category_dict:
             wikitext = commons_category_dict['revisions'][0]['*']
             commons_category.default_sort = get_default_sort(wikitext)
@@ -170,7 +164,7 @@ def handle_commons_api_result(result, commons_categories):
                     logger.debug("Matched redirect CommonsCategory "+redirect.id)
                 commons_category.redirect = redirect
     if len(commons_categories_by_title) > 0:
-        raise CommonsAPIMissingPagesError(commons_categories_by_title.values())
+        raise CommonsAPIMissingCategoriesError(commons_categories_by_title.values())
     if 'continue' in result:
         return result['continue']
 

@@ -40,11 +40,12 @@ class CommonsCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(CommonsFile)
 class CommonsFileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'author', 'license', 'commons_link')
+    list_display = ('id', 'author', 'license', 'width', 'height', 'commons_link')
     search_fields = ('id',)
 
     fieldsets = [
         (None, {'fields': ['id', 'author', 'license', 'commons_link']}),
+        (None, {'fields': ['width', 'height']}),
         (None, {'fields': ['image_url', 'image_url_link', 'thumbnail_url_template']}),
     ]
     readonly_fields = ('commons_link', 'image_url_link')
