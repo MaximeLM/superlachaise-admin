@@ -111,7 +111,7 @@ def request_commons_categories(commons_categories):
         # Prepare commons categories
         for commons_category in commons_categories_chunk:
             commons_category.default_sort = None
-            commons_category.main_image = None
+            commons_category.wikitext = None
             commons_category.redirect = None
 
         commons_query_params = make_commons_query_params(commons_categories_chunk)
@@ -127,9 +127,9 @@ def request_commons_categories(commons_categories):
             if not commons_category.default_sort:
                 logger.warning("Default sort is missing for Commons category \"{}\"".format(commons_category.id))
                 commons_category.default_sort = ''
-            if not commons_category.main_image:
-                logger.warning("Main image is missing for Commons category \"{}\"".format(commons_category.id))
-                commons_category.main_image = ''
+            if not commons_category.wikitext:
+                logger.warning("Wikitext is missing for Commons category \"{}\"".format(commons_category.id))
+                commons_category.wikitext = ''
             if commons_category.redirect:
                 logger.warning("Commons category \"{}\" is a redirect for \"{}\"".format(commons_category.id, commons_category.redirect.id))
             commons_category.save()
@@ -160,7 +160,7 @@ def handle_commons_api_result(result, commons_categories):
         if 'revisions' in commons_category_dict:
             wikitext = commons_category_dict['revisions'][0]['*']
             commons_category.default_sort = get_default_sort(wikitext)
-            commons_category.main_image = get_main_image(wikitext)
+            commons_category.wikitext = wikitext
             redirect_id = get_redirect_id(wikitext)
             if redirect_id:
                 redirect, was_created = CommonsCategory.objects.get_or_create(id=redirect_id)

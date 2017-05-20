@@ -13,5 +13,4 @@ def get_commons_export_object(config):
 def get_commons_category_export_object(commons_category):
     return {
         "id": commons_category.id,
-        "main_image": commons_category.main_image,
     }

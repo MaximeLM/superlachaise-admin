@@ -8,7 +8,7 @@ class CommonsCategory(models.Model):
     id = models.CharField(primary_key=True, db_index=True, max_length=1024)
 
     default_sort = models.CharField(default='', max_length=1024, blank=True)
-    main_image = models.CharField(default='', max_length=1024, blank=True)
+    wikitext = models.TextField(default='', blank=True)
 
     redirect = models.ForeignKey('CommonsCategory', null=True, blank=True, on_delete=models.SET_NULL)
 
