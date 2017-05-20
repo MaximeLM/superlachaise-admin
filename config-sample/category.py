@@ -9,11 +9,12 @@ def get_category_export_object(config):
 def get_single_category_export_object(category, languages):
     export_object = {
         "id": category.id,
+        "localizations": {},
     }
 
     labels = category.labels()
     for language in languages:
-        export_object[language] = {
+        export_object["localizations"][language] = {
             "label": labels[language],
         } if language in labels else None
 

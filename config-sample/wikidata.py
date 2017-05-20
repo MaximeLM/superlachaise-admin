@@ -234,19 +234,20 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
     export_object = {
         "id": wikidata_entry.id,
         "kind": wikidata_entry.kind,
+        "localizations": {},
     }
 
     for language in languages:
         wikipedia_page = wikidata_entry.get_wikipedia_page(language)
         label = wikidata_entry.get_label(language)
-        export_object[language] = {
+        export_object["localizations"][language] = {
             "label": (label[0].upper() + label[1:]) if label else None,
             "default_sort": wikidata_entry.get_default_sort(language),
         }
         if wikidata_entry.kind != KIND_GRAVE:
-            export_object[language]["wikipedia_page"] = wikipedia_page.id_parts()[1] if wikipedia_page else None
+            export_object["localizations"][language]["wikipedia_page"] = wikipedia_page.id_parts()[1] if wikipedia_page else None
         if wikidata_entry.kind == KIND_GRAVE_OF:
-            export_object[language]["description"] = wikidata_entry.get_description(language)
+            export_object["localizations"][language]["description"] = wikidata_entry.get_description(language)
 
     commons_category = wikidata_entry.get_commons_category()
     burial_plot_reference = get_burial_plot_reference(wikidata_entry, claims)
@@ -269,7 +270,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
             subject_wikidata_entry = subject_wikidata_entries[0]
             wikipedia_page = subject_wikidata_entry.get_wikipedia_page(language)
             for language in languages:
-                export_object[language]["wikipedia_page"] = wikipedia_page.id_parts()[1] if wikipedia_page else None
+                export_object["localizations"][language]["wikipedia_page"] = wikipedia_page.id_parts()[1] if wikipedia_page else None
         else:
             logger.warning("Wikidata entry {} has no wikipedia page".format(wikidata_entry))
     if wikidata_entry.kind == KIND_GRAVE:
