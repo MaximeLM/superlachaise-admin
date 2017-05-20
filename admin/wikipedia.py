@@ -6,11 +6,12 @@ from superlachaise.admin import admin_utils
 
 @admin.register(WikipediaPage)
 class WikipediaPageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'default_sort', 'extract_html', 'redirect_link', 'wikipedia_link')
-    search_fields = ('id',)
+    list_display = ('id', 'language', 'title', 'default_sort', 'extract_html', 'redirect_link', 'wikipedia_link')
+    list_filter = ('language',)
+    search_fields = ('language', 'title')
 
     fieldsets = [
-        (None, {'fields': ['id', 'wikipedia_link']}),
+        (None, {'fields': ['id', 'language', 'title', 'wikipedia_link']}),
         (None, {'fields': ['default_sort', 'extract', 'extract_html']}),
         (None, {'fields': ['redirect', 'redirect_link']}),
     ]

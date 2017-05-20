@@ -59,6 +59,8 @@ def get_or_create_wikipedia_pages_from_wikidata_entries(wikidata_entries, langua
                 if title:
                     wikipedia_id = "{}|{}".format(language, title)
                     wikipedia_page, was_created = WikipediaPage.objects.get_or_create(id=wikipedia_id)
+                    wikipedia_page.language = language
+                    wikipedia_page.title = title
                     if not wikipedia_page in wikipedia_pages_for_wikidata_entry:
                         wikipedia_pages_for_wikidata_entry.append(wikipedia_page)
                     if was_created:
@@ -78,9 +80,11 @@ def get_or_create_wikipedia_pages_to_refresh(ids, languages=config.base.LANGUAGE
     if ids:
         wikipedia_pages = {language:[] for language in languages}
         for wikipedia_page in WikipediaPage.objects.filter(id__in=ids):
-            (language, title) = wikipedia_page.id_parts()
-            if wikipedia_page not in wikipedia_pages[language]:
-                wikipedia_pages[language].append(wikipedia_page)
+            split_id = wikipedia_page.id.split('|')
+            wikipedia_page.language = split_id[0]
+            wikipedia_page.title = split_id[1]
+            if wikipedia_page not in wikipedia_pages[wikipedia_page.language]:
+                wikipedia_pages[wikipedia_page.language].append(wikipedia_page)
         return (wikipedia_pages, 0)
     else:
         logger.info('List Wikipedia pages from Wikidata entries')
@@ -106,7 +110,7 @@ def make_wikipedia_query_params(wikipedia_pages):
         'rvprop': 'content',
         'exintro': '',
         'format': 'json',
-        'titles': '|'.join([wikipedia_page.id_parts()[1] for wikipedia_page in wikipedia_pages]),
+        'titles': '|'.join([wikipedia_page.title for wikipedia_page in wikipedia_pages]),
     }
 
 WIKIPEDIA_API_BASE_URL = "https://{language}.wikipedia.org/w/api.php"
@@ -160,7 +164,7 @@ class WikipediaAPIMissingPagesError(WikipediaAPIError):
 def handle_wikipedia_api_result(result, wikipedia_pages):
     if 'error' in result:
         raise WikipediaAPIError(result['error']['info'])
-    wikipedia_pages_by_title = {wikipedia_page.id_parts()[1]:wikipedia_page for wikipedia_page in wikipedia_pages}
+    wikipedia_pages_by_title = {wikipedia_page.title:wikipedia_page for wikipedia_page in wikipedia_pages}
     if 'normalized' in result['query']:
         for normalize in result['query']['normalized']:
             from_title = normalize['from']
@@ -180,7 +184,7 @@ def handle_wikipedia_api_result(result, wikipedia_pages):
             wikipedia_page.default_sort = default_sort
             redirect_id = get_redirect_id(wikitext)
             if redirect_id:
-                wikipedia_id = wikipedia_page.id_parts()[0] + '|' + redirect_id
+                wikipedia_id = wikipedia_page.language + '|' + redirect_id
                 redirect, was_created = WikipediaPage.objects.get_or_create(id=wikipedia_id)
                 if was_created:
                     logger.debug("Created redirect WikipediaPage "+redirect.id)
