@@ -195,9 +195,6 @@ def get_wikidata_categories(wikidata_entry):
 
     return wikidata_categories
 
-def post_sync_wikidata_categories(wikidata_categories):
-    pass
-
 def get_wikidata_export_object(config):
     wikidata_entries = WikidataEntry.objects.all()
     export_object = {
