@@ -11,5 +11,6 @@ def export_targets(config):
         "wikidata": config.wikidata.get_wikidata_export_object,
         "wikipedia": config.wikipedia.get_wikipedia_export_object,
         "commons_categories": config.commons.get_commons_categories_export_object,
+        "commons_files": config.commons.get_commons_files_export_object,
         "category": config.category.get_category_export_object,
     }
