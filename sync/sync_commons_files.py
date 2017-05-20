@@ -164,7 +164,7 @@ def request_image_info(commons_files):
     logger.info("Request {} for image info".format(COMMONS_API_BASE_URL))
     entry_count = 0
     entry_total = len(commons_files)
-    for commons_files_chunk in sync_utils.make_chunks(list(commons_files), chunk_size=5):
+    for commons_files_chunk in sync_utils.make_chunks(list(commons_files)):
         logger.info(str(entry_count)+"/"+str(entry_total))
         entry_count = entry_count + len(commons_files_chunk)
 
@@ -234,8 +234,8 @@ def handle_image_info_result(result, commons_files_chunk):
                     commons_file.image_url = image_info_dict['url']
                 if 'thumburl' in image_info_dict:
                     thumbnail_url = image_info_dict['thumburl']
-                    if '/5px-' in thumbnail_url:
-                        commons_file.thumbnail_url_template = thumbnail_url.replace('/5px-', '/{{width}}px-')
+                    if thumbnail_url.count('5px-') == 1:
+                        commons_file.thumbnail_url_template = thumbnail_url.replace('5px-', '{{width}}px-')
                     else:
                         logger.warning("Invalid thumbnail URL template for Commons file {}".format(commons_file))
     if len(commons_files_by_id) > 0:
