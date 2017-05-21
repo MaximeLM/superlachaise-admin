@@ -3,6 +3,7 @@ from superlachaise.models.wikidata import *
 from superlachaise.models.wikipedia import *
 from superlachaise.models.commons import *
 from superlachaise.models.category import *
+from superlachaise.models.storev1 import *
 
 __all__ = [
     "model_validators",
@@ -13,4 +14,5 @@ __all__ = [
     "CommonsFile",
     "WikidataCategory",
     "Category",
+    "StoreV1NodeIDMapping",
 ]

@@ -5,6 +5,7 @@ __all__ = [
     "wikipedia",
     "commons",
     "category",
+    "storev1",
 ]
 
 from superlachaise.admin import *
