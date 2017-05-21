@@ -16,11 +16,10 @@ def get_node_id_mappings_export_object(config):
     return export_object
 
 def get_node_id_mapping_export_object(mapping, config):
-    if config.wikidata.get_notable_wikidata_entry(mapping.wikidata_entry) != mapping.wikidata_entry:
-        return None
+    wikidata_entry = config.wikidata.get_notable_wikidata_entry(mapping.wikidata_entry)
     return {
         "id": mapping.id,
-        "wikidata_entry": mapping.wikidata_entry.id,
+        "wikidata_entry": wikidata_entry.id,
     }
 
 NODE_ID_MAPPINGS = [
