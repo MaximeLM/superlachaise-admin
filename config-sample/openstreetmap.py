@@ -34,26 +34,25 @@ def get_openstreetmap_export_object(config):
             "source": "http://www.openstreetmap.org/",
             "license": "http://www.openstreetmap.org/copyright/",
         },
-        "openstreetmap_elements": {}
+        "openstreetmap_elements": [],
     }
 
     for openstreetmap_element in openstreetmap_elements:
         openstreetmap_element_dict = get_openstreetmap_element_export_object(openstreetmap_element, config)
-        export_object["openstreetmap_elements"].update(openstreetmap_element_dict)
+        if openstreetmap_element_dict:
+            export_object["openstreetmap_elements"].append(openstreetmap_element_dict)
 
     return export_object
 
 def get_openstreetmap_element_export_object(openstreetmap_element, config):
     wikidata_entry = config.wikidata.get_notable_wikidata_entry(openstreetmap_element.wikidata_entry) if openstreetmap_element.wikidata_entry else None
     if not wikidata_entry:
-        return {}
+        return None
     return {
-        openstreetmap_element.id:{
-            "element_type": openstreetmap_element.element_type,
-            "numeric_id": openstreetmap_element.numeric_id,
-            "name": openstreetmap_element.name,
-            "latitude": float(openstreetmap_element.latitude),
-            "longitude": float(openstreetmap_element.longitude),
-            "wikidata_entry": wikidata_entry.id if wikidata_entry else None,
-        }
+        "element_type": openstreetmap_element.element_type,
+        "numeric_id": openstreetmap_element.numeric_id,
+        "name": openstreetmap_element.name,
+        "latitude": float(openstreetmap_element.latitude),
+        "longitude": float(openstreetmap_element.longitude),
+        "wikidata_entry": wikidata_entry.id,
     }

@@ -196,7 +196,27 @@ def get_wikidata_categories(wikidata_entry):
     return wikidata_categories
 
 def get_wikidata_export_object(config):
-    wikidata_entries = WikidataEntry.objects.all()
+    export_object = {
+        "about": {
+            "source": "https://www.wikidata.org/",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        },
+        "wikidata_entries": [],
+    }
+
+    wikidata_entries_for_export = get_wikidata_entries_for_export(config)
+    for kind in [KIND_GRAVE_OF, KIND_MONUMENT, KIND_GRAVE]:
+        export_object["wikidata_entries"].extend(wikidata_entries_for_export[kind].values())
+
+    return export_object
+
+def get_wikidata_entries_for_export(config):
+    wikidata_entries = {
+        KIND_MONUMENT: {},
+        KIND_GRAVE: {},
+        KIND_GRAVE_OF: {},
+    }
+
     export_object = {
         "about": {
             "source": "https://www.wikidata.org/",
@@ -212,13 +232,13 @@ def get_wikidata_export_object(config):
     for wikidata_entry in WikidataEntry.objects.exclude(kind__exact='').exclude(kind=KIND_SUBJECT):
         if wikidata_entry.openstreetmap_elements.count() > 0:
             wikidata_entry_dict = get_wikidata_entry_export_object(wikidata_entry, config.base.LANGUAGES)
-            export_object["wikidata_entries"][wikidata_entry.kind].update(wikidata_entry_dict)
+            wikidata_entries[wikidata_entry.kind].update(wikidata_entry_dict)
             if wikidata_entry.kind == KIND_GRAVE:
                 for secondary_wikidata_entry in get_notable_secondary_entries(wikidata_entry):
                     secondary_wikidata_entry_dict = get_wikidata_entry_export_object(secondary_wikidata_entry, config.base.LANGUAGES)
-                    export_object["wikidata_entries"][secondary_wikidata_entry.kind].update(secondary_wikidata_entry_dict)
+                    wikidata_entries[secondary_wikidata_entry.kind].update(secondary_wikidata_entry_dict)
 
-    return export_object
+    return wikidata_entries
 
 def get_wikidata_entry_export_object(wikidata_entry, languages):
     claims = wikidata_entry.claims()
@@ -238,6 +258,7 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
         wikipedia_page = wikidata_entry.get_wikipedia_page(language)
         label = wikidata_entry.get_label(language)
         export_object["localizations"][language] = {
+            "language": language,
             "label": (label[0].upper() + label[1:]) if label else None,
             "default_sort": wikidata_entry.get_default_sort(language),
         }
@@ -265,13 +286,13 @@ def get_wikidata_entry_export_object(wikidata_entry, languages):
             logger.warning("Wikidata entry {} has more than one subject".format(wikidata_entry))
         if len(subject_wikidata_entries) >= 1:
             subject_wikidata_entry = subject_wikidata_entries[0]
-            wikipedia_page = subject_wikidata_entry.get_wikipedia_page(language)
             for language in languages:
+                wikipedia_page = subject_wikidata_entry.get_wikipedia_page(language)
                 export_object["localizations"][language]["wikipedia_page"] = wikipedia_page.title if wikipedia_page else None
         else:
             logger.warning("Wikidata entry {} has no wikipedia page".format(wikidata_entry))
     if wikidata_entry.kind == KIND_GRAVE:
-        export_object["secondary_wikidata_entries"] = [wikidata_entry.id for wikidata_entry in get_notable_secondary_entries(wikidata_entry)]
+        export_object["grave_of"] = [wikidata_entry.id for wikidata_entry in get_notable_secondary_entries(wikidata_entry)]
 
     if wikidata_entry.kind == KIND_GRAVE_OF:
         for (date_field, claim) in [("date_of_birth", P_DATE_OF_BIRTH), ("date_of_death", P_DATE_OF_DEATH)]:

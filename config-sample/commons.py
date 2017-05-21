@@ -7,7 +7,7 @@ def get_commons_categories_export_object(config):
             "source": "https://commons.wikimedia.org/",
             "license": "https://creativecommons.org/licenses/by-sa/3.0/",
         },
-        "commons_categories": {commons_category.id: get_commons_category_export_object(commons_category) for commons_category in commons_categories},
+        "commons_categories": [get_commons_category_export_object(commons_category) for commons_category in commons_categories],
     }
 
 def get_commons_category_export_object(commons_category):
@@ -27,7 +27,7 @@ def get_commons_files_export_object(config):
             "source": "https://commons.wikimedia.org/",
             "license": "https://creativecommons.org/licenses/by-sa/3.0/",
         },
-        "commons_files": {commons_file.id: get_commons_file_export_object(commons_file) for commons_file in commons_files},
+        "commons_files": [get_commons_file_export_object(commons_file) for commons_file in commons_files],
     }
 
 def get_commons_file_export_object(commons_file):

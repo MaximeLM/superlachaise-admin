@@ -1,9 +1,9 @@
 from superlachaise.models import *
 
 def get_category_export_object(config):
-    categories = Category.objects.all()
+    categories = Category.objects.exclude(id="ignore")
     return {
-        "categories": {category.id: get_single_category_export_object(category, config.base.LANGUAGES) for category in categories if category.id != "ignore"},
+        "categories": [get_single_category_export_object(category, config.base.LANGUAGES) for category in categories],
     }
 
 def get_single_category_export_object(category, languages):
@@ -15,6 +15,7 @@ def get_single_category_export_object(category, languages):
     labels = category.labels()
     for language in languages:
         export_object["localizations"][language] = {
+            "language": language,
             "label": labels[language],
         } if language in labels else None
 
