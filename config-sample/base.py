@@ -13,4 +13,5 @@ def export_targets(config):
         "commons_categories": config.commons.get_commons_categories_export_object,
         "commons_files": config.commons.get_commons_files_export_object,
         "categories": config.category.get_category_export_object,
+        "storev1_node_id_mappings": config.storev1.get_node_id_mappings_export_object,
     }
