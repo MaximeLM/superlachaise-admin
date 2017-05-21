@@ -4,7 +4,7 @@ from django.conf import settings
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
 from superlachaise.models import *
-from superlachaise import utils
+from superlachaise.sync import sync_utils
 
 logger = logging.getLogger(__name__)
 
@@ -75,14 +75,14 @@ def make_wikidata_query_params(wikidata_categories, languages):
 
 WIKIDATA_API_BASE_URL = "https://www.wikidata.org/w/api.php"
 def request_wikidata_api(wikidata_query_params):
-    result = utils.request(WIKIDATA_API_BASE_URL, params=wikidata_query_params)
+    result = sync_utils.request(WIKIDATA_API_BASE_URL, params=wikidata_query_params)
     return result.json()
 
 def request_wikidata_categories(wikidata_categories, languages=config.base.LANGUAGES):
     entry_count = 0
     entry_total = len(wikidata_categories)
     no_such_entity_entry_count = 0
-    for wikidata_categories_chunk in utils.make_chunks(list(wikidata_categories)):
+    for wikidata_categories_chunk in sync_utils.make_chunks(list(wikidata_categories)):
         logger.info(str(entry_count)+"/"+str(entry_total))
         entry_count = entry_count + len(wikidata_categories_chunk)
 

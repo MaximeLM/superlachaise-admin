@@ -4,7 +4,7 @@ from django.conf import settings
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
 from superlachaise.models import *
-from superlachaise import utils
+from superlachaise.sync import sync_utils
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def sync(reset=False, ids=None, **kwargs):
         for wikidata_category in WikidataCategory.objects.all():
             if not wikidata_category.category:
                 logger.warning("Wikidata category {} has no category".format(wikidata_category))
-
+        
         logger.info('Export categories')
         export_categories(categories_to_refresh)
 

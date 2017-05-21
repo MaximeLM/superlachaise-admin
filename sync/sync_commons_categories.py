@@ -4,7 +4,7 @@ from django.conf import settings
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
 from superlachaise.models import *
-from superlachaise import utils
+from superlachaise.sync import sync_utils
 
 logger = logging.getLogger(__name__)
 
@@ -91,14 +91,14 @@ def make_commons_query_params(commons_categories):
 
 COMMONS_API_BASE_URL = "https://commons.wikimedia.org/w/api.php"
 def request_commons_api(commons_query_params):
-    result = utils.request(COMMONS_API_BASE_URL, params=commons_query_params)
+    result = sync_utils.request(COMMONS_API_BASE_URL, params=commons_query_params)
     return result.json()
 
 def request_commons_categories(commons_categories):
     logger.info("Request {}".format(COMMONS_API_BASE_URL))
     entry_count = 0
     entry_total = len(commons_categories)
-    for commons_categories_chunk in utils.make_chunks(list(commons_categories)):
+    for commons_categories_chunk in sync_utils.make_chunks(list(commons_categories)):
         logger.info(str(entry_count)+"/"+str(entry_total))
         entry_count = entry_count + len(commons_categories_chunk)
 
