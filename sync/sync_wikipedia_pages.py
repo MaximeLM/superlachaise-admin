@@ -4,7 +4,7 @@ from django.conf import settings
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
 from superlachaise.models import *
-from superlachaise.sync import sync_utils
+from superlachaise import utils
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +115,7 @@ def make_wikipedia_query_params(wikipedia_pages):
 
 WIKIPEDIA_API_BASE_URL = "https://{language}.wikipedia.org/w/api.php"
 def request_wikipedia_api(wikipedia_query_params, language):
-    result = sync_utils.request(WIKIPEDIA_API_BASE_URL.format(language=language), params=wikipedia_query_params)
+    result = utils.request(WIKIPEDIA_API_BASE_URL.format(language=language), params=wikipedia_query_params)
     return result.json()
 
 def request_wikipedia_pages(wikipedia_pages):
@@ -123,7 +123,7 @@ def request_wikipedia_pages(wikipedia_pages):
         logger.info("Request {}".format(WIKIPEDIA_API_BASE_URL.format(language=language)))
         entry_count = 0
         entry_total = len(wikipedia_pages_for_language)
-        for wikipedia_pages_chunk in sync_utils.make_chunks(list(wikipedia_pages_for_language)):
+        for wikipedia_pages_chunk in utils.make_chunks(list(wikipedia_pages_for_language)):
             logger.info(str(entry_count)+"/"+str(entry_total))
             entry_count = entry_count + len(wikipedia_pages_chunk)
 

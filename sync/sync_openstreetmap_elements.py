@@ -4,7 +4,7 @@ from django.conf import settings
 config = importlib.machinery.SourceFileLoader('config', os.path.join(settings.SUPERLACHAISE_CONFIG, '__init__.py')).load_module()
 from config import *
 from superlachaise.models import *
-from superlachaise.sync import sync_utils
+from superlachaise import utils
 
 logger = logging.getLogger(__name__)
 
@@ -69,10 +69,10 @@ def request_overpass_elements(overpass_query):
     logger.debug(overpass_query)
 
     # Kill any other query
-    sync_utils.request(OVERPASS_API_BASE_URL+'kill_my_queries')
+    utils.request(OVERPASS_API_BASE_URL+'kill_my_queries')
 
     # Request data
-    result = sync_utils.request(OVERPASS_API_BASE_URL+'interpreter', "post", data=overpass_query)
+    result = utils.request(OVERPASS_API_BASE_URL+'interpreter', "post", data=overpass_query)
 
     # Get elements from JSON
     return result.json()["elements"]
