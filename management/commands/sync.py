@@ -15,6 +15,7 @@ class Command(BaseCommand):
         "commons_files",
         "wikidata_categories",
         "categories",
+        "storev1_node_id_mappings",
         "all",
     ]
 
