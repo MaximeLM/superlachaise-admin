@@ -2,15 +2,22 @@ from superlachaise.models import *
 
 def get_node_id_mappings_export_object(config):
     mappings = StoreV1NodeIDMapping.objects.exclude(wikidata_entry=None)
-    return {
+    export_object = {
         "about": {
             "source": "http://www.openstreetmap.org/",
             "license": "http://www.openstreetmap.org/copyright/",
         },
-        "storev1_node_id_mappings": [get_node_id_mapping_export_object(mapping) for mapping in mappings],
+        "storev1_node_id_mappings": [],
     }
+    for mapping in mappings:
+        mapping_dict = get_node_id_mapping_export_object(mapping, config)
+        if mapping_dict:
+            export_object["storev1_node_id_mappings"].append(mapping_dict)
+    return export_object
 
-def get_node_id_mapping_export_object(mapping):
+def get_node_id_mapping_export_object(mapping, config):
+    if config.wikidata.get_notable_wikidata_entry(mapping.wikidata_entry) != mapping.wikidata_entry:
+        return None
     return {
         "id": mapping.id,
         "wikidata_entry": mapping.wikidata_entry.id,
