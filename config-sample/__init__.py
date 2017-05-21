@@ -5,4 +5,5 @@ __all__ = [
     'wikipedia',
     'commons',
     'category',
+    'storev1',
 ]

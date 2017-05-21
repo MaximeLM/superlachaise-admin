@@ -7,4 +7,5 @@ __all__ = [
     "sync_commons_files",
     "sync_wikidata_categories",
     "sync_categories",
+    "sync_storev1_node_id_mappings",
 ]
