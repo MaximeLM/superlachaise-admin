@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18A19439D64C84896B645017 /* Pods_SuperLachaiseAdmin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C091FC9C6120010BC5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C081FC9C6120010BC5F /* ViewController.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
@@ -14,12 +15,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperLachaiseAdmin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C081FC9C6120010BC5F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55605C0D1FC9C6120010BC5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		55605C0F1FC9C6120010BC5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
+		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18A19439D64C84896B645017 /* Pods_SuperLachaiseAdmin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +43,8 @@
 			children = (
 				55605C051FC9C6120010BC5F /* SuperLachaiseAdmin */,
 				55605C041FC9C6120010BC5F /* Products */,
+				7228E91E82198F3E02A4CC6A /* Pods */,
+				B8A39DF453571FE7FC4C8BB9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +68,23 @@
 			path = SuperLachaiseAdmin;
 			sourceTree = "<group>";
 		};
+		7228E91E82198F3E02A4CC6A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */,
+				9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B8A39DF453571FE7FC4C8BB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -68,9 +92,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55605C131FC9C6120010BC5F /* Build configuration list for PBXNativeTarget "SuperLachaiseAdmin" */;
 			buildPhases = (
+				C607CAF2389BF44BDCB03184 /* [CP] Check Pods Manifest.lock */,
 				55605BFF1FC9C6120010BC5F /* Sources */,
 				55605C001FC9C6120010BC5F /* Frameworks */,
 				55605C011FC9C6120010BC5F /* Resources */,
+				55B897DC1FC9C88600FC4EF6 /* Swiftlint */,
+				F6B7D40FCBFD8316A7B232A6 /* [CP] Embed Pods Frameworks */,
+				F381E0525ACAB7F21F76F096 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -125,6 +153,71 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		55B897DC1FC9C88600FC4EF6 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
+		};
+		C607CAF2389BF44BDCB03184 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SuperLachaiseAdmin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F381E0525ACAB7F21F76F096 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F6B7D40FCBFD8316A7B232A6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		55605BFF1FC9C6120010BC5F /* Sources */ = {
@@ -258,6 +351,7 @@
 		};
 		55605C141FC9C6120010BC5F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -273,6 +367,7 @@
 		};
 		55605C151FC9C6120010BC5F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
