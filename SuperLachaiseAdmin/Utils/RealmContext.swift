@@ -56,7 +56,7 @@ class RealmContext {
         // Keep a Realm opened
         self.realm = try Realm()
 
-        print("database initialized at \(databaseFileURL.path)")
+        Logger.info("database initialized at \(databaseFileURL.path)")
     }
 
     // MARK: Private
@@ -70,10 +70,10 @@ class RealmContext {
         let totalBytesInMB = Double(totalBytes) / (1024 * 1024)
         let usedRatio = Double(usedBytes) / Double(totalBytes)
         let shouldCompact = (totalBytesInMB > 100) && usedRatio < 0.5
-        print(String(format: "shouldCompactOnLaunch: %.2f%% of %.2fMB => %@",
-                     usedRatio * 100,
-                     totalBytesInMB,
-                     "\(shouldCompact)"))
+        Logger.info(String(format: "shouldCompactOnLaunch: %.2f%% of %.2fMB => %@",
+                           usedRatio * 100,
+                           totalBytesInMB,
+                           "\(shouldCompact)"))
         return shouldCompact
     }
 
