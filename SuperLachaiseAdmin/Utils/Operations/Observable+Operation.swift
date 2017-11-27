@@ -10,7 +10,7 @@ import RxSwift
 
 extension Observable {
 
-    func enqueue(in operationQueue: OperationQueue) -> Observable<E> {
+    final func enqueue(in operationQueue: OperationQueue) -> Observable<E> {
         return Observable.create { observer in
             let operation = RxOperation { self.subscribe(observer) }
             operationQueue.addOperation(operation)

@@ -29,7 +29,7 @@ class ConcurrentOperation: Operation {
 
     // MARK: Properties
 
-    var state = State.ready {
+    final var state = State.ready {
         willSet {
             willChangeValue(forKey: newValue.keyPath)
             willChangeValue(forKey: state.keyPath)
@@ -42,19 +42,19 @@ class ConcurrentOperation: Operation {
 
     // MARK: Operation
 
-    override var isReady: Bool {
+    final override var isReady: Bool {
         return super.isReady && state == .ready
     }
 
-    override var isExecuting: Bool {
+    final override var isExecuting: Bool {
         return state == .executing
     }
 
-    override var isFinished: Bool {
+    final override var isFinished: Bool {
         return state == .finished
     }
 
-    override var isAsynchronous: Bool {
+    final override var isAsynchronous: Bool {
         return true
     }
 

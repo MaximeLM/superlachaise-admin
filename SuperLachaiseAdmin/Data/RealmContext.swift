@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class RealmContext {
+final class RealmContext {
 
     static let shared = RealmContext()
 

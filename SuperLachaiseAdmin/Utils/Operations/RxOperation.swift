@@ -13,7 +13,7 @@ import RxSwift
 
  The operation will finish when the result of the action is disposed
  */
-class RxOperation: ConcurrentOperation {
+final class RxOperation: ConcurrentOperation {
 
     let disposable = CompositeDisposable()
 

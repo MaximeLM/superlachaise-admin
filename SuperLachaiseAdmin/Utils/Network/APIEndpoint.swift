@@ -1,8 +1,8 @@
 //
-//  URLSessionQueue.swift
+//  APIEndpoint.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 26/11/2017.
+//  Created by Maxime Le Moine on 27/11/2017.
 //
 
 import Foundation
@@ -10,17 +10,33 @@ import RxCocoa
 import RxSwift
 
 /**
+ Allow mocking network
+ */
+protocol APIEndpointType {
+
+    var baseURL: URL { get }
+
+    func response(request: URLRequest) -> Single<(response: HTTPURLResponse, data: Data)>
+
+    func data(request: URLRequest) -> Single<Data>
+
+}
+
+/**
  Wraps URL data tasks in an operation queue to enforce httpMaximumConnectionsPerHost and avoid timeouts
  */
-class URLSessionQueue {
+final class APIEndpoint: APIEndpointType {
+
+    let baseURL: URL
 
     // MARK: Init
 
-    convenience init(configuration: URLSessionConfiguration = URLSessionConfiguration.default) {
-        self.init(session: URLSession(configuration: configuration))
+    convenience init(baseURL: URL, configuration: URLSessionConfiguration) {
+        self.init(baseURL: baseURL, session: URLSession(configuration: configuration))
     }
 
-    init(session: URLSession) {
+    init(baseURL: URL, session: URLSession) {
+        self.baseURL = baseURL
         self.session = session
         self.operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = session.configuration.httpMaximumConnectionsPerHost
