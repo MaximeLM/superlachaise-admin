@@ -17,7 +17,8 @@
 		55B897E71FCB262C00FC4EF6 /* URLSessionQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E61FCB262C00FC4EF6 /* URLSessionQueue.swift */; };
 		55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */; };
 		55B897EC1FCB282800FC4EF6 /* RxOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897EB1FCB282800FC4EF6 /* RxOperation.swift */; };
-		55B897EE1FCB29C400FC4EF6 /* Observable+OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897ED1FCB29C400FC4EF6 /* Observable+OperationQueue.swift */; };
+		55B897EE1FCB29C400FC4EF6 /* Observable+Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897ED1FCB29C400FC4EF6 /* Observable+Operation.swift */; };
+		55B897F41FCB34E700FC4EF6 /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897F31FCB34E700FC4EF6 /* BackgroundTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +34,8 @@
 		55B897E61FCB262C00FC4EF6 /* URLSessionQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionQueue.swift; sourceTree = "<group>"; };
 		55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
 		55B897EB1FCB282800FC4EF6 /* RxOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxOperation.swift; sourceTree = "<group>"; };
-		55B897ED1FCB29C400FC4EF6 /* Observable+OperationQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+OperationQueue.swift"; sourceTree = "<group>"; };
+		55B897ED1FCB29C400FC4EF6 /* Observable+Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Operation.swift"; sourceTree = "<group>"; };
+		55B897F31FCB34E700FC4EF6 /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
 		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,6 +94,7 @@
 		55B897E31FCB1CE200FC4EF6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				55B897F31FCB34E700FC4EF6 /* BackgroundTask.swift */,
 				55B897E41FCB1CED00FC4EF6 /* Logger.swift */,
 				55B897E11FCB169F00FC4EF6 /* RealmContext.swift */,
 				55B897E61FCB262C00FC4EF6 /* URLSessionQueue.swift */,
@@ -105,7 +108,7 @@
 			children = (
 				55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */,
 				55B897EB1FCB282800FC4EF6 /* RxOperation.swift */,
-				55B897ED1FCB29C400FC4EF6 /* Observable+OperationQueue.swift */,
+				55B897ED1FCB29C400FC4EF6 /* Observable+Operation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -277,9 +280,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55B897F41FCB34E700FC4EF6 /* BackgroundTask.swift in Sources */,
 				55605C091FC9C6120010BC5F /* ViewController.swift in Sources */,
 				55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */,
-				55B897EE1FCB29C400FC4EF6 /* Observable+OperationQueue.swift in Sources */,
+				55B897EE1FCB29C400FC4EF6 /* Observable+Operation.swift in Sources */,
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
 				55B897E71FCB262C00FC4EF6 /* URLSessionQueue.swift in Sources */,
 				55B897EC1FCB282800FC4EF6 /* RxOperation.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  Observable+OperationQueue.swift
+//  Observable+Operation.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 26/11/2017.
