@@ -28,8 +28,8 @@ final class FetchOpenStreetMapElements: BackgroundTask {
 
     // MARK: Execution
 
-    override func execute(onSuccess: (() -> Void)?, onError: ((Error) -> Void)?) -> Disposable {
-        return Disposables.create()
+    override func execute(onSuccess: (() -> Void)?, onError: ((Error) -> Void)?) throws -> Disposable {
+        throw Errors.notImplemented
     }
 
 }

@@ -12,15 +12,20 @@ class BackgroundTask: CustomStringConvertible {
 
     // MARK: Execution
 
-    func execute(onSuccess: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) -> Disposable {
+    func execute(onSuccess: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) throws -> Disposable {
         // Override
-        return Disposables.create()
+        throw Errors.abstractMethod
     }
 
     final func asSingle() -> Single<Void> {
         return Single.create { observer in
-            self.execute(onSuccess: { observer(.success(Void())) },
-                         onError: { observer(.error($0)) })
+            do {
+                return try self.execute(onSuccess: { observer(.success(Void())) },
+                                        onError: { observer(.error($0)) })
+            } catch {
+                observer(.error(error))
+                return Disposables.create()
+            }
         }
             .subscribeOn(scheduler) // Start in background
             .do(onNext: { Logger.success("\(self) succeeded") },
