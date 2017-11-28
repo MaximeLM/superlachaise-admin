@@ -11,8 +11,8 @@ import RxSwift
 
 final class FetchOpenStreetMapElements: AsyncTask {
 
-    let scope: Scope
-    let endpoint: APIEndpointType
+    private let scope: Scope
+    private let endpoint: APIEndpointType
 
     init(scope: Scope, endpoint: APIEndpointType = APIEndpoint.overpass) {
         self.scope = scope

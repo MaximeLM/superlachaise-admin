@@ -9,7 +9,6 @@ import Foundation
 
 enum Errors: Error {
 
-    case abstractMethod
     case notImplemented
 
 }
