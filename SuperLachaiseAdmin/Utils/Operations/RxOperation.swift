@@ -15,9 +15,9 @@ import RxSwift
  */
 final class RxOperation: ConcurrentOperation {
 
-    let disposable = CompositeDisposable()
+    private let disposable = CompositeDisposable()
 
-    let action: () -> Disposable
+    private let action: () -> Disposable
 
     init(_ action: @escaping () -> Disposable) {
         self.action = action

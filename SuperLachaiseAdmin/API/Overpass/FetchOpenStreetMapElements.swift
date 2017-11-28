@@ -9,12 +9,14 @@ import CoreLocation
 import Foundation
 import RxSwift
 
-final class FetchOpenStreetMapElements: BackgroundTask {
+final class FetchOpenStreetMapElements: AsyncTask {
 
     let scope: Scope
+    let endpoint: APIEndpointType
 
-    init(scope: Scope) {
+    init(scope: Scope, endpoint: APIEndpointType = APIEndpoint.overpass) {
         self.scope = scope
+        self.endpoint = endpoint
     }
 
     // MARK: Types
@@ -28,7 +30,7 @@ final class FetchOpenStreetMapElements: BackgroundTask {
 
     // MARK: Execution
 
-    override func execute(onSuccess: (() -> Void)?, onError: ((Error) -> Void)?) throws -> Disposable {
+    func execute(onCompleted: (() -> Void), onError: ((Error) -> Void)) throws -> Disposable {
         throw Errors.notImplemented
     }
 
