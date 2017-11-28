@@ -10,7 +10,7 @@ import RxSwift
 
 protocol AsyncTask: Task {
 
-    func execute(onCompleted: (() -> Void), onError: ((Error) -> Void)) throws -> Disposable
+    func execute(_ observer: @escaping (CompletableEvent) -> Void) throws -> Disposable
 
 }
 
@@ -19,8 +19,7 @@ extension AsyncTask {
     func asCompletable() -> Completable {
         return Completable.create { observer in
             do {
-                return try self.execute(onCompleted: { observer(.completed) },
-                                        onError: { observer(.error($0)) })
+                return try self.execute(observer)
             } catch {
                 observer(.error(error))
                 return Disposables.create()
