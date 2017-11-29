@@ -110,14 +110,26 @@ final class FetchOpenStreetMapElements: AsyncTask {
 
     private func save(results: OverpassResults, realm: Realm) throws {
         try realm.write {
-            realm.objects(OpenStreetMapElement.self).setValue(true, forKey: "orphaned")
-            for overpassElement in results.elements {
-                try saveOpenStreetMapElement(overpassElement: overpassElement, realm: realm)
+
+            // List existing objects before updating
+            var orphanedObjects = Set(realm.objects(OpenStreetMapElement.self))
+
+            let fetchedObjects = try results.elements.map { overpassElement -> OpenStreetMapElement in
+                let fetchedObject = try self.saveOpenStreetMapElement(overpassElement: overpassElement, realm: realm)
+                orphanedObjects.remove(fetchedObject)
+                return fetchedObject
+            }
+            Logger.info("Fetched \(fetchedObjects.count) \(OpenStreetMapElement.self)(s)")
+
+            if !orphanedObjects.isEmpty {
+                orphanedObjects.forEach { $0.toBeDeleted = true }
+                Logger.info("Flagged \(orphanedObjects.count) \(OpenStreetMapElement.self)(s) for deletion")
             }
         }
     }
 
-    private func saveOpenStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws {
+    private func saveOpenStreetMapElement(overpassElement: OverpassElement,
+                                          realm: Realm) throws -> OpenStreetMapElement {
 
         // OpenStreetMapId
         guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
@@ -126,7 +138,7 @@ final class FetchOpenStreetMapElements: AsyncTask {
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
         let openStreetMapElement = realm.findOrCreateObject(ofType: OpenStreetMapElement.self,
                                                             forPrimaryKey: openStreetMapId.rawValue)
-        openStreetMapElement.orphaned = false
+        openStreetMapElement.toBeDeleted = false
 
         // Coordinate
         switch elementType {
@@ -154,6 +166,7 @@ final class FetchOpenStreetMapElements: AsyncTask {
         // Tags
         openStreetMapElement.tags = overpassElement.tags
 
+        return openStreetMapElement
     }
 
 }

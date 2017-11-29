@@ -16,7 +16,7 @@ extension Realm {
             return object
         } else {
             guard let primaryKeyProperty = type.primaryKey() else {
-                fatalError("Type \(String(describing: type)) has no primary key")
+                fatalError("Type \(type) has no primary key")
             }
             return create(type, value: [primaryKeyProperty: key])
         }

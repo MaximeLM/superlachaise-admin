@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class OpenStreetMapElement: Object {
+final class OpenStreetMapElement: Object, Deletable {
 
     // MARK: Properties
 
@@ -22,8 +22,6 @@ final class OpenStreetMapElement: Object {
 
     @objc dynamic var rawTags: Data?
 
-    @objc dynamic var orphaned = false
-
     // MARK: Overrides
 
     override static func primaryKey() -> String {
@@ -36,7 +34,9 @@ final class OpenStreetMapElement: Object {
             .joined(separator: " - ")
     }
 
-    // MARK: Delete
+    // MARK: Deletable
+
+    @objc dynamic var toBeDeleted = false
 
     func delete() {
         realm?.delete(self)

@@ -82,7 +82,15 @@ final class RealmContext {
 
     private func deleteFlaggedObjects(realm: Realm) throws {
         try realm.write {
-            realm.objects(OpenStreetMapElement.self).filter("orphaned == true").forEach { $0.delete() }
+            deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
+        }
+    }
+
+    private func deleteFlaggedObjects<Element: Object & Deletable>(type: Element.Type, realm: Realm) {
+        let objects = Array(realm.objects(type).filter("toBeDeleted == true"))
+        if !objects.isEmpty {
+            objects.forEach { $0.delete() }
+            Logger.info("Deleted \(objects.count) \(type)(s)")
         }
     }
 

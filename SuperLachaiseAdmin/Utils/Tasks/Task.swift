@@ -17,7 +17,7 @@ protocol Task: CustomStringConvertible {
 extension Task {
 
     var description: String {
-        return String(describing: type(of: self))
+        return "\(type(of: self))"
     }
 
     func asOperation() -> Operation {
