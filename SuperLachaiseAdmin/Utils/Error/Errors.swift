@@ -7,6 +7,10 @@
 
 import Foundation
 
+func assertIsMainThread() {
+    assert(Thread.current.isMainThread)
+}
+
 enum Errors: Error {
 
     case notImplemented

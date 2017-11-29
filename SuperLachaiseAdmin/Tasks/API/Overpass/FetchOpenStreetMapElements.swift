@@ -21,10 +21,8 @@ final class FetchOpenStreetMapElements: AsyncTask {
 
     // MARK: Types
 
-    typealias BoundingBox = (minLatitude: Double, minLongitude: Double, maxLatitude: Double, maxLongitude: Double)
-
     enum Scope {
-        case all(boundingBox: BoundingBox, tags: [String])
+        case all(boundingBox: BoundingBox, fetchedTags: [String])
         case list([OpenStreetMapId])
     }
 
@@ -71,7 +69,7 @@ final class FetchOpenStreetMapElements: AsyncTask {
 
     private func requestSubqueries() -> [String] {
         switch scope {
-        case let .all(boundingBox, tags):
+        case let .all(boundingBox, fetchedTags):
             let boundingBoxString = """
             \(boundingBox.minLatitude), \(boundingBox.minLongitude), \
             \(boundingBox.maxLatitude), \(boundingBox.maxLongitude)
@@ -80,7 +78,7 @@ final class FetchOpenStreetMapElements: AsyncTask {
             // Create a subquery for each combination of type and tag
             let elementTypes: [OpenStreetMapElementType] = [.node, .way, .relation]
             return elementTypes.flatMap { elementType in
-                tags.map { tag in
+                fetchedTags.map { tag in
                     // ex. "node[historic=tomb](48.8575,2.3877,48.8649,2.4006)"
                     "\(elementType.rawValue)[\(tag)](\(boundingBoxString));"
                 }
@@ -112,7 +110,13 @@ final class FetchOpenStreetMapElements: AsyncTask {
         try realm.write {
 
             // List existing objects before updating
-            var orphanedObjects = Set(realm.objects(OpenStreetMapElement.self))
+            var orphanedObjects: Set<OpenStreetMapElement>
+            switch scope {
+            case .all:
+                orphanedObjects = Set(realm.objects(OpenStreetMapElement.self))
+            case .list:
+                orphanedObjects = Set()
+            }
 
             let fetchedObjects = try results.elements.map { overpassElement -> OpenStreetMapElement in
                 let fetchedObject = try self.saveOpenStreetMapElement(overpassElement: overpassElement, realm: realm)

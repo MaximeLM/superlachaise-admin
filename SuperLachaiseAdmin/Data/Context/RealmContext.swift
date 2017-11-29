@@ -19,6 +19,14 @@ final class RealmContext {
     let databaseDirectoryURL: URL
     let databaseFileURL: URL
 
+    // MARK: Utils
+
+    func deleteFlaggedObjects(realm: Realm) throws {
+        try realm.write {
+            deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
+        }
+    }
+
     // MARK: Init
 
     convenience init() {
@@ -41,6 +49,8 @@ final class RealmContext {
     }
 
     func initialize() throws {
+        assertIsMainThread()
+
         // Create database directory if needed
         let fileManager = FileManager.default
         let databaseDirectoryURL = databaseFileURL.deletingLastPathComponent()
@@ -78,12 +88,6 @@ final class RealmContext {
                            totalBytesInMB,
                            "\(shouldCompact)"))
         return shouldCompact
-    }
-
-    private func deleteFlaggedObjects(realm: Realm) throws {
-        try realm.write {
-            deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
-        }
     }
 
     private func deleteFlaggedObjects<Element: Object & Deletable>(type: Element.Type, realm: Realm) {
