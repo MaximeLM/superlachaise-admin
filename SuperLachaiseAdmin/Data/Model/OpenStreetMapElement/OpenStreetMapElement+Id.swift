@@ -9,7 +9,6 @@ import Foundation
 
 enum OpenStreetMapElementType: String {
     case node, way, relation
-    case unknown = ""
 }
 
 struct OpenStreetMapId {
@@ -17,24 +16,39 @@ struct OpenStreetMapId {
     let numericId: Int64
 }
 
-extension OpenStreetMapElement {
+extension OpenStreetMapId {
 
-    var elementType: OpenStreetMapElementType {
-        get {
-            return OpenStreetMapElementType(rawValue: rawElementType) ?? .unknown
+    init?(rawValue: String) {
+        let components = rawValue.components(separatedBy: "/")
+        guard components.count == 2,
+            let elementType = OpenStreetMapElementType(rawValue: components[0]),
+            let numericId = Int64(components[1]) else {
+                return nil
         }
-        set {
-            rawElementType = newValue.rawValue
-        }
+        self.init(elementType: elementType, numericId: numericId)
     }
 
-    var openStreetMapId: OpenStreetMapId {
+    var rawValue: String {
+        return "\(elementType.rawValue)/\(numericId)"
+    }
+
+}
+
+extension OpenStreetMapElement {
+
+    var openStreetMapId: OpenStreetMapId? {
         get {
-            return OpenStreetMapId(elementType: elementType, numericId: numericId)
+            guard let rawOpenStreetMapId = rawOpenStreetMapId else {
+                return nil
+            }
+            guard let openStreetMapId = OpenStreetMapId(rawValue: rawOpenStreetMapId) else {
+                Logger.warning("Invalid rawOpenStreetMapId: \(rawOpenStreetMapId)")
+                return nil
+            }
+            return openStreetMapId
         }
         set {
-            elementType = newValue.elementType
-            numericId = newValue.numericId
+            rawOpenStreetMapId = newValue?.rawValue
         }
     }
 

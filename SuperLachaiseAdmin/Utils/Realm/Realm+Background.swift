@@ -11,22 +11,18 @@ import RxSwift
 
 extension Realm {
 
-    private static let backgroundDispatchQueue = DispatchQueue(label: "Realm.background")
-
-    static func background(configuration: Realm.Configuration = Realm.Configuration.defaultConfiguration,
-                           _ task: @escaping (Realm) throws -> Void) -> Completable {
-        return Completable.create { observer in
+    static func background(dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.background")) -> Single<Realm> {
+        return Single.create { observer in
             let cancel = SingleAssignmentDisposable()
 
-            backgroundDispatchQueue.async {
+            dispatchQueue.async {
                 autoreleasepool {
                     guard !cancel.isDisposed else {
                         return
                     }
                     do {
                         let realm = try Realm()
-                        try task(realm)
-                        observer(.completed)
+                        observer(.success(realm))
                     } catch {
                         observer(.error(error))
                     }
@@ -37,27 +33,13 @@ extension Realm {
         }
     }
 
-    static func background<O>(configuration: Realm.Configuration = Realm.Configuration.defaultConfiguration,
-                              _ task: @escaping (Realm) throws -> O) -> Single<O> {
-        return Single.create { observer in
-            let cancel = SingleAssignmentDisposable()
-
-            backgroundDispatchQueue.async {
-                autoreleasepool {
-                    guard !cancel.isDisposed else {
-                        return
-                    }
-                    do {
-                        let realm = try Realm()
-                        let result = try task(realm)
-                        observer(.success(result))
-                    } catch {
-                        observer(.error(error))
-                    }
+    static func background<I, O>(dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.background"),
+                                 _ task: @escaping (I, Realm) throws -> O) -> (I) -> Single<O> {
+        return { input in
+            return background(dispatchQueue: dispatchQueue)
+                .map { realm in
+                    try task(input, realm)
                 }
-            }
-
-            return cancel
         }
     }
 

@@ -54,7 +54,10 @@ final class RealmContext {
         Realm.Configuration.defaultConfiguration = configuration
 
         // Keep a Realm opened
-        self.realm = try Realm()
+        let realm = try Realm()
+        self.realm = realm
+
+        try deleteFlaggedObjects(realm: realm)
 
         Logger.info("database initialized at \(databaseFileURL.path)")
     }
@@ -75,6 +78,12 @@ final class RealmContext {
                            totalBytesInMB,
                            "\(shouldCompact)"))
         return shouldCompact
+    }
+
+    private func deleteFlaggedObjects(realm: Realm) throws {
+        try realm.write {
+            realm.objects(OpenStreetMapElement.self).filter("orphaned == true").forEach { $0.delete() }
+        }
     }
 
 }

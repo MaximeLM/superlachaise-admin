@@ -28,21 +28,20 @@ final class FetchOpenStreetMapElements: AsyncTask {
         case list([OpenStreetMapId])
     }
 
-    enum RequestError: Error {
-        case invalidBody(String)
-    }
-
     // MARK: Execution
 
     func execute(_ observer: @escaping (CompletableEvent) -> Void) throws -> Disposable {
         return try fetchData()
             .map(self.results)
-            .flatMap(self.save)
-            .toCompletable()
-            .subscribe(observer)
+            .flatMap(Realm.background(self.save))
+            .toCompletable().subscribe(observer)
     }
 
     // MARK: Request
+
+    enum RequestError: Error {
+        case invalidBody(String)
+    }
 
     private func fetchData() throws -> Single<Data> {
         let request = try self.request()
@@ -103,10 +102,58 @@ final class FetchOpenStreetMapElements: AsyncTask {
 
     // MARK: Save
 
-    private func save(results: OverpassResults) -> Single<Void> {
-        return Realm.background { realm in
+    enum SaveError: Error {
+        case invalidElementType(String)
+        case coordinateNotFound(OpenStreetMapId)
+        case centerNotFound(OpenStreetMapId)
+    }
 
+    private func save(results: OverpassResults, realm: Realm) throws {
+        try realm.write {
+            realm.objects(OpenStreetMapElement.self).setValue(true, forKey: "orphaned")
+            for overpassElement in results.elements {
+                try saveOpenStreetMapElement(overpassElement: overpassElement, realm: realm)
+            }
         }
+    }
+
+    private func saveOpenStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws {
+
+        // OpenStreetMapId
+        guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
+            throw SaveError.invalidElementType(overpassElement.type)
+        }
+        let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
+        let openStreetMapElement = realm.findOrCreateObject(ofType: OpenStreetMapElement.self,
+                                                            forPrimaryKey: openStreetMapId.rawValue)
+        openStreetMapElement.orphaned = false
+
+        // Coordinate
+        switch elementType {
+        case .node:
+            guard let latitude = overpassElement.lat, let longitude = overpassElement.lon else {
+                throw SaveError.coordinateNotFound(openStreetMapId)
+            }
+            openStreetMapElement.latitude = latitude
+            openStreetMapElement.longitude = longitude
+        case .way, .relation:
+            guard let center = overpassElement.center else {
+                throw SaveError.centerNotFound(openStreetMapId)
+            }
+            openStreetMapElement.latitude = center.lat
+            openStreetMapElement.longitude = center.lon
+        }
+
+        // Name
+        let name = overpassElement.tags["name"]
+        if name == nil {
+            Logger.warning("OpenStreetMapElement \(openStreetMapElement) has no name")
+        }
+        openStreetMapElement.name = name
+
+        // Tags
+        openStreetMapElement.tags = overpassElement.tags
+
     }
 
 }
