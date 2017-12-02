@@ -7,7 +7,7 @@
 
 import Cocoa
 
-final class RootViewController: NSViewController {
+final class RootViewController: NSSplitViewController {
 
     let taskController = TaskController(config: PereLachaiseConfig())
 
