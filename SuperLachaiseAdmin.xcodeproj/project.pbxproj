@@ -14,7 +14,6 @@
 		5587F9F51FCF6E9F004C9E28 /* RootViewController+FetchMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F41FCF6E9E004C9E28 /* RootViewController+FetchMenu.swift */; };
 		558F26931FCDE5FB009BAA8E /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26921FCDE5FB009BAA8E /* Task.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassResults.swift */; };
-		558F269E1FCE1A96009BAA8E /* Realm+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F269D1FCE1A96009BAA8E /* Realm+Background.swift */; };
 		55A8D2331FCF3EDE00BB00BC /* Realm+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2321FCF3EDE00BB00BC /* Realm+Requests.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
 		55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2421FCF5BA500BB00BC /* Config.swift */; };
@@ -30,6 +29,7 @@
 		55B536EA1FD324D200036FFC /* OpenStreetMapElementListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E91FD324D200036FFC /* OpenStreetMapElementListViewItem.swift */; };
 		55B536EC1FD326D400036FFC /* RootListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536EB1FD326D400036FFC /* RootListViewItem.swift */; };
 		55B536EE1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536ED1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift */; };
+		55B536F01FD335B300036FFC /* RealmContext+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536EF1FD335B300036FFC /* RealmContext+Background.swift */; };
 		55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B897DE1FC9D17600FC4EF6 /* Main.storyboard */; };
 		55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E11FCB169F00FC4EF6 /* RealmContext.swift */; };
 		55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E41FCB1CED00FC4EF6 /* Logger.swift */; };
@@ -58,7 +58,6 @@
 		5587F9F41FCF6E9E004C9E28 /* RootViewController+FetchMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewController+FetchMenu.swift"; sourceTree = "<group>"; };
 		558F26921FCDE5FB009BAA8E /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassResults.swift; sourceTree = "<group>"; };
-		558F269D1FCE1A96009BAA8E /* Realm+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Background.swift"; sourceTree = "<group>"; };
 		55A8D2321FCF3EDE00BB00BC /* Realm+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Requests.swift"; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
 		55A8D2421FCF5BA500BB00BC /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -74,6 +73,7 @@
 		55B536E91FD324D200036FFC /* OpenStreetMapElementListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElementListViewItem.swift; sourceTree = "<group>"; };
 		55B536EB1FD326D400036FFC /* RootListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootListViewItem.swift; sourceTree = "<group>"; };
 		55B536ED1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElementsListViewItem.swift; sourceTree = "<group>"; };
+		55B536EF1FD335B300036FFC /* RealmContext+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmContext+Background.swift"; sourceTree = "<group>"; };
 		55B897DE1FC9D17600FC4EF6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		55B897E11FCB169F00FC4EF6 /* RealmContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmContext.swift; sourceTree = "<group>"; };
 		55B897E41FCB1CED00FC4EF6 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -148,18 +148,9 @@
 			path = Root;
 			sourceTree = "<group>";
 		};
-		558F268D1FCDE344009BAA8E /* Tasks */ = {
-			isa = PBXGroup;
-			children = (
-				558F26921FCDE5FB009BAA8E /* Task.swift */,
-			);
-			path = Tasks;
-			sourceTree = "<group>";
-		};
 		558F26941FCDFEC7009BAA8E /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				558F269D1FCE1A96009BAA8E /* Realm+Background.swift */,
 				55A8D2321FCF3EDE00BB00BC /* Realm+Requests.swift */,
 				55A8D23A1FCF52A900BB00BC /* Deletable.swift */,
 			);
@@ -204,6 +195,7 @@
 		55A8D24F1FCF5F8000BB00BC /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				558F26921FCDE5FB009BAA8E /* Task.swift */,
 				55A8D2501FCF5F9C00BB00BC /* TaskController.swift */,
 				55CB47E71FCCD161003F3610 /* API */,
 			);
@@ -250,7 +242,6 @@
 				55B897EA1FCB281500FC4EF6 /* Operations */,
 				558F26941FCDFEC7009BAA8E /* Realm */,
 				55C82D991FCE281600D606A2 /* Rx */,
-				558F268D1FCDE344009BAA8E /* Tasks */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -340,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				55B897E11FCB169F00FC4EF6 /* RealmContext.swift */,
+				55B536EF1FD335B300036FFC /* RealmContext+Background.swift */,
 			);
 			path = Context;
 			sourceTree = "<group>";
@@ -557,8 +549,8 @@
 				55B536EC1FD326D400036FFC /* RootListViewItem.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
-				558F269E1FCE1A96009BAA8E /* Realm+Background.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
+				55B536F01FD335B300036FFC /* RealmContext+Background.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				5587F9F51FCF6E9F004C9E28 /* RootViewController+FetchMenu.swift in Sources */,
 				55B536EE1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift in Sources */,

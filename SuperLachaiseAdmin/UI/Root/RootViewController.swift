@@ -9,16 +9,25 @@ import Cocoa
 
 final class RootViewController: NSSplitViewController {
 
-    let taskController = TaskController(config: PereLachaiseConfig())
+    // MARK: Dependencies
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Initialize Realm
-        do {
-            try RealmContext.shared.initialize()
-        } catch {
-            assertionFailure("\(error)")
-        }
+    lazy var realmContext = RealmContext()
+
+    lazy var taskController: TaskController = { [unowned self] in
+        TaskController(config: PereLachaiseConfig(), realmContext: self.realmContext)
+    }()
+
+    // MARK: Subviews
+
+    private var listViewController: ListViewController? {
+        return childViewControllers.flatMap { $0 as? ListViewController }.first
+    }
+
+    // MARK: Lifecycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        listViewController?.realmContext = realmContext
     }
 
 }

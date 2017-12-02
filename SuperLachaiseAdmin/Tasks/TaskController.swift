@@ -10,12 +10,20 @@ import Foundation
 final class TaskController {
 
     let config: Config
+    let realmContext: RealmContext
 
     let operationQueue: OperationQueue
 
-    init(config: Config) {
+    let overpassAPIEndpoint: APIEndpointType
+
+    init(config: Config,
+         realmContext: RealmContext,
+         overpassAPIEndpoint: APIEndpointType = APIEndpoint.overpass) {
         self.config = config
+        self.realmContext = realmContext
         self.operationQueue = OperationQueue()
+
+        self.overpassAPIEndpoint = overpassAPIEndpoint
     }
 
 }

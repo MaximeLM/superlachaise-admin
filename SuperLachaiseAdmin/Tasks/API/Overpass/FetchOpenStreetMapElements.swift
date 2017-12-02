@@ -12,10 +12,13 @@ import RxSwift
 final class FetchOpenStreetMapElements: Task {
 
     private let scope: Scope
+
+    private let realmContext: RealmContext
     private let endpoint: APIEndpointType
 
-    init(scope: Scope, endpoint: APIEndpointType = APIEndpoint.overpass) {
+    init(scope: Scope, realmContext: RealmContext, endpoint: APIEndpointType) {
         self.scope = scope
+        self.realmContext = realmContext
         self.endpoint = endpoint
     }
 
@@ -32,7 +35,7 @@ final class FetchOpenStreetMapElements: Task {
         return Single.create(self.request)
             .flatMap(self.endpoint.data)
             .map(self.results)
-            .flatMap(Realm.background(self.save))
+            .flatMap(realmContext.background(self.save))
             .toCompletable()
     }
 

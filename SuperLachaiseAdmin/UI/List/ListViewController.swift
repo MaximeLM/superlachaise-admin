@@ -9,6 +9,10 @@ import Cocoa
 
 final class ListViewController: NSViewController {
 
+    // MARK: Dependencies
+
+    var realmContext: RealmContext?
+
     // MARK: Subviews
 
     @IBOutlet private weak var searchField: NSSearchField?
@@ -20,6 +24,11 @@ final class ListViewController: NSViewController {
     lazy var rootItem = RootListViewItem()
 
     // Lifecycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        searchField?.refusesFirstResponder = true
+    }
 
     override func viewDidAppear() {
         super.viewDidAppear()

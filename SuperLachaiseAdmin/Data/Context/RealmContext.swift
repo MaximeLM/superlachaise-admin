@@ -10,11 +10,14 @@ import RealmSwift
 
 final class RealmContext {
 
-    static let shared = RealmContext()
-
     // MARK: Properties
 
     let configuration: Realm.Configuration
+
+    var viewRealm: Realm {
+        assertIsMainThread()
+        return _viewRealm
+    }
 
     let databaseDirectoryURL: URL
     let databaseFileURL: URL
@@ -32,12 +35,18 @@ final class RealmContext {
     convenience init() {
         let documentsDirectoryURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let databaseDirectoryURL = documentsDirectoryURL
-            .appendingPathComponent("SuperLachaiseAdmin", isDirectory: true)
+            .appendingPathComponent(Bundle.main.bundleIdentifier ?? "SuperLachaise", isDirectory: true)
             .appendingPathComponent("database", isDirectory: true)
-        self.init(databaseDirectoryURL: databaseDirectoryURL, databaseFileName: "SuperLachaise")
+        do {
+            try self.init(databaseDirectoryURL: databaseDirectoryURL, databaseFileName: "SuperLachaise")
+        } catch {
+            fatalError("\(error)")
+        }
     }
 
-    init(databaseDirectoryURL: URL, databaseFileName: String) {
+    init(databaseDirectoryURL: URL, databaseFileName: String) throws {
+        assertIsMainThread()
+
         self.databaseDirectoryURL = databaseDirectoryURL
         self.databaseFileURL = databaseDirectoryURL
             .appendingPathComponent("\(databaseFileName).realm", isDirectory: false)
@@ -46,10 +55,6 @@ final class RealmContext {
             schemaVersion: 0,
             deleteRealmIfMigrationNeeded: true,
             shouldCompactOnLaunch: RealmContext.shouldCompactOnLaunch)
-    }
-
-    func initialize() throws {
-        assertIsMainThread()
 
         // Create database directory if needed
         let fileManager = FileManager.default
@@ -60,21 +65,17 @@ final class RealmContext {
                                             attributes: nil)
         }
 
-        // Set as default configueation
-        Realm.Configuration.defaultConfiguration = configuration
-
         // Keep a Realm opened
-        let realm = try Realm()
-        self.realm = realm
+        self._viewRealm = try Realm()
 
-        try deleteFlaggedObjects(realm: realm)
+        try deleteFlaggedObjects(realm: _viewRealm)
 
         Logger.info("database initialized at \(databaseFileURL.path)")
     }
 
     // MARK: Private
 
-    private var realm: Realm?
+    private let _viewRealm: Realm
 
     private static func shouldCompactOnLaunch(totalBytes: Int, usedBytes: Int) -> Bool {
         // totalBytes refers to the size of the file on disk in bytes (data + free space)

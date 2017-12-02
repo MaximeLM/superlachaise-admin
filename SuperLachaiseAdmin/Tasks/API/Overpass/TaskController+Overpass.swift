@@ -13,13 +13,19 @@ extension TaskController {
         let scope: FetchOpenStreetMapElements.Scope = .all(
             boundingBox: config.openStreetMap.boundingBox,
             fetchedTags: config.openStreetMap.fetchedTags)
-        operationQueue.addOperation(FetchOpenStreetMapElements(scope: scope).asOperation())
+        let task = FetchOpenStreetMapElements(scope: scope,
+                                              realmContext: realmContext,
+                                              endpoint: overpassAPIEndpoint)
+        operationQueue.addOperation(task.asOperation())
     }
 
     func fetchOpenStreetMapElements(_ openStreetMapElements: [OpenStreetMapElement]) {
         let openStreetMapIds = openStreetMapElements.flatMap { $0.openStreetMapId }
         let scope: FetchOpenStreetMapElements.Scope = .list(openStreetMapIds)
-        operationQueue.addOperation(FetchOpenStreetMapElements(scope: scope).asOperation())
+        let task = FetchOpenStreetMapElements(scope: scope,
+                                              realmContext: realmContext,
+                                              endpoint: overpassAPIEndpoint)
+        operationQueue.addOperation(task.asOperation())
     }
 
 }

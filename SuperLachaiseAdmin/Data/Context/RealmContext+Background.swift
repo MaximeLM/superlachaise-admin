@@ -1,17 +1,17 @@
 //
-//  Realm+Background.swift
+//  RealmContext+Background.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/11/2017.
+//  Created by Maxime Le Moine on 02/12/2017.
 //
 
 import Foundation
 import RealmSwift
 import RxSwift
 
-extension Realm {
+extension RealmContext {
 
-    static func background(dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.background")) -> Single<Realm> {
+    func background(dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.background")) -> Single<Realm> {
         return Single.create { observer in
             let cancel = SingleAssignmentDisposable()
 
@@ -21,7 +21,7 @@ extension Realm {
                         return
                     }
                     do {
-                        let realm = try Realm()
+                        let realm = try Realm(configuration: self.configuration)
                         observer(.success(realm))
                     } catch {
                         observer(.error(error))
@@ -33,10 +33,10 @@ extension Realm {
         }
     }
 
-    static func background<I, O>(dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.background"),
-                                 _ task: @escaping (I, Realm) throws -> O) -> (I) -> Single<O> {
+    func background<I, O>(dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.background"),
+                          _ task: @escaping (I, Realm) throws -> O) -> (I) -> Single<O> {
         return { input in
-            return background(dispatchQueue: dispatchQueue)
+            return self.background(dispatchQueue: dispatchQueue)
                 .map { realm in
                     try task(input, realm)
                 }
