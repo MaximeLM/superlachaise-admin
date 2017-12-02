@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 import RxSwift
 
-final class FetchOpenStreetMapElements: AsyncTask {
+final class FetchOpenStreetMapElements: Task {
 
     private let scope: Scope
     private let endpoint: APIEndpointType
@@ -28,22 +28,18 @@ final class FetchOpenStreetMapElements: AsyncTask {
 
     // MARK: Execution
 
-    func execute(_ observer: @escaping (CompletableEvent) -> Void) throws -> Disposable {
-        return try fetchData()
+    func asCompletable() -> Completable {
+        return Single.create(self.request)
+            .flatMap(self.endpoint.data)
             .map(self.results)
             .flatMap(Realm.background(self.save))
-            .toCompletable().subscribe(observer)
+            .toCompletable()
     }
 
     // MARK: Request
 
     enum RequestError: Error {
         case invalidBody(String)
-    }
-
-    private func fetchData() throws -> Single<Data> {
-        let request = try self.request()
-        return endpoint.data(request: request)
     }
 
     private func request() throws -> URLRequest {
