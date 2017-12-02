@@ -15,4 +15,47 @@ final class ListViewController: NSViewController {
 
     @IBOutlet private weak var outlineView: NSOutlineView?
 
+    // MARK: Model
+
+    lazy var rootItem = RootListViewItem()
+
+    // Lifecycle
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        searchField?.refusesFirstResponder = false
+    }
+
+}
+
+extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
+
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+        let itemModel = item as? ListViewItem ?? rootItem
+        return itemModel.children?.value[index] ?? ""
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+        let itemModel = item as? ListViewItem ?? rootItem
+        return itemModel.children?.value.count ?? 0
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+        let itemModel = item as? ListViewItem ?? rootItem
+        return itemModel.children != nil
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+        let itemModel = item as? ListViewItem ?? rootItem
+        let viewIdentifier = NSUserInterfaceItemIdentifier(rawValue: "ItemView")
+        guard let view = outlineView.makeView(withIdentifier: viewIdentifier, owner: self) as? NSTableCellView else {
+            assertionFailure()
+            return nil
+        }
+        let text = itemModel.text
+        view.textField?.stringValue = text
+        view.toolTip = text
+        return view
+    }
+
 }

@@ -26,6 +26,10 @@
 		55A8D2531FCF5FFB00BB00BC /* TaskController+Overpass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2521FCF5FFB00BB00BC /* TaskController+Overpass.swift */; };
 		55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */; };
 		55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E41FD31C6800036FFC /* MainWindowController.swift */; };
+		55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E61FD3230C00036FFC /* ListViewItem.swift */; };
+		55B536EA1FD324D200036FFC /* OpenStreetMapElementListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E91FD324D200036FFC /* OpenStreetMapElementListViewItem.swift */; };
+		55B536EC1FD326D400036FFC /* RootListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536EB1FD326D400036FFC /* RootListViewItem.swift */; };
+		55B536EE1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536ED1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift */; };
 		55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B897DE1FC9D17600FC4EF6 /* Main.storyboard */; };
 		55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E11FCB169F00FC4EF6 /* RealmContext.swift */; };
 		55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E41FCB1CED00FC4EF6 /* Logger.swift */; };
@@ -66,6 +70,10 @@
 		55A8D2521FCF5FFB00BB00BC /* TaskController+Overpass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+Overpass.swift"; sourceTree = "<group>"; };
 		55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		55B536E41FD31C6800036FFC /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		55B536E61FD3230C00036FFC /* ListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewItem.swift; sourceTree = "<group>"; };
+		55B536E91FD324D200036FFC /* OpenStreetMapElementListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElementListViewItem.swift; sourceTree = "<group>"; };
+		55B536EB1FD326D400036FFC /* RootListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootListViewItem.swift; sourceTree = "<group>"; };
+		55B536ED1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElementsListViewItem.swift; sourceTree = "<group>"; };
 		55B897DE1FC9D17600FC4EF6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		55B897E11FCB169F00FC4EF6 /* RealmContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmContext.swift; sourceTree = "<group>"; };
 		55B897E41FCB1CED00FC4EF6 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -210,6 +218,17 @@
 			path = MainWindow;
 			sourceTree = "<group>";
 		};
+		55B536E81FD3238200036FFC /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				55B536E61FD3230C00036FFC /* ListViewItem.swift */,
+				55B536EB1FD326D400036FFC /* RootListViewItem.swift */,
+				55B536ED1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift */,
+				55B536E91FD324D200036FFC /* OpenStreetMapElementListViewItem.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
 		55B897DD1FC9D15F00FC4EF6 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				55BD408C1FD30B4B005ACD89 /* ListViewController.swift */,
+				55B536E81FD3238200036FFC /* Items */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -530,14 +550,18 @@
 				558F26931FCDE5FB009BAA8E /* Task.swift in Sources */,
 				55B897EC1FCB282800FC4EF6 /* RxOperation.swift in Sources */,
 				55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */,
+				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
+				55B536EA1FD324D200036FFC /* OpenStreetMapElementListViewItem.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
+				55B536EC1FD326D400036FFC /* RootListViewItem.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
 				558F269E1FCE1A96009BAA8E /* Realm+Background.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				5587F9F51FCF6E9F004C9E28 /* RootViewController+FetchMenu.swift in Sources */,
+				55B536EE1FD3274A00036FFC /* OpenStreetMapElementsListViewItem.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* FetchOpenStreetMapElements.swift in Sources */,
 				55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */,
