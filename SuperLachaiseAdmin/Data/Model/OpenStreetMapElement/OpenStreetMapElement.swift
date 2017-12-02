@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class OpenStreetMapElement: Object, Deletable {
+final class OpenStreetMapElement: Object, RealmDeletable, RealmIdentifiable, RealmListable {
 
     // MARK: Properties
 
@@ -34,12 +34,28 @@ final class OpenStreetMapElement: Object, Deletable {
             .joined(separator: " - ")
     }
 
-    // MARK: Deletable
+    // MARK: RealmDeletable
 
     @objc dynamic var toBeDeleted = false
 
     func delete() {
         realm?.delete(self)
+    }
+
+    // MARK: RealmIdentifiable
+
+    var identifier: String {
+        return rawOpenStreetMapId ?? ""
+    }
+
+    // MARK: RealmListable
+
+    static func list() -> (Realm) -> Results<OpenStreetMapElement> {
+        return { realm in
+            return realm.objects(OpenStreetMapElement.self)
+                .filter("toBeDeleted == false")
+                .sorted(byKeyPath: "rawOpenStreetMapId")
+        }
     }
 
 }

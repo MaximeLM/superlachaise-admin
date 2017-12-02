@@ -6,12 +6,15 @@
 //
 
 import Cocoa
-import RxSwift
 
 protocol ListViewItem: NSObjectProtocol {
 
+    var identifier: String { get }
+
     var text: String { get }
 
-    var children: Variable<[ListViewItem]>? { get }
+    var children: [ListViewItem]? { get }
+
+    var reload: ((ListViewItem) -> Void)? { get set }
 
 }

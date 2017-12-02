@@ -21,7 +21,7 @@ final class ListViewController: NSViewController {
 
     // MARK: Model
 
-    lazy var rootItem = RootListViewItem()
+    var rootItem: ListViewItem?
 
     // Lifecycle
 
@@ -35,35 +35,53 @@ final class ListViewController: NSViewController {
         searchField?.refusesFirstResponder = false
     }
 
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        guard let realm = self.realmContext?.viewRealm else {
+            fatalError("realmContext not set")
+        }
+        self.rootItem = ListViewRootItem(realm: realm)
+        outlineView?.reloadData()
+    }
+
 }
 
 extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
-    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel.children?.value[index] ?? ""
-    }
-
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel.children?.value.count ?? 0
+        return itemModel?.children?.count ?? 0
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+        let itemModel = item as? ListViewItem ?? rootItem
+        return itemModel?.children?[index] ?? NSNull()
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel.children != nil
+        return itemModel?.children != nil
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        let itemModel = item as? ListViewItem ?? rootItem
+        guard let itemModel = item as? ListViewItem ?? rootItem else {
+            return nil
+        }
+
         let viewIdentifier = NSUserInterfaceItemIdentifier(rawValue: "ItemView")
         guard let view = outlineView.makeView(withIdentifier: viewIdentifier, owner: self) as? NSTableCellView else {
             assertionFailure()
             return nil
         }
+
         let text = itemModel.text
         view.textField?.stringValue = text
         view.toolTip = text
+
+        itemModel.reload = { [weak outlineView] item in
+            outlineView?.reloadItem(item, reloadChildren: true)
+        }
+
         return view
     }
 
