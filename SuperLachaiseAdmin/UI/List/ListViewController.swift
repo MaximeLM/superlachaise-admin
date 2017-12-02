@@ -25,11 +25,6 @@ final class ListViewController: NSViewController {
 
     // Lifecycle
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        searchField?.refusesFirstResponder = true
-    }
-
     override func viewDidAppear() {
         super.viewDidAppear()
         searchField?.refusesFirstResponder = false
