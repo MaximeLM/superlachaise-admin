@@ -11,16 +11,33 @@ import RxCocoa
 import RxRealm
 import RxSwift
 
-class ListViewObjectListItem<Element: Object & RealmIdentifiable & RealmListable>: NSObject, ListViewItem {
+protocol ListViewObjectListItemType: ListViewItem {
+
+    var filter: String { get set }
+
+}
+
+class ListViewObjectListItem<Element: Object & RealmListable>: NSObject, ListViewObjectListItemType {
 
     let baseText: String
 
-    init(baseText: String, realm: Realm) {
+    var filter: String {
+        get {
+            return _filter.value
+        }
+        set {
+            _filter.value = newValue
+        }
+    }
+
+    init(baseText: String, realm: Realm, filter: String) {
         self.baseText = baseText
         self.identifier = "ListViewObjectListItem.\(Element.self)"
+        self._filter = Variable(filter)
 
         super.init()
-        Observable.array(from: Element.list()(realm))
+        _filter.asObservable()
+            .flatMapLatest { Observable.array(from: Element.list(filter: $0)(realm)) }
             .catchErrorJustReturn([])
             .map { objects in
                 objects.map { ListViewObjectItem(object: $0) }
@@ -52,9 +69,11 @@ class ListViewObjectListItem<Element: Object & RealmIdentifiable & RealmListable
 
     var reload: ((ListViewItem) -> Void)?
 
-    // MARK: Observation
+    // MARK: Private
 
     private let disposeBag = DisposeBag()
+
+    private let _filter: Variable<String>
 
     private let _children = Variable<[ListViewItem]>([])
 

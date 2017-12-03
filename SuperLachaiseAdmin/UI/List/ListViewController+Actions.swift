@@ -9,7 +9,7 @@ import Cocoa
 
 extension ListViewController {
 
-    @IBAction func doubleClickItem(_ outlineView: NSOutlineView) {
+    @IBAction func doubleClickAction(_ outlineView: NSOutlineView) {
         let item = outlineView.item(atRow: outlineView.clickedRow)
         guard outlineView.isExpandable(item) else {
             return
@@ -20,6 +20,10 @@ extension ListViewController {
         } else {
             outlineView.expandItem(item)
         }
+    }
+
+    @IBAction func searchAction(_ searchField: NSSearchField) {
+        rootItem?.filter = searchField.stringValue
     }
 
 }

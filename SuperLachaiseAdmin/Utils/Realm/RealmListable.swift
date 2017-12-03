@@ -8,8 +8,8 @@
 import Foundation
 import RealmSwift
 
-protocol RealmListable: RealmCollectionValue {
+protocol RealmListable: RealmCollectionValue, RealmIdentifiable {
 
-    static func list() -> (Realm) -> Results<Self>
+    static func list(filter: String) -> (Realm) -> Results<Self>
 
 }

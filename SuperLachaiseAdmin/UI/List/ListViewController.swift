@@ -21,7 +21,7 @@ final class ListViewController: NSViewController {
 
     // MARK: Model
 
-    var rootItem: ListViewItem?
+    var rootItem: ListViewRootItem?
 
     // Lifecycle
 

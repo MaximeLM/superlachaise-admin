@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class SuperLachaisePOI: Object, RealmDeletable, RealmIdentifiable, RealmListable {
+final class SuperLachaisePOI: Object, RealmDeletable, RealmListable {
 
     // MARK: Properties
 
@@ -46,14 +46,20 @@ final class SuperLachaisePOI: Object, RealmDeletable, RealmIdentifiable, RealmLi
 
     // MARK: RealmListable
 
-    static func list() -> (Realm) -> Results<SuperLachaisePOI> {
+    static func list(filter: String) -> (Realm) -> Results<SuperLachaisePOI> {
         return { realm in
-            return realm.objects(SuperLachaisePOI.self)
+            var results = realm.objects(SuperLachaisePOI.self)
                 .filter("toBeDeleted == false")
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
                     SortDescriptor(keyPath: "wikidataId"),
                 ])
+            if !filter.isEmpty {
+                let predicate = NSPredicate(format: "wikidataId contains[cd] %@ OR name contains[cd] %@",
+                                            filter, filter)
+                results = results.filter(predicate)
+            }
+            return results
         }
     }
 

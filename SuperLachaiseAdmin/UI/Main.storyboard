@@ -752,11 +752,14 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="ZEg-Vx-QNB"/>
                                 </constraints>
-                                <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="7bd-Wm-ztz">
+                                <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="7bd-Wm-ztz">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </searchFieldCell>
+                                <connections>
+                                    <action selector="searchAction:" target="uw9-uF-Klt" id="rS5-qY-Fdx"/>
+                                </connections>
                             </searchField>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gce-xu-0fd">
                                 <rect key="frame" x="0.0" y="0.0" width="150" height="270"/>
@@ -810,7 +813,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <action trigger="doubleAction" selector="doubleClickItem:" target="uw9-uF-Klt" id="hB2-fO-WYz"/>
+                                                <action trigger="doubleAction" selector="doubleClickAction:" target="uw9-uF-Klt" id="5g7-ho-FBY"/>
                                                 <outlet property="dataSource" destination="uw9-uF-Klt" id="ABR-6v-788"/>
                                                 <outlet property="delegate" destination="uw9-uF-Klt" id="uxU-Za-RY5"/>
                                             </connections>

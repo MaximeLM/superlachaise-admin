@@ -16,19 +16,33 @@ final class ListViewRootItem: NSObject, ListViewItem {
         self.realm = realm
     }
 
+    var filter: String = "" {
+        didSet {
+            _children.forEach { $0.filter = filter }
+        }
+    }
+
     // MARK: ListViewItem
 
     let identifier: String = "RootListViewItem"
 
     let text: String = ""
 
-    lazy var children: [ListViewItem]? = { [unowned self] in
-        [
-            ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs", realm: self.realm),
-            ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements", realm: self.realm),
-        ]
-    }()
+    var children: [ListViewItem]? {
+        return _children
+    }
 
     var reload: ((ListViewItem) -> Void)?
+
+    // MARK: Private
+
+    private lazy var _children: [ListViewObjectListItemType] = { [unowned self] in
+        [
+            ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs",
+                                                     realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements",
+                                                         realm: self.realm, filter: self.filter),
+        ]
+    }()
 
 }

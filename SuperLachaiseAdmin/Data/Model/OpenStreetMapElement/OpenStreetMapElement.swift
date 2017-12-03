@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class OpenStreetMapElement: Object, RealmDeletable, RealmIdentifiable, RealmListable {
+final class OpenStreetMapElement: Object, RealmDeletable, RealmListable {
 
     // MARK: Properties
 
@@ -49,14 +49,20 @@ final class OpenStreetMapElement: Object, RealmDeletable, RealmIdentifiable, Rea
 
     // MARK: RealmListable
 
-    static func list() -> (Realm) -> Results<OpenStreetMapElement> {
+    static func list(filter: String) -> (Realm) -> Results<OpenStreetMapElement> {
         return { realm in
-            return realm.objects(OpenStreetMapElement.self)
+            var results = realm.objects(OpenStreetMapElement.self)
                 .filter("toBeDeleted == false")
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
                     SortDescriptor(keyPath: "rawOpenStreetMapId"),
                 ])
+            if !filter.isEmpty {
+                let predicate = NSPredicate(format: "rawOpenStreetMapId contains[cd] %@ OR name contains[cd] %@",
+                                            filter, filter)
+                results = results.filter(predicate)
+            }
+            return results
         }
     }
 
