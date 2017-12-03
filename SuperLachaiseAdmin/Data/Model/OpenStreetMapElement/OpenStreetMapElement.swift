@@ -19,8 +19,7 @@ final class OpenStreetMapElement: Object, RealmDeletable, RealmIdentifiable, Rea
     @objc dynamic var longitude: Double = 0
 
     @objc dynamic var name: String?
-
-    @objc dynamic var rawTags: Data?
+    @objc dynamic var wikidataId: String?
 
     // MARK: Overrides
 
