@@ -24,6 +24,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
 
     lazy var children: [ListViewItem]? = { [unowned self] in
         [
+            ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs", realm: self.realm),
             ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements", realm: self.realm),
         ]
     }()

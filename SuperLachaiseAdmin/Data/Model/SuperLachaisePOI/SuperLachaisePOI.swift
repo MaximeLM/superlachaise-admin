@@ -1,35 +1,31 @@
 //
-//  OpenStreetMapElement.swift
+//  SuperLachaisePOI.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/11/2017.
+//  Created by Maxime Le Moine on 03/12/2017.
 //
 
 import Foundation
 import RealmSwift
 
-final class OpenStreetMapElement: Object, RealmDeletable, RealmIdentifiable, RealmListable {
+final class SuperLachaisePOI: Object, RealmDeletable, RealmIdentifiable, RealmListable {
 
     // MARK: Properties
 
-    // Serialized as type/numericId
-    @objc dynamic var rawOpenStreetMapId: String?
+    @objc dynamic var wikidataId: String = ""
 
-    @objc dynamic var latitude: Double = 0
-    @objc dynamic var longitude: Double = 0
+    @objc dynamic var openStreetMapElement: OpenStreetMapElement?
 
     @objc dynamic var name: String?
-
-    @objc dynamic var rawTags: Data?
 
     // MARK: Overrides
 
     override static func primaryKey() -> String {
-        return "rawOpenStreetMapId"
+        return "wikidataId"
     }
 
     override var description: String {
-        return [name, rawOpenStreetMapId]
+        return [name, wikidataId]
             .flatMap { $0 }
             .joined(separator: " - ")
     }
@@ -45,18 +41,18 @@ final class OpenStreetMapElement: Object, RealmDeletable, RealmIdentifiable, Rea
     // MARK: RealmIdentifiable
 
     var identifier: String {
-        return rawOpenStreetMapId ?? ""
+        return wikidataId
     }
 
     // MARK: RealmListable
 
-    static func list() -> (Realm) -> Results<OpenStreetMapElement> {
+    static func list() -> (Realm) -> Results<SuperLachaisePOI> {
         return { realm in
-            return realm.objects(OpenStreetMapElement.self)
+            return realm.objects(SuperLachaisePOI.self)
                 .filter("toBeDeleted == false")
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "rawOpenStreetMapId"),
+                    SortDescriptor(keyPath: "wikidataId"),
                 ])
         }
     }
