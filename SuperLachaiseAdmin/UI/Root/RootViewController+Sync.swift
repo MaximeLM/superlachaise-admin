@@ -1,5 +1,5 @@
 //
-//  RootViewController+FetchMenu.swift
+//  RootViewController+Sync.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 29/11/2017.

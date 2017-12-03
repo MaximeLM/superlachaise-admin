@@ -222,7 +222,10 @@ final class SyncOpenStreetMapElements: Task {
         // OpenStreetMap element
         if let existingOpenStreetMapElement = superLachaisePOI.openStreetMapElement,
             existingOpenStreetMapElement != openStreetMapElement {
-            Logger.warning("SuperLachaise POI \(superLachaisePOI) has multiple OpenStreetMap elements")
+            Logger.warning("""
+                SuperLachaisePOI \(superLachaisePOI) is referenced by OpenStreetMapElements \
+                \(existingOpenStreetMapElement) and \(openStreetMapElement)
+                """)
             return nil
         }
         superLachaisePOI.openStreetMapElement = openStreetMapElement
