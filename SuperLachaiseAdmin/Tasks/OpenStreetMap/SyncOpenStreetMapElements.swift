@@ -1,5 +1,5 @@
 //
-//  FetchOpenStreetMapElements.swift
+//  SyncOpenStreetMapElements.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 28/11/2017.
@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 import RxSwift
 
-final class FetchOpenStreetMapElements: Task {
+final class SyncOpenStreetMapElements: Task {
 
     private let scope: Scope
 

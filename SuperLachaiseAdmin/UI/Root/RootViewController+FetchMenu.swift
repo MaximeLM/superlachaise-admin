@@ -9,8 +9,8 @@ import Cocoa
 
 extension RootViewController {
 
-    @IBAction func fetchOpenStreetMapElements(_ sender: Any?) {
-        taskController.fetchOpenStreetMapElements()
+    @IBAction func syncOpenStreetMapElements(_ sender: Any?) {
+        taskController.syncOpenStreetMapElements()
     }
 
 }

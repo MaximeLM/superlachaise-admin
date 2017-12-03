@@ -631,14 +631,14 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Fetch" id="Bvc-2p-KiT">
+                            <menuItem title="Sync" id="Bvc-2p-KiT">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Fetch" id="fy6-7d-fI0">
+                                <menu key="submenu" title="Sync" id="fy6-7d-fI0">
                                     <items>
                                         <menuItem title="OpenStreetMap elements" id="NC9-w0-9wt">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="fetchOpenStreetMapElements:" target="Ady-hI-5gd" id="p7A-Ty-4H6"/>
+                                                <action selector="syncOpenStreetMapElements:" target="Ady-hI-5gd" id="Ede-vF-H2Q"/>
                                             </connections>
                                         </menuItem>
                                     </items>
