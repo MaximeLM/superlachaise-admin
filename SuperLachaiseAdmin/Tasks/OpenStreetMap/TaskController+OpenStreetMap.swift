@@ -19,7 +19,7 @@ extension TaskController {
         operationQueue.addOperation(task.asOperation())
     }
 
-    func syncOpenStreetMapElements(_ openStreetMapElements: [OpenStreetMapElement]) {
+    func syncOpenStreetMapElement(_ openStreetMapElements: [OpenStreetMapElement]) {
         let openStreetMapIds = openStreetMapElements.flatMap { $0.openStreetMapId }
         let scope: SyncOpenStreetMapElements.Scope = .list(openStreetMapIds)
         let task = SyncOpenStreetMapElements(scope: scope,

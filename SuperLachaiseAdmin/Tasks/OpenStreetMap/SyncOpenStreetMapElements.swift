@@ -226,7 +226,6 @@ final class SyncOpenStreetMapElements: Task {
                 SuperLachaisePOI \(superLachaisePOI) is referenced by OpenStreetMapElements \
                 \(existingOpenStreetMapElement) and \(openStreetMapElement)
                 """)
-            return nil
         }
         superLachaisePOI.openStreetMapElement = openStreetMapElement
 

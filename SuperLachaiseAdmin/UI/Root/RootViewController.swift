@@ -28,6 +28,7 @@ final class RootViewController: NSSplitViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         listViewController?.realmContext = realmContext
+        listViewController?.taskController = taskController
     }
 
 }

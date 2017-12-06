@@ -29,7 +29,7 @@ extension ListViewController {
             guard let item = item as? ListViewObjectItem else {
                 return false
             }
-            return item.object is SuperLachaisePOI
+            return item.object is SuperLachaisePOI || item.object is OpenStreetMapElement
         }
     }
 
@@ -66,7 +66,23 @@ extension ListViewController {
     }
 
     @IBAction func syncOpenStreetMapElement(_ sender: Any?) {
-
+        guard let outlineView = outlineView,
+            let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem else {
+                return
+        }
+        let openStreetMapElement: OpenStreetMapElement
+        if let superLachaisePOI = item.object as? SuperLachaisePOI {
+            guard let _openStreetMapElement = superLachaisePOI.openStreetMapElement else {
+                Logger.error("SuperLachaise POI \(superLachaisePOI) has no OpenStreetMap element")
+                return
+            }
+            openStreetMapElement = _openStreetMapElement
+        } else if let _openStreetMapElement = item.object as? OpenStreetMapElement {
+            openStreetMapElement = _openStreetMapElement
+        } else {
+            return
+        }
+        taskController?.syncOpenStreetMapElement([openStreetMapElement])
     }
 
 }

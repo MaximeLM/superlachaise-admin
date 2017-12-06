@@ -13,6 +13,8 @@ final class ListViewController: NSViewController {
 
     var realmContext: RealmContext?
 
+    var taskController: TaskController?
+
     // MARK: Subviews
 
     @IBOutlet weak var searchField: NSSearchField?
