@@ -231,7 +231,7 @@ final class SyncOpenStreetMapElements: Task {
         superLachaisePOI.openStreetMapElement = openStreetMapElement
 
         // Name
-        superLachaisePOI.updateName()
+        superLachaisePOI.name = openStreetMapElement.name
 
         return superLachaisePOI
     }

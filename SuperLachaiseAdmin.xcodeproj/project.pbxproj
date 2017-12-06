@@ -47,8 +47,10 @@
 		55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */; };
 		55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */; };
 		55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB48021FCCE4C0003F3610 /* Errors.swift */; };
+		55E8A3AA1FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3A91FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift */; };
+		55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */; };
+		55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */; };
 		55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */; };
-		55F46B6E1FD49257005B90BF /* SuperLachaisePOI+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B6D1FD49257005B90BF /* SuperLachaisePOI+Name.swift */; };
 		55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B6F1FD497FD005B90BF /* ListViewController+Actions.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,8 +97,10 @@
 		55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElement.swift; sourceTree = "<group>"; };
 		55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Id.swift"; sourceTree = "<group>"; };
 		55CB48021FCCE4C0003F3610 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		55E8A3A91FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmOpenableInBrowser.swift; sourceTree = "<group>"; };
+		55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Protocols.swift"; sourceTree = "<group>"; };
+		55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaisePOI+Protocols.swift"; sourceTree = "<group>"; };
 		55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaisePOI.swift; sourceTree = "<group>"; };
-		55F46B6D1FD49257005B90BF /* SuperLachaisePOI+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaisePOI+Name.swift"; sourceTree = "<group>"; };
 		55F46B6F1FD497FD005B90BF /* ListViewController+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListViewController+Actions.swift"; sourceTree = "<group>"; };
 		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 				55A8D23A1FCF52A900BB00BC /* RealmDeletable.swift */,
 				55B537061FD351C800036FFC /* RealmIdentifiable.swift */,
 				55B537001FD3413800036FFC /* RealmListable.swift */,
+				55E8A3A91FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 			children = (
 				55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */,
 				55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */,
+				55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */,
 			);
 			path = OpenStreetMapElement;
 			sourceTree = "<group>";
@@ -361,7 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */,
-				55F46B6D1FD49257005B90BF /* SuperLachaisePOI+Name.swift */,
+				55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */,
 			);
 			path = SuperLachaisePOI;
 			sourceTree = "<group>";
@@ -554,11 +560,12 @@
 				55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */,
 				55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */,
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
+				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
-				55F46B6E1FD49257005B90BF /* SuperLachaisePOI+Name.swift in Sources */,
 				558F26931FCDE5FB009BAA8E /* Task.swift in Sources */,
 				55B897EC1FCB282800FC4EF6 /* RxOperation.swift in Sources */,
 				55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */,
+				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
 				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
 				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
@@ -571,6 +578,7 @@
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				5587F9F51FCF6E9F004C9E28 /* RootViewController+Sync.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
+				55E8A3AA1FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
 				55A8D23B1FCF52A900BB00BC /* RealmDeletable.swift in Sources */,
 			);

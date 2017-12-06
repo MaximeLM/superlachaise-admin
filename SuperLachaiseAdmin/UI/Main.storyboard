@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -816,6 +816,7 @@
                                                 <action trigger="doubleAction" selector="doubleClickAction:" target="uw9-uF-Klt" id="5g7-ho-FBY"/>
                                                 <outlet property="dataSource" destination="uw9-uF-Klt" id="ABR-6v-788"/>
                                                 <outlet property="delegate" destination="uw9-uF-Klt" id="uxU-Za-RY5"/>
+                                                <outlet property="menu" destination="U7s-Ag-zeW" id="L5w-mO-7qF"/>
                                             </connections>
                                         </outlineView>
                                     </subviews>
@@ -847,6 +848,23 @@
                     </connections>
                 </viewController>
                 <customObject id="EBP-sp-XR7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="U7s-Ag-zeW">
+                    <items>
+                        <menuItem title="Open in browser" id="um2-kS-waR">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="openInBrowser:" target="uw9-uF-Klt" id="UNc-hc-c3R"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="RoT-CO-QKL"/>
+                        <menuItem title="Sync OpenStreetMap element" tag="10" id="fmN-8D-mzp">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="syncOpenStreetMapElement:" target="uw9-uF-Klt" id="fyf-IN-KP2"/>
+                            </connections>
+                        </menuItem>
+                    </items>
+                </menu>
             </objects>
             <point key="canvasLocation" x="591" y="494"/>
         </scene>

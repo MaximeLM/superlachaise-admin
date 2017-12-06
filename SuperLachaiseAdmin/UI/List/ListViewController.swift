@@ -15,9 +15,9 @@ final class ListViewController: NSViewController {
 
     // MARK: Subviews
 
-    @IBOutlet private weak var searchField: NSSearchField?
+    @IBOutlet weak var searchField: NSSearchField?
 
-    @IBOutlet private weak var outlineView: NSOutlineView?
+    @IBOutlet weak var outlineView: NSOutlineView?
 
     // MARK: Model
 

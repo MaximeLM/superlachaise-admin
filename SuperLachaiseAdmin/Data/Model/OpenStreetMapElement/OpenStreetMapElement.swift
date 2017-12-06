@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class OpenStreetMapElement: Object, RealmDeletable, RealmListable {
+final class OpenStreetMapElement: Object {
 
     // MARK: Properties
 
@@ -21,7 +21,7 @@ final class OpenStreetMapElement: Object, RealmDeletable, RealmListable {
     @objc dynamic var name: String?
     @objc dynamic var wikidataId: String?
 
-    // MARK: Overrides
+    @objc dynamic var toBeDeleted = false
 
     override static func primaryKey() -> String {
         return "rawOpenStreetMapId"
@@ -31,39 +31,6 @@ final class OpenStreetMapElement: Object, RealmDeletable, RealmListable {
         return [name, rawOpenStreetMapId]
             .flatMap { $0 }
             .joined(separator: " - ")
-    }
-
-    // MARK: RealmDeletable
-
-    @objc dynamic var toBeDeleted = false
-
-    func delete() {
-        realm?.delete(self)
-    }
-
-    // MARK: RealmIdentifiable
-
-    var identifier: String {
-        return rawOpenStreetMapId ?? ""
-    }
-
-    // MARK: RealmListable
-
-    static func list(filter: String) -> (Realm) -> Results<OpenStreetMapElement> {
-        return { realm in
-            var results = realm.objects(OpenStreetMapElement.self)
-                .filter("toBeDeleted == false")
-                .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "rawOpenStreetMapId"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "rawOpenStreetMapId contains[cd] %@ OR name contains[cd] %@",
-                                            filter, filter)
-                results = results.filter(predicate)
-            }
-            return results
-        }
     }
 
 }
