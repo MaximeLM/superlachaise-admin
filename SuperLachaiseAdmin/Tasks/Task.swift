@@ -20,13 +20,4 @@ extension Task {
         return "\(type(of: self))"
     }
 
-    func asOperation() -> Operation {
-        return RxOperation {
-            self.asCompletable()
-                .do(onSubscribe: { Logger.info("\(self) started") })
-                .subscribe(onCompleted: { Logger.success("\(self) succeeded") },
-                           onError: { Logger.error("\(self) failed: \($0)") })
-        }
-    }
-
 }

@@ -12,8 +12,6 @@ final class TaskController {
     let config: Config
     let realmContext: RealmContext
 
-    let operationQueue: OperationQueue
-
     let overpassAPIEndpoint: APIEndpointType
 
     init(config: Config,
@@ -22,8 +20,21 @@ final class TaskController {
         self.config = config
         self.realmContext = realmContext
         self.operationQueue = OperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
 
         self.overpassAPIEndpoint = overpassAPIEndpoint
+    }
+
+    // MARK: Tasks
+
+    private let operationQueue: OperationQueue
+
+    func enqueue(_ task: Task) {
+        _ = task.asCompletable()
+            .enqueue(in: operationQueue)
+            .do(onSubscribe: { Logger.info("\(task) started") })
+            .subscribe(onError: { Logger.error("\(task) failed: \($0)") },
+                       onCompleted: { Logger.success("\(task) succeeded") })
     }
 
 }

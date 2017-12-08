@@ -16,7 +16,7 @@ extension TaskController {
         let task = SyncOpenStreetMapElements(scope: scope,
                                              realmContext: realmContext,
                                              endpoint: overpassAPIEndpoint)
-        operationQueue.addOperation(task.asOperation())
+        enqueue(task)
     }
 
     func syncOpenStreetMapElement(_ openStreetMapElements: [OpenStreetMapElement]) {
@@ -25,7 +25,7 @@ extension TaskController {
         let task = SyncOpenStreetMapElements(scope: scope,
                                              realmContext: realmContext,
                                              endpoint: overpassAPIEndpoint)
-        operationQueue.addOperation(task.asOperation())
+        enqueue(task)
     }
 
 }

@@ -36,7 +36,6 @@
 		55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E11FCB169F00FC4EF6 /* RealmContext.swift */; };
 		55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E41FCB1CED00FC4EF6 /* Logger.swift */; };
 		55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */; };
-		55B897EC1FCB282800FC4EF6 /* RxOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897EB1FCB282800FC4EF6 /* RxOperation.swift */; };
 		55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897ED1FCB29C400FC4EF6 /* Operation+Rx.swift */; };
 		55BD408D1FD30B4B005ACD89 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD408C1FD30B4B005ACD89 /* ListViewController.swift */; };
 		55C82D9B1FCE282C00D606A2 /* Rx+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C82D9A1FCE282C00D606A2 /* Rx+Utils.swift */; };
@@ -86,7 +85,6 @@
 		55B897E11FCB169F00FC4EF6 /* RealmContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmContext.swift; sourceTree = "<group>"; };
 		55B897E41FCB1CED00FC4EF6 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
-		55B897EB1FCB282800FC4EF6 /* RxOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxOperation.swift; sourceTree = "<group>"; };
 		55B897ED1FCB29C400FC4EF6 /* Operation+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Operation+Rx.swift"; sourceTree = "<group>"; };
 		55BD408C1FD30B4B005ACD89 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		55C82D9A1FCE282C00D606A2 /* Rx+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Utils.swift"; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 			isa = PBXGroup;
 			children = (
 				55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */,
-				55B897EB1FCB282800FC4EF6 /* RxOperation.swift */,
 				55B897ED1FCB29C400FC4EF6 /* Operation+Rx.swift */,
 			);
 			path = Operations;
@@ -563,7 +560,6 @@
 				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
 				558F26931FCDE5FB009BAA8E /* Task.swift in Sources */,
-				55B897EC1FCB282800FC4EF6 /* RxOperation.swift in Sources */,
 				55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */,
 				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
 				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
