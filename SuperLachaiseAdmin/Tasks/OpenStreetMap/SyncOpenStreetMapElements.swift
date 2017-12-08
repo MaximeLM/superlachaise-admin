@@ -35,7 +35,7 @@ final class SyncOpenStreetMapElements: Task {
         return Single.create(self.request)
             .flatMap(self.endpoint.data)
             .map(self.results)
-            .flatMap(realmContext.background(self.sync))
+            .flatMap(self.sync)
             .toCompletable()
     }
 
@@ -105,10 +105,12 @@ final class SyncOpenStreetMapElements: Task {
         case centerNotFound(OpenStreetMapId)
     }
 
-    private func sync(results: OverpassResults, realm: Realm) throws {
-        try realm.write {
-            let openStreetMapElements = try self.openStreetMapElements(results: results, realm: realm)
-            _ = try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)
+    private func sync(results: OverpassResults) throws -> Single<Void> {
+        return Realm.async(configuration: realmContext.configuration) { realm in
+            try realm.write {
+                let openStreetMapElements = try self.openStreetMapElements(results: results, realm: realm)
+                _ = try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)
+            }
         }
     }
 

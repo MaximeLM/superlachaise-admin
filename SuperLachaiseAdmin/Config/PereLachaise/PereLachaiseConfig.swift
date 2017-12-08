@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class PereLachaiseConfig: Config {
+struct PereLachaiseConfig: Config {
 
     let openStreetMap: OpenStreetMapConfig = PereLachaiseOpenStreetMapConfig()
 

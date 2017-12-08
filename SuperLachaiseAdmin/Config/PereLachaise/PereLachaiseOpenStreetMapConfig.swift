@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class PereLachaiseOpenStreetMapConfig: OpenStreetMapConfig {
+struct PereLachaiseOpenStreetMapConfig: OpenStreetMapConfig {
 
     let boundingBox: BoundingBox = (48.8575, 2.3877, 48.8649, 2.4006)
 

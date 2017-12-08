@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Logger {
+struct Logger {
 
     static func info(_ message: String) {
         print("ℹ️ \(message)")
