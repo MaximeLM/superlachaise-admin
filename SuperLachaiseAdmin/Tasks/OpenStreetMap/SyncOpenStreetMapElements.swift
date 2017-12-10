@@ -24,7 +24,7 @@ final class SyncOpenStreetMapElements: Task {
 
     enum Scope {
         case all(boundingBox: BoundingBox, fetchedTags: [String])
-        case list([OpenStreetMapId])
+        case list(openStreetMapIds: [OpenStreetMapId])
     }
 
     // MARK: Execution

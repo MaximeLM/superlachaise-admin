@@ -30,6 +30,11 @@ extension ListViewController {
                 return false
             }
             return item.object is SuperLachaisePOI || item.object is OpenStreetMapElement
+        case .syncWikidataEntries:
+            guard let item = item as? ListViewObjectItem else {
+                return false
+            }
+            return item.object is SuperLachaisePOI || item.object is WikidataEntry
         }
     }
 
@@ -65,7 +70,7 @@ extension ListViewController {
         NSWorkspace.shared.open(externalURL)
     }
 
-    @IBAction func syncOpenStreetMapElement(_ sender: Any?) {
+    @IBAction func menuSyncOpenStreetMapElement(_ sender: Any?) {
         guard let outlineView = outlineView,
             let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem else {
                 return
@@ -85,6 +90,26 @@ extension ListViewController {
         taskController.syncOpenStreetMapElement([openStreetMapElement])
     }
 
+    @IBAction func menuSyncWikidataEntries(_ sender: Any?) {
+        guard let outlineView = outlineView,
+            let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem else {
+                return
+        }
+        let wikidataEntry: WikidataEntry
+        if let superLachaisePOI = item.object as? SuperLachaisePOI {
+            guard let primaryWikidataEntry = superLachaisePOI.primaryWikidataEntry else {
+                Logger.error("SuperLachaise POI \(superLachaisePOI) has no primary Wikidata entry")
+                return
+            }
+            wikidataEntry = primaryWikidataEntry
+        } else if let _wikidataEntry = item.object as? WikidataEntry {
+            wikidataEntry = _wikidataEntry
+        } else {
+            return
+        }
+        taskController.syncWikidataEntries([wikidataEntry])
+    }
+
 }
 
 private enum ListViewMenuItemTag: Int {
@@ -92,5 +117,6 @@ private enum ListViewMenuItemTag: Int {
     case openInBrowser = 0
 
     case syncOpenStreetMapElement = 10
+    case syncWikidataEntries = 11
 
 }

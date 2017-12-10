@@ -641,6 +641,12 @@
                                                 <action selector="syncOpenStreetMapElements:" target="Ady-hI-5gd" id="Ede-vF-H2Q"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Wikidata entries" id="zeY-WA-cVN">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="syncWikidataEntries:" target="Ady-hI-5gd" id="GIZ-GS-jSH"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -860,7 +866,13 @@
                         <menuItem title="Sync OpenStreetMap element" tag="10" id="fmN-8D-mzp">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="syncOpenStreetMapElement:" target="uw9-uF-Klt" id="fyf-IN-KP2"/>
+                                <action selector="menuSyncOpenStreetMapElement:" target="uw9-uF-Klt" id="biO-w0-5u1"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Sync Wikidata entries" tag="11" id="LiN-Yj-cbb">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="menuSyncWikidataEntries:" target="uw9-uF-Klt" id="sdb-Rt-LKn"/>
                             </connections>
                         </menuItem>
                     </items>

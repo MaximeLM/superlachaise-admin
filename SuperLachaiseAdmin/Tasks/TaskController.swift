@@ -22,6 +22,7 @@ final class TaskController {
     // MARK: API endpoints
 
     lazy var overpassAPIEndpoint: APIEndpointType = APIEndpoint.overpass
+    lazy var wikidataAPIEndpoint: APIEndpointType = APIEndpoint.wikidata
 
     // MARK: Tasks
 

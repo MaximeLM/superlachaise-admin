@@ -13,4 +13,8 @@ extension RootViewController {
         taskController.syncOpenStreetMapElements()
     }
 
+    @IBAction func syncWikidataEntries(_ sender: Any?) {
+        taskController.syncWikidataEntries()
+    }
+
 }

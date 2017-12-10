@@ -1,5 +1,5 @@
 //
-//  APIEndpoint+Overpass.swift
+//  APIEndpoint+OpenStreetMap.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 28/11/2017.
