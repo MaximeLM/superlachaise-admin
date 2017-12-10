@@ -10,13 +10,16 @@ import Foundation
 extension TaskController {
 
     func syncWikidataEntries() {
-        let task = SyncWikidataEntries(scope: .all, endpoint: wikidataAPIEndpoint)
+        let task = SyncWikidataEntries(scope: .all,
+                                       languages: config.languages,
+                                       endpoint: wikidataAPIEndpoint)
         enqueue(task)
     }
 
-    func syncWikidataEntries(_ wikidataEntries: [WikidataEntry]) {
-        let wikidataIds = wikidataEntries.map { $0.wikidataId }
-        let task = SyncWikidataEntries(scope: .list(wikidataIds: wikidataIds), endpoint: wikidataAPIEndpoint)
+    func syncWikidataEntries(ids wikidataIds: [String]) {
+        let task = SyncWikidataEntries(scope: .list(wikidataIds: wikidataIds),
+                                       languages: config.languages,
+                                       endpoint: wikidataAPIEndpoint)
         enqueue(task)
     }
 

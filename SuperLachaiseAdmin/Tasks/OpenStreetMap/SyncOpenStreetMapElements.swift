@@ -20,6 +20,8 @@ final class SyncOpenStreetMapElements: Task {
         self.endpoint = endpoint
     }
 
+    private let realmDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
+
     // MARK: Types
 
     enum Scope {
@@ -30,69 +32,20 @@ final class SyncOpenStreetMapElements: Task {
     // MARK: Execution
 
     func asCompletable() -> Completable {
-        return Single.create(self.request)
-            .flatMap(self.endpoint.data)
-            .map(self.results)
+        return getElements().asObservable()
             .flatMap(self.sync)
-            .toCompletable()
+            .asObservable().ignoreElements()
     }
 
-    // MARK: Request
+    // MARK: Requests
 
-    enum RequestError: Error {
-        case invalidBody(String)
-    }
-
-    private func request() throws -> URLRequest {
-        let interpreterURL = endpoint.baseURL.appendingPathComponent("interpreter")
-        var request = URLRequest(url: interpreterURL)
-        request.httpMethod = "POST"
-
-        let body = requestBody()
-        guard let httpBody = body.data(using: .utf8) else {
-            throw RequestError.invalidBody(body)
-        }
-        request.httpBody = httpBody
-
-        return request
-    }
-
-    private func requestBody() -> String {
-        var lines = requestSubqueries()
-        lines.insert("[out:json];(", at: 0)
-        lines.append(");out center;")
-        return lines.joined(separator: "\n")
-    }
-
-    private func requestSubqueries() -> [String] {
+    private func getElements() -> OverpassGetElements {
         switch scope {
         case let .all(boundingBox, fetchedTags):
-            let boundingBoxString = """
-            \(boundingBox.minLatitude), \(boundingBox.minLongitude), \
-            \(boundingBox.maxLatitude), \(boundingBox.maxLongitude)
-            """
-
-            // Create a subquery for each combination of type and tag
-            let elementTypes: [OpenStreetMapElementType] = [.node, .way, .relation]
-            return elementTypes.flatMap { elementType in
-                fetchedTags.map { tag in
-                    // ex. "node[historic=tomb](48.8575,2.3877,48.8649,2.4006)"
-                    "\(elementType.rawValue)[\(tag)](\(boundingBoxString));"
-                }
-            }
+            return OverpassGetElements(endpoint: endpoint, boundingBox: boundingBox, fetchedTags: fetchedTags)
         case let .list(openStreetMapIds):
-            // Create a subquery for each element
-            return openStreetMapIds.map { openStreetMapId in
-                // ex. "node(123456)"
-                "\(openStreetMapId.elementType.rawValue)(\(openStreetMapId.numericId));"
-            }
+            return OverpassGetElements(endpoint: endpoint, openStreetMapIds: openStreetMapIds)
         }
-    }
-
-    // MARK: Results
-
-    private func results(data: Data) throws -> OverpassResults {
-        return try JSONDecoder().decode(OverpassResults.self, from: data)
     }
 
     // MARK: Sync
@@ -103,18 +56,18 @@ final class SyncOpenStreetMapElements: Task {
         case centerNotFound(OpenStreetMapId)
     }
 
-    private let syncDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
-
-    private func sync(results: OverpassResults) throws -> Single<Void> {
-        return Realm.async(dispatchQueue: syncDispatchQueue) { realm in
+    private func sync(overpassElements: [OverpassElement]) throws -> Single<Void> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                let openStreetMapElements = try self.openStreetMapElements(results: results, realm: realm)
+                let openStreetMapElements = try self.openStreetMapElements(overpassElements: overpassElements,
+                                                                           realm: realm)
                 _ = try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)
             }
         }
     }
 
-    private func openStreetMapElements(results: OverpassResults, realm: Realm) throws -> [OpenStreetMapElement] {
+    private func openStreetMapElements(overpassElements: [OverpassElement],
+                                       realm: Realm) throws -> [OpenStreetMapElement] {
         // List existing objects before updating
         var orphanedObjects: Set<OpenStreetMapElement>
         switch scope {
@@ -124,7 +77,7 @@ final class SyncOpenStreetMapElements: Task {
             orphanedObjects = Set()
         }
 
-        let fetchedObjects = try results.elements.map { overpassElement -> OpenStreetMapElement in
+        let fetchedObjects = try overpassElements.map { overpassElement -> OpenStreetMapElement in
             let fetchedObject = try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)
             orphanedObjects.remove(fetchedObject)
             return fetchedObject

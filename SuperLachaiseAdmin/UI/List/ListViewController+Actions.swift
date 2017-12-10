@@ -95,19 +95,15 @@ extension ListViewController {
             let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem else {
                 return
         }
-        let wikidataEntry: WikidataEntry
+        let wikidataId: String
         if let superLachaisePOI = item.object as? SuperLachaisePOI {
-            guard let primaryWikidataEntry = superLachaisePOI.primaryWikidataEntry else {
-                Logger.error("SuperLachaise POI \(superLachaisePOI) has no primary Wikidata entry")
-                return
-            }
-            wikidataEntry = primaryWikidataEntry
-        } else if let _wikidataEntry = item.object as? WikidataEntry {
-            wikidataEntry = _wikidataEntry
+            wikidataId = superLachaisePOI.wikidataId
+        } else if let wikidataEntry = item.object as? WikidataEntry {
+            wikidataId = wikidataEntry.wikidataId
         } else {
             return
         }
-        taskController.syncWikidataEntries([wikidataEntry])
+        taskController.syncWikidataEntries(ids: [wikidataId])
     }
 
 }

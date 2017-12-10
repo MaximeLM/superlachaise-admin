@@ -13,6 +13,7 @@ final class WikidataEntry: Object {
     @objc dynamic var wikidataId: String = ""
 
     @objc dynamic var name: String?
+    let secondayEntriesIds = List<String>()
 
     @objc dynamic var toBeDeleted = false
 

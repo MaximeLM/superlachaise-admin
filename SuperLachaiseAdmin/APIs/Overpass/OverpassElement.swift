@@ -1,17 +1,11 @@
 //
-//  OverpassResults.swift
+//  OverpassElements.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 28/11/2017.
 //
 
 import Foundation
-
-struct OverpassResults: Decodable {
-
-    let elements: [OverpassElement]
-
-}
 
 struct OverpassElement: Decodable {
 

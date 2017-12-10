@@ -14,8 +14,8 @@ extension Realm {
     /**
      Execute a method with a realm for a dispatch queue
      */
-    static func async<E>(configuration: Realm.Configuration = .defaultConfiguration,
-                         dispatchQueue: DispatchQueue = DispatchQueue(label: "Realm.async"),
+    static func async<E>(dispatchQueue: DispatchQueue,
+                         configuration: Realm.Configuration = .defaultConfiguration,
                          task: @escaping (Realm) throws -> E) -> Single<E> {
         return Single.create { observer in
             let cancel = SingleAssignmentDisposable()
