@@ -10,7 +10,7 @@ import Foundation
 extension APIEndpoint {
 
     static let overpass: APIEndpoint = {
-        let baseURL = URL.with("https://overpass-api.de/api/")
+        let baseURL = URL.with(string: "https://overpass-api.de/api/")
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = [
             "User-Agent": UserAgent.default,

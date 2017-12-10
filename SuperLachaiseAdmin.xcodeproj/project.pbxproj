@@ -25,6 +25,8 @@
 		55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */; };
 		55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */; };
 		55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365811FDB206B00EB84BD /* Realm+Async.swift */; };
+		55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365831FDD9EA900EB84BD /* AppContainer.swift */; };
+		55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365871FDDAD1900EB84BD /* ConsoleLogger.swift */; };
 		55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E41FD31C6800036FFC /* MainWindowController.swift */; };
 		55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E61FD3230C00036FFC /* ListViewItem.swift */; };
 		55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536EB1FD326D400036FFC /* ListViewRootItem.swift */; };
@@ -74,6 +76,8 @@
 		55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+OpenStreetMap.swift"; sourceTree = "<group>"; };
 		55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		55B365811FDB206B00EB84BD /* Realm+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Async.swift"; sourceTree = "<group>"; };
+		55B365831FDD9EA900EB84BD /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		55B365871FDDAD1900EB84BD /* ConsoleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleLogger.swift; sourceTree = "<group>"; };
 		55B536E41FD31C6800036FFC /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		55B536E61FD3230C00036FFC /* ListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewItem.swift; sourceTree = "<group>"; };
 		55B536EB1FD326D400036FFC /* ListViewRootItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewRootItem.swift; sourceTree = "<group>"; };
@@ -138,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				55605C061FC9C6120010BC5F /* AppDelegate.swift */,
+				55B365831FDD9EA900EB84BD /* AppContainer.swift */,
 				55A8D2411FCF5B9000BB00BC /* Config */,
 				55B897DD1FC9D15F00FC4EF6 /* UI */,
 				55CB47EB1FCCD1CA003F3610 /* Data */,
@@ -321,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				55B897E41FCB1CED00FC4EF6 /* Logger.swift */,
+				55B365871FDDAD1900EB84BD /* ConsoleLogger.swift */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -559,12 +565,14 @@
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
 				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
+				55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */,
 				55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */,
 				558F26931FCDE5FB009BAA8E /* Task.swift in Sources */,
 				55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */,
 				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
 				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
 				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
+				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,

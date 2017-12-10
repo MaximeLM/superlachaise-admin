@@ -82,7 +82,7 @@ extension ListViewController {
         } else {
             return
         }
-        taskController?.syncOpenStreetMapElement([openStreetMapElement])
+        taskController.syncOpenStreetMapElement([openStreetMapElement])
     }
 
 }

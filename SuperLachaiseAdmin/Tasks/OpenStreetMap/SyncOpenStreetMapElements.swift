@@ -11,14 +11,12 @@ import RxSwift
 
 final class SyncOpenStreetMapElements: Task {
 
-    private let scope: Scope
+    let scope: Scope
 
-    private let realmContext: RealmContext
-    private let endpoint: APIEndpointType
+    let endpoint: APIEndpointType
 
-    init(scope: Scope, realmContext: RealmContext, endpoint: APIEndpointType) {
+    init(scope: Scope, endpoint: APIEndpointType) {
         self.scope = scope
-        self.realmContext = realmContext
         self.endpoint = endpoint
     }
 
@@ -105,8 +103,10 @@ final class SyncOpenStreetMapElements: Task {
         case centerNotFound(OpenStreetMapId)
     }
 
+    private let syncDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
+
     private func sync(results: OverpassResults) throws -> Single<Void> {
-        return Realm.async(configuration: realmContext.configuration) { realm in
+        return Realm.async(dispatchQueue: syncDispatchQueue) { realm in
             try realm.write {
                 let openStreetMapElements = try self.openStreetMapElements(results: results, realm: realm)
                 _ = try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)

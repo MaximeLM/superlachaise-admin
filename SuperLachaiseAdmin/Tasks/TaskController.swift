@@ -12,18 +12,16 @@ final class TaskController {
     let config: Config
     let realmContext: RealmContext
 
-    let overpassAPIEndpoint: APIEndpointType
-
-    init(config: Config,
-         realmContext: RealmContext,
-         overpassAPIEndpoint: APIEndpointType = APIEndpoint.overpass) {
+    init(config: Config, realmContext: RealmContext) {
         self.config = config
         self.realmContext = realmContext
         self.operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
-
-        self.overpassAPIEndpoint = overpassAPIEndpoint
     }
+
+    // MARK: API endpoints
+
+    lazy var overpassAPIEndpoint: APIEndpointType = APIEndpoint.overpass
 
     // MARK: Tasks
 

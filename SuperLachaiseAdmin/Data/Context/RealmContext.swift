@@ -32,16 +32,12 @@ final class RealmContext {
 
     // MARK: Init
 
-    convenience init() {
+    convenience init(databaseDirectoryName: String, databaseFileName: String) throws {
         let documentsDirectoryURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let databaseDirectoryURL = documentsDirectoryURL
             .appendingPathComponent(Bundle.main.bundleIdentifier ?? "SuperLachaise", isDirectory: true)
-            .appendingPathComponent("database", isDirectory: true)
-        do {
-            try self.init(databaseDirectoryURL: databaseDirectoryURL, databaseFileName: "SuperLachaise")
-        } catch {
-            fatalError("\(error)")
-        }
+            .appendingPathComponent(databaseDirectoryName, isDirectory: true)
+        try self.init(databaseDirectoryURL: databaseDirectoryURL, databaseFileName: databaseFileName)
     }
 
     init(databaseDirectoryURL: URL, databaseFileName: String) throws {

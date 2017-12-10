@@ -11,9 +11,9 @@ final class ListViewController: NSViewController {
 
     // MARK: Dependencies
 
-    var realmContext: RealmContext?
+    lazy var realmContext = AppContainer.realmContext
 
-    var taskController: TaskController?
+    lazy var taskController = AppContainer.taskController
 
     // MARK: Subviews
 
@@ -34,10 +34,7 @@ final class ListViewController: NSViewController {
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        guard let realm = self.realmContext?.viewRealm else {
-            fatalError("realmContext not set")
-        }
-        self.rootItem = ListViewRootItem(realm: realm)
+        self.rootItem = ListViewRootItem(realm: self.realmContext.viewRealm)
         outlineView?.reloadData()
     }
 

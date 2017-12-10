@@ -13,18 +13,14 @@ extension TaskController {
         let scope: SyncOpenStreetMapElements.Scope = .all(
             boundingBox: config.openStreetMap.boundingBox,
             fetchedTags: config.openStreetMap.fetchedTags)
-        let task = SyncOpenStreetMapElements(scope: scope,
-                                             realmContext: realmContext,
-                                             endpoint: overpassAPIEndpoint)
+        let task = SyncOpenStreetMapElements(scope: scope, endpoint: overpassAPIEndpoint)
         enqueue(task)
     }
 
     func syncOpenStreetMapElement(_ openStreetMapElements: [OpenStreetMapElement]) {
         let openStreetMapIds = openStreetMapElements.flatMap { $0.openStreetMapId }
         let scope: SyncOpenStreetMapElements.Scope = .list(openStreetMapIds)
-        let task = SyncOpenStreetMapElements(scope: scope,
-                                             realmContext: realmContext,
-                                             endpoint: overpassAPIEndpoint)
+        let task = SyncOpenStreetMapElements(scope: scope, endpoint: overpassAPIEndpoint)
         enqueue(task)
     }
 

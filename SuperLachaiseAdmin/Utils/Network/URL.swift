@@ -9,7 +9,7 @@ import Foundation
 
 extension URL {
 
-    static func with(_ string: String) -> URL {
+    static func with(string: String) -> URL {
         guard let url = URL(string: string) else {
             fatalError("Invalid URL string \(string)")
         }

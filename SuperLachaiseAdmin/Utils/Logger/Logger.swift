@@ -7,22 +7,33 @@
 
 import Foundation
 
+protocol LoggerType {
+
+    func info(_ message: String)
+    func warning(_ message: String)
+    func error(_ message: String)
+    func success(_ message: String)
+
+}
+
 struct Logger {
 
+    static var shared: LoggerType = ConsoleLogger()
+
     static func info(_ message: String) {
-        print("ℹ️ \(message)")
+        shared.info(message)
     }
 
     static func warning(_ message: String) {
-        print("⚠️ \(message)")
+        shared.warning(message)
     }
 
     static func error(_ message: String) {
-        print("❌ \(message)")
+        shared.error(message)
     }
 
     static func success(_ message: String) {
-        print("✅ \(message)")
+        shared.success(message)
     }
 
 }
