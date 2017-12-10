@@ -33,7 +33,7 @@ extension OpenStreetMapElement: RealmDeletable, RealmListable, RealmOpenableInBr
                     SortDescriptor(keyPath: "rawOpenStreetMapId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "rawOpenStreetMapId contains[cd] %@ OR name contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR rawOpenStreetMapId contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }

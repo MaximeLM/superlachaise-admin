@@ -42,6 +42,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                      realm: self.realm, filter: self.filter),
             ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements",
                                                          realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<WikidataEntry>(baseText: "Wikidata entries",
+                                                  realm: self.realm, filter: self.filter),
         ]
     }()
 

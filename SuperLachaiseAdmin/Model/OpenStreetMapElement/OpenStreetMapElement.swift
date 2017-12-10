@@ -10,8 +10,6 @@ import RealmSwift
 
 final class OpenStreetMapElement: Object {
 
-    // MARK: Properties
-
     // Serialized as type/numericId
     @objc dynamic var rawOpenStreetMapId: String?
 

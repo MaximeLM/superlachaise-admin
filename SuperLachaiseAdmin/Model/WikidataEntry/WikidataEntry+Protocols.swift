@@ -1,14 +1,14 @@
 //
-//  SuperLachaisePOI+Protocols.swift
+//  WikidataEntry+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 07/12/2017.
+//  Created by Maxime Le Moine on 10/12/2017.
 //
 
 import Foundation
 import RealmSwift
 
-extension SuperLachaisePOI: RealmDeletable, RealmListable {
+extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
 
     // MARK: RealmDeletable
 
@@ -24,21 +24,30 @@ extension SuperLachaisePOI: RealmDeletable, RealmListable {
 
     // MARK: RealmListable
 
-    static func list(filter: String) -> (Realm) -> Results<SuperLachaisePOI> {
+    static func list(filter: String) -> (Realm) -> Results<WikidataEntry> {
         return { realm in
-            var results = realm.objects(SuperLachaisePOI.self)
+            var results = realm.objects(WikidataEntry.self)
                 .filter("toBeDeleted == false")
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
                     SortDescriptor(keyPath: "wikidataId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "wikidataId contains[cd] %@ OR name contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }
             return results
         }
+    }
+
+    // MARK: RealmOpenableInBrowser
+
+    var externalURL: URL? {
+        guard let baseURL = URL(string: "https://www.wikidata.org/wiki") else {
+                return nil
+        }
+        return baseURL.appendingPathComponent(wikidataId)
     }
 
 }

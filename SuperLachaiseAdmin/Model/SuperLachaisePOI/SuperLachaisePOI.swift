@@ -10,11 +10,10 @@ import RealmSwift
 
 final class SuperLachaisePOI: Object {
 
-    // MARK: Properties
-
     @objc dynamic var wikidataId: String = ""
 
     @objc dynamic var openStreetMapElement: OpenStreetMapElement?
+    @objc dynamic var primaryWikidataEntry: WikidataEntry?
 
     @objc dynamic var name: String?
 
