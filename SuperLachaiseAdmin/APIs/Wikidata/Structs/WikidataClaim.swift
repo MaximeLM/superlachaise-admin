@@ -24,18 +24,27 @@ struct WikidataClaimSnak: Decodable {
     let datavalue: WikidataClaimDatavalue?
 
     var stringValue: String? {
-        return datavalue?.stringValue
+        guard let stringValue = datavalue?.stringValue else {
+            Logger.warning("[\(property)] Expected stringValue")
+            return nil
+        }
+        return stringValue
     }
 
     var entityValue: WikidataEntityName? {
         guard let entityValue = datavalue?.entityValue else {
+            Logger.warning("[\(property)] Expected entityValue")
             return nil
         }
         return WikidataEntityName(rawValue: entityValue.id)
     }
 
     var timeValue: WikidataClaimTimeValue? {
-        return datavalue?.timeValue
+        guard let timeValue = datavalue?.timeValue else {
+            Logger.warning("[\(property)] Expected timeValue")
+            return nil
+        }
+        return timeValue
     }
 
 }
