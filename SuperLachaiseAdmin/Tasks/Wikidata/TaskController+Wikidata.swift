@@ -11,14 +11,14 @@ extension TaskController {
 
     func syncWikidataEntries() {
         let task = SyncWikidataEntries(scope: .all,
-                                       languages: config.languages,
+                                       config: config.wikidata,
                                        endpoint: wikidataAPIEndpoint)
         enqueue(task)
     }
 
     func syncWikidataEntries(ids wikidataIds: [String]) {
         let task = SyncWikidataEntries(scope: .list(wikidataIds: wikidataIds),
-                                       languages: config.languages,
+                                       config: config.wikidata,
                                        endpoint: wikidataAPIEndpoint)
         enqueue(task)
     }

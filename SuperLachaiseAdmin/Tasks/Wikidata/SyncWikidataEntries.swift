@@ -17,13 +17,13 @@ final class SyncWikidataEntries: Task {
     }
 
     let scope: Scope
-    let languages: [String]
 
+    let config: WikidataConfig
     let endpoint: APIEndpointType
 
-    init(scope: Scope, languages: [String], endpoint: APIEndpointType) {
+    init(scope: Scope, config: WikidataConfig, endpoint: APIEndpointType) {
         self.scope = scope
-        self.languages = languages
+        self.config = config
         self.endpoint = endpoint
     }
 
@@ -33,7 +33,8 @@ final class SyncWikidataEntries: Task {
 
     func asCompletable() -> Completable {
         return primaryWikidataEntities()
-            .flatMap(self.primaryWikidataEntries)
+            .flatMap(self.wikidataEntries)
+            .do(onNext: { Logger.info("Fetched \($0.count) primary \(WikidataEntry.self)(s)") })
             .asObservable().ignoreElements()
     }
 
@@ -56,32 +57,57 @@ final class SyncWikidataEntries: Task {
     }
 
     private func primaryWikidataEntities(wikidataIds: [String]) -> Single<[WikidataEntity]> {
-        return WikidataGetEntities(endpoint: endpoint, wikidataIds: wikidataIds, languages: languages)
+        return WikidataGetEntities(endpoint: endpoint, wikidataIds: wikidataIds, languages: config.languages)
             .asSingle()
     }
 
-    // MARK: Primary Wikidata entries
+    // MARK: Wikidata entries
 
-    private func primaryWikidataEntries(wikidataEntities: [WikidataEntity]) -> Single<[WikidataEntry]> {
+    private func wikidataEntries(wikidataEntities: [WikidataEntity]) -> Single<[WikidataEntry]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             return try realm.write {
-                try self.primaryWikidataEntries(wikidataEntities: wikidataEntities, realm: realm)
+                try self.wikidataEntries(wikidataEntities: wikidataEntities, realm: realm)
             }
         }
     }
 
-    private func primaryWikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [WikidataEntry] {
-        let fetchedObjects = try wikidataEntities.map { wikidataEntity -> WikidataEntry in
-            try self.primaryWikidataEntry(wikidataEntity: wikidataEntity, realm: realm)
+    private func wikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [WikidataEntry] {
+        return try wikidataEntities.map { wikidataEntity -> WikidataEntry in
+            try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm)
         }
-        Logger.info("Fetched \(fetchedObjects.count) primary \(WikidataEntry.self)(s)")
-        return fetchedObjects
     }
 
-    private func primaryWikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
+    private func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
         // Wikidata Id
         let wikidataEntry = realm.findOrCreateObject(ofType: WikidataEntry.self, forPrimaryKey: wikidataEntity.id)
         wikidataEntry.toBeDeleted = false
+
+        // Localizations
+        for language in config.languages {
+            let localization = wikidataEntry.findOrCreateLocalization(language: language, realm: realm)
+
+            // Name
+            let name = wikidataEntity.labels[language]?.value
+            if name == nil {
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no name in \(language)")
+            }
+            localization.name = name
+
+            // Summary
+            let summary = wikidataEntity.descriptions[language]?.value
+            if summary == nil {
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
+            }
+            localization.summary = summary
+
+            // Wikipedia title
+            let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title
+            localization.wikipediaTitle = wikipediaTitle
+
+        }
+
+        // Name
+        wikidataEntry.name = wikidataEntry.localizations.first?.name
 
         return wikidataEntry
     }

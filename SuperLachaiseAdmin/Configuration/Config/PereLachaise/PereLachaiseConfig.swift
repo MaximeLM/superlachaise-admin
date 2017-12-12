@@ -9,8 +9,6 @@ import Foundation
 
 struct PereLachaiseConfig: Config {
 
-    let languages: [String] = ["fr", "en"]
-
     let openStreetMap: OpenStreetMapConfig = PereLachaiseOpenStreetMapConfig()
 
     let wikidata: WikidataConfig = PereLachaiseWikidataConfig()

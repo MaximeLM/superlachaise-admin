@@ -66,7 +66,7 @@ final class WikidataGetEntities {
         do {
             let request = try self.chunkRequest(wikidataIdsChunk: wikidataIdsChunk)
             return endpoint.data(request: request)
-                .map { try JSONDecoder().decode(WikidataGetEntitiesChunkResult.self, from: $0) }
+                .map { try JSONDecoder().decode(WikidataGetEntitiesResult.self, from: $0) }
                 .map { chunkResult in
                     if let warnings = chunkResult.warnings {
                         warnings.forEach { keyValue1 in
@@ -79,13 +79,18 @@ final class WikidataGetEntities {
                         throw error
                     }
                     guard let entities = chunkResult.entities else {
-                        throw WikidataGetEntitiesError.entitiesMissing
+                        throw WikidataGetEntitiesError.noEntities
+                    }
+                    guard entities.count == wikidataIdsChunk.count else {
+                        throw WikidataGetEntitiesError.missingEntities
                     }
                     return Array(entities.values)
                 }
                 .catchError { error in
-                    guard let chunkError = error as? WikidataGetEntitiesChunkError, chunkError.code == "no-such-entity",
-                        let id = chunkError.id, let index = wikidataIdsChunk.index(of: id) else {
+                    guard let chunkError = error as? WikidataGetEntitiesResultError,
+                        chunkError.code == "no-such-entity",
+                        let id = chunkError.id,
+                        let index = wikidataIdsChunk.index(of: id) else {
                             throw error
                     }
                     Logger.warning(chunkError.info)
@@ -100,16 +105,16 @@ final class WikidataGetEntities {
 
 }
 
-private struct WikidataGetEntitiesChunkResult: Decodable {
+private struct WikidataGetEntitiesResult: Decodable {
 
     let entities: [String: WikidataEntity]?
 
-    let error: WikidataGetEntitiesChunkError?
+    let error: WikidataGetEntitiesResultError?
     let warnings: [String: [String: String]]?
 
 }
 
-private struct WikidataGetEntitiesChunkError: Decodable, Error {
+private struct WikidataGetEntitiesResultError: Decodable, Error {
 
     let code: String
     let info: String
@@ -118,5 +123,6 @@ private struct WikidataGetEntitiesChunkError: Decodable, Error {
 }
 
 private enum WikidataGetEntitiesError: Error {
-    case entitiesMissing
+    case noEntities
+    case missingEntities
 }

@@ -13,6 +13,7 @@ extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
     // MARK: RealmDeletable
 
     func delete() {
+        realm?.delete(localizations)
         realm?.delete(self)
     }
 

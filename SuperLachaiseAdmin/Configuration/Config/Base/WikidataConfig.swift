@@ -9,4 +9,6 @@ import Foundation
 
 protocol WikidataConfig {
 
+    var languages: [String] { get }
+
 }

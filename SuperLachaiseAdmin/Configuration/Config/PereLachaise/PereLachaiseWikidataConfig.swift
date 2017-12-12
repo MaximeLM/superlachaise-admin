@@ -9,4 +9,6 @@ import Foundation
 
 struct PereLachaiseWikidataConfig: WikidataConfig {
 
+    let languages: [String] = ["fr", "en"]
+
 }

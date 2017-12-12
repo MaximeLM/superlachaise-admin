@@ -9,8 +9,6 @@ import Foundation
 
 protocol Config {
 
-    var languages: [String] { get }
-
     var openStreetMap: OpenStreetMapConfig { get }
 
     var wikidata: WikidataConfig { get }

@@ -15,6 +15,8 @@ final class WikidataEntry: Object {
     @objc dynamic var name: String?
     let secondayEntriesIds = List<String>()
 
+    let localizations = LinkingObjects(fromType: WikidataLocalizedEntry.self, property: "wikidataEntry")
+
     @objc dynamic var toBeDeleted = false
 
     override static func primaryKey() -> String {

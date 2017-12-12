@@ -12,16 +12,18 @@ import RxSwift
 final class SyncOpenStreetMapElements: Task {
 
     enum Scope {
-        case all(boundingBox: BoundingBox, fetchedTags: [String])
+        case all
         case list(openStreetMapIds: [OpenStreetMapId])
     }
 
     let scope: Scope
 
+    let config: OpenStreetMapConfig
     let endpoint: APIEndpointType
 
-    init(scope: Scope, endpoint: APIEndpointType) {
+    init(scope: Scope, config: OpenStreetMapConfig, endpoint: APIEndpointType) {
         self.scope = scope
+        self.config = config
         self.endpoint = endpoint
     }
 
@@ -41,8 +43,10 @@ final class SyncOpenStreetMapElements: Task {
     private func overpassElements() -> Single<[OverpassElement]> {
         let getElements: OverpassGetElements
         switch scope {
-        case let .all(boundingBox, fetchedTags):
-            getElements = OverpassGetElements(endpoint: endpoint, boundingBox: boundingBox, fetchedTags: fetchedTags)
+        case .all:
+            getElements = OverpassGetElements(endpoint: endpoint,
+                                              boundingBox: config.boundingBox,
+                                              fetchedTags: config.fetchedTags)
         case let .list(openStreetMapIds):
             getElements = OverpassGetElements(endpoint: endpoint, openStreetMapIds: openStreetMapIds)
         }
@@ -120,14 +124,14 @@ final class SyncOpenStreetMapElements: Task {
         // Name
         let name = overpassElement.tags["name"]
         if name == nil {
-            Logger.warning("OpenStreetMapElement \(openStreetMapElement) has no name")
+            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no name")
         }
         openStreetMapElement.name = name
 
         // Wikidata Id
         let wikidataId = overpassElement.tags["wikidata"]
         if wikidataId == nil {
-            Logger.warning("OpenStreetMapElement \(openStreetMapElement) has no wikidata ID")
+            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }
         openStreetMapElement.wikidataId = wikidataId
 
