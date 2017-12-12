@@ -24,7 +24,7 @@ extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
 
     // MARK: RealmListable
 
-    static func list(filter: String) -> (Realm) -> Results<WikidataEntry> {
+    static func list(filter: String = "") -> (Realm) -> Results<WikidataEntry> {
         return { realm in
             var results = realm.objects(WikidataEntry.self)
                 .filter("toBeDeleted == false")

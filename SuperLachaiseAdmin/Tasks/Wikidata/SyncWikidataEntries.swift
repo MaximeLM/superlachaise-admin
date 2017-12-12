@@ -11,6 +11,11 @@ import RxSwift
 
 final class SyncWikidataEntries: Task {
 
+    enum Scope {
+        case all
+        case list(wikidataIds: [String])
+    }
+
     let scope: Scope
     let languages: [String]
 
@@ -24,36 +29,61 @@ final class SyncWikidataEntries: Task {
 
     private let realmDispatchQueue = DispatchQueue(label: "SyncWikidataEntries.realm")
 
-    // MARK: Types
-
-    enum Scope {
-        case all
-        case list(wikidataIds: [String])
-    }
-
     // MARK: Execution
 
     func asCompletable() -> Completable {
-        return getInitialEntities()
-            .flatMap { $0.asSingle() }
+        return primaryWikidataEntities()
+            .flatMap(self.primaryWikidataEntries)
             .asObservable().ignoreElements()
     }
 
-    // MARK: Requests
+    // MARK: Primary Wikidata entities
 
-    func getInitialEntities() -> Single<WikidataGetEntities> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            let wikidataIds: [String]
-            switch self.scope {
-            case .all:
-                wikidataIds = SuperLachaisePOI.list(filter: "")(realm).map { $0.wikidataId }
-            case let .list(_wikidataIds):
-                wikidataIds = _wikidataIds
+    private func primaryWikidataEntities() -> Single<[WikidataEntity]> {
+        return primaryWikidataIds()
+            .flatMap(self.primaryWikidataEntities)
+    }
+
+    private func primaryWikidataIds() -> Single<[String]> {
+        switch self.scope {
+        case .all:
+            return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+                return SuperLachaisePOI.list()(realm).map { $0.wikidataId }
             }
-            return WikidataGetEntities(endpoint: self.endpoint,
-                                       wikidataIds: wikidataIds,
-                                       languages: self.languages)
+        case let .list(wikidataIds):
+            return Single.just(wikidataIds)
         }
+    }
+
+    private func primaryWikidataEntities(wikidataIds: [String]) -> Single<[WikidataEntity]> {
+        return WikidataGetEntities(endpoint: endpoint, wikidataIds: wikidataIds, languages: languages)
+            .asSingle()
+    }
+
+    // MARK: Primary Wikidata entries
+
+    private func primaryWikidataEntries(wikidataEntities: [WikidataEntity]) -> Single<[WikidataEntry]> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+            return try realm.write {
+                try self.primaryWikidataEntries(wikidataEntities: wikidataEntities, realm: realm)
+            }
+        }
+    }
+
+    private func primaryWikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [WikidataEntry] {
+        let fetchedObjects = try wikidataEntities.map { wikidataEntity -> WikidataEntry in
+            try self.primaryWikidataEntry(wikidataEntity: wikidataEntity, realm: realm)
+        }
+        Logger.info("Fetched \(fetchedObjects.count) primary \(WikidataEntry.self)(s)")
+        return fetchedObjects
+    }
+
+    private func primaryWikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
+        // Wikidata Id
+        let wikidataEntry = realm.findOrCreateObject(ofType: WikidataEntry.self, forPrimaryKey: wikidataEntity.id)
+        wikidataEntry.toBeDeleted = false
+
+        return wikidataEntry
     }
 
 }

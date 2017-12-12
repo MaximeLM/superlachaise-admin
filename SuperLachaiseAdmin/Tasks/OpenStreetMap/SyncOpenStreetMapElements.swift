@@ -11,6 +11,11 @@ import RxSwift
 
 final class SyncOpenStreetMapElements: Task {
 
+    enum Scope {
+        case all(boundingBox: BoundingBox, fetchedTags: [String])
+        case list(openStreetMapIds: [OpenStreetMapId])
+    }
+
     let scope: Scope
 
     let endpoint: APIEndpointType
@@ -22,46 +27,40 @@ final class SyncOpenStreetMapElements: Task {
 
     private let realmDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
 
-    // MARK: Types
-
-    enum Scope {
-        case all(boundingBox: BoundingBox, fetchedTags: [String])
-        case list(openStreetMapIds: [OpenStreetMapId])
-    }
-
     // MARK: Execution
 
     func asCompletable() -> Completable {
-        return getElements().asSingle()
-            .flatMap(self.sync)
+        return overpassElements()
+            .flatMap(self.openStreetMapElements)
+            .flatMap(self.superLachaisePOIs)
             .asObservable().ignoreElements()
     }
 
-    // MARK: Requests
+    // MARK: Overpass Elements
 
-    private func getElements() -> OverpassGetElements {
+    private func overpassElements() -> Single<[OverpassElement]> {
+        let getElements: OverpassGetElements
         switch scope {
         case let .all(boundingBox, fetchedTags):
-            return OverpassGetElements(endpoint: endpoint, boundingBox: boundingBox, fetchedTags: fetchedTags)
+            getElements = OverpassGetElements(endpoint: endpoint, boundingBox: boundingBox, fetchedTags: fetchedTags)
         case let .list(openStreetMapIds):
-            return OverpassGetElements(endpoint: endpoint, openStreetMapIds: openStreetMapIds)
+            getElements = OverpassGetElements(endpoint: endpoint, openStreetMapIds: openStreetMapIds)
         }
+        return getElements.asSingle()
     }
 
-    // MARK: Sync
+    // MARK: OpenStreetMap elements
 
-    enum SyncError: Error {
+    private enum OpenStreetMapError: Error {
         case invalidElementType(String)
         case coordinateNotFound(OpenStreetMapId)
         case centerNotFound(OpenStreetMapId)
     }
 
-    private func sync(overpassElements: [OverpassElement]) throws -> Single<Void> {
+    private func openStreetMapElements(overpassElements: [OverpassElement]) -> Single<[OpenStreetMapElement]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                let openStreetMapElements = try self.openStreetMapElements(overpassElements: overpassElements,
-                                                                           realm: realm)
-                _ = try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)
+            return try realm.write {
+                try self.openStreetMapElements(overpassElements: overpassElements, realm: realm)
             }
         }
     }
@@ -95,7 +94,7 @@ final class SyncOpenStreetMapElements: Task {
     private func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement {
         // OpenStreetMapId
         guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
-            throw SyncError.invalidElementType(overpassElement.type)
+            throw OpenStreetMapError.invalidElementType(overpassElement.type)
         }
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
         let openStreetMapElement = realm.findOrCreateObject(ofType: OpenStreetMapElement.self,
@@ -106,13 +105,13 @@ final class SyncOpenStreetMapElements: Task {
         switch elementType {
         case .node:
             guard let latitude = overpassElement.lat, let longitude = overpassElement.lon else {
-                throw SyncError.coordinateNotFound(openStreetMapId)
+                throw OpenStreetMapError.coordinateNotFound(openStreetMapId)
             }
             openStreetMapElement.latitude = latitude
             openStreetMapElement.longitude = longitude
         case .way, .relation:
             guard let center = overpassElement.center else {
-                throw SyncError.centerNotFound(openStreetMapId)
+                throw OpenStreetMapError.centerNotFound(openStreetMapId)
             }
             openStreetMapElement.latitude = center.lat
             openStreetMapElement.longitude = center.lon
@@ -133,6 +132,16 @@ final class SyncOpenStreetMapElements: Task {
         openStreetMapElement.wikidataId = wikidataId
 
         return openStreetMapElement
+    }
+
+    // MARK: SuperLachaise POIs
+
+    private func superLachaisePOIs(openStreetMapElements: [OpenStreetMapElement]) -> Single<[SuperLachaisePOI]> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+            return try realm.write {
+                try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)
+            }
+        }
     }
 
     private func superLachaisePOIs(openStreetMapElements: [OpenStreetMapElement],

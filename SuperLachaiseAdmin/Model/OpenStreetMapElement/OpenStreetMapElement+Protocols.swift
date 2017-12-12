@@ -24,7 +24,7 @@ extension OpenStreetMapElement: RealmDeletable, RealmListable, RealmOpenableInBr
 
     // MARK: RealmListable
 
-    static func list(filter: String) -> (Realm) -> Results<OpenStreetMapElement> {
+    static func list(filter: String = "") -> (Realm) -> Results<OpenStreetMapElement> {
         return { realm in
             var results = realm.objects(OpenStreetMapElement.self)
                 .filter("toBeDeleted == false")

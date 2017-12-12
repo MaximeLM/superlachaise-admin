@@ -12,7 +12,7 @@ final class WikidataGetEntities {
 
     let endpoint: APIEndpointType
 
-    let wikidataIds: Set<String>
+    let wikidataIds: [String]
     let languages: [String]
 
     // MARK: Init
@@ -24,22 +24,22 @@ final class WikidataGetEntities {
 
     init(endpoint: APIEndpointType, wikidataIds: [String], languages: [String]) {
         self.endpoint = endpoint
-        self.wikidataIds = Set(wikidataIds)
+        self.wikidataIds = wikidataIds
         self.languages = languages
     }
 
     // MARK: Execution
 
-    func asSingle() -> Single<[String: WikidataEntityResult]> {
-        return Observable.from(Array(wikidataIds).chunked(by: 50))
+    func asSingle() -> Single<[WikidataEntity]> {
+        return Observable.from(wikidataIds.chunked(by: 50))
             .flatMap(self.chunkEntities)
             .toArray()
             .map(self.mergeEntities)
             .asSingle()
     }
 
-    private func mergeEntities(chunkEntities: [[String: WikidataEntityResult]]) -> [String: WikidataEntityResult] {
-        return Dictionary(uniqueKeysWithValues: chunkEntities.flatMap { $0.map { ($0.key, $0.value) } })
+    private func mergeEntities(chunkEntities: [[WikidataEntity]]) -> [WikidataEntity] {
+        return chunkEntities.flatMap { $0 }
     }
 
     // MARK: Chunk query
@@ -62,7 +62,7 @@ final class WikidataGetEntities {
         return URLRequest(url: url)
     }
 
-    private func chunkEntities(wikidataIdsChunk: [String]) -> Single<[String: WikidataEntityResult]> {
+    private func chunkEntities(wikidataIdsChunk: [String]) -> Single<[WikidataEntity]> {
         do {
             let request = try self.chunkRequest(wikidataIdsChunk: wikidataIdsChunk)
             return endpoint.data(request: request)
@@ -81,7 +81,7 @@ final class WikidataGetEntities {
                     guard let entities = chunkResult.entities else {
                         throw WikidataGetEntitiesError.entitiesMissing
                     }
-                    return entities
+                    return Array(entities.values)
                 }
                 .catchError { error in
                     guard let chunkError = error as? WikidataGetEntitiesChunkError, chunkError.code == "no-such-entity",
@@ -102,7 +102,7 @@ final class WikidataGetEntities {
 
 private struct WikidataGetEntitiesChunkResult: Decodable {
 
-    let entities: [String: WikidataEntityResult]?
+    let entities: [String: WikidataEntity]?
 
     let error: WikidataGetEntitiesChunkError?
     let warnings: [String: [String: String]]?

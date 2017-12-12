@@ -1,5 +1,5 @@
 //
-//  WikidataEntityResult.swift
+//  WikidataEntity.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 10/12/2017.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WikidataEntityResult: Decodable {
+struct WikidataEntity: Decodable, Hashable {
 
     let id: String
 
@@ -15,6 +15,14 @@ struct WikidataEntityResult: Decodable {
     let descriptions: [String: WikidataEntityLocalizedValue]
     let claims: [String: [WikidataClaim]]
     let sitelinks: [String: WikidataSitelink]
+
+    static func == (lhs: WikidataEntity, rhs: WikidataEntity) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    var hashValue: Int {
+        return id.hashValue
+    }
 
 }
 

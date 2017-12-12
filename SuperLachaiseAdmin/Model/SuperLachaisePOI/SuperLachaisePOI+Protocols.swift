@@ -24,7 +24,7 @@ extension SuperLachaisePOI: RealmDeletable, RealmListable {
 
     // MARK: RealmListable
 
-    static func list(filter: String) -> (Realm) -> Results<SuperLachaisePOI> {
+    static func list(filter: String = "") -> (Realm) -> Results<SuperLachaisePOI> {
         return { realm in
             var results = realm.objects(SuperLachaisePOI.self)
                 .filter("toBeDeleted == false")
