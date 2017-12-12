@@ -13,11 +13,12 @@ final class WikidataEntry: Object {
     @objc dynamic var wikidataId: String = ""
 
     @objc dynamic var name: String?
+    @objc dynamic var rawKind: String?
     let secondayEntriesIds = List<String>()
 
     let localizations = LinkingObjects(fromType: WikidataLocalizedEntry.self, property: "wikidataEntry")
 
-    @objc dynamic var toBeDeleted = false
+    @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {
         return "wikidataId"

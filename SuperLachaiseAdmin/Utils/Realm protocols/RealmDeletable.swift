@@ -9,7 +9,7 @@ import Foundation
 
 protocol RealmDeletable {
 
-    var toBeDeleted: Bool { get set }
+    var deleted: Bool { get set }
 
     func delete()
 

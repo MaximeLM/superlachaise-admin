@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WikidataEntity: Decodable, Hashable {
+struct WikidataEntity: Decodable {
 
     let id: String
 
@@ -15,6 +15,14 @@ struct WikidataEntity: Decodable, Hashable {
     let descriptions: [String: WikidataEntityLocalizedValue]
     let claims: [String: [WikidataClaim]]
     let sitelinks: [String: WikidataSitelink]
+
+    func claims(_ propertyName: WikidataPropertyName) -> [WikidataClaim]? {
+        return claims[propertyName.rawValue]
+    }
+
+}
+
+extension WikidataEntity: Hashable {
 
     static func == (lhs: WikidataEntity, rhs: WikidataEntity) -> Bool {
         return lhs.id == rhs.id

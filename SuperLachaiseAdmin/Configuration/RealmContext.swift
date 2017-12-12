@@ -27,6 +27,8 @@ final class RealmContext {
     func deleteFlaggedObjects(realm: Realm) throws {
         try realm.write {
             deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
+            deleteFlaggedObjects(type: SuperLachaisePOI.self, realm: realm)
+            deleteFlaggedObjects(type: WikidataEntry.self, realm: realm)
         }
     }
 
@@ -88,7 +90,7 @@ final class RealmContext {
     }
 
     private func deleteFlaggedObjects<Element: Object & RealmDeletable>(type: Element.Type, realm: Realm) {
-        let objects = Array(realm.objects(type).filter("toBeDeleted == true"))
+        let objects = Array(realm.objects(type).filter("deleted == true"))
         if !objects.isEmpty {
             objects.forEach { $0.delete() }
             Logger.info("Deleted \(objects.count) \(type)(s)")

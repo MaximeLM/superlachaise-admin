@@ -49,7 +49,7 @@ final class SyncWikidataEntries: Task {
         switch self.scope {
         case .all:
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return SuperLachaisePOI.list()(realm).map { $0.wikidataId }
+                return SuperLachaisePOI.all()(realm).map { $0.wikidataId }
             }
         case let .list(wikidataIds):
             return Single.just(wikidataIds)
@@ -79,12 +79,15 @@ final class SyncWikidataEntries: Task {
 
     private func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
         // Wikidata Id
-        let wikidataEntry = realm.findOrCreateObject(ofType: WikidataEntry.self, forPrimaryKey: wikidataEntity.id)
-        wikidataEntry.toBeDeleted = false
+        let wikidataEntry = WikidataEntry.findOrCreate(wikidataId: wikidataEntity.id)(realm)
+        wikidataEntry.deleted = false
+
+        // Kind
+        wikidataEntry.kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
 
         // Localizations
         for language in config.languages {
-            let localization = wikidataEntry.findOrCreateLocalization(language: language, realm: realm)
+            let localization = wikidataEntry.findOrCreateLocalization(language: language)(realm)
 
             // Name
             let name = wikidataEntity.labels[language]?.value
@@ -110,6 +113,49 @@ final class SyncWikidataEntries: Task {
         wikidataEntry.name = wikidataEntry.localizations.first?.name
 
         return wikidataEntry
+    }
+
+    private func wikidataEntryKind(wikidataEntity: WikidataEntity) -> WikidataEntryKind? {
+        let instanceOfs = wikidataEntity.claims(.instanceOf)?
+            .flatMap { $0.mainsnak.entityValue }
+        for instanceOf in instanceOfs ?? [] {
+            if [.human].contains(instanceOf) {
+                let locations = [
+                    wikidataEntity.claims(.placeOfBurial),
+                ]
+                    .flatMap { $0?.flatMap { $0.mainsnak.entityValue } ?? [] }
+                if containsValidLocation(locations) {
+                    return .graveOf
+                }
+            }
+            if [.grave, .tomb, .cardiotaph].contains(instanceOf) {
+                let locations = [
+                    wikidataEntity.claims(.location),
+                    wikidataEntity.claims(.partOf),
+                    wikidataEntity.claims(.placeOfBurial),
+                ]
+                    .flatMap { $0?.flatMap { $0.mainsnak.entityValue } ?? [] }
+                if containsValidLocation(locations) {
+                    return .grave
+                }
+            }
+            if [.monument, .memorial, .warMemorial].contains(instanceOf) {
+                let locations = [
+                    wikidataEntity.claims(.location),
+                    wikidataEntity.claims(.partOf),
+                    wikidataEntity.claims(.placeOfBurial),
+                ]
+                    .flatMap { $0?.flatMap { $0.mainsnak.entityValue } ?? [] }
+                if containsValidLocation(locations) {
+                    return .monument
+                }
+            }
+        }
+        return nil
+    }
+
+    private func containsValidLocation(_ locations: [WikidataEntityName]) -> Bool {
+        return !Set(locations).isDisjoint(with: config.validLocations)
     }
 
 }

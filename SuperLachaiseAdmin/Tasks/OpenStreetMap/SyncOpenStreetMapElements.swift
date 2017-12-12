@@ -75,7 +75,7 @@ final class SyncOpenStreetMapElements: Task {
         var orphanedObjects: Set<OpenStreetMapElement>
         switch scope {
         case .all:
-            orphanedObjects = Set(realm.objects(OpenStreetMapElement.self))
+            orphanedObjects = Set(OpenStreetMapElement.all()(realm))
         case .list:
             orphanedObjects = Set()
         }
@@ -88,7 +88,7 @@ final class SyncOpenStreetMapElements: Task {
         Logger.info("Fetched \(fetchedObjects.count) \(OpenStreetMapElement.self)(s)")
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.toBeDeleted = true }
+            orphanedObjects.forEach { $0.deleted = true }
             Logger.info("Flagged \(orphanedObjects.count) \(OpenStreetMapElement.self)(s) for deletion")
         }
 
@@ -101,9 +101,8 @@ final class SyncOpenStreetMapElements: Task {
             throw OpenStreetMapError.invalidElementType(overpassElement.type)
         }
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
-        let openStreetMapElement = realm.findOrCreateObject(ofType: OpenStreetMapElement.self,
-                                                            forPrimaryKey: openStreetMapId.rawValue)
-        openStreetMapElement.toBeDeleted = false
+        let openStreetMapElement = OpenStreetMapElement.findOrCreate(openStreetMapId: openStreetMapId)(realm)
+        openStreetMapElement.deleted = false
 
         // Coordinate
         switch elementType {
@@ -154,7 +153,7 @@ final class SyncOpenStreetMapElements: Task {
         var orphanedObjects: Set<SuperLachaisePOI>
         switch scope {
         case .all:
-            orphanedObjects = Set(realm.objects(SuperLachaisePOI.self))
+            orphanedObjects = Set(SuperLachaisePOI.all()(realm))
         case .list:
             orphanedObjects = Set()
         }
@@ -170,7 +169,7 @@ final class SyncOpenStreetMapElements: Task {
         Logger.info("Synced \(fetchedObjects.count) \(SuperLachaisePOI.self)(s)")
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.toBeDeleted = true }
+            orphanedObjects.forEach { $0.deleted = true }
             Logger.info("Flagged \(orphanedObjects.count) \(SuperLachaisePOI.self)(s) for deletion")
         }
 
@@ -183,9 +182,8 @@ final class SyncOpenStreetMapElements: Task {
         guard let wikidataId = openStreetMapElement.wikidataId else {
             return nil
         }
-        let superLachaisePOI = realm.findOrCreateObject(ofType: SuperLachaisePOI.self,
-                                                        forPrimaryKey: wikidataId)
-        superLachaisePOI.toBeDeleted = false
+        let superLachaisePOI = SuperLachaisePOI.findOrCreate(wikidataId: wikidataId)(realm)
+        superLachaisePOI.deleted = false
 
         // OpenStreetMap element
         if let existingOpenStreetMapElement = superLachaisePOI.openStreetMapElement,

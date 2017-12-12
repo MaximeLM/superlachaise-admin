@@ -18,7 +18,7 @@ final class SuperLachaisePOI: Object {
 
     @objc dynamic var name: String?
 
-    @objc dynamic var toBeDeleted = false
+    @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {
         return "wikidataId"
