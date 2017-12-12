@@ -32,7 +32,7 @@ final class SyncOpenStreetMapElements: Task {
     // MARK: Execution
 
     func asCompletable() -> Completable {
-        return getElements().asObservable()
+        return getElements().asSingle()
             .flatMap(self.sync)
             .asObservable().ignoreElements()
     }

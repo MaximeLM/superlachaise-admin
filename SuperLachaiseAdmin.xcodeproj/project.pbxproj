@@ -285,8 +285,8 @@
 			isa = PBXGroup;
 			children = (
 				55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */,
-				558F26971FCE00D5009BAA8E /* OverpassElement.swift */,
-				55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */,
+				55B365B11FE0608C00EB84BD /* Structs */,
+				55B365B21FE0609A00EB84BD /* Tasks */,
 			);
 			path = Overpass;
 			sourceTree = "<group>";
@@ -295,9 +295,8 @@
 			isa = PBXGroup;
 			children = (
 				55B365901FDDB23300EB84BD /* APIEndpoint+Wikidata.swift */,
-				55B365AB1FDDF33C00EB84BD /* WikidataEntityResult.swift */,
-				55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */,
-				55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */,
+				55B365B31FE060AE00EB84BD /* Structs */,
+				55B365B41FE060B300EB84BD /* Tasks */,
 			);
 			path = Wikidata;
 			sourceTree = "<group>";
@@ -308,6 +307,39 @@
 				55B365A81FDDE84700EB84BD /* Array+Chunk.swift */,
 			);
 			path = Array;
+			sourceTree = "<group>";
+		};
+		55B365B11FE0608C00EB84BD /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				558F26971FCE00D5009BAA8E /* OverpassElement.swift */,
+			);
+			path = Structs;
+			sourceTree = "<group>";
+		};
+		55B365B21FE0609A00EB84BD /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		55B365B31FE060AE00EB84BD /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				55B365AB1FDDF33C00EB84BD /* WikidataEntityResult.swift */,
+				55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */,
+			);
+			path = Structs;
+			sourceTree = "<group>";
+		};
+		55B365B41FE060B300EB84BD /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */,
+			);
+			path = Tasks;
 			sourceTree = "<group>";
 		};
 		55B536E31FD31C5300036FFC /* MainWindow */ = {

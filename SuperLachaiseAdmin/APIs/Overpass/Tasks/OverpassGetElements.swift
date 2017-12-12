@@ -72,14 +72,13 @@ final class OverpassGetElements {
         return request
     }
 
-    func asObservable() -> Observable<[OverpassElement]> {
+    func asSingle() -> Single<[OverpassElement]> {
         do {
             let request = try self.request()
             return endpoint.data(request: request)
                 .map { try JSONDecoder().decode(OverpassGetElementsResult.self, from: $0).elements }
-                .asObservable()
         } catch {
-            return Observable.error(error)
+            return Single.error(error)
         }
     }
 

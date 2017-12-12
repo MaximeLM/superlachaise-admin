@@ -34,9 +34,9 @@ final class SyncWikidataEntries: Task {
     // MARK: Execution
 
     func asCompletable() -> Completable {
-        return getInitialEntities().asObservable()
-            .flatMap { $0.asObservable() }
-            .ignoreElements()
+        return getInitialEntities()
+            .flatMap { $0.asSingle() }
+            .asObservable().ignoreElements()
     }
 
     // MARK: Requests
