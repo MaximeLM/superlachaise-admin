@@ -35,6 +35,7 @@ cyclomatic_complexity:
 identifier_name:
   excluded:
     - id
+    - of
 line_length:
   ignores_comments: true
 trailing_comma:

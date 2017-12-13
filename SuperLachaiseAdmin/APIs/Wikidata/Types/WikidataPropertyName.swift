@@ -26,8 +26,14 @@ extension WikidataPropertyName {
     // MARK: Claims
 
     static let instanceOf = WikidataPropertyName(rawValue: "P31")
+
     static let location = WikidataPropertyName(rawValue: "P276")
     static let partOf = WikidataPropertyName(rawValue: "P361")
     static let placeOfBurial = WikidataPropertyName(rawValue: "P119")
+
+    static let of = WikidataPropertyName(rawValue: "P642")
+
+    static let commemorates = WikidataPropertyName(rawValue: "P547")
+    static let mainSubject = WikidataPropertyName(rawValue: "P921")
 
 }

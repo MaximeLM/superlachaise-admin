@@ -83,7 +83,8 @@ final class SyncWikidataEntries: Task {
         wikidataEntry.deleted = false
 
         // Kind
-        wikidataEntry.kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
+        let kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
+        wikidataEntry.kind = kind
 
         // Localizations
         for language in config.languages {
@@ -106,8 +107,12 @@ final class SyncWikidataEntries: Task {
             // Wikipedia title
             let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title
             localization.wikipediaTitle = wikipediaTitle
-
         }
+
+        // Secondary wikidata entries
+        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
+        wikidataEntry.secondaryWikidataIds.removeAll()
+        wikidataEntry.secondaryWikidataIds.append(objectsIn: secondaryWikidataIds)
 
         // Name
         wikidataEntry.name = wikidataEntry.localizations.first?.name
@@ -156,6 +161,42 @@ final class SyncWikidataEntries: Task {
 
     private func containsValidLocation(_ locations: [WikidataEntityName]) -> Bool {
         return !Set(locations).isDisjoint(with: config.validLocations)
+    }
+
+    private func secondaryWikidataIds(wikidataEntity: WikidataEntity,
+                                      kind: WikidataEntryKind?) -> [String] {
+        let wikidataEntityName = WikidataEntityName(rawValue: wikidataEntity.id)
+        var secondaryWikidataEntityNames: [WikidataEntityName] = []
+
+        if kind == .grave {
+            let entityNames = (wikidataEntity.claims(.instanceOf) ?? [])
+                .filter { claim in
+                    guard let entityName = claim.mainsnak.entityValue else {
+                        return false
+                    }
+                    return [.grave, .tomb, .cardiotaph].contains(entityName)
+                }
+                .flatMap { $0.qualifiers(.of) ?? [] }
+                .flatMap { $0.entityValue }
+            secondaryWikidataEntityNames.append(contentsOf: entityNames)
+        }
+
+        if kind == .monument {
+            let claims = [
+                wikidataEntity.claims(.commemorates),
+                wikidataEntity.claims(.mainSubject),
+            ]
+            let entityNames = claims
+                .flatMap { $0 ?? [] }
+                .flatMap { $0.mainsnak.entityValue }
+            secondaryWikidataEntityNames.append(contentsOf: entityNames)
+        }
+
+        if let customSecondaryWikidataEntries = config.customSecondaryWikidataEntries[wikidataEntityName] {
+            secondaryWikidataEntityNames.append(contentsOf: customSecondaryWikidataEntries)
+        }
+
+        return secondaryWikidataEntityNames.map { $0.rawValue }
     }
 
 }

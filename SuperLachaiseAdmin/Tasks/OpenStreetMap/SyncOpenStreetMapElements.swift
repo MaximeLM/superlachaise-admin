@@ -128,7 +128,7 @@ final class SyncOpenStreetMapElements: Task {
         openStreetMapElement.name = name
 
         // Wikidata Id
-        let wikidataId = overpassElement.tags["wikidata"]
+        let wikidataId = overpassElement.tags["wikidata"] ?? overpassElement.tags["subject:wikidata"]
         if wikidataId == nil {
             Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }

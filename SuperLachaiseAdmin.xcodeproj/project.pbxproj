@@ -289,7 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */,
-				55B365B11FE0608C00EB84BD /* Structs */,
+				55B365B11FE0608C00EB84BD /* Types */,
 				55B365B21FE0609A00EB84BD /* Tasks */,
 			);
 			path = Overpass;
@@ -299,7 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				55B365901FDDB23300EB84BD /* APIEndpoint+Wikidata.swift */,
-				55B365B31FE060AE00EB84BD /* Structs */,
+				55B365B31FE060AE00EB84BD /* Types */,
 				55B365B41FE060B300EB84BD /* Tasks */,
 			);
 			path = Wikidata;
@@ -313,12 +313,13 @@
 			path = Array;
 			sourceTree = "<group>";
 		};
-		55B365B11FE0608C00EB84BD /* Structs */ = {
+		55B365B11FE0608C00EB84BD /* Types */ = {
 			isa = PBXGroup;
 			children = (
+				55A8D2481FCF5D9D00BB00BC /* BoundingBox.swift */,
 				558F26971FCE00D5009BAA8E /* OverpassElement.swift */,
 			);
-			path = Structs;
+			path = Types;
 			sourceTree = "<group>";
 		};
 		55B365B21FE0609A00EB84BD /* Tasks */ = {
@@ -329,13 +330,15 @@
 			path = Tasks;
 			sourceTree = "<group>";
 		};
-		55B365B31FE060AE00EB84BD /* Structs */ = {
+		55B365B31FE060AE00EB84BD /* Types */ = {
 			isa = PBXGroup;
 			children = (
-				55B365AB1FDDF33C00EB84BD /* WikidataEntity.swift */,
 				55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */,
+				55B365AB1FDDF33C00EB84BD /* WikidataEntity.swift */,
+				55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */,
+				55B365C61FE07FDB00EB84BD /* WikidataPropertyName.swift */,
 			);
-			path = Structs;
+			path = Types;
 			sourceTree = "<group>";
 		};
 		55B365B41FE060B300EB84BD /* Tasks */ = {
@@ -363,16 +366,6 @@
 				55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */,
 			);
 			path = WikidataLocalizedEntry;
-			sourceTree = "<group>";
-		};
-		55B365C11FE07E4E00EB84BD /* Types */ = {
-			isa = PBXGroup;
-			children = (
-				55A8D2481FCF5D9D00BB00BC /* BoundingBox.swift */,
-				55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */,
-				55B365C61FE07FDB00EB84BD /* WikidataPropertyName.swift */,
-			);
-			path = Types;
 			sourceTree = "<group>";
 		};
 		55B536E31FD31C5300036FFC /* MainWindow */ = {
@@ -415,7 +408,6 @@
 				55B897EA1FCB281500FC4EF6 /* Operations */,
 				55B365B71FE06BC300EB84BD /* Realm protocols */,
 				558F26941FCDFEC7009BAA8E /* Realm utils */,
-				55B365C11FE07E4E00EB84BD /* Types */,
 			);
 			path = Utils;
 			sourceTree = "<group>";

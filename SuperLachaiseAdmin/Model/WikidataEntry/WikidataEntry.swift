@@ -14,7 +14,7 @@ final class WikidataEntry: Object {
 
     @objc dynamic var name: String?
     @objc dynamic var rawKind: String?
-    let secondayEntriesIds = List<String>()
+    let secondaryWikidataIds = List<String>()
 
     let localizations = LinkingObjects(fromType: WikidataLocalizedEntry.self, property: "wikidataEntry")
 
