@@ -13,6 +13,6 @@ protocol WikidataConfig {
 
     var validLocations: [WikidataEntityName] { get }
 
-    var customSecondaryWikidataEntries: [WikidataEntityName: [WikidataEntityName]] { get }
+    var customSecondaryWikidataIds: [WikidataEntityName: [WikidataEntityName]] { get }
 
 }

@@ -36,4 +36,7 @@ extension WikidataPropertyName {
     static let commemorates = WikidataPropertyName(rawValue: "P547")
     static let mainSubject = WikidataPropertyName(rawValue: "P921")
 
+    static let occupation = WikidataPropertyName(rawValue: "P106")
+    static let sexOrGender = WikidataPropertyName(rawValue: "P21")
+
 }

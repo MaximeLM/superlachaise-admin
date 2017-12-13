@@ -109,13 +109,18 @@ final class SyncWikidataEntries: Task {
             localization.wikipediaTitle = wikipediaTitle
         }
 
-        // Secondary wikidata entries
+        // Secondary wikidata ids
         let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
         wikidataEntry.secondaryWikidataIds.removeAll()
         wikidataEntry.secondaryWikidataIds.append(objectsIn: secondaryWikidataIds)
 
         // Name
         wikidataEntry.name = wikidataEntry.localizations.first?.name
+
+        // Wikidata category ids
+        let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind)
+        wikidataEntry.wikidataCategoryIds.removeAll()
+        wikidataEntry.wikidataCategoryIds.append(objectsIn: wikidataCategoryIds)
 
         return wikidataEntry
     }
@@ -163,9 +168,8 @@ final class SyncWikidataEntries: Task {
         return !Set(locations).isDisjoint(with: config.validLocations)
     }
 
-    private func secondaryWikidataIds(wikidataEntity: WikidataEntity,
-                                      kind: WikidataEntryKind?) -> [String] {
-        var secondaryWikidataEntityNames: [WikidataEntityName] = []
+    private func secondaryWikidataIds(wikidataEntity: WikidataEntity, kind: WikidataEntryKind?) -> [String] {
+        var secondaryWikidataNames: [WikidataEntityName] = []
 
         if kind == .grave {
             let entityNames = (wikidataEntity.claims(.instanceOf) ?? [])
@@ -177,7 +181,7 @@ final class SyncWikidataEntries: Task {
                 }
                 .flatMap { $0.qualifiers(.of) ?? [] }
                 .flatMap { $0.entityName }
-            secondaryWikidataEntityNames.append(contentsOf: entityNames)
+            secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
         if kind == .monument {
@@ -188,15 +192,32 @@ final class SyncWikidataEntries: Task {
             let entityNames = claims
                 .flatMap { $0 ?? [] }
                 .flatMap { $0.mainsnak.entityName }
-            secondaryWikidataEntityNames.append(contentsOf: entityNames)
+            secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
         let wikidataEntityName = WikidataEntityName(rawValue: wikidataEntity.id)
-        if let customSecondaryWikidataEntries = config.customSecondaryWikidataEntries[wikidataEntityName] {
-            secondaryWikidataEntityNames.append(contentsOf: customSecondaryWikidataEntries)
+        if let customSecondaryWikidataIds = config.customSecondaryWikidataIds[wikidataEntityName] {
+            secondaryWikidataNames.append(contentsOf: customSecondaryWikidataIds)
         }
 
-        return secondaryWikidataEntityNames.map { $0.rawValue }
+        return secondaryWikidataNames.map { $0.rawValue }
+    }
+
+    private func wikidataCategoryIds(wikidataEntity: WikidataEntity, kind: WikidataEntryKind?) -> [String] {
+        var wikidataCategoryNames: [WikidataEntityName] = []
+
+        if kind == .graveOf {
+            let claims = [
+                wikidataEntity.claims(.occupation),
+                wikidataEntity.claims(.sexOrGender),
+            ]
+            let entityNames = claims
+                .flatMap { $0 ?? [] }
+                .flatMap { $0.mainsnak.entityName }
+            wikidataCategoryNames.append(contentsOf: entityNames)
+        }
+
+        return wikidataCategoryNames.map { $0.rawValue }
     }
 
 }

@@ -16,7 +16,7 @@ struct PereLachaiseWikidataConfig: WikidataConfig {
         .pereLachaiseCrematorium,
     ]
 
-    let customSecondaryWikidataEntries: [WikidataEntityName: [WikidataEntityName]] = [
+    let customSecondaryWikidataIds: [WikidataEntityName: [WikidataEntityName]] = [
         .malikOussekine: [.deathOfMalikOussekine],
     ]
 
