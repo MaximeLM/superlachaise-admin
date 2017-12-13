@@ -82,10 +82,6 @@ final class SyncWikidataEntries: Task {
         let wikidataEntry = WikidataEntry.findOrCreate(wikidataId: wikidataEntity.id)(realm)
         wikidataEntry.deleted = false
 
-        // Kind
-        let kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
-        wikidataEntry.kind = kind
-
         // Localizations
         for language in config.languages {
             let localization = wikidataEntry.findOrCreateLocalization(language: language)(realm)
@@ -109,18 +105,18 @@ final class SyncWikidataEntries: Task {
             localization.wikipediaTitle = wikipediaTitle
         }
 
+        // Kind
+        let kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
+        wikidataEntry.kind = kind
+
         // Secondary wikidata ids
-        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
-        wikidataEntry.secondaryWikidataIds.removeAll()
-        wikidataEntry.secondaryWikidataIds.append(objectsIn: secondaryWikidataIds)
+        wikidataEntry.secondaryWikidataIds.set(secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind))
+
+        // Wikidata category ids
+        wikidataEntry.wikidataCategoryIds.set(wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind))
 
         // Name
         wikidataEntry.name = wikidataEntry.localizations.first?.name
-
-        // Wikidata category ids
-        let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind)
-        wikidataEntry.wikidataCategoryIds.removeAll()
-        wikidataEntry.wikidataCategoryIds.append(objectsIn: wikidataCategoryIds)
 
         return wikidataEntry
     }
