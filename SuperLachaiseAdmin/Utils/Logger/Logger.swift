@@ -9,6 +9,7 @@ import Foundation
 
 protocol LoggerType {
 
+    func debug(_ message: String)
     func info(_ message: String)
     func warning(_ message: String)
     func error(_ message: String)
@@ -19,6 +20,10 @@ protocol LoggerType {
 struct Logger {
 
     static var shared: LoggerType = ConsoleLogger()
+
+    static func debug(_ message: String) {
+        shared.debug(message)
+    }
 
     static func info(_ message: String) {
         shared.info(message)

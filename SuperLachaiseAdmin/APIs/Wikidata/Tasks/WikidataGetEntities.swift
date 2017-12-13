@@ -33,13 +33,15 @@ final class WikidataGetEntities {
     func asSingle() -> Single<[WikidataEntity]> {
         return Observable.from(wikidataIds.chunked(by: 50))
             .flatMap(self.chunkEntities)
-            .toArray()
-            .map(self.mergeEntities)
+            .reduce([], accumulator: self.mergeEntities)
             .asSingle()
     }
 
-    private func mergeEntities(chunkEntities: [[WikidataEntity]]) -> [WikidataEntity] {
-        return chunkEntities.flatMap { $0 }
+    private func mergeEntities(entities: [WikidataEntity], chunkEntities: [WikidataEntity]) -> [WikidataEntity] {
+        var entities = entities
+        entities.append(contentsOf: chunkEntities)
+        Logger.debug("\(entities.count)/\(wikidataIds.count)")
+        return entities
     }
 
     // MARK: Chunk query

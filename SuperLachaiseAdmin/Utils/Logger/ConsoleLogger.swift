@@ -9,6 +9,10 @@ import Foundation
 
 struct ConsoleLogger: LoggerType {
 
+    func debug(_ message: String) {
+        print("💬 \(message)")
+    }
+
     func info(_ message: String) {
         print("ℹ️ \(message)")
     }

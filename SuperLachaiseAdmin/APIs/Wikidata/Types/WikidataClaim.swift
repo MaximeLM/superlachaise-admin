@@ -31,7 +31,7 @@ struct WikidataClaimSnak: Decodable {
         return stringValue
     }
 
-    var entityValue: WikidataEntityName? {
+    var entityName: WikidataEntityName? {
         guard let entityValue = datavalue?.entityValue else {
             Logger.warning("[\(property)] Expected entityValue")
             return nil
