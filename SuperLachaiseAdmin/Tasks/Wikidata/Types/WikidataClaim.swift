@@ -109,8 +109,43 @@ struct WikidataClaimEntityValue: Decodable {
 struct WikidataClaimTimeValue: Decodable {
 
     let time: String
-    let timezone: Int
     let precision: Int
-    let calendarmodel: String
 
+    private static let dateFormatter = ISO8601DateFormatter()
+
+    func date() throws -> Date {
+        let prefix = time.first
+        let isoString = String(time.dropFirst())
+        guard prefix == "+" else {
+            throw WikidataClaimTimeValueError.invalidTimePrefix(prefix)
+        }
+        guard let date = WikidataClaimTimeValue.dateFormatter.date(from: isoString) else {
+            throw WikidataClaimTimeValueError.invalidTimeFormat(isoString)
+        }
+        return date
+    }
+
+    func wikidataDatePrecision() throws -> WikidataDatePrecision {
+        switch precision {
+        case 9:
+            return .year
+        case 10:
+            return .month
+        case 11:
+            return .day
+        default:
+            throw WikidataClaimTimeValueError.invalidPrecision(precision)
+        }
+    }
+
+    func wikidataDate() throws -> WikidataDate {
+        return WikidataDate(date: try date(), precision: try wikidataDatePrecision())
+    }
+
+}
+
+enum WikidataClaimTimeValueError: Error {
+    case invalidTimePrefix(Character?)
+    case invalidTimeFormat(String)
+    case invalidPrecision(Int)
 }

@@ -15,13 +15,10 @@ extension WikidataEntry {
 
     var kind: WikidataEntryKind? {
         get {
-            guard let rawKind = rawKind else {
-                return nil
-            }
             return WikidataEntryKind(rawValue: rawKind)
         }
         set {
-            rawKind = newValue?.rawValue
+            rawKind = newValue?.rawValue ?? ""
         }
     }
 

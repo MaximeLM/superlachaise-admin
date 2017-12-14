@@ -13,7 +13,13 @@ final class WikidataEntry: Object {
     @objc dynamic var wikidataId: String = ""
 
     @objc dynamic var name: String?
-    @objc dynamic var rawKind: String?
+    @objc dynamic var rawKind = ""
+
+    // Stored in UTC
+    @objc dynamic var rawDateOfBirth: Date?
+    @objc dynamic var rawDateOfBirthPrecision = ""
+    @objc dynamic var rawDateOfDeath: Date?
+    @objc dynamic var rawDateOfDeathPrecision = ""
 
     let secondaryWikidataIds = List<String>()
     let wikidataCategoryIds = List<String>()

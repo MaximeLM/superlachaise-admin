@@ -28,6 +28,7 @@
 		55AB3DF81FE3038C0011AF47 /* Rx+ToCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF71FE3038C0011AF47 /* Rx+ToCompletable.swift */; };
 		55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF91FE306CC0011AF47 /* Realm+Write.swift */; };
 		55AB3E021FE3193A0011AF47 /* Collections+UniqueValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3E011FE3193A0011AF47 /* Collections+UniqueValues.swift */; };
+		55AB3E091FE32A500011AF47 /* WikidataEntry+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3E081FE32A500011AF47 /* WikidataEntry+Date.swift */; };
 		55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */; };
 		55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365811FDB206B00EB84BD /* Realm+Async.swift */; };
 		55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365831FDD9EA900EB84BD /* AppContainer.swift */; };
@@ -99,6 +100,7 @@
 		55AB3DF71FE3038C0011AF47 /* Rx+ToCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+ToCompletable.swift"; sourceTree = "<group>"; };
 		55AB3DF91FE306CC0011AF47 /* Realm+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Write.swift"; sourceTree = "<group>"; };
 		55AB3E011FE3193A0011AF47 /* Collections+UniqueValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections+UniqueValues.swift"; sourceTree = "<group>"; };
+		55AB3E081FE32A500011AF47 /* WikidataEntry+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Date.swift"; sourceTree = "<group>"; };
 		55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		55B365811FDB206B00EB84BD /* Realm+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Async.swift"; sourceTree = "<group>"; };
 		55B365831FDD9EA900EB84BD /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				55B3658A1FDDAE7A00EB84BD /* WikidataEntry.swift */,
+				55AB3E081FE32A500011AF47 /* WikidataEntry+Date.swift */,
 				55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */,
 				55B3658C1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift */,
 				55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */,
@@ -686,6 +689,7 @@
 				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
 				55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */,
+				55AB3E091FE32A500011AF47 /* WikidataEntry+Date.swift in Sources */,
 				55AB3E021FE3193A0011AF47 /* Collections+UniqueValues.swift in Sources */,
 				55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */,
 				55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */,

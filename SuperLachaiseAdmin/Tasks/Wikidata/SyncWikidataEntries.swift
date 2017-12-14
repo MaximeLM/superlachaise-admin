@@ -141,6 +141,9 @@ private extension SyncWikidataEntries {
             localization.wikipediaTitle = wikipediaTitle
         }
 
+        // Name
+        wikidataEntry.name = wikidataEntry.localizations.first?.name
+
         // Kind
         let kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
         wikidataEntry.kind = kind
@@ -153,8 +156,9 @@ private extension SyncWikidataEntries {
         let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind)
         wikidataEntry.wikidataCategoryIds.replaceAll(objects: wikidataCategoryIds)
 
-        // Name
-        wikidataEntry.name = wikidataEntry.localizations.first?.name
+        // Dates
+        wikidataEntry.dateOfBirth = try wikidataDate(wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfBirth)
+        wikidataEntry.dateOfDeath = try wikidataDate(wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfDeath)
 
         return wikidataEntry
     }
@@ -251,6 +255,18 @@ private extension SyncWikidataEntries {
         }
 
         return wikidataCategoryNames.map { $0.rawValue }.uniqueValues()
+    }
+
+    func wikidataDate(wikidataEntity: WikidataEntity,
+                      kind: WikidataEntryKind?,
+                      claim: WikidataPropertyName) throws -> WikidataDate? {
+        guard kind == .graveOf else {
+            return nil
+        }
+        return try wikidataEntity.claims(claim)?
+            .flatMap { $0.mainsnak.timeValue }
+            .max { $0.precision < $1.precision }
+            .map { try $0.wikidataDate() }
     }
 
     // MARK: Orphans
