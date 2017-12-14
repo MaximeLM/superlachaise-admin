@@ -87,7 +87,11 @@ extension ListViewController {
         } else {
             return
         }
-        taskController.syncOpenStreetMapElement([openStreetMapElement])
+        guard let openStreetMapId = openStreetMapElement.openStreetMapId else {
+            Logger.error("\(OpenStreetMapElement.self) \(openStreetMapElement) has no OpenStreetMap id")
+            return
+        }
+        taskController.syncOpenStreetMapElement([openStreetMapId])
     }
 
     @IBAction func menuSyncWikidataEntries(_ sender: Any?) {
