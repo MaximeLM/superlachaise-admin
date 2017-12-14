@@ -34,13 +34,16 @@ final class SyncOpenStreetMapElements: Task {
     func asCompletable() -> Completable {
         return overpassElements()
             .flatMap(self.openStreetMapElements)
-            .flatMap(self.superLachaisePOIs)
             .asObservable().ignoreElements()
     }
 
+}
+
+private extension SyncOpenStreetMapElements {
+
     // MARK: Overpass Elements
 
-    private func overpassElements() -> Single<[OverpassElement]> {
+    func overpassElements() -> Single<[OverpassElement]> {
         let getElements: OverpassGetElements
         switch scope {
         case .all:
@@ -55,13 +58,13 @@ final class SyncOpenStreetMapElements: Task {
 
     // MARK: OpenStreetMap elements
 
-    private enum OpenStreetMapError: Error {
+    enum OpenStreetMapError: Error {
         case invalidElementType(String)
         case coordinateNotFound(OpenStreetMapId)
         case centerNotFound(OpenStreetMapId)
     }
 
-    private func openStreetMapElements(overpassElements: [OverpassElement]) -> Single<[OpenStreetMapElement]> {
+    func openStreetMapElements(overpassElements: [OverpassElement]) -> Single<[OpenStreetMapElement]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             return try realm.write {
                 try self.openStreetMapElements(overpassElements: overpassElements, realm: realm)
@@ -69,8 +72,7 @@ final class SyncOpenStreetMapElements: Task {
         }
     }
 
-    private func openStreetMapElements(overpassElements: [OverpassElement],
-                                       realm: Realm) throws -> [OpenStreetMapElement] {
+    func openStreetMapElements(overpassElements: [OverpassElement], realm: Realm) throws -> [OpenStreetMapElement] {
         // List existing objects before updating
         var orphanedObjects: Set<OpenStreetMapElement>
         switch scope {
@@ -95,7 +97,7 @@ final class SyncOpenStreetMapElements: Task {
         return fetchedObjects
     }
 
-    private func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement {
+    func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement {
         // OpenStreetMapId
         guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
             throw OpenStreetMapError.invalidElementType(overpassElement.type)
@@ -135,70 +137,6 @@ final class SyncOpenStreetMapElements: Task {
         openStreetMapElement.wikidataId = wikidataId
 
         return openStreetMapElement
-    }
-
-    // MARK: SuperLachaise POIs
-
-    private func superLachaisePOIs(openStreetMapElements: [OpenStreetMapElement]) -> Single<[SuperLachaisePOI]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            return try realm.write {
-                try self.superLachaisePOIs(openStreetMapElements: openStreetMapElements, realm: realm)
-            }
-        }
-    }
-
-    private func superLachaisePOIs(openStreetMapElements: [OpenStreetMapElement],
-                                   realm: Realm) throws -> [SuperLachaisePOI] {
-        // List existing objects before updating
-        var orphanedObjects: Set<SuperLachaisePOI>
-        switch scope {
-        case .all:
-            orphanedObjects = Set(SuperLachaisePOI.all()(realm))
-        case .list:
-            orphanedObjects = Set()
-        }
-
-        let fetchedObjects = try openStreetMapElements.flatMap { openStreetMapElement -> SuperLachaisePOI? in
-            if let fetchedObject = try self.superLachaisePOI(openStreetMapElement: openStreetMapElement, realm: realm) {
-                orphanedObjects.remove(fetchedObject)
-                return fetchedObject
-            } else {
-                return nil
-            }
-        }
-        Logger.info("Synced \(fetchedObjects.count) \(SuperLachaisePOI.self)(s)")
-
-        if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.deleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(SuperLachaisePOI.self)(s) for deletion")
-        }
-
-        return fetchedObjects
-    }
-
-    private func superLachaisePOI(openStreetMapElement: OpenStreetMapElement,
-                                  realm: Realm) throws -> SuperLachaisePOI? {
-        // Wikidata Id
-        guard let wikidataId = openStreetMapElement.wikidataId else {
-            return nil
-        }
-        let superLachaisePOI = SuperLachaisePOI.findOrCreate(wikidataId: wikidataId)(realm)
-        superLachaisePOI.deleted = false
-
-        // OpenStreetMap element
-        if let existingOpenStreetMapElement = superLachaisePOI.openStreetMapElement,
-            existingOpenStreetMapElement != openStreetMapElement {
-            Logger.warning("""
-                SuperLachaisePOI \(superLachaisePOI) is referenced by OpenStreetMapElements \
-                \(existingOpenStreetMapElement) and \(openStreetMapElement)
-                """)
-        }
-        superLachaisePOI.openStreetMapElement = openStreetMapElement
-
-        // Name
-        superLachaisePOI.name = openStreetMapElement.name
-
-        return superLachaisePOI
     }
 
 }

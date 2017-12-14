@@ -26,8 +26,8 @@ final class RealmContext {
 
     func deleteFlaggedObjects(realm: Realm) throws {
         try realm.write {
-            deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
             deleteFlaggedObjects(type: SuperLachaisePOI.self, realm: realm)
+            deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
             deleteFlaggedObjects(type: WikidataEntry.self, realm: realm)
         }
     }
