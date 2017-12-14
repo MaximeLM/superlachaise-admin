@@ -164,42 +164,41 @@ private extension SyncWikidataEntries {
             .flatMap { $0.mainsnak.entityName }
         for instanceOf in instanceOfs ?? [] {
             if [.human].contains(instanceOf) {
-                let locations = [
-                    wikidataEntity.claims(.placeOfBurial),
-                ]
-                    .flatMap { $0?.flatMap { $0.mainsnak.entityName } ?? [] }
-                if containsValidLocation(locations) {
+                let claims: [WikidataPropertyName] = [.placeOfBurial]
+                let validLocations = claims
+                    .flatMap { wikidataEntity.claims($0) }
+                    .flatMap { $0.flatMap { $0.mainsnak.entityName } }
+                    .filter { isValidLocation($0) }
+                if !validLocations.isEmpty {
                     return .graveOf
                 }
             }
             if [.grave, .tomb, .cardiotaph].contains(instanceOf) {
-                let locations = [
-                    wikidataEntity.claims(.location),
-                    wikidataEntity.claims(.partOf),
-                    wikidataEntity.claims(.placeOfBurial),
-                ]
-                    .flatMap { $0?.flatMap { $0.mainsnak.entityName } ?? [] }
-                if containsValidLocation(locations) {
+                let claims: [WikidataPropertyName] = [.location, .partOf, .placeOfBurial]
+                let validLocations = claims
+                    .flatMap { wikidataEntity.claims($0) }
+                    .flatMap { $0.flatMap { $0.mainsnak.entityName } }
+                    .filter { isValidLocation($0) }
+                if !validLocations.isEmpty {
                     return .grave
                 }
             }
             if [.monument, .memorial, .warMemorial].contains(instanceOf) {
-                let locations = [
-                    wikidataEntity.claims(.location),
-                    wikidataEntity.claims(.partOf),
-                    wikidataEntity.claims(.placeOfBurial),
-                ]
-                    .flatMap { $0?.flatMap { $0.mainsnak.entityName } ?? [] }
-                if containsValidLocation(locations) {
-                    return .monument
+                let claims: [WikidataPropertyName] = [.location, .partOf, .placeOfBurial]
+                let validLocations = claims
+                    .flatMap { wikidataEntity.claims($0) }
+                    .flatMap { $0.flatMap { $0.mainsnak.entityName } }
+                    .filter { isValidLocation($0) }
+                if !validLocations.isEmpty {
+                    return .grave
                 }
             }
         }
         return nil
     }
 
-    func containsValidLocation(_ locations: [WikidataEntityName]) -> Bool {
-        return !Set(locations).isDisjoint(with: config.validLocations)
+    func isValidLocation(_ location: WikidataEntityName) -> Bool {
+        return config.validLocations.contains(location)
     }
 
     func secondaryWikidataIds(wikidataEntity: WikidataEntity, kind: WikidataEntryKind?) -> [String] {

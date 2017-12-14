@@ -78,7 +78,7 @@ extension ListViewController {
         let openStreetMapElement: OpenStreetMapElement
         if let superLachaisePOI = item.object as? SuperLachaisePOI {
             guard let _openStreetMapElement = superLachaisePOI.openStreetMapElement else {
-                Logger.error("SuperLachaise POI \(superLachaisePOI) has no OpenStreetMap element")
+                Logger.error("\(SuperLachaisePOI.self) \(superLachaisePOI) has no OpenStreetMap element")
                 return
             }
             openStreetMapElement = _openStreetMapElement
