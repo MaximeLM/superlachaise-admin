@@ -12,7 +12,7 @@ final class WikidataGetEntities {
 
     let endpoint: APIEndpointType
 
-    let wikidataIds: Set<String>
+    let wikidataIds: [String]
     let languages: [String]
 
     // MARK: Init
@@ -24,14 +24,14 @@ final class WikidataGetEntities {
 
     init(endpoint: APIEndpointType, wikidataIds: [String], languages: [String]) {
         self.endpoint = endpoint
-        self.wikidataIds = Set(wikidataIds)
+        self.wikidataIds = wikidataIds.uniqueValues()
         self.languages = languages
     }
 
     // MARK: Execution
 
     func asSingle() -> Single<[WikidataEntity]> {
-        return Observable.from(Array(wikidataIds).chunked(by: 50))
+        return Observable.from(wikidataIds.chunked(by: 50))
             .flatMap(self.chunkEntities)
             .reduce([], accumulator: self.mergeEntities)
             .asSingle()

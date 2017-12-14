@@ -40,7 +40,7 @@
 		55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365981FDDB5E400EB84BD /* SyncWikidataEntries.swift */; };
 		55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */; };
 		55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */; };
-		55B365A91FDDE84700EB84BD /* Array+Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365A81FDDE84700EB84BD /* Array+Chunk.swift */; };
+		55B365A91FDDE84700EB84BD /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365A81FDDE84700EB84BD /* Array.swift */; };
 		55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AB1FDDF33C00EB84BD /* WikidataEntity.swift */; };
 		55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */; };
 		55B365B01FDDF93400EB84BD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AF1FDDF93400EB84BD /* Task.swift */; };
@@ -110,7 +110,7 @@
 		55B365981FDDB5E400EB84BD /* SyncWikidataEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWikidataEntries.swift; sourceTree = "<group>"; };
 		55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassGetElements.swift; sourceTree = "<group>"; };
 		55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataGetEntities.swift; sourceTree = "<group>"; };
-		55B365A81FDDE84700EB84BD /* Array+Chunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Chunk.swift"; sourceTree = "<group>"; };
+		55B365A81FDDE84700EB84BD /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		55B365AB1FDDF33C00EB84BD /* WikidataEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataEntity.swift; sourceTree = "<group>"; };
 		55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataClaim.swift; sourceTree = "<group>"; };
 		55B365AF1FDDF93400EB84BD /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -321,7 +321,7 @@
 		55B365A71FDDE83E00EB84BD /* Array */ = {
 			isa = PBXGroup;
 			children = (
-				55B365A81FDDE84700EB84BD /* Array+Chunk.swift */,
+				55B365A81FDDE84700EB84BD /* Array.swift */,
 			);
 			path = Array;
 			sourceTree = "<group>";
@@ -681,7 +681,7 @@
 			files = (
 				55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */,
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
-				55B365A91FDDE84700EB84BD /* Array+Chunk.swift in Sources */,
+				55B365A91FDDE84700EB84BD /* Array.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
 				55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */,
 				55AB3DF81FE3038C0011AF47 /* Rx+ToCompletable.swift in Sources */,

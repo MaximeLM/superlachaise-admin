@@ -234,7 +234,7 @@ private extension SyncWikidataEntries {
             secondaryWikidataNames.append(contentsOf: customSecondaryWikidataIds)
         }
 
-        return secondaryWikidataNames.map { $0.rawValue }
+        return secondaryWikidataNames.map { $0.rawValue }.uniqueValues()
     }
 
     func wikidataCategoryIds(wikidataEntity: WikidataEntity, kind: WikidataEntryKind?) -> [String] {
@@ -251,7 +251,7 @@ private extension SyncWikidataEntries {
             wikidataCategoryNames.append(contentsOf: entityNames)
         }
 
-        return wikidataCategoryNames.map { $0.rawValue }
+        return wikidataCategoryNames.map { $0.rawValue }.uniqueValues()
     }
 
     // MARK: Orphans
