@@ -11,7 +11,7 @@ import RealmSwift
 final class OpenStreetMapElement: Object {
 
     // Serialized as type/numericId
-    @objc dynamic var rawOpenStreetMapId: String?
+    @objc dynamic var rawOpenStreetMapId = ""
 
     @objc dynamic var latitude: Double = 0
     @objc dynamic var longitude: Double = 0

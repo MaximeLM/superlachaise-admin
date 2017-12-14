@@ -2,7 +2,7 @@
 //  Realm+Write.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 12/12/2017.
+//  Created by Maxime Le Moine on 14/12/2017.
 //
 
 import Foundation
@@ -10,8 +10,8 @@ import RealmSwift
 
 extension Realm {
 
-    func write<E>(block: () throws -> E) throws -> E {
-        let result: E
+    func write<T>(_ block: (() throws -> T)) throws -> T {
+        let result: T
         beginWrite()
         do {
             result = try block()

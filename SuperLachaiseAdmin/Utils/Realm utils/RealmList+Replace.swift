@@ -1,5 +1,5 @@
 //
-//  RealmList+Set.swift
+//  RealmList+Replace.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 13/12/2017.
@@ -10,9 +10,9 @@ import RealmSwift
 
 extension List {
 
-    func set(_ values: [Element]) {
+    func replaceAll(objects: [Element]) {
         removeAll()
-        append(objectsIn: values)
+        append(objectsIn: objects)
     }
 
 }

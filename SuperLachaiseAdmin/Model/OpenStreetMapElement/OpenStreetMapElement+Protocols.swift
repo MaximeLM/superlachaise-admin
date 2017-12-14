@@ -19,7 +19,7 @@ extension OpenStreetMapElement: RealmDeletable, RealmListable, RealmOpenableInBr
     // MARK: RealmIdentifiable
 
     var identifier: String {
-        return rawOpenStreetMapId ?? ""
+        return rawOpenStreetMapId
     }
 
     // MARK: RealmListable

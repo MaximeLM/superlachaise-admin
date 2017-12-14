@@ -38,9 +38,6 @@ extension OpenStreetMapElement {
 
     var openStreetMapId: OpenStreetMapId? {
         get {
-            guard let rawOpenStreetMapId = rawOpenStreetMapId else {
-                return nil
-            }
             guard let openStreetMapId = OpenStreetMapId(rawValue: rawOpenStreetMapId) else {
                 Logger.warning("Invalid rawOpenStreetMapId: \(rawOpenStreetMapId)")
                 return nil
@@ -48,7 +45,7 @@ extension OpenStreetMapElement {
             return openStreetMapId
         }
         set {
-            rawOpenStreetMapId = newValue?.rawValue
+            rawOpenStreetMapId = newValue?.rawValue ?? ""
         }
     }
 

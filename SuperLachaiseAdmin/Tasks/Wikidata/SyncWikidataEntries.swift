@@ -34,7 +34,8 @@ final class SyncWikidataEntries: Task {
     func asCompletable() -> Completable {
         return primaryWikidataEntries()
             .flatMap(self.withSecondaryWikidataEntries)
-            .asObservable().ignoreElements()
+            .flatMap(self.deleteOrphans)
+            .toCompletable()
     }
 
 }
@@ -43,10 +44,10 @@ private extension SyncWikidataEntries {
 
     // MARK: Primary Wikidata entries
 
-    func primaryWikidataEntries() -> Single<[WikidataEntry]> {
+    func primaryWikidataEntries() -> Single<[String]> {
         return primaryWikidataIds()
             .flatMap(self.wikidataEntities)
-            .flatMap(self.wikidataEntries)
+            .flatMap(self.saveWikidataEntries)
             .do(onNext: { Logger.info("Fetched \($0.count) primary \(WikidataEntry.self)(s)") })
     }
 
@@ -67,23 +68,26 @@ private extension SyncWikidataEntries {
     /**
      Recursively get secondary entries
     */
-    func withSecondaryWikidataEntries(wikidataEntries: [WikidataEntry]) -> Single<[WikidataEntry]> {
-        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntries: wikidataEntries)
-        if secondaryWikidataIds.isEmpty {
-            return Single.just(wikidataEntries)
-        } else {
-            return wikidataEntities(wikidataIds: secondaryWikidataIds)
-                .flatMap(self.wikidataEntries)
-                .do(onNext: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
-                .map { wikidataEntries + $0 }
-        }
+    func withSecondaryWikidataEntries(wikidataIds: [String]) -> Single<[String]> {
+        return secondaryWikidataIds(wikidataIds: wikidataIds)
+            .flatMap { secondaryWikidataIds in
+                if secondaryWikidataIds.isEmpty {
+                    return Single.just(wikidataIds)
+                } else {
+                    return self.wikidataEntities(wikidataIds: secondaryWikidataIds)
+                        .flatMap(self.saveWikidataEntries)
+                        .do(onNext: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
+                        .map { wikidataIds + $0 }
+                }
+            }
     }
 
-    func secondaryWikidataIds(wikidataEntries: [WikidataEntry]) -> [String] {
-        let wikidataIds = wikidataEntries.map { $0.wikidataId }
-        return wikidataEntries
-            .flatMap { Array($0.secondaryWikidataIds) }
-            .filter { !wikidataIds.contains($0) }
+    func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+            return wikidataIds.flatMap { WikidataEntry.find(wikidataId: $0)(realm) }
+                .flatMap { Array($0.secondaryWikidataIds) }
+                .filter { !wikidataIds.contains($0) }
+        }
     }
 
     // MARK: Wikidata entities
@@ -95,17 +99,17 @@ private extension SyncWikidataEntries {
 
     // MARK: Wikidata entries
 
-    func wikidataEntries(wikidataEntities: [WikidataEntity]) -> Single<[WikidataEntry]> {
+    func saveWikidataEntries(wikidataEntities: [WikidataEntity]) -> Single<[String]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            return try realm.write {
-                try self.wikidataEntries(wikidataEntities: wikidataEntities, realm: realm)
+            try realm.write {
+                try self.saveWikidataEntries(wikidataEntities: wikidataEntities, realm: realm)
             }
         }
     }
 
-    func wikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [WikidataEntry] {
-        return try wikidataEntities.map { wikidataEntity -> WikidataEntry in
-            try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm)
+    func saveWikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [String] {
+        return try wikidataEntities.map { wikidataEntity in
+            try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm).wikidataId
         }
     }
 
@@ -142,10 +146,12 @@ private extension SyncWikidataEntries {
         wikidataEntry.kind = kind
 
         // Secondary wikidata ids
-        wikidataEntry.secondaryWikidataIds.set(secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind))
+        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
+        wikidataEntry.secondaryWikidataIds.replaceAll(objects: secondaryWikidataIds)
 
         // Wikidata category ids
-        wikidataEntry.wikidataCategoryIds.set(wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind))
+        let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind)
+        wikidataEntry.wikidataCategoryIds.replaceAll(objects: wikidataCategoryIds)
 
         // Name
         wikidataEntry.name = wikidataEntry.localizations.first?.name
@@ -246,6 +252,34 @@ private extension SyncWikidataEntries {
         }
 
         return wikidataCategoryNames.map { $0.rawValue }
+    }
+
+    // MARK: Orphans
+
+    func deleteOrphans(fetchedWikidataIds: [String]) -> Single<Void> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+            try realm.write {
+                try self.deleteOrphans(fetchedWikidataIds: fetchedWikidataIds, realm: realm)
+            }
+        }
+    }
+
+    func deleteOrphans(fetchedWikidataIds: [String], realm: Realm) throws {
+        // List existing objects
+        var orphanedObjects: Set<WikidataEntry>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(WikidataEntry.all()(realm))
+        case .list:
+            orphanedObjects = Set()
+        }
+
+        orphanedObjects = orphanedObjects.filter { !fetchedWikidataIds.contains($0.wikidataId) }
+
+        if !orphanedObjects.isEmpty {
+            orphanedObjects.forEach { $0.deleted = true }
+            Logger.info("Flagged \(orphanedObjects.count) \(WikidataEntry.self)(s) for deletion")
+        }
     }
 
 }

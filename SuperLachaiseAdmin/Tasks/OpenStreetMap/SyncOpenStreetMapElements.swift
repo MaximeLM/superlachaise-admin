@@ -32,9 +32,9 @@ final class SyncOpenStreetMapElements: Task {
     // MARK: Execution
 
     func asCompletable() -> Completable {
-        return overpassElements()
-            .flatMap(self.openStreetMapElements)
-            .asObservable().ignoreElements()
+        return openStreetMapElements()
+            .flatMap(self.deleteOrphans)
+            .toCompletable()
     }
 
 }
@@ -58,43 +58,24 @@ private extension SyncOpenStreetMapElements {
 
     // MARK: OpenStreetMap elements
 
-    enum OpenStreetMapError: Error {
-        case invalidElementType(String)
-        case coordinateNotFound(OpenStreetMapId)
-        case centerNotFound(OpenStreetMapId)
+    func openStreetMapElements() -> Single<[String]> {
+        return overpassElements()
+            .flatMap(self.saveOpenStreetMapElements)
+            .do(onNext: { Logger.info("Fetched \($0.count) primary \(OpenStreetMapElement.self)(s)") })
     }
 
-    func openStreetMapElements(overpassElements: [OverpassElement]) -> Single<[OpenStreetMapElement]> {
+    func saveOpenStreetMapElements(overpassElements: [OverpassElement]) -> Single<[String]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            return try realm.write {
-                try self.openStreetMapElements(overpassElements: overpassElements, realm: realm)
+            try realm.write {
+                try self.saveOpenStreetMapElements(overpassElements: overpassElements, realm: realm)
             }
         }
     }
 
-    func openStreetMapElements(overpassElements: [OverpassElement], realm: Realm) throws -> [OpenStreetMapElement] {
-        // List existing objects before updating
-        var orphanedObjects: Set<OpenStreetMapElement>
-        switch scope {
-        case .all:
-            orphanedObjects = Set(OpenStreetMapElement.all()(realm))
-        case .list:
-            orphanedObjects = Set()
+    func saveOpenStreetMapElements(overpassElements: [OverpassElement], realm: Realm) throws -> [String] {
+        return try overpassElements.map { overpassElement in
+            try self.openStreetMapElement(overpassElement: overpassElement, realm: realm).rawOpenStreetMapId
         }
-
-        let fetchedObjects = try overpassElements.map { overpassElement -> OpenStreetMapElement in
-            let fetchedObject = try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)
-            orphanedObjects.remove(fetchedObject)
-            return fetchedObject
-        }
-        Logger.info("Fetched \(fetchedObjects.count) \(OpenStreetMapElement.self)(s)")
-
-        if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.deleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(OpenStreetMapElement.self)(s) for deletion")
-        }
-
-        return fetchedObjects
     }
 
     func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement {
@@ -137,6 +118,40 @@ private extension SyncOpenStreetMapElements {
         openStreetMapElement.wikidataId = wikidataId
 
         return openStreetMapElement
+    }
+
+    enum OpenStreetMapError: Error {
+        case invalidElementType(String)
+        case coordinateNotFound(OpenStreetMapId)
+        case centerNotFound(OpenStreetMapId)
+    }
+
+    // MARK: Orphans
+
+    func deleteOrphans(fetchedRawOpenStreetMapIds: [String]) -> Single<Void> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+            try realm.write {
+                try self.deleteOrphans(fetchedRawOpenStreetMapIds: fetchedRawOpenStreetMapIds, realm: realm)
+            }
+        }
+    }
+
+    func deleteOrphans(fetchedRawOpenStreetMapIds: [String], realm: Realm) throws {
+        // List existing objects
+        var orphanedObjects: Set<OpenStreetMapElement>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(OpenStreetMapElement.all()(realm))
+        case .list:
+            orphanedObjects = Set()
+        }
+
+        orphanedObjects = orphanedObjects.filter { !fetchedRawOpenStreetMapIds.contains($0.rawOpenStreetMapId) }
+
+        if !orphanedObjects.isEmpty {
+            orphanedObjects.forEach { $0.deleted = true }
+            Logger.info("Flagged \(orphanedObjects.count) \(OpenStreetMapElement.self)(s) for deletion")
+        }
     }
 
 }

@@ -24,7 +24,9 @@
 		55AB3DEC1FE091D90011AF47 /* SuperLachaise+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DEB1FE091D90011AF47 /* SuperLachaise+Requests.swift */; };
 		55AB3DEE1FE092940011AF47 /* OpenStreetMapElement+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DED1FE092940011AF47 /* OpenStreetMapElement+Requests.swift */; };
 		55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */; };
-		55AB3DF21FE1E5350011AF47 /* RealmList+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF11FE1E5350011AF47 /* RealmList+Set.swift */; };
+		55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF11FE1E5350011AF47 /* RealmList+Replace.swift */; };
+		55AB3DF81FE3038C0011AF47 /* Rx+ToCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF71FE3038C0011AF47 /* Rx+ToCompletable.swift */; };
+		55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF91FE306CC0011AF47 /* Realm+Write.swift */; };
 		55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */; };
 		55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365811FDB206B00EB84BD /* Realm+Async.swift */; };
 		55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365831FDD9EA900EB84BD /* AppContainer.swift */; };
@@ -42,7 +44,6 @@
 		55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AB1FDDF33C00EB84BD /* WikidataEntity.swift */; };
 		55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */; };
 		55B365B01FDDF93400EB84BD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AF1FDDF93400EB84BD /* Task.swift */; };
-		55B365B61FE06BB300EB84BD /* Realm+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365B51FE06BB300EB84BD /* Realm+Write.swift */; };
 		55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */; };
 		55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */; };
 		55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */; };
@@ -93,7 +94,9 @@
 		55AB3DEB1FE091D90011AF47 /* SuperLachaise+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaise+Requests.swift"; sourceTree = "<group>"; };
 		55AB3DED1FE092940011AF47 /* OpenStreetMapElement+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Requests.swift"; sourceTree = "<group>"; };
 		55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Requests.swift"; sourceTree = "<group>"; };
-		55AB3DF11FE1E5350011AF47 /* RealmList+Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmList+Set.swift"; sourceTree = "<group>"; };
+		55AB3DF11FE1E5350011AF47 /* RealmList+Replace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmList+Replace.swift"; sourceTree = "<group>"; };
+		55AB3DF71FE3038C0011AF47 /* Rx+ToCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+ToCompletable.swift"; sourceTree = "<group>"; };
+		55AB3DF91FE306CC0011AF47 /* Realm+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Write.swift"; sourceTree = "<group>"; };
 		55B080861FCCCEBD0006A0C2 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		55B365811FDB206B00EB84BD /* Realm+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Async.swift"; sourceTree = "<group>"; };
 		55B365831FDD9EA900EB84BD /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
@@ -111,7 +114,6 @@
 		55B365AB1FDDF33C00EB84BD /* WikidataEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataEntity.swift; sourceTree = "<group>"; };
 		55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataClaim.swift; sourceTree = "<group>"; };
 		55B365AF1FDDF93400EB84BD /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		55B365B51FE06BB300EB84BD /* Realm+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Write.swift"; sourceTree = "<group>"; };
 		55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataLocalizedEntry.swift; sourceTree = "<group>"; };
 		55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Kind.swift"; sourceTree = "<group>"; };
 		55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataEntityName.swift; sourceTree = "<group>"; };
@@ -203,8 +205,8 @@
 			isa = PBXGroup;
 			children = (
 				55B365811FDB206B00EB84BD /* Realm+Async.swift */,
-				55B365B51FE06BB300EB84BD /* Realm+Write.swift */,
-				55AB3DF11FE1E5350011AF47 /* RealmList+Set.swift */,
+				55AB3DF91FE306CC0011AF47 /* Realm+Write.swift */,
+				55AB3DF11FE1E5350011AF47 /* RealmList+Replace.swift */,
 			);
 			path = "Realm utils";
 			sourceTree = "<group>";
@@ -247,6 +249,14 @@
 				55B3658F1FDDB21500EB84BD /* Wikidata */,
 			);
 			path = Tasks;
+			sourceTree = "<group>";
+		};
+		55AB3DF61FE3037E0011AF47 /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				55AB3DF71FE3038C0011AF47 /* Rx+ToCompletable.swift */,
+			);
+			path = Rx;
 			sourceTree = "<group>";
 		};
 		55B365891FDDAE6600EB84BD /* WikidataEntry */ = {
@@ -411,6 +421,7 @@
 				55B897EA1FCB281500FC4EF6 /* Operations */,
 				55B365B71FE06BC300EB84BD /* Realm protocols */,
 				558F26941FCDFEC7009BAA8E /* Realm utils */,
+				55AB3DF61FE3037E0011AF47 /* Rx */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -673,6 +684,7 @@
 				55B365A91FDDE84700EB84BD /* Array+Chunk.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
 				55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */,
+				55AB3DF81FE3038C0011AF47 /* Rx+ToCompletable.swift in Sources */,
 				55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */,
 				55BD408D1FD30B4B005ACD89 /* ListViewController.swift in Sources */,
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
@@ -706,11 +718,11 @@
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
+				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
 				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B3658D1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift in Sources */,
 				55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */,
-				55B365B61FE06BB300EB84BD /* Realm+Write.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
@@ -726,7 +738,7 @@
 				55E8A3AA1FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
-				55AB3DF21FE1E5350011AF47 /* RealmList+Set.swift in Sources */,
+				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				55B3658B1FDDAE7A00EB84BD /* WikidataEntry.swift in Sources */,
 				55A8D23B1FCF52A900BB00BC /* RealmDeletable.swift in Sources */,
 			);
