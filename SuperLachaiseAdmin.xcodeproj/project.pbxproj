@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		18A19439D64C84896B645017 /* Pods_SuperLachaiseAdmin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */; };
-		5513EF3D1FE47A1800BD3A22 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF3C1FE47A1800BD3A22 /* WindowManager.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -79,7 +78,6 @@
 
 /* Begin PBXFileReference section */
 		34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperLachaiseAdmin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5513EF3C1FE47A1800BD3A22 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -366,7 +364,6 @@
 		55B536E31FD31C5300036FFC /* Window */ = {
 			isa = PBXGroup;
 			children = (
-				5513EF3C1FE47A1800BD3A22 /* WindowManager.swift */,
 				55B536E41FD31C6800036FFC /* MainWindowController.swift */,
 			);
 			path = Window;
@@ -668,7 +665,6 @@
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
 				55B365A91FDDE84700EB84BD /* Collections+Chunk.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
-				5513EF3D1FE47A1800BD3A22 /* WindowManager.swift in Sources */,
 				55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */,
 				55AB3DF81FE3038C0011AF47 /* Rx+ToCompletable.swift in Sources */,
 				55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */,

@@ -7,18 +7,30 @@
 
 import Cocoa
 
-final class MainWindowController: NSWindowController {
+final class MainWindowController: NSWindowController, NSWindowDelegate {
+
+    // MARK: Properties
 
     private var autosaveName: NSWindow.FrameAutosaveName? = NSWindow.FrameAutosaveName(rawValue: "MainWindow")
 
+    // MARK: Lifecycle
+
     override func windowDidLoad() {
         super.windowDidLoad()
-        WindowManager.shared.retainWindowController(self)
         if let autosaveName = autosaveName {
             window?.setFrameUsingName(autosaveName)
             windowFrameAutosaveName = autosaveName
         }
+
+        // Keep the instance alive until the window closes
+        MainWindowController.retain(self)
     }
+
+    func windowWillClose(_ notification: Notification) {
+        MainWindowController.release(self)
+    }
+
+    // MARK: New windows
 
     override func newWindowForTab(_ sender: Any?) {
         newTab(sender)
@@ -47,6 +59,20 @@ final class MainWindowController: NSWindowController {
         }
         newWindowController.autosaveName = nil
         return newWindowController.window
+    }
+
+    // MARK: Instances
+
+    private static var instances: [MainWindowController] = []
+
+    private static func retain(_ windowController: MainWindowController) {
+        instances.append(windowController)
+    }
+
+    private static func release(_ windowController: MainWindowController) {
+        if let index = instances.index(where: { $0 == windowController }) {
+            instances.remove(at: index)
+        }
     }
 
 }
