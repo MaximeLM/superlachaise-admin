@@ -59,7 +59,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="New Window" keyEquivalent="n" id="yOg-KD-lCy">
+                                        <menuItem title="New Window" keyEquivalent="T" id="yOg-KD-lCy">
                                             <connections>
                                                 <action selector="newWindow:" target="Ady-hI-5gd" id="uXB-Q9-kp0"/>
                                             </connections>
