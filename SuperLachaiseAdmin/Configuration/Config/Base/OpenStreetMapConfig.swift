@@ -13,4 +13,6 @@ protocol OpenStreetMapConfig {
 
     var fetchedTags: [String] { get }
 
+    var ignoredElements: [OpenStreetMapId] { get }
+
 }

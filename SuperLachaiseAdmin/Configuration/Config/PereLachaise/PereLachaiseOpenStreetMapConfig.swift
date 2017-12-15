@@ -13,4 +13,14 @@ struct PereLachaiseOpenStreetMapConfig: OpenStreetMapConfig {
 
     let fetchedTags: [String] = ["historic=tomb", "historic=memorial"]
 
+    let ignoredElements: [OpenStreetMapId] = [
+        OpenStreetMapId(elementType: .node, numericId: 1688357881),
+        OpenStreetMapId(elementType: .node, numericId: 5058142865),
+        OpenStreetMapId(elementType: .node, numericId: 5058142866),
+        OpenStreetMapId(elementType: .node, numericId: 5220080010),
+        OpenStreetMapId(elementType: .node, numericId: 5220080011),
+        OpenStreetMapId(elementType: .node, numericId: 5220085953),
+        OpenStreetMapId(elementType: .node, numericId: 5221404534),
+    ]
+
 }
