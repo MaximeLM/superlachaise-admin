@@ -13,7 +13,7 @@ final class WikidataEntry: Object {
     @objc dynamic var wikidataId: String = ""
 
     @objc dynamic var name: String?
-    @objc dynamic var rawKind = ""
+    @objc dynamic var rawNature = ""
 
     // Stored in UTC
     @objc dynamic var rawDateOfBirth: Date?

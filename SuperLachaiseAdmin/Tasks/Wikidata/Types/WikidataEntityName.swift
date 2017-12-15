@@ -23,8 +23,6 @@ struct WikidataEntityName: Hashable {
 
 extension WikidataEntityName {
 
-    // MARK: Instances of
-
     static let human = WikidataEntityName(rawValue: "Q5")
 
     static let grave = WikidataEntityName(rawValue: "Q173387")

@@ -144,71 +144,51 @@ private extension SyncWikidataEntries {
         // Name
         wikidataEntry.name = wikidataEntry.localizations.first?.name
 
-        // Kind
-        let kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
-        wikidataEntry.kind = kind
+        // Nature
+        let nature = wikidataEntryNature(wikidataEntity: wikidataEntity)
+        wikidataEntry.nature = nature
 
         // Secondary wikidata ids
-        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
+        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, nature: nature)
         wikidataEntry.secondaryWikidataIds.replaceAll(objects: secondaryWikidataIds)
 
         // Wikidata category ids
-        let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, kind: kind)
+        let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, nature: nature)
         wikidataEntry.wikidataCategoryIds.replaceAll(objects: wikidataCategoryIds)
 
         // Dates
-        wikidataEntry.dateOfBirth = try wikidataDate(wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfBirth)
-        wikidataEntry.dateOfDeath = try wikidataDate(wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfDeath)
+        wikidataEntry.dateOfBirth = try wikidataDate(wikidataEntity: wikidataEntity,
+                                                     nature: nature,
+                                                     claim: .dateOfBirth)
+        wikidataEntry.dateOfDeath = try wikidataDate(wikidataEntity: wikidataEntity,
+                                                     nature: nature,
+                                                     claim: .dateOfDeath)
 
         return wikidataEntry
     }
 
-    func wikidataEntryKind(wikidataEntity: WikidataEntity) -> WikidataEntryKind? {
+    func wikidataEntryNature(wikidataEntity: WikidataEntity) -> WikidataEntryNature? {
         let instanceOfs = wikidataEntity.claims(.instanceOf)?
             .flatMap { $0.mainsnak.entityName }
         for instanceOf in instanceOfs ?? [] {
             if [.human].contains(instanceOf) {
-                let claims: [WikidataPropertyName] = [.placeOfBurial]
-                let validLocations = claims
-                    .flatMap { wikidataEntity.claims($0) }
-                    .flatMap { $0.flatMap { $0.mainsnak.entityName } }
-                    .filter { isValidLocation($0) }
-                if !validLocations.isEmpty {
-                    return .graveOf
-                }
+                return .person
             }
             if [.grave, .tomb, .cardiotaph].contains(instanceOf) {
-                let claims: [WikidataPropertyName] = [.location, .partOf, .placeOfBurial]
-                let validLocations = claims
-                    .flatMap { wikidataEntity.claims($0) }
-                    .flatMap { $0.flatMap { $0.mainsnak.entityName } }
-                    .filter { isValidLocation($0) }
-                if !validLocations.isEmpty {
-                    return .grave
-                }
+                return .grave
             }
             if [.monument, .memorial, .warMemorial].contains(instanceOf) {
-                let claims: [WikidataPropertyName] = [.location, .partOf, .placeOfBurial]
-                let validLocations = claims
-                    .flatMap { wikidataEntity.claims($0) }
-                    .flatMap { $0.flatMap { $0.mainsnak.entityName } }
-                    .filter { isValidLocation($0) }
-                if !validLocations.isEmpty {
-                    return .grave
-                }
+                return .monument
             }
         }
         return nil
     }
 
-    func isValidLocation(_ location: WikidataEntityName) -> Bool {
-        return config.validLocations.contains(location)
-    }
-
-    func secondaryWikidataIds(wikidataEntity: WikidataEntity, kind: WikidataEntryKind?) -> [String] {
+    func secondaryWikidataIds(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> [String] {
         var secondaryWikidataNames: [WikidataEntityName] = []
 
-        if kind == .grave {
+        if nature == .grave {
+            // Persons buried in the grave
             let entityNames = (wikidataEntity.claims(.instanceOf) ?? [])
                 .filter { claim in
                     guard let entityName = claim.mainsnak.entityName else {
@@ -221,7 +201,8 @@ private extension SyncWikidataEntries {
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
-        if kind == .monument {
+        if nature == .monument {
+            // Subject of the monument
             let claims = [
                 wikidataEntity.claims(.commemorates),
                 wikidataEntity.claims(.mainSubject),
@@ -232,6 +213,7 @@ private extension SyncWikidataEntries {
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
+        // Custom secondary entries
         let wikidataEntityName = WikidataEntityName(rawValue: wikidataEntity.id)
         if let customSecondaryWikidataIds = config.customSecondaryWikidataIds[wikidataEntityName] {
             secondaryWikidataNames.append(contentsOf: customSecondaryWikidataIds)
@@ -240,10 +222,10 @@ private extension SyncWikidataEntries {
         return secondaryWikidataNames.map { $0.rawValue }.uniqueValues()
     }
 
-    func wikidataCategoryIds(wikidataEntity: WikidataEntity, kind: WikidataEntryKind?) -> [String] {
+    func wikidataCategoryIds(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> [String] {
         var wikidataCategoryNames: [WikidataEntityName] = []
 
-        if kind == .graveOf {
+        if nature == .person {
             let claims = [
                 wikidataEntity.claims(.occupation),
                 wikidataEntity.claims(.sexOrGender),
@@ -258,9 +240,9 @@ private extension SyncWikidataEntries {
     }
 
     func wikidataDate(wikidataEntity: WikidataEntity,
-                      kind: WikidataEntryKind?,
+                      nature: WikidataEntryNature?,
                       claim: WikidataPropertyName) throws -> WikidataDate? {
-        guard kind == .graveOf else {
+        guard nature == .person else {
             return nil
         }
         return try wikidataEntity.claims(claim)?

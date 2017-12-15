@@ -7,18 +7,18 @@
 
 import Foundation
 
-enum WikidataEntryKind: String {
-    case grave, graveOf, monument
+enum WikidataEntryNature: String {
+    case person, grave, monument
 }
 
 extension WikidataEntry {
 
-    var kind: WikidataEntryKind? {
+    var nature: WikidataEntryNature? {
         get {
-            return WikidataEntryKind(rawValue: rawKind)
+            return WikidataEntryNature(rawValue: rawNature)
         }
         set {
-            rawKind = newValue?.rawValue ?? ""
+            rawNature = newValue?.rawValue ?? ""
         }
     }
 
