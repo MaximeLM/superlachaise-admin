@@ -10,36 +10,50 @@ import Cocoa
 extension ListViewController {
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        guard menuItem.menu == contextualMenu else {
-            return true
-        }
-        guard let tag = ListViewMenuItemTag(rawValue: menuItem.tag) else {
+        guard let action = menuItem.action else {
             return false
         }
-        guard let outlineView = outlineView else {
-            return false
-        }
-        let item = outlineView.item(atRow: outlineView.clickedRow)
-        switch tag {
-        case .openInBrowser:
-            guard let item = item as? ListViewObjectItem else {
-                return false
-            }
-            return item.object is RealmOpenableInBrowser
-        case .syncOpenStreetMapElement:
-            guard let item = item as? ListViewObjectItem else {
-                return false
-            }
-            return item.object is SuperLachaisePOI || item.object is OpenStreetMapElement
-        case .syncWikidataEntries:
-            guard let item = item as? ListViewObjectItem else {
-                return false
-            }
-            return item.object is SuperLachaisePOI || item.object is WikidataEntry
+        if menuItem.menu == contextualMenu {
+            return validateContextualMenuItem(action: action)
+        } else {
+            return validateMainMenuItem(action: action)
         }
     }
 
-    // MARK: Actions
+    // MARK: Main menu
+
+    private func validateMainMenuItem(action: Selector) -> Bool {
+        switch action {
+        case #selector(copy(_:)):
+            guard let outlineView = outlineView else {
+                return false
+            }
+            return outlineView.item(atRow: outlineView.selectedRow) is ListViewObjectItem
+        case #selector(find(_:)):
+            return true
+        default:
+            return false
+        }
+    }
+
+    @IBAction func copy(_ sender: Any?) {
+        guard let outlineView = outlineView,
+            let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem else {
+            return
+        }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.writeObjects([item.text as NSString])
+    }
+
+    @IBAction func find(_ sender: Any?) {
+        view.window?.makeFirstResponder(searchField)
+    }
+
+    // MARK: Subviews
+
+    @IBAction func searchAction(_ searchField: NSSearchField) {
+        rootItem?.filter = searchField.stringValue
+    }
 
     @IBAction func doubleClickAction(_ outlineView: NSOutlineView) {
         let item = outlineView.item(atRow: outlineView.clickedRow)
@@ -54,15 +68,33 @@ extension ListViewController {
         }
     }
 
-    @IBAction func find(_ sender: Any?) {
-        view.window?.makeFirstResponder(searchField)
-    }
+    // MARK: Contextual menu
 
-    @IBAction func searchAction(_ searchField: NSSearchField) {
-        rootItem?.filter = searchField.stringValue
+    private func validateContextualMenuItem(action: Selector) -> Bool {
+        guard let outlineView = outlineView else {
+            return false
+        }
+        let item = outlineView.item(atRow: outlineView.clickedRow)
+        switch action {
+        case #selector(openInBrowser(_:)):
+            guard let item = item as? ListViewObjectItem else {
+                return false
+            }
+            return item.object is RealmOpenableInBrowser
+        case #selector(syncSelectedOpenStreetMapElement(_:)):
+            guard let item = item as? ListViewObjectItem else {
+                return false
+            }
+            return item.object is SuperLachaisePOI || item.object is OpenStreetMapElement
+        case #selector(syncSelectedWikidataEntries(_:)):
+            guard let item = item as? ListViewObjectItem else {
+                return false
+            }
+            return item.object is SuperLachaisePOI || item.object is WikidataEntry
+        default:
+            return false
+        }
     }
-
-    // MARK: Contextual menuMenu
 
     @IBAction func openInBrowser(_ sender: Any?) {
         guard let outlineView = outlineView,
@@ -116,14 +148,5 @@ extension ListViewController {
         }
         taskController.syncWikidataEntries(ids: [wikidataId])
     }
-
-}
-
-private enum ListViewMenuItemTag: Int {
-
-    case openInBrowser = 0
-
-    case syncOpenStreetMapElement = 10
-    case syncWikidataEntries = 11
 
 }
