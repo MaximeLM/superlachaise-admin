@@ -15,10 +15,4 @@ final class RootViewController: NSSplitViewController {
 
     lazy var taskController = AppContainer.taskController
 
-    // MARK: Subviews
-
-    private var listViewController: ListViewController? {
-        return childViewControllers.flatMap { $0 as? ListViewController }.first
-    }
-
 }

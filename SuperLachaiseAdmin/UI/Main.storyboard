@@ -59,14 +59,14 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
+                                        <menuItem title="New Window" keyEquivalent="n" id="yOg-KD-lCy">
+                                            <connections>
+                                                <action selector="newWindow:" target="Ady-hI-5gd" id="uXB-Q9-kp0"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="New Tab" keyEquivalent="t" id="IvR-ce-vXN">
                                             <connections>
                                                 <action selector="newTab:" target="Ady-hI-5gd" id="fQj-7d-ZTK"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="New Window" keyEquivalent="T" id="yOg-KD-lCy">
-                                            <connections>
-                                                <action selector="newWindow:" target="Ady-hI-5gd" id="uXB-Q9-kp0"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="WUP-db-S8V"/>
