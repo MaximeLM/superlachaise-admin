@@ -172,7 +172,7 @@
                                                 <items>
                                                     <menuItem title="Find…" tag="1" keyEquivalent="f" id="Xz5-n4-O0W">
                                                         <connections>
-                                                            <action selector="performFindPanelAction:" target="Ady-hI-5gd" id="cD7-Qs-BN4"/>
+                                                            <action selector="find:" target="Ady-hI-5gd" id="u6R-yt-pWa"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem title="Find and Replace…" tag="12" keyEquivalent="f" id="YEy-JH-Tfz">
@@ -849,6 +849,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="contextualMenu" destination="U7s-Ag-zeW" id="55p-3G-lMU"/>
                         <outlet property="outlineView" destination="7HU-X2-rtd" id="htJ-11-mPE"/>
                         <outlet property="searchField" destination="c9B-Uq-hmr" id="K3G-NF-g4n"/>
                     </connections>
@@ -866,13 +867,13 @@
                         <menuItem title="Sync OpenStreetMap element" tag="10" id="fmN-8D-mzp">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="menuSyncOpenStreetMapElement:" target="uw9-uF-Klt" id="biO-w0-5u1"/>
+                                <action selector="syncSelectedOpenStreetMapElement:" target="uw9-uF-Klt" id="fRP-au-7WH"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Sync Wikidata entries" tag="11" id="LiN-Yj-cbb">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="menuSyncWikidataEntries:" target="uw9-uF-Klt" id="sdb-Rt-LKn"/>
+                                <action selector="syncSelectedWikidataEntries:" target="uw9-uF-Klt" id="iPG-Pu-OZZ"/>
                             </connections>
                         </menuItem>
                     </items>

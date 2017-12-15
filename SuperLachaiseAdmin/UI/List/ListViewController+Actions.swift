@@ -9,9 +9,10 @@ import Cocoa
 
 extension ListViewController {
 
-    // MARK: Menu
-
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        guard menuItem.menu == contextualMenu else {
+            return true
+        }
         guard let tag = ListViewMenuItemTag(rawValue: menuItem.tag) else {
             return false
         }
@@ -53,15 +54,21 @@ extension ListViewController {
         }
     }
 
+    @IBAction func find(_ sender: Any?) {
+        view.window?.makeFirstResponder(searchField)
+    }
+
     @IBAction func searchAction(_ searchField: NSSearchField) {
         rootItem?.filter = searchField.stringValue
     }
+
+    // MARK: Contextual menuMenu
 
     @IBAction func openInBrowser(_ sender: Any?) {
         guard let outlineView = outlineView,
             let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem,
             let object = item.object as? RealmOpenableInBrowser else {
-            return
+                return
         }
         guard let externalURL = object.externalURL else {
             Logger.error("Object \(object) has no external URL")
@@ -70,7 +77,7 @@ extension ListViewController {
         NSWorkspace.shared.open(externalURL)
     }
 
-    @IBAction func menuSyncOpenStreetMapElement(_ sender: Any?) {
+    @IBAction func syncSelectedOpenStreetMapElement(_ sender: Any?) {
         guard let outlineView = outlineView,
             let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem else {
                 return
@@ -94,7 +101,7 @@ extension ListViewController {
         taskController.syncOpenStreetMapElement([openStreetMapId])
     }
 
-    @IBAction func menuSyncWikidataEntries(_ sender: Any?) {
+    @IBAction func syncSelectedWikidataEntries(_ sender: Any?) {
         guard let outlineView = outlineView,
             let item = outlineView.item(atRow: outlineView.clickedRow) as? ListViewObjectItem else {
                 return

@@ -21,6 +21,8 @@ final class ListViewController: NSViewController {
 
     @IBOutlet weak var outlineView: NSOutlineView?
 
+    @IBOutlet weak var contextualMenu: NSMenu?
+
     // MARK: Model
 
     var rootItem: ListViewRootItem?
