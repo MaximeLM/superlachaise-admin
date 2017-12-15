@@ -11,7 +11,7 @@
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
-		5587F9F51FCF6E9F004C9E28 /* RootViewController+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F41FCF6E9E004C9E28 /* RootViewController+Sync.swift */; };
+		5587F9F51FCF6E9F004C9E28 /* RootViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F41FCF6E9E004C9E28 /* RootViewController+Actions.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* RealmDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* RealmDeletable.swift */; };
 		55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2421FCF5BA500BB00BC /* Config.swift */; };
@@ -83,7 +83,7 @@
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55605C0F1FC9C6120010BC5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		5587F9F41FCF6E9E004C9E28 /* RootViewController+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewController+Sync.swift"; sourceTree = "<group>"; };
+		5587F9F41FCF6E9E004C9E28 /* RootViewController+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewController+Actions.swift"; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* RealmDeletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDeletable.swift; sourceTree = "<group>"; };
 		55A8D2421FCF5BA500BB00BC /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				5587F9F01FCF6927004C9E28 /* RootViewController.swift */,
-				5587F9F41FCF6E9E004C9E28 /* RootViewController+Sync.swift */,
+				5587F9F41FCF6E9E004C9E28 /* RootViewController+Actions.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -716,7 +716,7 @@
 				55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				55AB3DEC1FE091D90011AF47 /* SuperLachaise+Requests.swift in Sources */,
-				5587F9F51FCF6E9F004C9E28 /* RootViewController+Sync.swift in Sources */,
+				5587F9F51FCF6E9F004C9E28 /* RootViewController+Actions.swift in Sources */,
 				55B365971FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift in Sources */,

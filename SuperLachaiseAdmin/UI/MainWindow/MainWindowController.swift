@@ -9,12 +9,14 @@ import Cocoa
 
 final class MainWindowController: NSWindowController {
 
-    private let autosaveName = NSWindow.FrameAutosaveName(rawValue: "MainWindow")
+    var autosaveName: NSWindow.FrameAutosaveName? = NSWindow.FrameAutosaveName(rawValue: "MainWindow")
 
     override func windowDidLoad() {
         super.windowDidLoad()
-        window?.setFrameUsingName(autosaveName)
-        windowFrameAutosaveName = autosaveName
+        if let autosaveName = autosaveName {
+            window?.setFrameUsingName(autosaveName)
+            windowFrameAutosaveName = autosaveName
+        }
     }
 
 }
