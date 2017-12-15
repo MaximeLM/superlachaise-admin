@@ -15,4 +15,14 @@ final class RootViewController: NSSplitViewController {
 
     lazy var taskController = AppContainer.taskController
 
+    // Model
+
+    override var representedObject: Any? {
+        didSet {
+            if let representedObject = representedObject {
+                view.window?.title = "\(type(of: representedObject)) - \(representedObject)"
+            }
+        }
+    }
+
 }

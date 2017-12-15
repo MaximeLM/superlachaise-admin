@@ -81,4 +81,13 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         return view
     }
 
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        guard let outlineView = outlineView else {
+            return
+        }
+        if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem {
+            parent?.representedObject = item.object
+        }
+    }
+
 }

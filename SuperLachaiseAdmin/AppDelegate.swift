@@ -14,8 +14,4 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
-    func applicationDidBecomeActive(_ notification: Notification) {
-        print("\(NSDocumentController.shared.documents)")
-    }
-
 }
