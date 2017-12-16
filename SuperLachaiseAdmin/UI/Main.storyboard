@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -553,10 +554,57 @@
         <scene sceneID="YHU-Z2-vVI">
             <objects>
                 <viewController id="cHw-YI-5tC" customClass="DetailViewController" customModule="SuperLachaiseAdmin" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="pPO-Xe-gPi">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                    <view key="view" autoresizesSubviews="NO" id="pPO-Xe-gPi">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TvE-QZ-nlQ">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <clipView key="contentView" id="ORK-l2-ZA5" customClass="FlippedClipView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="ooP-Jh-OBx">
+                                            <rect key="frame" x="0.0" y="300" width="450" height="0.0"/>
+                                            <subviews>
+                                                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IaN-qY-2FY">
+                                                    <rect key="frame" x="0.0" y="0.0" width="450" height="0.0"/>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="IaN-qY-2FY" secondAttribute="bottom" id="2Ry-fH-8V9"/>
+                                                <constraint firstItem="IaN-qY-2FY" firstAttribute="leading" secondItem="ooP-Jh-OBx" secondAttribute="leading" id="NOT-rb-pcD"/>
+                                                <constraint firstItem="IaN-qY-2FY" firstAttribute="top" secondItem="ooP-Jh-OBx" secondAttribute="top" id="O5b-Va-pCk"/>
+                                                <constraint firstAttribute="trailing" secondItem="IaN-qY-2FY" secondAttribute="trailing" id="XBa-Tf-X9S"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="ooP-Jh-OBx" secondAttribute="trailing" id="W7c-Ov-hr4"/>
+                                        <constraint firstItem="ooP-Jh-OBx" firstAttribute="leading" secondItem="ORK-l2-ZA5" secondAttribute="leading" id="bgB-md-Wxd"/>
+                                        <constraint firstItem="ooP-Jh-OBx" firstAttribute="top" secondItem="ORK-l2-ZA5" secondAttribute="top" id="vEG-D8-heG"/>
+                                    </constraints>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="F58-XJ-5WU">
+                                    <rect key="frame" x="-100" y="-100" width="285" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="bbW-gC-Nyp">
+                                    <rect key="frame" x="285" y="0.0" width="15" height="300"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="TvE-QZ-nlQ" secondAttribute="bottom" id="DtB-Ra-bBP"/>
+                            <constraint firstAttribute="trailing" secondItem="TvE-QZ-nlQ" secondAttribute="trailing" id="oEe-DR-XA0"/>
+                            <constraint firstItem="TvE-QZ-nlQ" firstAttribute="leading" secondItem="pPO-Xe-gPi" secondAttribute="leading" id="saf-KA-oBm"/>
+                            <constraint firstItem="TvE-QZ-nlQ" firstAttribute="top" secondItem="pPO-Xe-gPi" secondAttribute="top" id="zhU-5h-KTh"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="stackView" destination="IaN-qY-2FY" id="AgM-Cn-Rea"/>
+                    </connections>
                 </viewController>
                 <customObject id="g9s-Cp-VC7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

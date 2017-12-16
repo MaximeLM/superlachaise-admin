@@ -19,4 +19,8 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     var source: DetailViewSource?
 
+    // MARK: Subviews
+
+    @IBOutlet weak var  stackView: NSStackView?
+
 }
