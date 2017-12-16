@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		18A19439D64C84896B645017 /* Pods_SuperLachaiseAdmin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */; };
+		5513EF421FE4998C00BD3A22 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF411FE4998C00BD3A22 /* DetailViewController.swift */; };
+		5513EF451FE49A1400BD3A22 /* DetailViewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF441FE49A1400BD3A22 /* DetailViewSource.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -78,6 +80,8 @@
 
 /* Begin PBXFileReference section */
 		34B8E85B64CCD699D4444D92 /* Pods_SuperLachaiseAdmin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperLachaiseAdmin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5513EF411FE4998C00BD3A22 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		5513EF441FE49A1400BD3A22 /* DetailViewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewSource.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -162,6 +166,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5513EF401FE4997B00BD3A22 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF411FE4998C00BD3A22 /* DetailViewController.swift */,
+				5513EF431FE49A0600BD3A22 /* Sources */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		5513EF431FE49A0600BD3A22 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF441FE49A1400BD3A22 /* DetailViewSource.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		55605BFA1FC9C6120010BC5F = {
 			isa = PBXGroup;
 			children = (
@@ -387,6 +408,7 @@
 				55B536E31FD31C5300036FFC /* Window */,
 				5587F9EF1FCF6904004C9E28 /* Root */,
 				55BD408B1FD30B3C005ACD89 /* List */,
+				5513EF401FE4997B00BD3A22 /* Detail */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -671,6 +693,7 @@
 				55BD408D1FD30B4B005ACD89 /* ListViewController.swift in Sources */,
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
 				55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */,
+				5513EF451FE49A1400BD3A22 /* DetailViewSource.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
@@ -713,6 +736,7 @@
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
+				5513EF421FE4998C00BD3A22 /* DetailViewController.swift in Sources */,
 				55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				55AB3DEC1FE091D90011AF47 /* SuperLachaise+Requests.swift in Sources */,

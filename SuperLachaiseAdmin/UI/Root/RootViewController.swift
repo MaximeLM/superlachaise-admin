@@ -15,13 +15,23 @@ final class RootViewController: NSSplitViewController {
 
     lazy var taskController = AppContainer.taskController
 
-    // Model
+    // MARK: Subviews
 
-    override var representedObject: Any? {
-        didSet {
-            if let representedObject = representedObject {
-                view.window?.title = "\(type(of: representedObject)) - \(representedObject)"
-            }
+    var listViewController: ListViewControllerType?
+
+    var detailViewController: DetailViewControllerType?
+
+    // MARK: Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        listViewController = childViewControllers.flatMap { $0 as? ListViewControllerType }.first
+        detailViewController = childViewControllers.flatMap { $0 as? DetailViewControllerType }.first
+
+        listViewController?.didSelectDetailViewSource = { [weak self] detailViewSource in
+            self?.view.window?.title = detailViewSource.detailViewTitle
+            self?.detailViewController?.source = detailViewSource
         }
     }
 

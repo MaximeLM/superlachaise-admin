@@ -549,10 +549,10 @@
             </objects>
             <point key="canvasLocation" x="591" y="494"/>
         </scene>
-        <!--View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="YHU-Z2-vVI">
             <objects>
-                <viewController id="cHw-YI-5tC" sceneMemberID="viewController">
+                <viewController id="cHw-YI-5tC" customClass="DetailViewController" customModule="SuperLachaiseAdmin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="pPO-Xe-gPi">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>

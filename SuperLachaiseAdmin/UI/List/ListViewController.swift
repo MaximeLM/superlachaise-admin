@@ -7,13 +7,23 @@
 
 import Cocoa
 
-final class ListViewController: NSViewController {
+protocol ListViewControllerType {
+
+    var didSelectDetailViewSource: ((DetailViewSource) -> Void)? { get set }
+
+}
+
+final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Dependencies
 
     lazy var realmContext = AppContainer.realmContext
 
     lazy var taskController = AppContainer.taskController
+
+    // MARK: Properties
+
+    var didSelectDetailViewSource: ((DetailViewSource) -> Void)?
 
     // MARK: Subviews
 
@@ -85,8 +95,9 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let outlineView = outlineView else {
             return
         }
-        if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem {
-            parent?.representedObject = item.object
+        if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem,
+            let detailViewSource = item.object as? DetailViewSource {
+            didSelectDetailViewSource?(detailViewSource)
         }
     }
 
