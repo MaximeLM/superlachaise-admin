@@ -13,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="18"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="irl-Zf-N1e">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="irl-Zf-N1e">
                     <rect key="frame" x="18" y="1" width="154" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="OaK-cE-Nnh"/>
@@ -24,7 +24,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <scrollView verticalHuggingPriority="1000" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxN-1a-bqe">
+                <scrollView verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxN-1a-bqe" customClass="NoScrollView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
                     <rect key="frame" x="178" y="0.0" width="282" height="18"/>
                     <clipView key="contentView" id="9Vl-vh-deE" customClass="FlippedClipView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
                         <rect key="frame" x="1" y="1" width="280" height="16"/>

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WikidataEntity: Decodable {
+struct WikidataEntity: Decodable, CustomStringConvertible {
 
     let id: String
 
@@ -18,6 +18,10 @@ struct WikidataEntity: Decodable {
 
     func claims(_ propertyName: WikidataPropertyName) -> [WikidataClaim] {
         return claims[propertyName.rawValue] ?? []
+    }
+
+    var description: String {
+        return id
     }
 
 }

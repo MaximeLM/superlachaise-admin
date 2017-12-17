@@ -32,6 +32,7 @@
 		5513EF8A1FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF891FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib */; };
 		5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */; };
 		5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */; };
+		5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -126,6 +127,7 @@
 		5513EF891FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewInlineFieldView.xib; sourceTree = "<group>"; };
 		5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldView.swift; sourceTree = "<group>"; };
 		5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldItem.swift; sourceTree = "<group>"; };
+		5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoScrollView.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				5513EF471FE4A62B00BD3A22 /* FlippedClipView.swift */,
+				5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -846,6 +849,7 @@
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
 				55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
+				5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */,
 				5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,

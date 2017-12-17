@@ -46,6 +46,12 @@ final class RootViewController: NSSplitViewController {
             })
             .disposed(by: disposeBag)
 
+        source.asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                self?.detailViewController?.didSwitchSource()
+            })
+            .disposed(by: disposeBag)
+
     }
 
     // MARK: Model

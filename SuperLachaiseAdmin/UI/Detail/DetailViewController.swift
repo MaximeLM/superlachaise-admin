@@ -11,6 +11,8 @@ protocol DetailViewControllerType {
 
     var model: DetailViewModel? { get set }
 
+    func didSwitchSource()
+
 }
 
 final class DetailViewController: NSViewController, DetailViewControllerType {
@@ -23,7 +25,15 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
         }
     }
 
+    func didSwitchSource() {
+        if let documentView = scrollView?.documentView {
+            documentView.scroll(NSPoint(x: 0, y: documentView.bounds.height))
+        }
+    }
+
     // MARK: Subviews
+
+    @IBOutlet weak var  scrollView: NSScrollView?
 
     @IBOutlet weak var  stackView: NSStackView?
 

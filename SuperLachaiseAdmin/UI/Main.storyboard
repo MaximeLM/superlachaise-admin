@@ -607,6 +607,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="scrollView" destination="TvE-QZ-nlQ" id="CKa-IY-CRH"/>
                         <outlet property="stackView" destination="IaN-qY-2FY" id="AgM-Cn-Rea"/>
                     </connections>
                 </viewController>
