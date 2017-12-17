@@ -86,7 +86,19 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         view.toolTip = text
 
         itemModel.reload = { [weak outlineView] item in
-            outlineView?.reloadItem(item, reloadChildren: true)
+            guard let outlineView = outlineView else {
+                return
+            }
+
+            let selectedItem = outlineView.item(atRow: outlineView.selectedRow) as? ListViewItem
+            let isSelectedItemChildren = (outlineView.parent(forItem: selectedItem) as? ListViewItem)?.isEqual(item)
+                ?? false
+            outlineView.reloadItem(item, reloadChildren: true)
+
+            if isSelectedItemChildren, let selectedItem = selectedItem,
+                let row = item.children?.index(where: { $0.identifier == selectedItem.identifier }) {
+                outlineView.selectRowIndexes([outlineView.row(forItem: item) + row + 1], byExtendingSelection: false)
+            }
         }
 
         return view

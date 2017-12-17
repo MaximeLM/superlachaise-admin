@@ -18,3 +18,14 @@ protocol ListViewItem: NSObjectProtocol {
     var reload: ((ListViewItem) -> Void)? { get set }
 
 }
+
+extension ListViewItem {
+
+    func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ListViewItem else {
+            return false
+        }
+        return type(of: self) == type(of: object) && identifier == object.identifier
+    }
+
+}
