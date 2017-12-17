@@ -16,7 +16,14 @@ protocol DetailViewModel {
 extension DetailViewModel {
 
     func detailSubviews() -> [NSView] {
-        return []
+        var subviews: [NSView?] = []
+
+        // Title
+        let titleView = DetailTitleView.instantiate()
+        titleView?.title = title
+        subviews.append(titleView)
+
+        return subviews.flatMap { $0 }
     }
 
 }

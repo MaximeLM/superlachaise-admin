@@ -14,6 +14,9 @@
 		5513EF4E1FE6A8E000BD3A22 /* RootViewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF4D1FE6A8E000BD3A22 /* RootViewSource.swift */; };
 		5513EF501FE6A91000BD3A22 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF4F1FE6A91000BD3A22 /* RootViewModel.swift */; };
 		5513EF531FE6ABD600BD3A22 /* OpenStreetMapElement+RootViewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF521FE6ABD600BD3A22 /* OpenStreetMapElement+RootViewSource.swift */; };
+		5513EF591FE6BAC000BD3A22 /* DetailTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF581FE6BAC000BD3A22 /* DetailTitleView.xib */; };
+		5513EF5B1FE6BACC00BD3A22 /* DetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF5A1FE6BACC00BD3A22 /* DetailTitleView.swift */; };
+		5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF5D1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -90,6 +93,9 @@
 		5513EF4D1FE6A8E000BD3A22 /* RootViewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewSource.swift; sourceTree = "<group>"; };
 		5513EF4F1FE6A91000BD3A22 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		5513EF521FE6ABD600BD3A22 /* OpenStreetMapElement+RootViewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+RootViewSource.swift"; sourceTree = "<group>"; };
+		5513EF581FE6BAC000BD3A22 /* DetailTitleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailTitleView.xib; sourceTree = "<group>"; };
+		5513EF5A1FE6BACC00BD3A22 /* DetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleView.swift; sourceTree = "<group>"; };
+		5513EF5D1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNib+Instantiate.swift"; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -179,6 +185,7 @@
 			children = (
 				5513EF411FE4998C00BD3A22 /* DetailViewController.swift */,
 				5513EF491FE6A54100BD3A22 /* Model */,
+				5513EF561FE6BAA500BD3A22 /* Views */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -214,6 +221,31 @@
 				5513EF521FE6ABD600BD3A22 /* OpenStreetMapElement+RootViewSource.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		5513EF561FE6BAA500BD3A22 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF571FE6BAAE00BD3A22 /* Title */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5513EF571FE6BAAE00BD3A22 /* Title */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF581FE6BAC000BD3A22 /* DetailTitleView.xib */,
+				5513EF5A1FE6BACC00BD3A22 /* DetailTitleView.swift */,
+			);
+			path = Title;
+			sourceTree = "<group>";
+		};
+		5513EF5C1FE6BD2A00BD3A22 /* Cocoa */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF5D1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift */,
+			);
+			path = Cocoa;
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -451,6 +483,7 @@
 		55B897E31FCB1CE200FC4EF6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5513EF5C1FE6BD2A00BD3A22 /* Cocoa */,
 				55B365A71FDDE83E00EB84BD /* Collections */,
 				55CB48011FCCE4B6003F3610 /* Error */,
 				55CB47F51FCCD803003F3610 /* Logger */,
@@ -633,6 +666,7 @@
 			files = (
 				55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */,
 				55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */,
+				5513EF591FE6BAC000BD3A22 /* DetailTitleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +764,7 @@
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
 				55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
+				5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
 				55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */,
@@ -754,6 +789,7 @@
 				55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */,
 				55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */,
 				55AB3DEE1FE092940011AF47 /* OpenStreetMapElement+Requests.swift in Sources */,
+				5513EF5B1FE6BACC00BD3A22 /* DetailTitleView.swift in Sources */,
 				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
 				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
 				55B365C71FE07FDB00EB84BD /* WikidataPropertyName.swift in Sources */,
