@@ -6,13 +6,30 @@
 //
 
 import Foundation
-import RxRealm
-import RxSwift
 
 extension OpenStreetMapElement: RootViewSource {
 
     func rootViewModel() -> RootViewModel {
-        return RootViewModel(self)
+        return RootViewModel(self, subviews: [
+            [
+                DetailViewFieldView.instantiate(name: "Name",
+                                                value: name),
+                DetailViewFieldView.instantiate(name: "Type",
+                                                value: openStreetMapId?.elementType),
+                DetailViewFieldView.instantiate(name: "ID",
+                                                value: openStreetMapId?.numericId),
+            ],
+            [
+                DetailViewFieldView.instantiate(name: "Latitude",
+                                                value: latitude),
+                DetailViewFieldView.instantiate(name: "Longitude",
+                                                value: longitude),
+            ],
+            [
+                DetailViewFieldView.instantiate(name: "Wikidata ID",
+                                                value: wikidataId),
+            ],
+        ])
     }
 
 }

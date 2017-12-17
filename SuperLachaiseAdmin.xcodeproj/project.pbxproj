@@ -18,9 +18,11 @@
 		5513EF5B1FE6BACC00BD3A22 /* DetailViewTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF5A1FE6BACC00BD3A22 /* DetailViewTitleView.swift */; };
 		5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF5D1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift */; };
 		5513EF611FE6C30F00BD3A22 /* DetailViewURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF601FE6C30F00BD3A22 /* DetailViewURLView.swift */; };
-		5513EF651FE6C5BB00BD3A22 /* DetailViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF641FE6C5BB00BD3A22 /* DetailViewItem.swift */; };
 		5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF6A1FE6C6CB00BD3A22 /* DetailViewURLView.xib */; };
 		5513EF711FE6D76100BD3A22 /* NSTextField+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF701FE6D76100BD3A22 /* NSTextField+URL.swift */; };
+		5513EF741FE6DF2D00BD3A22 /* DetailViewFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF731FE6DF2D00BD3A22 /* DetailViewFieldView.swift */; };
+		5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF751FE6DF5D00BD3A22 /* DetailViewFieldView.xib */; };
+		5513EF781FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF771FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -101,9 +103,11 @@
 		5513EF5A1FE6BACC00BD3A22 /* DetailViewTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewTitleView.swift; sourceTree = "<group>"; };
 		5513EF5D1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNib+Instantiate.swift"; sourceTree = "<group>"; };
 		5513EF601FE6C30F00BD3A22 /* DetailViewURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewURLView.swift; sourceTree = "<group>"; };
-		5513EF641FE6C5BB00BD3A22 /* DetailViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewItem.swift; sourceTree = "<group>"; };
 		5513EF6A1FE6C6CB00BD3A22 /* DetailViewURLView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewURLView.xib; sourceTree = "<group>"; };
 		5513EF701FE6D76100BD3A22 /* NSTextField+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextField+URL.swift"; sourceTree = "<group>"; };
+		5513EF731FE6DF2D00BD3A22 /* DetailViewFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewFieldView.swift; sourceTree = "<group>"; };
+		5513EF751FE6DF5D00BD3A22 /* DetailViewFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewFieldView.xib; sourceTree = "<group>"; };
+		5513EF771FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+RootViewSource.swift"; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -193,7 +197,7 @@
 			children = (
 				5513EF411FE4998C00BD3A22 /* DetailViewController.swift */,
 				5513EF491FE6A54100BD3A22 /* Model */,
-				5513EF561FE6BAA500BD3A22 /* Items */,
+				5513EF561FE6BAA500BD3A22 /* Views */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -227,18 +231,19 @@
 			children = (
 				5513EF4D1FE6A8E000BD3A22 /* RootViewSource.swift */,
 				5513EF521FE6ABD600BD3A22 /* OpenStreetMapElement+RootViewSource.swift */,
+				5513EF771FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		5513EF561FE6BAA500BD3A22 /* Items */ = {
+		5513EF561FE6BAA500BD3A22 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5513EF641FE6C5BB00BD3A22 /* DetailViewItem.swift */,
 				5513EF571FE6BAAE00BD3A22 /* Title */,
 				5513EF5F1FE6C30100BD3A22 /* URL */,
+				5513EF721FE6DF1D00BD3A22 /* Field */,
 			);
-			path = Items;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		5513EF571FE6BAAE00BD3A22 /* Title */ = {
@@ -267,6 +272,15 @@
 				5513EF6A1FE6C6CB00BD3A22 /* DetailViewURLView.xib */,
 			);
 			path = URL;
+			sourceTree = "<group>";
+		};
+		5513EF721FE6DF1D00BD3A22 /* Field */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF731FE6DF2D00BD3A22 /* DetailViewFieldView.swift */,
+				5513EF751FE6DF5D00BD3A22 /* DetailViewFieldView.xib */,
+			);
+			path = Field;
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -687,6 +701,7 @@
 				55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */,
 				55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */,
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
+				5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */,
 				5513EF591FE6BAC000BD3A22 /* DetailViewTitleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -814,6 +829,8 @@
 				55AB3DEE1FE092940011AF47 /* OpenStreetMapElement+Requests.swift in Sources */,
 				5513EF5B1FE6BACC00BD3A22 /* DetailViewTitleView.swift in Sources */,
 				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
+				5513EF781FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift in Sources */,
+				5513EF741FE6DF2D00BD3A22 /* DetailViewFieldView.swift in Sources */,
 				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
 				55B365C71FE07FDB00EB84BD /* WikidataPropertyName.swift in Sources */,
 				55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */,
@@ -821,7 +838,6 @@
 				5513EF4E1FE6A8E000BD3A22 /* RootViewSource.swift in Sources */,
 				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
-				5513EF651FE6C5BB00BD3A22 /* DetailViewItem.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
 				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,

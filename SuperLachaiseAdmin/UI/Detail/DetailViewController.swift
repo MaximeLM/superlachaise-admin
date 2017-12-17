@@ -19,7 +19,7 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     var model: DetailViewModel? {
         didSet {
-            stackView?.setViews(model?.detailSubviews() ?? [], in: .top)
+            stackView?.setViews(model?.views() ?? [], in: .top)
         }
     }
 

@@ -16,6 +16,44 @@ struct WikidataDate {
     let precision: WikidataDatePrecision
 }
 
+extension WikidataDate: CustomStringConvertible {
+
+    private static var dateFormatters: [String: DateFormatter] = [:]
+
+    func dateString(template: String) -> String {
+        return dateFormatter(template: template).string(from: date)
+    }
+
+    private func dateFormatter(template: String) -> DateFormatter {
+        var template = template
+        switch precision {
+        case .year:
+            template = template.replacingOccurrences(of: "M", with: "")
+            template = template.replacingOccurrences(of: "d", with: "")
+        case .month:
+            template = template.replacingOccurrences(of: "d", with: "")
+        case .day:
+            break
+        }
+
+        if let dateFormatter = WikidataDate.dateFormatters[template] {
+            return dateFormatter
+        } else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            dateFormatter.locale = Locale.current
+            dateFormatter.setLocalizedDateFormatFromTemplate(template)
+            WikidataDate.dateFormatters[template] = dateFormatter
+            return dateFormatter
+        }
+    }
+
+    var description: String {
+        return dateString(template: "dMMMMYYYY")
+    }
+
+}
+
 extension WikidataEntry {
 
     var dateOfBirth: WikidataDate? {

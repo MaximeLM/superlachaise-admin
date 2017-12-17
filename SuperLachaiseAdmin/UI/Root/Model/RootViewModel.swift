@@ -5,7 +5,7 @@
 //  Created by Maxime Le Moine on 17/12/2017.
 //
 
-import Foundation
+import Cocoa
 
 struct RootViewModel {
 
@@ -13,17 +13,20 @@ struct RootViewModel {
 
     let url: URL?
 
+    let subviews: [[NSView?]]
+
 }
 
 extension RootViewModel {
 
-    init(_ object: Any) {
-        title = "\(type(of: object)) - \(object)"
+    init(_ object: Any, subviews: [[NSView?]]) {
+        self.title = "\(type(of: object)): \(object)"
         if let object = object as? RealmOpenableInBrowser {
-            url = object.externalURL
+            self.url = object.externalURL
         } else {
-            url = nil
+            self.url = nil
         }
+        self.subviews = subviews
     }
 
 }

@@ -39,6 +39,8 @@ final class DetailViewURLView: NSView {
         label?.isSelectable = true
     }
 
+    // MARK: Layout
+
     override func layout() {
         label?.preferredMaxLayoutWidth = bounds.width - 2 * 8
         super.layout()
