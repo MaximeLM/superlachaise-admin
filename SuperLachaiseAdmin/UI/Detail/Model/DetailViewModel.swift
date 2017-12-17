@@ -11,6 +11,8 @@ protocol DetailViewModel {
 
     var title: String { get }
 
+    var url: URL? { get }
+
 }
 
 extension DetailViewModel {
@@ -19,9 +21,12 @@ extension DetailViewModel {
         var subviews: [NSView?] = []
 
         // Title
-        let titleView = DetailTitleView.instantiate()
-        titleView?.title = title
-        subviews.append(titleView)
+        subviews.append(DetailViewTitleView.instantiate(title: title))
+
+        // URL
+        if let url = url {
+            subviews.append(DetailViewURLView.instantiate(url: url))
+        }
 
         return subviews.flatMap { $0 }
     }

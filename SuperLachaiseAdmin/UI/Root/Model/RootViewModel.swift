@@ -11,12 +11,19 @@ struct RootViewModel {
 
     let title: String
 
+    let url: URL?
+
 }
 
 extension RootViewModel {
 
     init(_ object: Any) {
-        self.init(title: "\(type(of: object)) - \(object)")
+        title = "\(type(of: object)) - \(object)"
+        if let object = object as? RealmOpenableInBrowser {
+            url = object.externalURL
+        } else {
+            url = nil
+        }
     }
 
 }

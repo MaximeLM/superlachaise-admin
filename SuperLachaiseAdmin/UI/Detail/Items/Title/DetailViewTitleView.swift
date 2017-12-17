@@ -1,5 +1,5 @@
 //
-//  DetailTitleView.swift
+//  DetailViewTitleView.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 17/12/2017.
@@ -7,10 +7,12 @@
 
 import Cocoa
 
-final class DetailTitleView: NSView {
+final class DetailViewTitleView: NSView {
 
-    static func instantiate() -> DetailTitleView? {
-        return NSNib.instantiate("DetailTitleView")
+    static func instantiate(title: String) -> DetailViewTitleView? {
+        let view: DetailViewTitleView? = NSNib.instantiate("DetailViewTitleView")
+        view?.title = title
+        return view
     }
 
     // MARK: Properties
@@ -28,7 +30,7 @@ final class DetailTitleView: NSView {
     // MARK: Layout
 
     override func layout() {
-        label?.preferredMaxLayoutWidth = bounds.width - 8
+        label?.preferredMaxLayoutWidth = bounds.width - 2 * 8
         super.layout()
     }
 
