@@ -9,7 +9,7 @@ import Cocoa
 
 protocol DetailViewControllerType {
 
-    var source: DetailViewSource? { get set }
+    var model: DetailViewModel? { get set }
 
 }
 
@@ -17,7 +17,11 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Model
 
-    var source: DetailViewSource?
+    var model: DetailViewModel? {
+        didSet {
+            stackView?.setViews(model?.detailSubviews() ?? [], in: .top)
+        }
+    }
 
     // MARK: Subviews
 

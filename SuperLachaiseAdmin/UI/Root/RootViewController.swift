@@ -6,6 +6,8 @@
 //
 
 import Cocoa
+import RxCocoa
+import RxSwift
 
 final class RootViewController: NSSplitViewController {
 
@@ -29,10 +31,27 @@ final class RootViewController: NSSplitViewController {
         listViewController = childViewControllers.flatMap { $0 as? ListViewControllerType }.first
         detailViewController = childViewControllers.flatMap { $0 as? DetailViewControllerType }.first
 
-        listViewController?.didSelectDetailViewSource = { [weak self] detailViewSource in
-            self?.view.window?.title = detailViewSource.detailViewTitle
-            self?.detailViewController?.source = detailViewSource
+        listViewController?.didSelectRootViewSource = { [weak self] source in
+            self?.source.value = source
         }
+
+        let realm = realmContext.viewRealm
+        source.asObservable()
+            .flatMapLatest { source -> Driver<RootViewModel?> in
+                source?.asDriver(realm: realm) ?? Driver.just(nil)
+            }
+            .subscribe(onNext: { [weak self] model in
+                self?.view.window?.title = model?.title ?? "SuperLachaiseAdmin"
+                self?.detailViewController?.model = model
+            })
+            .disposed(by: disposeBag)
+
     }
+
+    // MARK: Model
+
+    private let disposeBag = DisposeBag()
+
+    let source = Variable<RootViewSource?>(nil)
 
 }

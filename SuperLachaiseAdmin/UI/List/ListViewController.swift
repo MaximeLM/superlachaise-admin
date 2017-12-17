@@ -9,7 +9,7 @@ import Cocoa
 
 protocol ListViewControllerType {
 
-    var didSelectDetailViewSource: ((DetailViewSource) -> Void)? { get set }
+    var didSelectRootViewSource: ((RootViewSource) -> Void)? { get set }
 
 }
 
@@ -23,7 +23,7 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Properties
 
-    var didSelectDetailViewSource: ((DetailViewSource) -> Void)?
+    var didSelectRootViewSource: ((RootViewSource) -> Void)?
 
     // MARK: Subviews
 
@@ -96,8 +96,8 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
             return
         }
         if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem,
-            let detailViewSource = item.object as? DetailViewSource {
-            didSelectDetailViewSource?(detailViewSource)
+            let rootViewSource = item.object as? RootViewSource {
+            didSelectRootViewSource?(rootViewSource)
         }
     }
 
