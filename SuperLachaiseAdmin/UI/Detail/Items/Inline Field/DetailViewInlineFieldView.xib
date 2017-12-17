@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="DetailViewInlineFieldView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="18"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="irl-Zf-N1e">
+                    <rect key="frame" x="18" y="1" width="154" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="OaK-cE-Nnh"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="oWO-CU-0Es">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <scrollView verticalHuggingPriority="1000" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxN-1a-bqe">
+                    <rect key="frame" x="178" y="0.0" width="282" height="18"/>
+                    <clipView key="contentView" id="9Vl-vh-deE" customClass="FlippedClipView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                        <rect key="frame" x="1" y="1" width="280" height="16"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view translatesAutoresizingMaskIntoConstraints="NO" id="o0K-Of-pcJ">
+                                <rect key="frame" x="0.0" y="0.0" width="280" height="16"/>
+                                <subviews>
+                                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P1i-Td-fLE">
+                                        <rect key="frame" x="0.0" y="8" width="280" height="0.0"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="P1i-Td-fLE" secondAttribute="trailing" id="7hk-bF-FSn"/>
+                                    <constraint firstAttribute="bottom" secondItem="P1i-Td-fLE" secondAttribute="bottom" constant="8" id="Pep-Fa-bnE"/>
+                                    <constraint firstItem="P1i-Td-fLE" firstAttribute="top" secondItem="o0K-Of-pcJ" secondAttribute="top" constant="8" id="oFK-Ql-Kao"/>
+                                    <constraint firstItem="P1i-Td-fLE" firstAttribute="leading" secondItem="o0K-Of-pcJ" secondAttribute="leading" id="wCd-ja-ehB"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="o0K-Of-pcJ" secondAttribute="trailing" id="5td-Wb-VYf"/>
+                            <constraint firstItem="o0K-Of-pcJ" firstAttribute="leading" secondItem="9Vl-vh-deE" secondAttribute="leading" id="9ub-Jp-eUe"/>
+                            <constraint firstItem="o0K-Of-pcJ" firstAttribute="top" secondItem="9Vl-vh-deE" secondAttribute="top" id="NY7-39-UCF"/>
+                            <constraint firstAttribute="bottom" secondItem="o0K-Of-pcJ" secondAttribute="bottom" id="TVj-O4-4mB"/>
+                        </constraints>
+                        <color key="backgroundColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="piJ-wQ-Tl1">
+                        <rect key="frame" x="-100" y="-100" width="285" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="AWR-Hg-GQL">
+                        <rect key="frame" x="285" y="0.0" width="15" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="irl-Zf-N1e" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="3oO-et-dnU"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oxN-1a-bqe" secondAttribute="bottom" id="Fg2-Sl-sYM"/>
+                <constraint firstAttribute="bottom" secondItem="oxN-1a-bqe" secondAttribute="bottom" priority="750" id="Lp0-oU-ZSg"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="irl-Zf-N1e" secondAttribute="bottom" id="MZd-Dj-DO8"/>
+                <constraint firstItem="oxN-1a-bqe" firstAttribute="leading" secondItem="irl-Zf-N1e" secondAttribute="trailing" constant="8" id="SOe-hD-enj"/>
+                <constraint firstItem="irl-Zf-N1e" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="UrC-jR-co0"/>
+                <constraint firstItem="oxN-1a-bqe" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="XCj-4N-87x"/>
+                <constraint firstAttribute="bottom" secondItem="irl-Zf-N1e" secondAttribute="bottom" priority="750" id="ZOY-ia-U6A"/>
+                <constraint firstAttribute="trailing" secondItem="oxN-1a-bqe" secondAttribute="trailing" constant="20" id="zC3-ye-47V"/>
+            </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="irl-Zf-N1e" id="z4D-Mg-bpc"/>
+                <outlet property="nameWidthConstraint" destination="OaK-cE-Nnh" id="XXM-hf-UPM"/>
+                <outlet property="stackView" destination="P1i-Td-fLE" id="ugj-P8-PFV"/>
+            </connections>
+        </customView>
+    </objects>
+</document>

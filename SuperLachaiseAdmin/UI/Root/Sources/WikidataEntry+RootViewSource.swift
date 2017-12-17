@@ -15,6 +15,7 @@ extension WikidataEntry: RootViewSource {
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: wikidataId),
             ],
+            localizationsFields(),
             [
                 DetailViewFieldItem(name: "Nature", value: nature),
                 DetailViewFieldItem(name: "Date of birth", value: dateOfBirth),
@@ -25,6 +26,16 @@ extension WikidataEntry: RootViewSource {
                 DetailViewFieldItem(name: "Wikidata categories IDs", value: Array(wikidataCategoryIds)),
             ],
         ])
+    }
+
+    private func localizationsFields() -> [DetailViewInlineFieldItem] {
+        return localizations.map {
+            DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
+                DetailViewFieldItem(name: "Name", value: $0.name),
+                DetailViewFieldItem(name: "Description", value: $0.summary),
+                DetailViewFieldItem(name: "Wikipedia title", value: $0.wikipediaTitle),
+            ])
+        }
     }
 
 }

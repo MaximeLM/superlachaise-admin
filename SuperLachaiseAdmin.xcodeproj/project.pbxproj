@@ -29,6 +29,9 @@
 		5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF7F1FE6EF9F00BD3A22 /* DetailViewFieldItem.swift */; };
 		5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF841FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib */; };
 		5513EF871FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF861FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift */; };
+		5513EF8A1FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF891FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib */; };
+		5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */; };
+		5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -120,6 +123,9 @@
 		5513EF7F1FE6EF9F00BD3A22 /* DetailViewFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewFieldItem.swift; sourceTree = "<group>"; };
 		5513EF841FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewSeparatorView.xib; sourceTree = "<group>"; };
 		5513EF861FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewSeparatorItem.swift; sourceTree = "<group>"; };
+		5513EF891FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewInlineFieldView.xib; sourceTree = "<group>"; };
+		5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldView.swift; sourceTree = "<group>"; };
+		5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldItem.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -256,6 +262,7 @@
 				5513EF571FE6BAAE00BD3A22 /* Title */,
 				5513EF5F1FE6C30100BD3A22 /* URL */,
 				5513EF721FE6DF1D00BD3A22 /* Field */,
+				5513EF881FE6F9BF00BD3A22 /* Inline Field */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -307,6 +314,16 @@
 				5513EF841FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib */,
 			);
 			path = Separator;
+			sourceTree = "<group>";
+		};
+		5513EF881FE6F9BF00BD3A22 /* Inline Field */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */,
+				5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */,
+				5513EF891FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib */,
+			);
+			path = "Inline Field";
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -726,6 +743,7 @@
 			files = (
 				55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */,
 				55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */,
+				5513EF8A1FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib in Resources */,
 				5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */,
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
 				5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */,
@@ -865,6 +883,7 @@
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				5513EF4E1FE6A8E000BD3A22 /* RootViewSource.swift in Sources */,
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
+				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
 				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
@@ -878,6 +897,7 @@
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
+				5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,

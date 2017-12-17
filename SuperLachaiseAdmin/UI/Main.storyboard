@@ -565,16 +565,16 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view translatesAutoresizingMaskIntoConstraints="NO" id="ooP-Jh-OBx">
-                                            <rect key="frame" x="0.0" y="300" width="450" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="284" width="450" height="16"/>
                                             <subviews>
                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IaN-qY-2FY">
-                                                    <rect key="frame" x="0.0" y="0.0" width="450" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="8" width="450" height="0.0"/>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="IaN-qY-2FY" secondAttribute="bottom" id="2Ry-fH-8V9"/>
+                                                <constraint firstAttribute="bottom" secondItem="IaN-qY-2FY" secondAttribute="bottom" constant="8" id="2Ry-fH-8V9"/>
                                                 <constraint firstItem="IaN-qY-2FY" firstAttribute="leading" secondItem="ooP-Jh-OBx" secondAttribute="leading" id="NOT-rb-pcD"/>
-                                                <constraint firstItem="IaN-qY-2FY" firstAttribute="top" secondItem="ooP-Jh-OBx" secondAttribute="top" id="O5b-Va-pCk"/>
+                                                <constraint firstItem="IaN-qY-2FY" firstAttribute="top" secondItem="ooP-Jh-OBx" secondAttribute="top" constant="8" id="O5b-Va-pCk"/>
                                                 <constraint firstAttribute="trailing" secondItem="IaN-qY-2FY" secondAttribute="trailing" id="XBa-Tf-X9S"/>
                                             </constraints>
                                         </view>
