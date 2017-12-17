@@ -9,12 +9,6 @@ import Cocoa
 
 final class DetailViewURLView: NSView {
 
-    static func instantiate(url: URL) -> DetailViewURLView? {
-        let view: DetailViewURLView? = NSNib.instantiate("DetailViewURLView")
-        view?.url = url
-        return view
-    }
-
     // MARK: Properties
 
     var url: URL? {
@@ -42,7 +36,7 @@ final class DetailViewURLView: NSView {
     // MARK: Layout
 
     override func layout() {
-        label?.preferredMaxLayoutWidth = bounds.width - 2 * 8
+        label?.preferredMaxLayoutWidth = bounds.width - 2 * 20
         super.layout()
     }
 

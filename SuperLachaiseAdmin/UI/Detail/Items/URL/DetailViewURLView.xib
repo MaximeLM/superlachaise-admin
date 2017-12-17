@@ -9,11 +9,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="DetailViewURLView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="27"/>
+            <rect key="frame" x="0.0" y="0.0" width="480" height="19"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gn3-jX-0OH" customClass="ClickableTextField" customModule="SuperLachaiseAdmin" customModuleProvider="target">
-                    <rect key="frame" x="6" y="4" width="30" height="19"/>
+                    <rect key="frame" x="18" y="0.0" width="30" height="19"/>
                     <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" title="URL" id="DBY-ea-sIK">
                         <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -22,9 +22,9 @@
                 </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="Gn3-jX-0OH" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="8" id="cAe-6B-eeP"/>
-                <constraint firstAttribute="bottom" secondItem="Gn3-jX-0OH" secondAttribute="bottom" constant="4" id="ii6-E8-fD1"/>
-                <constraint firstItem="Gn3-jX-0OH" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="4" id="jBG-mV-DdQ"/>
+                <constraint firstItem="Gn3-jX-0OH" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="cAe-6B-eeP"/>
+                <constraint firstAttribute="bottom" secondItem="Gn3-jX-0OH" secondAttribute="bottom" id="ii6-E8-fD1"/>
+                <constraint firstItem="Gn3-jX-0OH" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="jBG-mV-DdQ"/>
             </constraints>
             <connections>
                 <outlet property="label" destination="Gn3-jX-0OH" id="ChR-KQ-Fbp"/>

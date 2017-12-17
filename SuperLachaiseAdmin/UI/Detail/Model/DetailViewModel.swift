@@ -13,27 +13,29 @@ protocol DetailViewModel {
 
     var url: URL? { get }
 
-    var subviews: [[NSView?]] { get }
+    var items: [[DetailViewItem]] { get }
 
 }
 
 extension DetailViewModel {
 
     func views() -> [NSView] {
-        var views: [NSView?] = []
+        var items: [DetailViewItem] = []
 
         // Title
-        views.append(DetailViewTitleView.instantiate(title: title))
+        items.append(DetailViewTitleItem(title: title))
 
         // URL
         if let url = url {
-            views.append(DetailViewURLView.instantiate(url: url))
+            items.append(DetailViewURLItem(url: url))
         }
 
-        // Subviews
-        views.append(contentsOf: subviews.joined())
+        items.append(DetailViewSeparatorItem())
 
-        return views.flatMap { $0 }
+        // Other items
+        items.append(contentsOf: self.items.joined(separator: [DetailViewSeparatorItem()]))
+
+        return items.flatMap { $0.view }
     }
 
 }

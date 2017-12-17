@@ -9,19 +9,12 @@ import Cocoa
 
 final class DetailViewFieldView: NSView {
 
-    static func instantiate(name: String, value: Any?) -> DetailViewFieldView? {
-        let view: DetailViewFieldView? = NSNib.instantiate("DetailViewFieldView")
-        view?.name = name
-        view?.value = value
-        return view
-    }
-
     // MARK: Properties
 
     var name: String? {
         didSet {
             if let name = name {
-                nameLabel?.stringValue = "\(name):"
+                nameLabel?.stringValue = name
             } else {
                 nameLabel?.stringValue = ""
             }
@@ -51,7 +44,7 @@ final class DetailViewFieldView: NSView {
     override func layout() {
         let nameWidth = nameWidthConstraint?.constant ?? 0
         nameLabel?.preferredMaxLayoutWidth = nameWidth
-        valueLabel?.preferredMaxLayoutWidth = bounds.width - nameWidth - 3 * 8
+        valueLabel?.preferredMaxLayoutWidth = bounds.width - nameWidth - 2 * 20 - 8
         super.layout()
     }
 

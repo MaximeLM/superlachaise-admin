@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="1"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="0Ei-Hh-K7k">
+                    <rect key="frame" x="20" y="-2" width="440" height="5"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstItem="0Ei-Hh-K7k" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="AG9-gT-cr9"/>
+                <constraint firstItem="0Ei-Hh-K7k" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="J4p-9Z-7Mm"/>
+                <constraint firstAttribute="bottom" secondItem="0Ei-Hh-K7k" secondAttribute="bottom" id="JRd-pw-b1K"/>
+                <constraint firstAttribute="trailing" secondItem="0Ei-Hh-K7k" secondAttribute="trailing" constant="20" id="ixg-x6-pnm"/>
+            </constraints>
+        </customView>
+    </objects>
+</document>

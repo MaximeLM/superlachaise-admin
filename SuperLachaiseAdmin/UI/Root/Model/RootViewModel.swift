@@ -7,28 +7,26 @@
 
 import Cocoa
 
-struct RootViewModel {
+struct RootViewModel: DetailViewModel {
 
     let title: String
 
     let url: URL?
 
-    let subviews: [[NSView?]]
+    let items: [[DetailViewItem]]
 
 }
 
 extension RootViewModel {
 
-    init(_ object: Any, subviews: [[NSView?]]) {
+    init(_ object: Any, items: [[DetailViewItem]]) {
         self.title = "\(type(of: object)): \(object)"
         if let object = object as? RealmOpenableInBrowser {
             self.url = object.externalURL
         } else {
             self.url = nil
         }
-        self.subviews = subviews
+        self.items = items
     }
 
 }
-
-extension RootViewModel: DetailViewModel { }

@@ -584,7 +584,11 @@
                                         <constraint firstItem="ooP-Jh-OBx" firstAttribute="leading" secondItem="ORK-l2-ZA5" secondAttribute="leading" id="bgB-md-Wxd"/>
                                         <constraint firstItem="ooP-Jh-OBx" firstAttribute="top" secondItem="ORK-l2-ZA5" secondAttribute="top" id="vEG-D8-heG"/>
                                     </constraints>
+                                    <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="xZj-Ok-92g"/>
+                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="F58-XJ-5WU">
                                     <rect key="frame" x="-100" y="-100" width="285" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>

@@ -10,26 +10,19 @@ import Foundation
 extension WikidataEntry: RootViewSource {
 
     func rootViewModel() -> RootViewModel {
-        return RootViewModel(self, subviews: [
+        return RootViewModel(self, items: [
             [
-                DetailViewFieldView.instantiate(name: "Name",
-                                                value: name),
-                DetailViewFieldView.instantiate(name: "ID",
-                                                value: wikidataId),
+                DetailViewFieldItem(name: "Name", value: name),
+                DetailViewFieldItem(name: "ID", value: wikidataId),
             ],
             [
-                DetailViewFieldView.instantiate(name: "Nature",
-                                                value: nature),
-                DetailViewFieldView.instantiate(name: "Date of birth",
-                                                value: dateOfBirth),
-                DetailViewFieldView.instantiate(name: "Date of death",
-                                                value: dateOfDeath),
+                DetailViewFieldItem(name: "Nature", value: nature),
+                DetailViewFieldItem(name: "Date of birth", value: dateOfBirth),
+                DetailViewFieldItem(name: "Date of death", value: dateOfDeath),
             ],
             [
-                DetailViewFieldView.instantiate(name: "Secondary Wikidata IDs",
-                                                value: Array(secondaryWikidataIds)),
-                DetailViewFieldView.instantiate(name: "Wikidata categories ID",
-                                                value: Array(wikidataCategoryIds)),
+                DetailViewFieldItem(name: "Secondary Wikidata IDs", value: Array(secondaryWikidataIds)),
+                DetailViewFieldItem(name: "Wikidata categories IDs", value: Array(wikidataCategoryIds)),
             ],
         ])
     }

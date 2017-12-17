@@ -9,12 +9,6 @@ import Cocoa
 
 final class DetailViewTitleView: NSView {
 
-    static func instantiate(title: String) -> DetailViewTitleView? {
-        let view: DetailViewTitleView? = NSNib.instantiate("DetailViewTitleView")
-        view?.title = title
-        return view
-    }
-
     // MARK: Properties
 
     var title: String? {
@@ -30,7 +24,7 @@ final class DetailViewTitleView: NSView {
     // MARK: Layout
 
     override func layout() {
-        label?.preferredMaxLayoutWidth = bounds.width - 2 * 8
+        label?.preferredMaxLayoutWidth = bounds.width - 2 * 20
         super.layout()
     }
 

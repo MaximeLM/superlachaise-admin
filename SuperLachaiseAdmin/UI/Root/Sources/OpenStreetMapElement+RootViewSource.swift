@@ -10,24 +10,18 @@ import Foundation
 extension OpenStreetMapElement: RootViewSource {
 
     func rootViewModel() -> RootViewModel {
-        return RootViewModel(self, subviews: [
+        return RootViewModel(self, items: [
             [
-                DetailViewFieldView.instantiate(name: "Name",
-                                                value: name),
-                DetailViewFieldView.instantiate(name: "Type",
-                                                value: openStreetMapId?.elementType),
-                DetailViewFieldView.instantiate(name: "ID",
-                                                value: openStreetMapId?.numericId),
+                DetailViewFieldItem(name: "Name", value: name),
+                DetailViewFieldItem(name: "Type", value: openStreetMapId?.elementType),
+                DetailViewFieldItem(name: "ID", value: openStreetMapId?.numericId),
             ],
             [
-                DetailViewFieldView.instantiate(name: "Latitude",
-                                                value: latitude),
-                DetailViewFieldView.instantiate(name: "Longitude",
-                                                value: longitude),
+                DetailViewFieldItem(name: "Latitude", value: latitude),
+                DetailViewFieldItem(name: "Longitude", value: longitude),
             ],
             [
-                DetailViewFieldView.instantiate(name: "Wikidata ID",
-                                                value: wikidataId),
+                DetailViewFieldItem(name: "Wikidata ID", value: wikidataId),
             ],
         ])
     }

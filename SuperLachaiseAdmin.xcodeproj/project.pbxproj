@@ -23,6 +23,12 @@
 		5513EF741FE6DF2D00BD3A22 /* DetailViewFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF731FE6DF2D00BD3A22 /* DetailViewFieldView.swift */; };
 		5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF751FE6DF5D00BD3A22 /* DetailViewFieldView.xib */; };
 		5513EF781FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF771FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift */; };
+		5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF791FE6EDC500BD3A22 /* DetailViewItem.swift */; };
+		5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF7B1FE6EE0300BD3A22 /* DetailViewTitleItem.swift */; };
+		5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF7D1FE6EF3700BD3A22 /* DetailViewURLItem.swift */; };
+		5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF7F1FE6EF9F00BD3A22 /* DetailViewFieldItem.swift */; };
+		5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5513EF841FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib */; };
+		5513EF871FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF861FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
@@ -108,6 +114,12 @@
 		5513EF731FE6DF2D00BD3A22 /* DetailViewFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewFieldView.swift; sourceTree = "<group>"; };
 		5513EF751FE6DF5D00BD3A22 /* DetailViewFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewFieldView.xib; sourceTree = "<group>"; };
 		5513EF771FE6E4BA00BD3A22 /* WikidataEntry+RootViewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+RootViewSource.swift"; sourceTree = "<group>"; };
+		5513EF791FE6EDC500BD3A22 /* DetailViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewItem.swift; sourceTree = "<group>"; };
+		5513EF7B1FE6EE0300BD3A22 /* DetailViewTitleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewTitleItem.swift; sourceTree = "<group>"; };
+		5513EF7D1FE6EF3700BD3A22 /* DetailViewURLItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewURLItem.swift; sourceTree = "<group>"; };
+		5513EF7F1FE6EF9F00BD3A22 /* DetailViewFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewFieldItem.swift; sourceTree = "<group>"; };
+		5513EF841FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewSeparatorView.xib; sourceTree = "<group>"; };
+		5513EF861FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewSeparatorItem.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -197,7 +209,7 @@
 			children = (
 				5513EF411FE4998C00BD3A22 /* DetailViewController.swift */,
 				5513EF491FE6A54100BD3A22 /* Model */,
-				5513EF561FE6BAA500BD3A22 /* Views */,
+				5513EF561FE6BAA500BD3A22 /* Items */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -236,19 +248,22 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		5513EF561FE6BAA500BD3A22 /* Views */ = {
+		5513EF561FE6BAA500BD3A22 /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				5513EF791FE6EDC500BD3A22 /* DetailViewItem.swift */,
+				5513EF811FE6F2BF00BD3A22 /* Separator */,
 				5513EF571FE6BAAE00BD3A22 /* Title */,
 				5513EF5F1FE6C30100BD3A22 /* URL */,
 				5513EF721FE6DF1D00BD3A22 /* Field */,
 			);
-			path = Views;
+			path = Items;
 			sourceTree = "<group>";
 		};
 		5513EF571FE6BAAE00BD3A22 /* Title */ = {
 			isa = PBXGroup;
 			children = (
+				5513EF7B1FE6EE0300BD3A22 /* DetailViewTitleItem.swift */,
 				5513EF5A1FE6BACC00BD3A22 /* DetailViewTitleView.swift */,
 				5513EF581FE6BAC000BD3A22 /* DetailViewTitleView.xib */,
 			);
@@ -268,6 +283,7 @@
 		5513EF5F1FE6C30100BD3A22 /* URL */ = {
 			isa = PBXGroup;
 			children = (
+				5513EF7D1FE6EF3700BD3A22 /* DetailViewURLItem.swift */,
 				5513EF601FE6C30F00BD3A22 /* DetailViewURLView.swift */,
 				5513EF6A1FE6C6CB00BD3A22 /* DetailViewURLView.xib */,
 			);
@@ -277,10 +293,20 @@
 		5513EF721FE6DF1D00BD3A22 /* Field */ = {
 			isa = PBXGroup;
 			children = (
+				5513EF7F1FE6EF9F00BD3A22 /* DetailViewFieldItem.swift */,
 				5513EF731FE6DF2D00BD3A22 /* DetailViewFieldView.swift */,
 				5513EF751FE6DF5D00BD3A22 /* DetailViewFieldView.xib */,
 			);
 			path = Field;
+			sourceTree = "<group>";
+		};
+		5513EF811FE6F2BF00BD3A22 /* Separator */ = {
+			isa = PBXGroup;
+			children = (
+				5513EF861FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift */,
+				5513EF841FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib */,
+			);
+			path = Separator;
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -700,6 +726,7 @@
 			files = (
 				55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */,
 				55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */,
+				5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */,
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
 				5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */,
 				5513EF591FE6BAC000BD3A22 /* DetailViewTitleView.xib in Resources */,
@@ -806,6 +833,7 @@
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
 				55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */,
 				55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */,
+				5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */,
 				55A8D24C1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift in Sources */,
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
 				55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */,
@@ -836,10 +864,12 @@
 				55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */,
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				5513EF4E1FE6A8E000BD3A22 /* RootViewSource.swift in Sources */,
+				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
 				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
 				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
+				5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B3658D1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift in Sources */,
 				55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */,
@@ -850,7 +880,9 @@
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
+				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
+				5513EF871FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift in Sources */,
 				5513EF421FE4998C00BD3A22 /* DetailViewController.swift in Sources */,
 				55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,

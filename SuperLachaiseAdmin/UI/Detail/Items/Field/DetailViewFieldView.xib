@@ -9,22 +9,22 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="DetailViewFieldView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="25"/>
+            <rect key="frame" x="0.0" y="0.0" width="480" height="17"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="kD1-tP-k7y">
-                    <rect key="frame" x="6" y="4" width="154" height="17"/>
+                    <rect key="frame" x="18" y="0.0" width="154" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="Gl1-1M-FgP"/>
                     </constraints>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Name:" id="sXg-g3-Niv">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="sXg-g3-Niv">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bRh-rV-w34">
-                    <rect key="frame" x="164" y="4" width="38" height="17"/>
+                    <rect key="frame" x="176" y="0.0" width="38" height="17"/>
                     <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="Value" id="EXQ-QG-Ik8">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -33,14 +33,14 @@
                 </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="kD1-tP-k7y" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="8" id="7uM-jJ-Wyn"/>
-                <constraint firstAttribute="bottom" secondItem="kD1-tP-k7y" secondAttribute="bottom" priority="750" constant="4" id="MxV-iZ-1F0"/>
-                <constraint firstAttribute="bottom" secondItem="bRh-rV-w34" secondAttribute="bottom" priority="750" constant="4" id="Ot3-4P-Dv8"/>
-                <constraint firstItem="kD1-tP-k7y" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="4" id="XPS-xj-YVO"/>
+                <constraint firstItem="kD1-tP-k7y" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="7uM-jJ-Wyn"/>
+                <constraint firstAttribute="bottom" secondItem="kD1-tP-k7y" secondAttribute="bottom" priority="750" id="MxV-iZ-1F0"/>
+                <constraint firstAttribute="bottom" secondItem="bRh-rV-w34" secondAttribute="bottom" priority="750" id="Ot3-4P-Dv8"/>
+                <constraint firstItem="kD1-tP-k7y" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="XPS-xj-YVO"/>
                 <constraint firstItem="bRh-rV-w34" firstAttribute="leading" secondItem="kD1-tP-k7y" secondAttribute="trailing" constant="8" id="fKz-qg-IFx"/>
-                <constraint firstItem="bRh-rV-w34" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="4" id="gh8-RH-hfd"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kD1-tP-k7y" secondAttribute="bottom" constant="4" id="pFz-M8-Mep"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bRh-rV-w34" secondAttribute="bottom" constant="4" id="qw1-ns-zcZ"/>
+                <constraint firstItem="bRh-rV-w34" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="gh8-RH-hfd"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kD1-tP-k7y" secondAttribute="bottom" id="pFz-M8-Mep"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bRh-rV-w34" secondAttribute="bottom" id="qw1-ns-zcZ"/>
             </constraints>
             <connections>
                 <outlet property="nameLabel" destination="kD1-tP-k7y" id="cUe-Hl-Wf6"/>
