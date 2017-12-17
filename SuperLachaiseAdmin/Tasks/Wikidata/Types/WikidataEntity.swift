@@ -16,8 +16,8 @@ struct WikidataEntity: Decodable {
     let claims: [String: [WikidataClaim]]
     let sitelinks: [String: WikidataSitelink]
 
-    func claims(_ propertyName: WikidataPropertyName) -> [WikidataClaim]? {
-        return claims[propertyName.rawValue]
+    func claims(_ propertyName: WikidataPropertyName) -> [WikidataClaim] {
+        return claims[propertyName.rawValue] ?? []
     }
 
 }

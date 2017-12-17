@@ -12,8 +12,8 @@ struct WikidataClaim: Decodable {
     let mainsnak: WikidataClaimSnak
     let qualifiers: [String: [WikidataClaimSnak]]?
 
-    func qualifiers(_ propertyName: WikidataPropertyName) -> [WikidataClaimSnak]? {
-        return qualifiers?[propertyName.rawValue]
+    func qualifiers(_ propertyName: WikidataPropertyName) -> [WikidataClaimSnak] {
+        return qualifiers?[propertyName.rawValue] ?? []
     }
 
 }

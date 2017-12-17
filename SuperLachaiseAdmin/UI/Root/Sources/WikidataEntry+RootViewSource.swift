@@ -23,7 +23,8 @@ extension WikidataEntry: RootViewSource {
             ],
             [
                 DetailViewFieldItem(name: "Secondary Wikidata IDs", value: Array(secondaryWikidataIds)),
-                DetailViewFieldItem(name: "Wikidata categories IDs", value: Array(wikidataCategoryIds)),
+                DetailViewFieldItem(name: "Wikidata categories IDs", value: Array(wikidataCategoriesIds)),
+                DetailViewFieldItem(name: "Commons category ID", value: commonsCategoryId),
             ],
         ])
     }

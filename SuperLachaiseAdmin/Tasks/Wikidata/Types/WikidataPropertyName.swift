@@ -36,4 +36,8 @@ extension WikidataPropertyName {
     static let dateOfBirth = WikidataPropertyName(rawValue: "P569")
     static let dateOfDeath = WikidataPropertyName(rawValue: "P570")
 
+    static let placeOfInterment = WikidataPropertyName(rawValue: "P119")
+
+    static let commonsCategory = WikidataPropertyName(rawValue: "P373")
+
 }

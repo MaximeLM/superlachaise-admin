@@ -153,8 +153,11 @@ private extension SyncWikidataEntries {
         wikidataEntry.secondaryWikidataIds.replaceAll(objects: secondaryWikidataIds)
 
         // Wikidata category ids
-        let wikidataCategoryIds = self.wikidataCategoryIds(wikidataEntity: wikidataEntity, nature: nature)
-        wikidataEntry.wikidataCategoryIds.replaceAll(objects: wikidataCategoryIds)
+        let wikidataCategoriesIds = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
+        wikidataEntry.wikidataCategoriesIds.replaceAll(objects: wikidataCategoriesIds)
+
+        // Commons category ID
+        wikidataEntry.commonsCategoryId = self.commonsCategoryId(wikidataEntity: wikidataEntity, nature: nature)
 
         // Dates
         wikidataEntry.dateOfBirth = try wikidataDate(wikidataEntity: wikidataEntity,
@@ -168,9 +171,9 @@ private extension SyncWikidataEntries {
     }
 
     func wikidataEntryNature(wikidataEntity: WikidataEntity) -> WikidataEntryNature? {
-        let instanceOfs = wikidataEntity.claims(.instanceOf)?
+        let instanceOfs = wikidataEntity.claims(.instanceOf)
             .flatMap { $0.mainsnak.entityName }
-        for instanceOf in instanceOfs ?? [] {
+        for instanceOf in instanceOfs {
             if [.human].contains(instanceOf) {
                 return .person
             }
@@ -189,14 +192,14 @@ private extension SyncWikidataEntries {
 
         if nature == .grave {
             // Persons buried in the grave
-            let entityNames = (wikidataEntity.claims(.instanceOf) ?? [])
+            let entityNames = wikidataEntity.claims(.instanceOf)
                 .filter { claim in
                     guard let entityName = claim.mainsnak.entityName else {
                         return false
                     }
                     return [.grave, .tomb, .cardiotaph].contains(entityName)
                 }
-                .flatMap { $0.qualifiers(.of) ?? [] }
+                .flatMap { $0.qualifiers(.of) }
                 .flatMap { $0.entityName }
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
@@ -208,7 +211,7 @@ private extension SyncWikidataEntries {
                 wikidataEntity.claims(.mainSubject),
             ]
             let entityNames = claims
-                .flatMap { $0 ?? [] }
+                .flatMap { $0 }
                 .flatMap { $0.mainsnak.entityName }
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
@@ -222,8 +225,8 @@ private extension SyncWikidataEntries {
         return secondaryWikidataNames.map { $0.rawValue }.uniqueValues()
     }
 
-    func wikidataCategoryIds(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> [String] {
-        var wikidataCategoryNames: [WikidataEntityName] = []
+    func wikidataCategoriesIds(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> [String] {
+        var wikidataCategoriesNames: [WikidataEntityName] = []
 
         if nature == .person {
             let claims = [
@@ -231,12 +234,12 @@ private extension SyncWikidataEntries {
                 wikidataEntity.claims(.sexOrGender),
             ]
             let entityNames = claims
-                .flatMap { $0 ?? [] }
+                .flatMap { $0 }
                 .flatMap { $0.mainsnak.entityName }
-            wikidataCategoryNames.append(contentsOf: entityNames)
+            wikidataCategoriesNames.append(contentsOf: entityNames)
         }
 
-        return wikidataCategoryNames.map { $0.rawValue }.uniqueValues()
+        return wikidataCategoriesNames.map { $0.rawValue }.uniqueValues()
     }
 
     func wikidataDate(wikidataEntity: WikidataEntity,
@@ -245,10 +248,38 @@ private extension SyncWikidataEntries {
         guard nature == .person else {
             return nil
         }
-        return try wikidataEntity.claims(claim)?
+        return try wikidataEntity.claims(claim)
             .flatMap { $0.mainsnak.timeValue }
             .max { $0.precision < $1.precision }
             .map { try $0.wikidataDate() }
+    }
+
+    func commonsCategoryId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
+        guard let nature = nature else {
+            return nil
+        }
+
+        let commonsCategoriesIds: [String]
+        switch nature {
+        case .person:
+            commonsCategoriesIds = wikidataEntity.claims(.placeOfInterment)
+                .filter {
+                    guard let entityName = $0.mainsnak.entityName else {
+                        return false
+                    }
+                    return config.validLocations.contains(entityName)
+                }
+                .flatMap { $0.qualifiers(.commonsCategory).flatMap { $0.stringValue } }
+        case .grave, .monument:
+            commonsCategoriesIds = wikidataEntity.claims(.commonsCategory)
+                .flatMap { $0.mainsnak.stringValue }
+        }
+
+        if commonsCategoriesIds.count > 1 {
+            Logger.warning("\(WikidataEntity.self) \(wikidataEntity) has multiple Commons categories")
+        }
+
+        return commonsCategoriesIds.first
     }
 
     // MARK: Orphans
