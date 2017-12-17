@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import RealmSwift
 import RxCocoa
 import RxSwift
 
@@ -32,6 +33,9 @@ final class RootViewController: NSSplitViewController {
         detailViewController = childViewControllers.flatMap { $0 as? DetailViewControllerType }.first
 
         listViewController?.didSelectRootViewSource = { [weak self] source in
+            guard source.identifier != self?.source.value?.identifier else {
+                return
+            }
             self?.source.value = source
         }
 
@@ -58,6 +62,6 @@ final class RootViewController: NSSplitViewController {
 
     private let disposeBag = DisposeBag()
 
-    let source = Variable<RootViewSource?>(nil)
+    let source = Variable<(Object & RootViewSource)?>(nil)
 
 }

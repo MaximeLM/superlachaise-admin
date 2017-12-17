@@ -11,7 +11,7 @@ import RxCocoa
 import RxRealm
 import RxSwift
 
-protocol RootViewSource {
+protocol RootViewSource: RealmIdentifiable {
 
     func rootViewModel() -> RootViewModel
 

@@ -6,10 +6,11 @@
 //
 
 import Cocoa
+import RealmSwift
 
 protocol ListViewControllerType {
 
-    var didSelectRootViewSource: ((RootViewSource) -> Void)? { get set }
+    var didSelectRootViewSource: ((Object & RootViewSource) -> Void)? { get set }
 
 }
 
@@ -23,7 +24,7 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Properties
 
-    var didSelectRootViewSource: ((RootViewSource) -> Void)?
+    var didSelectRootViewSource: ((Object & RootViewSource) -> Void)?
 
     // MARK: Subviews
 
@@ -96,7 +97,7 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
             return
         }
         if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem,
-            let rootViewSource = item.object as? RootViewSource {
+            let rootViewSource = item.object as? (Object & RootViewSource) {
             didSelectRootViewSource?(rootViewSource)
         }
     }

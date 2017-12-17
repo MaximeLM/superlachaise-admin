@@ -17,7 +17,7 @@ protocol ListViewObjectListItemType: ListViewItem {
 
 }
 
-class ListViewObjectListItem<Element: Object & RealmListable>: NSObject, ListViewObjectListItemType {
+final class ListViewObjectListItem<Element: Object & RealmListable>: NSObject, ListViewObjectListItemType {
 
     let baseText: String
 

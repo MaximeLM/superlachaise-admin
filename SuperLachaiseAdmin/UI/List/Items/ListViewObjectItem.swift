@@ -8,7 +8,7 @@
 import Cocoa
 import RealmSwift
 
-class ListViewObjectItem: NSObject, ListViewItem {
+final class ListViewObjectItem: NSObject, ListViewItem {
 
     let object: Object & RealmIdentifiable
 
