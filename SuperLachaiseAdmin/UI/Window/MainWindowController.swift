@@ -17,6 +17,8 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     @IBOutlet weak var navigationSegmentedControl: NSSegmentedControl?
 
+    @IBOutlet weak var titleLabel: NSTextField?
+
     // MARK: Lifecycle
 
     override func windowDidLoad() {

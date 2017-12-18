@@ -398,11 +398,27 @@
                                         </connections>
                                     </segmentedControl>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="90o-f3-26o"/>
+                                <toolbarItem implicitItemIdentifier="CB0B25E1-800A-400D-821D-0A75789A963F" label="" paletteLabel="Title" autovalidates="NO" id="v2F-34-nZh">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="38" height="17"/>
+                                    <size key="maxSize" width="900" height="17"/>
+                                    <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="haN-yq-7Gl">
+                                        <rect key="frame" x="0.0" y="14" width="38" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="SuperLachaiseAdmin" id="dZi-fH-WRC">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="YCJ-Fo-NXy"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Oaj-AJ-2wu"/>
-                                <toolbarItem reference="90o-f3-26o"/>
+                                <toolbarItem reference="YCJ-Fo-NXy"/>
+                                <toolbarItem reference="v2F-34-nZh"/>
+                                <toolbarItem reference="YCJ-Fo-NXy"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -411,6 +427,7 @@
                     </window>
                     <connections>
                         <outlet property="navigationSegmentedControl" destination="G8z-dn-YiJ" id="xgf-IG-CAn"/>
+                        <outlet property="titleLabel" destination="haN-yq-7Gl" id="5bk-Wf-OHl"/>
                         <segue destination="E7L-kO-4OK" kind="relationship" relationship="window.shadowedContentViewController" id="eLh-lG-8Ck"/>
                     </connections>
                 </windowController>

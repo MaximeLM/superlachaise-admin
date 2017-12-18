@@ -34,6 +34,10 @@ final class RootViewController: NSSplitViewController {
         return windowController?.navigationSegmentedControl
     }
 
+    var titleLabel: NSTextField? {
+        return windowController?.titleLabel
+    }
+
     var listViewController: ListViewControllerType? {
         return listSplitViewItem?.viewController as? ListViewControllerType
     }
@@ -58,7 +62,9 @@ final class RootViewController: NSSplitViewController {
         }
 
         detailViewController?.didChangeTitle = { [weak self] title in
-            self?.window?.title = title ?? "SuperLachaiseAdmin"
+            let newTitle = title ?? "SuperLachaiseAdmin"
+            self?.titleLabel?.stringValue = newTitle
+            self?.window?.title = newTitle
         }
 
     }
