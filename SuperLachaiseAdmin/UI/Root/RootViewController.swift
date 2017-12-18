@@ -20,17 +20,24 @@ final class RootViewController: NSSplitViewController {
 
     @IBOutlet weak var detailSplitViewItem: NSSplitViewItem?
 
-    var listViewController: ListViewControllerType?
+    // MARK: Other views
 
-    var detailViewController: DetailViewControllerType?
+    var window: NSWindow? {
+        return view.window
+    }
+
+    var listViewController: ListViewControllerType? {
+        return listSplitViewItem?.viewController as? ListViewControllerType
+    }
+
+    var detailViewController: DetailViewControllerType? {
+        return detailSplitViewItem?.viewController as? DetailViewControllerType
+    }
 
     // MARK: Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        listViewController = listSplitViewItem?.viewController as? ListViewControllerType
-        detailViewController = detailSplitViewItem?.viewController as? DetailViewControllerType
 
         listViewController?.didSelectObject = { [weak self] object in
             guard let source = object as? DetailViewSource else {
@@ -40,6 +47,10 @@ final class RootViewController: NSSplitViewController {
                 return
             }
             self?.source = source
+        }
+
+        detailViewController?.didChangeTitle = { [weak self] title in
+            self?.window?.title = title ?? "SuperLachaiseAdmin"
         }
 
     }

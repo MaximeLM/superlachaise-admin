@@ -9,9 +9,11 @@ import Cocoa
 import RxCocoa
 import RxSwift
 
-protocol DetailViewControllerType {
+protocol DetailViewControllerType: NSObjectProtocol {
 
     var source: DetailViewSource? { get set }
+
+    var didChangeTitle: ((String?) -> Void)? { get set }
 
 }
 
@@ -42,6 +44,8 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Properties
 
+    var didChangeTitle: ((String?) -> Void)?
+
     private let disposeBag = DisposeBag()
 
     // MARK: Lifecycle
@@ -56,7 +60,7 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
                 source?.asObservable(realm: realm).catchErrorJustReturn(nil) ?? Observable.just(nil)
             }
             .subscribe(onNext: { [weak self] model in
-                self?.view.window?.title = model?.title ?? "SuperLachaiseAdmin"
+                self?.didChangeTitle?(model?.title)
                 self?.stackView?.setViews(model?.views() ?? [], in: .top)
             })
             .disposed(by: disposeBag)

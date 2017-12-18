@@ -8,7 +8,7 @@
 import Cocoa
 import RealmSwift
 
-protocol ListViewControllerType {
+protocol ListViewControllerType: NSObjectProtocol {
 
     var didSelectObject: ((Object & RealmIdentifiable) -> Void)? { get set }
 
