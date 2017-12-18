@@ -405,6 +405,8 @@
                         </connections>
                     </splitView>
                     <connections>
+                        <outlet property="detailSplitViewItem" destination="oMJ-2a-YY5" id="MZ3-tn-loY"/>
+                        <outlet property="listSplitViewItem" destination="7TS-PQ-JGI" id="X9b-pb-4Es"/>
                         <outlet property="splitView" destination="VXZ-Xs-VPF" id="YrP-uW-qou"/>
                         <segue destination="uw9-uF-Klt" kind="relationship" relationship="splitItems" id="zcT-RZ-374"/>
                         <segue destination="cHw-YI-5tC" kind="relationship" relationship="splitItems" id="Ezf-rx-Heg"/>

@@ -1,5 +1,5 @@
 //
-//  OpenStreetMapElement+RootViewSource.swift
+//  OpenStreetMapElement+DetailViewSource.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 17/12/2017.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension OpenStreetMapElement: RootViewSource {
+extension OpenStreetMapElement: DetailViewSource {
 
-    func rootViewModel() -> RootViewModel {
-        return RootViewModel(self, items: [
+    func detailViewModel() -> DetailViewModel {
+        return DetailViewModel(self, items: [
             [
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "Type", value: openStreetMapId?.elementType),

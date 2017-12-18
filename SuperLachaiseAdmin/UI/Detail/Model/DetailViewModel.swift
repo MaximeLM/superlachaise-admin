@@ -7,17 +7,27 @@
 
 import Cocoa
 
-protocol DetailViewModel {
+struct DetailViewModel {
 
-    var title: String { get }
+    let title: String
 
-    var url: URL? { get }
+    let url: URL?
 
-    var items: [[DetailViewItem]] { get }
+    let items: [[DetailViewItem]]
 
 }
 
 extension DetailViewModel {
+
+    init(_ object: Any, items: [[DetailViewItem]]) {
+        self.title = "\(type(of: object)): \(object)"
+        if let object = object as? RealmOpenableInBrowser {
+            self.url = object.externalURL
+        } else {
+            self.url = nil
+        }
+        self.items = items
+    }
 
     func views() -> [NSView] {
         var items: [DetailViewItem] = []

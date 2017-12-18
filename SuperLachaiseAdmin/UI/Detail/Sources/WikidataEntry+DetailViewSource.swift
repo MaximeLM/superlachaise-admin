@@ -1,5 +1,5 @@
 //
-//  WikidataEntry+RootViewSource.swift
+//  WikidataEntry+DetailViewSource.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 17/12/2017.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension WikidataEntry: RootViewSource {
+extension WikidataEntry: DetailViewSource {
 
-    func rootViewModel() -> RootViewModel {
-        return RootViewModel(self, items: [
+    func detailViewModel() -> DetailViewModel {
+        return DetailViewModel(self, items: [
             [
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: wikidataId),

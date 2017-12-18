@@ -7,18 +7,18 @@
 
 import Cocoa
 import RealmSwift
-import RxCocoa
-import RxSwift
 
 final class RootViewController: NSSplitViewController {
 
     // MARK: Dependencies
 
-    lazy var realmContext = AppContainer.realmContext
-
     lazy var taskController = AppContainer.taskController
 
     // MARK: Subviews
+
+    @IBOutlet weak var listSplitViewItem: NSSplitViewItem?
+
+    @IBOutlet weak var detailSplitViewItem: NSSplitViewItem?
 
     var listViewController: ListViewControllerType?
 
@@ -29,39 +29,30 @@ final class RootViewController: NSSplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        listViewController = childViewControllers.flatMap { $0 as? ListViewControllerType }.first
-        detailViewController = childViewControllers.flatMap { $0 as? DetailViewControllerType }.first
+        listViewController = listSplitViewItem?.viewController as? ListViewControllerType
+        detailViewController = detailSplitViewItem?.viewController as? DetailViewControllerType
 
-        listViewController?.didSelectRootViewSource = { [weak self] source in
-            guard source.identifier != self?.source.value?.identifier else {
+        listViewController?.didSelectObject = { [weak self] object in
+            guard let source = object as? DetailViewSource else {
                 return
             }
-            self?.source.value = source
-        }
-
-        let realm = realmContext.viewRealm
-        source.asObservable()
-            .flatMapLatest { source -> Driver<RootViewModel?> in
-                source?.asDriver(realm: realm) ?? Driver.just(nil)
+            guard source.identifier != self?.source?.identifier else {
+                return
             }
-            .subscribe(onNext: { [weak self] model in
-                self?.view.window?.title = model?.title ?? "SuperLachaiseAdmin"
-                self?.detailViewController?.model = model
-            })
-            .disposed(by: disposeBag)
-
-        source.asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                self?.detailViewController?.didSwitchSource()
-            })
-            .disposed(by: disposeBag)
+            self?.source = source
+        }
 
     }
 
     // MARK: Model
 
-    private let disposeBag = DisposeBag()
-
-    let source = Variable<(Object & RootViewSource)?>(nil)
+    var source: DetailViewSource? {
+        get {
+            return detailViewController?.source
+        }
+        set {
+            detailViewController?.source = newValue
+        }
+    }
 
 }

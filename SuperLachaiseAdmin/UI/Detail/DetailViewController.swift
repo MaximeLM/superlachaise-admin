@@ -6,35 +6,70 @@
 //
 
 import Cocoa
+import RxCocoa
+import RxSwift
 
 protocol DetailViewControllerType {
 
-    var model: DetailViewModel? { get set }
-
-    func didSwitchSource()
+    var source: DetailViewSource? { get set }
 
 }
 
 final class DetailViewController: NSViewController, DetailViewControllerType {
 
+    // MARK: Dependencies
+
+    lazy var realmContext = AppContainer.realmContext
+
     // MARK: Model
 
-    var model: DetailViewModel? {
-        didSet {
-            stackView?.setViews(model?.views() ?? [], in: .top)
+    var source: DetailViewSource? {
+        get {
+            return _source.value
+        }
+        set {
+            _source.value = newValue
         }
     }
 
-    func didSwitchSource() {
-        if let documentView = scrollView?.documentView {
-            documentView.scroll(NSPoint(x: 0, y: documentView.bounds.height))
-        }
-    }
+    private let _source = Variable<DetailViewSource?>(nil)
 
     // MARK: Subviews
 
     @IBOutlet weak var  scrollView: NSScrollView?
 
     @IBOutlet weak var  stackView: NSStackView?
+
+    // MARK: Properties
+
+    private let disposeBag = DisposeBag()
+
+    // MARK: Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Reload stack view when the source is changed or the realm is saved
+        let realm = realmContext.viewRealm
+        _source.asObservable()
+            .flatMapLatest { source in
+                source?.asObservable(realm: realm).catchErrorJustReturn(nil) ?? Observable.just(nil)
+            }
+            .subscribe(onNext: { [weak self] model in
+                self?.view.window?.title = model?.title ?? "SuperLachaiseAdmin"
+                self?.stackView?.setViews(model?.views() ?? [], in: .top)
+            })
+            .disposed(by: disposeBag)
+
+        // Scroll to top on source change
+        _source.asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                if let documentView = self?.scrollView?.documentView {
+                    documentView.scroll(NSPoint(x: 0, y: documentView.bounds.height))
+                }
+            })
+            .disposed(by: disposeBag)
+
+    }
 
 }
