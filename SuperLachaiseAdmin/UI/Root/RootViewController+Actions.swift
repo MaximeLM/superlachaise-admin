@@ -9,6 +9,16 @@ import Cocoa
 
 extension RootViewController {
 
+    // MARK: Navigation
+
+    @IBAction func navigationSegmentControlAction(_ sender: NSSegmentedControl) {
+        if sender.selectedSegment == 0 {
+            goBackInSources()
+        } else {
+            goForwardInSources()
+        }
+    }
+
     // MARK: Sync
 
     @IBAction func syncOpenStreetMapElements(_ sender: Any?) {

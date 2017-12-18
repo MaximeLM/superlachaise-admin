@@ -13,6 +13,10 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     private var autosaveName: NSWindow.FrameAutosaveName? = NSWindow.FrameAutosaveName(rawValue: "MainWindow")
 
+    // MARK: Subviews
+
+    @IBOutlet weak var navigationSegmentedControl: NSSegmentedControl?
+
     // MARK: Lifecycle
 
     override func windowDidLoad() {
@@ -24,6 +28,9 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
         // Keep the instance alive until the window closes
         MainWindowController.retain(self)
+
+        window?.titleVisibility = .hidden
+
     }
 
     func windowWillClose(_ notification: Notification) {

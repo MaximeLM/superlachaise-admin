@@ -377,11 +377,40 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="DBF60FC8-C6B2-4186-8493-3FFC4001BE05" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Nko-oY-gPa">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="01A2B034-0FF2-4E47-9B63-961972340244" label="" paletteLabel="Navigation" autovalidates="NO" id="Oaj-AJ-2wu">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="70" height="24"/>
+                                    <size key="maxSize" width="102" height="27"/>
+                                    <segmentedControl key="view" verticalHuggingPriority="750" id="G8z-dn-YiJ">
+                                        <rect key="frame" x="0.0" y="14" width="74" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="separated" trackingMode="momentary" id="Hqr-9a-n8M">
+                                            <font key="font" metaFont="system"/>
+                                            <segments>
+                                                <segment image="NSGoBackTemplate" width="32" enabled="NO"/>
+                                                <segment image="NSGoForwardTemplate" width="32" enabled="NO" tag="1"/>
+                                            </segments>
+                                        </segmentedCell>
+                                        <connections>
+                                            <action selector="navigationSegmentControlAction:" target="Oky-zY-oP4" id="KD3-nh-ZHQ"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="90o-f3-26o"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="Oaj-AJ-2wu"/>
+                                <toolbarItem reference="90o-f3-26o"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
                     </window>
                     <connections>
+                        <outlet property="navigationSegmentedControl" destination="G8z-dn-YiJ" id="xgf-IG-CAn"/>
                         <segue destination="E7L-kO-4OK" kind="relationship" relationship="window.shadowedContentViewController" id="eLh-lG-8Ck"/>
                     </connections>
                 </windowController>
@@ -618,4 +647,8 @@
             <point key="canvasLocation" x="670" y="948"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSGoBackTemplate" width="9" height="12"/>
+        <image name="NSGoForwardTemplate" width="9" height="12"/>
+    </resources>
 </document>

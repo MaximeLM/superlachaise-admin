@@ -26,6 +26,14 @@ final class RootViewController: NSSplitViewController {
         return view.window
     }
 
+    var windowController: MainWindowController? {
+        return window?.windowController as? MainWindowController
+    }
+
+    var navigationSegmentedControl: NSSegmentedControl? {
+        return windowController?.navigationSegmentedControl
+    }
+
     var listViewController: ListViewControllerType? {
         return listSplitViewItem?.viewController as? ListViewControllerType
     }
@@ -43,10 +51,10 @@ final class RootViewController: NSSplitViewController {
             guard let source = object as? DetailViewSource else {
                 return
             }
-            guard source.identifier != self?.source?.identifier else {
+            guard source.identifier != self?.detailViewController?.source?.identifier else {
                 return
             }
-            self?.source = source
+            self?.selectNewSource(source)
         }
 
         detailViewController?.didChangeTitle = { [weak self] title in
@@ -55,15 +63,50 @@ final class RootViewController: NSSplitViewController {
 
     }
 
-    // MARK: Model
+    // MARK: Source
 
-    var source: DetailViewSource? {
-        get {
-            return detailViewController?.source
+    private var sourceHistory: [DetailViewSource] = []
+
+    private var sourceHistoryIndex: Int = -1
+
+    private var canGoBackInSources: Bool {
+        return sourceHistoryIndex > 0
+    }
+
+    private var canGoForwardInSources: Bool {
+        return sourceHistoryIndex + 1 < sourceHistory.count
+    }
+
+    func selectNewSource(_ source: DetailViewSource) {
+        _ = sourceHistory.dropLast(sourceHistory.count - sourceHistoryIndex)
+        sourceHistory.append(source)
+        sourceHistoryIndex += 1
+        detailViewController?.source = source
+        updateNavigationSegmentedControl()
+    }
+
+    func goBackInSources() {
+        guard canGoBackInSources else {
+            return
         }
-        set {
-            detailViewController?.source = newValue
+        sourceHistoryIndex -= 1
+        detailViewController?.source = sourceHistory[sourceHistoryIndex]
+        updateNavigationSegmentedControl()
+    }
+
+    func goForwardInSources() {
+        guard canGoForwardInSources else {
+            return
         }
+        sourceHistoryIndex += 1
+        detailViewController?.source = sourceHistory[sourceHistoryIndex]
+        updateNavigationSegmentedControl()
+    }
+
+    private func updateNavigationSegmentedControl() {
+        navigationSegmentedControl?.setEnabled(canGoBackInSources, forSegment: 0)
+        navigationSegmentedControl?.setEnabled(canGoForwardInSources, forSegment: 1)
+
     }
 
 }
