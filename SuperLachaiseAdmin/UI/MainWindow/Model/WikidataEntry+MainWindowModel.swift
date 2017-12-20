@@ -1,13 +1,13 @@
 //
-//  WikidataEntry+DetailViewSource.swift
+//  WikidataEntry+MainWindowModel.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 17/12/2017.
+//  Created by Maxime Le Moine on 20/12/2017.
 //
 
 import Foundation
 
-extension WikidataEntry: DetailViewSource {
+extension WikidataEntry: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

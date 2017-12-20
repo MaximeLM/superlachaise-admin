@@ -9,7 +9,15 @@ import Cocoa
 import RealmSwift
 import RxSwift
 
-final class RootViewController: NSSplitViewController {
+protocol RootViewControllerType: NSObjectProtocol {
+
+    var didSelectModel: Observable<MainWindowModel> { get }
+
+    var model: Variable<MainWindowModel?> { get }
+
+}
+
+final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     // MARK: Dependencies
 
@@ -23,25 +31,17 @@ final class RootViewController: NSSplitViewController {
 
     // MARK: Properties
 
-    private let disposeBag = DisposeBag()
-
-    // MARK: Other views
-
-    var window: NSWindow? {
-        return view.window
+    var didSelectModel: Observable<MainWindowModel> {
+        return _didSelectModel.asObservable()
     }
 
-    var windowController: MainWindowController? {
-        return window?.windowController as? MainWindowController
-    }
+    private let _didSelectModel = PublishSubject<MainWindowModel>()
 
-    var navigationSegmentedControl: NSSegmentedControl? {
-        return windowController?.navigationSegmentedControl
-    }
+    let model = Variable<MainWindowModel?>(nil)
 
-    var titleLabel: NSTextField? {
-        return windowController?.titleLabel
-    }
+    let disposeBag = DisposeBag()
+
+    // MARK: Child view controllers
 
     var listViewController: ListViewControllerType? {
         return listSplitViewItem?.viewController as? ListViewControllerType
@@ -56,71 +56,17 @@ final class RootViewController: NSSplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        listViewController?.selectedObject
-            .subscribe(onNext: { [weak self] object in
-                guard let source = object as? DetailViewSource else {
-                    return
-                }
-                guard source.identifier != self?.detailViewController?.source.value?.identifier else {
-                    return
-                }
-                self?.selectNewSource(source)
-            })
-            .disposed(by: disposeBag)
-
-        detailViewController?.model
+        listViewController?.didSelectModel
             .subscribe(onNext: { [weak self] model in
-                let newTitle = model?.title ?? "SuperLachaiseAdmin"
-                self?.titleLabel?.stringValue = newTitle
-                self?.window?.title = newTitle
+                self?._didSelectModel.onNext(model)
             })
             .disposed(by: disposeBag)
 
-    }
-
-    // MARK: Source
-
-    private var sourceHistory: [DetailViewSource] = []
-
-    private var sourceHistoryIndex: Int = -1
-
-    private var canGoBackInSources: Bool {
-        return sourceHistoryIndex > 0
-    }
-
-    private var canGoForwardInSources: Bool {
-        return sourceHistoryIndex + 1 < sourceHistory.count
-    }
-
-    func selectNewSource(_ source: DetailViewSource) {
-        _ = sourceHistory.dropLast(sourceHistory.count - sourceHistoryIndex)
-        sourceHistory.append(source)
-        sourceHistoryIndex += 1
-        detailViewController?.source.value = source
-        updateNavigationSegmentedControl()
-    }
-
-    func goBackInSources() {
-        guard canGoBackInSources else {
-            return
+        if let detailViewController = detailViewController {
+            model.asObservable()
+                .bind(to: detailViewController.model)
+                .disposed(by: disposeBag)
         }
-        sourceHistoryIndex -= 1
-        detailViewController?.source.value = sourceHistory[sourceHistoryIndex]
-        updateNavigationSegmentedControl()
-    }
-
-    func goForwardInSources() {
-        guard canGoForwardInSources else {
-            return
-        }
-        sourceHistoryIndex += 1
-        detailViewController?.source.value = sourceHistory[sourceHistoryIndex]
-        updateNavigationSegmentedControl()
-    }
-
-    private func updateNavigationSegmentedControl() {
-        navigationSegmentedControl?.setEnabled(canGoBackInSources, forSegment: 0)
-        navigationSegmentedControl?.setEnabled(canGoForwardInSources, forSegment: 1)
 
     }
 

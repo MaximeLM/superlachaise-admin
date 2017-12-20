@@ -1,13 +1,13 @@
 //
-//  OpenStreetMapElement+DetailViewSource.swift
+//  OpenStreetMapElement+MainWindowModel.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 17/12/2017.
+//  Created by Maxime Le Moine on 20/12/2017.
 //
 
 import Foundation
 
-extension OpenStreetMapElement: DetailViewSource {
+extension OpenStreetMapElement: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

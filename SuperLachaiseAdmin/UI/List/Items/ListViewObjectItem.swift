@@ -10,9 +10,9 @@ import RealmSwift
 
 final class ListViewObjectItem: NSObject, ListViewItem {
 
-    let object: Object & RealmIdentifiable
+    let object: MainWindowModel
 
-    init(object: Object & RealmIdentifiable) {
+    init(object: MainWindowModel) {
         self.object = object
     }
 
