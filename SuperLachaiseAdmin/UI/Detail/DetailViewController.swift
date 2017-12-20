@@ -6,14 +6,15 @@
 //
 
 import Cocoa
+import RealmSwift
 import RxCocoa
 import RxSwift
 
 protocol DetailViewControllerType: NSObjectProtocol {
 
-    var source: DetailViewSource? { get set }
+    var source: Variable<DetailViewSource?> { get }
 
-    var didChangeTitle: ((String?) -> Void)? { get set }
+    var model: Observable<DetailViewModel?> { get }
 
 }
 
@@ -25,16 +26,13 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Model
 
-    var source: DetailViewSource? {
-        get {
-            return _source.value
-        }
-        set {
-            _source.value = newValue
-        }
+    let source = Variable<DetailViewSource?>(nil)
+
+    var model: Observable<DetailViewModel?> {
+        return _model.asObservable()
     }
 
-    private let _source = Variable<DetailViewSource?>(nil)
+    private let _model = Variable<DetailViewModel?>(nil)
 
     // MARK: Subviews
 
@@ -44,8 +42,6 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Properties
 
-    var didChangeTitle: ((String?) -> Void)?
-
     private let disposeBag = DisposeBag()
 
     // MARK: Lifecycle
@@ -53,20 +49,28 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Reload stack view when the source is changed or the realm is saved
+        // Update model from source when the source is changed or the realm is saved
         let realm = realmContext.viewRealm
-        _source.asObservable()
-            .flatMapLatest { source in
-                source?.asObservable(realm: realm).catchErrorJustReturn(nil) ?? Observable.just(nil)
+        source.asObservable()
+            .flatMapLatest { source -> Observable<DetailViewModel?> in
+                let realmObservable = Observable<(Realm, Realm.Notification)>.from(realm: realm)
+                return realmObservable
+                    .map { _ in }
+                    .startWith(())
+                    .map { _ in source?.detailViewModel() }
             }
+            .bind(to: _model)
+            .disposed(by: disposeBag)
+
+        // Bind the model to the stack view
+        _model.asObservable()
             .subscribe(onNext: { [weak self] model in
-                self?.didChangeTitle?(model?.title)
                 self?.stackView?.setViews(model?.views() ?? [], in: .top)
             })
             .disposed(by: disposeBag)
 
         // Scroll to top on source change
-        _source.asObservable()
+        source.asObservable()
             .subscribe(onNext: { [weak self] _ in
                 if let documentView = self?.scrollView?.documentView {
                     documentView.scroll(NSPoint(x: 0, y: documentView.bounds.height))

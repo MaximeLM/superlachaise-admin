@@ -11,7 +11,7 @@ import RxSwift
 
 protocol ListViewControllerType: NSObjectProtocol {
 
-    var selectedObjects: Observable<Object & RealmIdentifiable> { get }
+    var selectedObject: Observable<Object & RealmIdentifiable> { get }
 
 }
 
@@ -25,11 +25,11 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Properties
 
-    var selectedObjects: Observable<Object & RealmIdentifiable> {
-        return _selectedObjects.asObservable()
+    var selectedObject: Observable<Object & RealmIdentifiable> {
+        return _selectedObject.asObservable()
     }
 
-    private let _selectedObjects = PublishSubject<Object & RealmIdentifiable>()
+    private let _selectedObject = PublishSubject<Object & RealmIdentifiable>()
 
     // MARK: Subviews
 
@@ -114,7 +114,7 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
             return
         }
         if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem {
-            _selectedObjects.onNext(item.object)
+            _selectedObject.onNext(item.object)
         }
     }
 

@@ -56,23 +56,25 @@ final class RootViewController: NSSplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        listViewController?.selectedObjects
+        listViewController?.selectedObject
             .subscribe(onNext: { [weak self] object in
                 guard let source = object as? DetailViewSource else {
                     return
                 }
-                guard source.identifier != self?.detailViewController?.source?.identifier else {
+                guard source.identifier != self?.detailViewController?.source.value?.identifier else {
                     return
                 }
                 self?.selectNewSource(source)
             })
             .disposed(by: disposeBag)
 
-        detailViewController?.didChangeTitle = { [weak self] title in
-            let newTitle = title ?? "SuperLachaiseAdmin"
-            self?.titleLabel?.stringValue = newTitle
-            self?.window?.title = newTitle
-        }
+        detailViewController?.model
+            .subscribe(onNext: { [weak self] model in
+                let newTitle = model?.title ?? "SuperLachaiseAdmin"
+                self?.titleLabel?.stringValue = newTitle
+                self?.window?.title = newTitle
+            })
+            .disposed(by: disposeBag)
 
     }
 
@@ -94,7 +96,7 @@ final class RootViewController: NSSplitViewController {
         _ = sourceHistory.dropLast(sourceHistory.count - sourceHistoryIndex)
         sourceHistory.append(source)
         sourceHistoryIndex += 1
-        detailViewController?.source = source
+        detailViewController?.source.value = source
         updateNavigationSegmentedControl()
     }
 
@@ -103,7 +105,7 @@ final class RootViewController: NSSplitViewController {
             return
         }
         sourceHistoryIndex -= 1
-        detailViewController?.source = sourceHistory[sourceHistoryIndex]
+        detailViewController?.source.value = sourceHistory[sourceHistoryIndex]
         updateNavigationSegmentedControl()
     }
 
@@ -112,7 +114,7 @@ final class RootViewController: NSSplitViewController {
             return
         }
         sourceHistoryIndex += 1
-        detailViewController?.source = sourceHistory[sourceHistoryIndex]
+        detailViewController?.source.value = sourceHistory[sourceHistoryIndex]
         updateNavigationSegmentedControl()
     }
 
