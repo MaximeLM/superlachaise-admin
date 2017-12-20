@@ -7,14 +7,6 @@
 
 import Cocoa
 
-class ClickableTextField: NSTextField {
-
-    override func resetCursorRects() {
-        addCursorRect(bounds, cursor: .pointingHand)
-    }
-
-}
-
 extension NSTextField {
 
     var htmlStringValue: String {
