@@ -7,6 +7,7 @@
 
 import Cocoa
 import RealmSwift
+import RxSwift
 
 final class RootViewController: NSSplitViewController {
 
@@ -19,6 +20,10 @@ final class RootViewController: NSSplitViewController {
     @IBOutlet weak var listSplitViewItem: NSSplitViewItem?
 
     @IBOutlet weak var detailSplitViewItem: NSSplitViewItem?
+
+    // MARK: Properties
+
+    private let disposeBag = DisposeBag()
 
     // MARK: Other views
 
@@ -51,15 +56,17 @@ final class RootViewController: NSSplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        listViewController?.didSelectObject = { [weak self] object in
-            guard let source = object as? DetailViewSource else {
-                return
-            }
-            guard source.identifier != self?.detailViewController?.source?.identifier else {
-                return
-            }
-            self?.selectNewSource(source)
-        }
+        listViewController?.selectedObjects
+            .subscribe(onNext: { [weak self] object in
+                guard let source = object as? DetailViewSource else {
+                    return
+                }
+                guard source.identifier != self?.detailViewController?.source?.identifier else {
+                    return
+                }
+                self?.selectNewSource(source)
+            })
+            .disposed(by: disposeBag)
 
         detailViewController?.didChangeTitle = { [weak self] title in
             let newTitle = title ?? "SuperLachaiseAdmin"
