@@ -36,6 +36,7 @@
 		5570F9401FE851FD000DA3C9 /* OpenStreetMapElement+DetailViewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F93E1FE851FD000DA3C9 /* OpenStreetMapElement+DetailViewSource.swift */; };
 		5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F98C1FEAFA35000DA3C9 /* Array+Utils.swift */; };
 		5570F98F1FEAFB3C000DA3C9 /* ClickableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F98E1FEAFB3C000DA3C9 /* ClickableTextField.swift */; };
+		5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		5587F9F51FCF6E9F004C9E28 /* RootViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F41FCF6E9E004C9E28 /* RootViewController+Actions.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
@@ -131,6 +132,7 @@
 		5570F93E1FE851FD000DA3C9 /* OpenStreetMapElement+DetailViewSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+DetailViewSource.swift"; sourceTree = "<group>"; };
 		5570F98C1FEAFA35000DA3C9 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 		5570F98E1FEAFB3C000DA3C9 /* ClickableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickableTextField.swift; sourceTree = "<group>"; };
+		5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainWindowController+NewWindow.swift"; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		5587F9F41FCF6E9E004C9E28 /* RootViewController+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewController+Actions.swift"; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 			isa = PBXGroup;
 			children = (
 				55B536E41FD31C6800036FFC /* MainWindowController.swift */,
+				5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */,
 			);
 			path = Window;
 			sourceTree = "<group>";
@@ -897,6 +900,7 @@
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				55B3658B1FDDAE7A00EB84BD /* WikidataEntry.swift in Sources */,
 				55A8D23B1FCF52A900BB00BC /* RealmDeletable.swift in Sources */,
+				5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
