@@ -31,10 +31,9 @@ final class SyncOpenStreetMapElements: Task {
 
     // MARK: Execution
 
-    func asCompletable() -> Completable {
+    func asSingle() -> Single<Void> {
         return openStreetMapElements()
             .flatMap(self.deleteOrphans)
-            .toCompletable()
     }
 
 }

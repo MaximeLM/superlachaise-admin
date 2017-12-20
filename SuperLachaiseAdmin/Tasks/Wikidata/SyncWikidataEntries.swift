@@ -31,11 +31,10 @@ final class SyncWikidataEntries: Task {
 
     // MARK: Execution
 
-    func asCompletable() -> Completable {
+    func asSingle() -> Single<Void> {
         return primaryWikidataEntries()
             .flatMap(self.withSecondaryWikidataEntries)
             .flatMap(self.deleteOrphans)
-            .toCompletable()
     }
 
 }

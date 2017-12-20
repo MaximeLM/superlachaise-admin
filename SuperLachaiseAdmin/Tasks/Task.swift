@@ -10,7 +10,7 @@ import RxSwift
 
 protocol Task: CustomStringConvertible {
 
-    func asCompletable() -> Completable
+    func asSingle() -> Single<Void>
 
 }
 

@@ -29,7 +29,7 @@ final class TaskController {
     private let operationQueue: OperationQueue
 
     func enqueue(_ task: Task) {
-        _ = task.asCompletable()
+        _ = task.asSingle()
             .enqueue(in: operationQueue)
             .do(onSubscribe: { Logger.info("\(task) started") })
             .subscribe(onError: { Logger.error("\(task) failed: \($0)") },
