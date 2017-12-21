@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import RealmSwift
 import RxSwift
 
 protocol RootViewControllerType: NSObjectProtocol {
@@ -15,13 +14,33 @@ protocol RootViewControllerType: NSObjectProtocol {
 
     var didDoubleClickModel: Observable<MainWindowModel>? { get }
 
-    var model: Variable<MainWindowModel?>? { get }
+    var model: MainWindowModel? { get set }
 
-    var refreshModel: Variable<MainWindowModel?>? { get }
+    var refreshModel: MainWindowModel? { get set }
 
 }
 
 final class RootViewController: NSSplitViewController, RootViewControllerType {
+
+    // MARK: Model
+
+    var model: MainWindowModel? {
+        get {
+            return detailViewController?.model
+        }
+        set {
+            detailViewController?.model = newValue
+        }
+    }
+
+    var refreshModel: MainWindowModel? {
+        get {
+            return detailViewController?.refreshModel
+        }
+        set {
+            detailViewController?.refreshModel = newValue
+        }
+    }
 
     // MARK: Subviews
 
@@ -37,14 +56,6 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     var didDoubleClickModel: Observable<MainWindowModel>? {
         return listViewController?.didDoubleClickModel
-    }
-
-    var model: Variable<MainWindowModel?>? {
-        return detailViewController?.model
-    }
-
-    var refreshModel: Variable<MainWindowModel?>? {
-        return detailViewController?.refreshModel
     }
 
     // MARK: Child view controllers

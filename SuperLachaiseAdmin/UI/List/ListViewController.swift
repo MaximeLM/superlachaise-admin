@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import RealmSwift
 import RxSwift
 
 protocol ListViewControllerType: NSObjectProtocol {

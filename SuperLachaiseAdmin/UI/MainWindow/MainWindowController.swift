@@ -75,7 +75,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             .bind(to: refreshModel)
             .disposed(by: disposeBag)
 
-        // Update title from model
+        // Update views from model
         refreshModel.asObservable()
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
             .subscribe(onNext: { title in
@@ -83,16 +83,20 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
                 self.titleLabel?.stringValue = title
             })
             .disposed(by: disposeBag)
+        if let syncButton = syncButton {
+            model.asObservable()
+                .map { $0 is Syncable }
+                .bind(to: syncButton.rx.isEnabled)
+                .disposed(by: disposeBag)
+        }
 
         // Subscribe to child view controller selections
-
         rootViewController?.didSingleClickModel?
             .distinctUntilChanged { $0 as Object }
             .subscribe(onNext: { model in
                 self.selectNewModel(model)
             })
             .disposed(by: disposeBag)
-
         rootViewController?.didDoubleClickModel?
             .subscribe(onNext: { model in
                 self.newTab(self.instantiate(model: model))
@@ -100,31 +104,16 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             .disposed(by: disposeBag)
 
         // Subscribe child view controller to model
-
-        if let rootViewControllerModel = rootViewController?.model {
-
-            model.asObservable()
-                .bind(to: rootViewControllerModel)
-                .disposed(by: disposeBag)
-
-        }
-
-        if let rootViewControllerRefreshModel = rootViewController?.refreshModel {
-
-            refreshModel.asObservable()
-                .bind(to: rootViewControllerRefreshModel)
-                .disposed(by: disposeBag)
-
-        }
-
-        // Update sync button from model
-
-        if let syncButton = syncButton {
-            model.asObservable()
-                .map { $0 is Syncable }
-                .bind(to: syncButton.rx.isEnabled)
-                .disposed(by: disposeBag)
-        }
+        model.asObservable()
+            .subscribe(onNext: { model in
+                self.rootViewController?.model = model
+            })
+            .disposed(by: disposeBag)
+        refreshModel.asObservable()
+            .subscribe(onNext: { model in
+                self.rootViewController?.refreshModel = model
+            })
+            .disposed(by: disposeBag)
 
         self.disposeBag = disposeBag
     }
