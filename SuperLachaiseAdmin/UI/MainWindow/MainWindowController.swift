@@ -22,6 +22,8 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     let model = Variable<MainWindowModel?>(nil)
 
+    let refreshModel = PublishSubject<MainWindowModel?>()
+
     // MARK: Properties
 
     static var isFirstWindow = true
@@ -60,14 +62,14 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
         let disposeBag = DisposeBag()
 
-        // Republish the model each time the realm is saved
-        Observable<(Realm, Realm.Notification)>.from(realm: realmContext.viewRealm)
-            .map { _ in self.model.value }
-            .bind(to: model)
+        // Publish the model each time the model is changed or the realm is saved
+        let realmObservable = Observable<(Realm, Realm.Notification)>.from(realm: realmContext.viewRealm)
+        Observable.merge(model.asObservable(), realmObservable.map { _ in self.model.value })
+            .bind(to: refreshModel)
             .disposed(by: disposeBag)
 
         // Update title from model
-        model.asObservable()
+        refreshModel.asObservable()
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
             .subscribe(onNext: { title in
                 self.window?.title = title
@@ -77,6 +79,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
         // Subscribe to child view controller selections
         rootViewController?.didSelectModel
+            .distinctUntilChanged { $0 as Object }
             .subscribe(onNext: { model in
                 self.selectNewModel(model)
             })
@@ -84,9 +87,15 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
         // Update root view controller with model
         if let rootViewController = rootViewController {
+
             model.asObservable()
                 .bind(to: rootViewController.model)
                 .disposed(by: disposeBag)
+
+            refreshModel.asObservable()
+                .bind(to: rootViewController.refreshModel)
+                .disposed(by: disposeBag)
+
         }
 
         self.disposeBag = disposeBag

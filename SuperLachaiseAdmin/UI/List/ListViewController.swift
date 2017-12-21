@@ -23,6 +23,10 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     lazy var taskController = AppContainer.taskController
 
+    // MARK: Model
+
+    var rootItem: ListViewRootItem?
+
     // MARK: Properties
 
     var didSelectModel: Observable<MainWindowModel> {
@@ -38,10 +42,6 @@ final class ListViewController: NSViewController, ListViewControllerType {
     @IBOutlet weak var outlineView: NSOutlineView?
 
     @IBOutlet weak var contextualMenu: NSMenu?
-
-    // MARK: Model
-
-    var rootItem: ListViewRootItem?
 
     // Lifecycle
 

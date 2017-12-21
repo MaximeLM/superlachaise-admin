@@ -14,6 +14,8 @@ protocol DetailViewControllerType: NSObjectProtocol {
 
     var model: Variable<MainWindowModel?> { get }
 
+    var refreshModel: PublishSubject<MainWindowModel?> { get }
+
 }
 
 final class DetailViewController: NSViewController, DetailViewControllerType {
@@ -30,6 +32,8 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Properties
 
+    let refreshModel = PublishSubject<MainWindowModel?>()
+
     private let disposeBag = DisposeBag()
 
     // MARK: Lifecycle
@@ -39,7 +43,7 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
         // Bind the model to the stack view
         if let stackView = stackView {
-            model.asObservable()
+            refreshModel.asObservable()
                 .map { $0?.detailViewModel().views() ?? [] }
                 .subscribe(onNext: { views in
                     stackView.setViews(views, in: .top)
@@ -47,13 +51,15 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
                 .disposed(by: disposeBag)
         }
 
-        // Scroll to top on model identity change
+        // Scroll to top on model change
         if let documentView = scrollView?.documentView {
+
             model.asObservable()
                 .subscribe(onNext: { _ in
                     documentView.scroll(NSPoint(x: 0, y: documentView.bounds.height))
                 })
                 .disposed(by: disposeBag)
+
         }
 
     }
