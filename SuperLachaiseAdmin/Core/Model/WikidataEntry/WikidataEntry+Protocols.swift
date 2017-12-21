@@ -8,22 +8,22 @@
 import Foundation
 import RealmSwift
 
-extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
+extension WikidataEntry: Deletable, Listable, OpenableInBrowser, Syncable {
 
-    // MARK: RealmDeletable
+    // MARK: Deletable
 
     func delete() {
         realm?.delete(localizations)
         realm?.delete(self)
     }
 
-    // MARK: RealmIdentifiable
+    // MARK: Identifiable
 
     var identifier: String {
         return wikidataId
     }
 
-    // MARK: RealmListable
+    // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<WikidataEntry> {
         return { realm in
@@ -41,10 +41,16 @@ extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
         }
     }
 
-    // MARK: RealmOpenableInBrowser
+    // MARK: OpenableInBrowser
 
     var externalURL: URL? {
         return URL(string: "https://www.wikidata.org/wiki/\(wikidataId)")
+    }
+
+    // MARK: Syncable
+
+    func sync(taskController: TaskController) {
+        taskController.syncWikidataEntries(ids: [wikidataId])
     }
 
 }

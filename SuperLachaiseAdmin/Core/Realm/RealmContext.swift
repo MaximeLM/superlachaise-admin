@@ -90,7 +90,7 @@ final class RealmContext {
         return shouldCompact
     }
 
-    private func deleteFlaggedObjects<Element: Object & RealmDeletable>(type: Element.Type, realm: Realm) {
+    private func deleteFlaggedObjects<Element: Object & Deletable>(type: Element.Type, realm: Realm) {
         let objects = Array(realm.objects(type).filter("deleted == true"))
         if !objects.isEmpty {
             objects.forEach { $0.delete() }

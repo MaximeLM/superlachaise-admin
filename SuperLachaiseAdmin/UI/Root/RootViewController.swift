@@ -15,7 +15,7 @@ protocol RootViewControllerType: NSObjectProtocol {
 
     var model: Variable<MainWindowModel?> { get }
 
-    var refreshModel: PublishSubject<MainWindowModel?> { get }
+    var refreshModel: Variable<MainWindowModel?> { get }
 
 }
 
@@ -31,9 +31,9 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     // MARK: Subviews
 
-    @IBOutlet weak var listSplitViewItem: NSSplitViewItem?
+    @IBOutlet var listSplitViewItem: NSSplitViewItem?
 
-    @IBOutlet weak var detailSplitViewItem: NSSplitViewItem?
+    @IBOutlet var detailSplitViewItem: NSSplitViewItem?
 
     // MARK: Properties
 
@@ -43,7 +43,7 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     private let _didSelectModel = PublishSubject<MainWindowModel>()
 
-    let refreshModel = PublishSubject<MainWindowModel?>()
+    let refreshModel = Variable<MainWindowModel?>(nil)
 
     let disposeBag = DisposeBag()
 

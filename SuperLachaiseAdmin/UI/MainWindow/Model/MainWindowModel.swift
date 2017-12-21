@@ -12,7 +12,7 @@ import RxSwift
 
 typealias MainWindowModel = Object & MainWindowModelType
 
-protocol MainWindowModelType: RealmIdentifiable {
+protocol MainWindowModelType: Identifiable {
 
     var mainWindowTitle: String { get }
 

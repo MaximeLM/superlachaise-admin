@@ -60,7 +60,7 @@ private extension SyncOpenStreetMapElements {
     func openStreetMapElements() -> Single<[String]> {
         return overpassElements()
             .flatMap(self.saveOpenStreetMapElements)
-            .do(onNext: { Logger.info("Fetched \($0.count) primary \(OpenStreetMapElement.self)(s)") })
+            .do(onNext: { Logger.info("Fetched \($0.count) \(OpenStreetMapElement.self)(s)") })
     }
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement]) -> Single<[String]> {

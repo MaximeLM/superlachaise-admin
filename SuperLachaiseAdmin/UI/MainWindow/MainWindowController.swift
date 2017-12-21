@@ -22,7 +22,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     let model = Variable<MainWindowModel?>(nil)
 
-    let refreshModel = PublishSubject<MainWindowModel?>()
+    let refreshModel = Variable<MainWindowModel?>(nil)
 
     // MARK: Properties
 
@@ -36,9 +36,11 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     // MARK: Subviews
 
-    @IBOutlet weak var titleLabel: NSTextField?
+    @IBOutlet var titleLabel: NSTextField?
 
-    @IBOutlet weak var navigationSegmentedControl: NSSegmentedControl?
+    @IBOutlet var navigationSegmentedControl: NSSegmentedControl?
+
+    @IBOutlet var syncButton: NSButton?
 
     // MARK: Child view controllers
 
@@ -59,6 +61,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
         }
 
         window?.titleVisibility = .hidden
+        syncButton?.toolTip = "Sync current object"
 
         let disposeBag = DisposeBag()
 
@@ -96,6 +99,15 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
                 .bind(to: rootViewController.refreshModel)
                 .disposed(by: disposeBag)
 
+        }
+
+        // Update sync button from model
+
+        if let syncButton = syncButton {
+            model.asObservable()
+                .map { $0 is Syncable }
+                .bind(to: syncButton.rx.isEnabled)
+                .disposed(by: disposeBag)
         }
 
         self.disposeBag = disposeBag

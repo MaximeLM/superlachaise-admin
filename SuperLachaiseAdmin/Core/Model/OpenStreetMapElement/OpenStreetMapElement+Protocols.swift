@@ -8,21 +8,21 @@
 import Foundation
 import RealmSwift
 
-extension OpenStreetMapElement: RealmDeletable, RealmListable, RealmOpenableInBrowser {
+extension OpenStreetMapElement: Deletable, Listable, OpenableInBrowser, Syncable {
 
-    // MARK: RealmDeletable
+    // MARK: Deletable
 
     func delete() {
         realm?.delete(self)
     }
 
-    // MARK: RealmIdentifiable
+    // MARK: Identifiable
 
     var identifier: String {
         return rawOpenStreetMapId
     }
 
-    // MARK: RealmListable
+    // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<OpenStreetMapElement> {
         return { realm in
@@ -40,10 +40,19 @@ extension OpenStreetMapElement: RealmDeletable, RealmListable, RealmOpenableInBr
         }
     }
 
-    // MARK: RealmOpenableInBrowser
+    // MARK: OpenableInBrowser
 
     var externalURL: URL? {
         return URL(string: "https://www.openstreetmap.org/\(rawOpenStreetMapId)")
+    }
+
+    // MARK: Syncable
+
+    func sync(taskController: TaskController) {
+        guard let openStreetMapId = openStreetMapId else {
+            return
+        }
+        taskController.syncOpenStreetMapElement([openStreetMapId])
     }
 
 }

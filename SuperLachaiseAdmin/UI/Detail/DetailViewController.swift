@@ -14,7 +14,7 @@ protocol DetailViewControllerType: NSObjectProtocol {
 
     var model: Variable<MainWindowModel?> { get }
 
-    var refreshModel: PublishSubject<MainWindowModel?> { get }
+    var refreshModel: Variable<MainWindowModel?> { get }
 
 }
 
@@ -26,13 +26,13 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Subviews
 
-    @IBOutlet weak var scrollView: NSScrollView?
+    @IBOutlet var scrollView: NSScrollView?
 
-    @IBOutlet weak var stackView: NSStackView?
+    @IBOutlet var stackView: NSStackView?
 
     // MARK: Properties
 
-    let refreshModel = PublishSubject<MainWindowModel?>()
+    let refreshModel = Variable<MainWindowModel?>(nil)
 
     private let disposeBag = DisposeBag()
 

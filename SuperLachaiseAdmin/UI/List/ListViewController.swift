@@ -37,11 +37,11 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Subviews
 
-    @IBOutlet weak var searchField: NSSearchField?
+    @IBOutlet var searchField: NSSearchField?
 
-    @IBOutlet weak var outlineView: NSOutlineView?
+    @IBOutlet var outlineView: NSOutlineView?
 
-    @IBOutlet weak var contextualMenu: NSMenu?
+    @IBOutlet var contextualMenu: NSMenu?
 
     // Lifecycle
 

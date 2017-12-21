@@ -389,8 +389,8 @@
                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="separated" trackingMode="momentary" id="Hqr-9a-n8M">
                                             <font key="font" metaFont="system"/>
                                             <segments>
-                                                <segment image="NSGoBackTemplate" width="32" enabled="NO"/>
-                                                <segment image="NSGoForwardTemplate" width="32" enabled="NO" tag="1"/>
+                                                <segment toolTip="Go Back" image="NSGoBackTemplate" width="32" enabled="NO"/>
+                                                <segment toolTip="Go Forward" image="NSGoForwardTemplate" width="32" enabled="NO" tag="1"/>
                                             </segments>
                                         </segmentedCell>
                                         <connections>
@@ -405,7 +405,7 @@
                                     <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="haN-yq-7Gl">
                                         <rect key="frame" x="0.0" y="14" width="38" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="SuperLachaiseAdmin" id="dZi-fH-WRC">
+                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Title" id="dZi-fH-WRC">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -413,12 +413,29 @@
                                     </textField>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="YCJ-Fo-NXy"/>
+                                <toolbarItem implicitItemIdentifier="FC06C4F8-0A15-4EC7-A09C-4FA1583E9B0D" label="" paletteLabel="Sync" image="NSRefreshTemplate" id="bRF-MR-Jhg">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="32" height="24"/>
+                                    <size key="maxSize" width="32" height="27"/>
+                                    <button key="view" verticalHuggingPriority="750" id="4SE-7m-I3e">
+                                        <rect key="frame" x="1" y="14" width="32" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vGd-3C-mtg">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="syncCurrentModel:" target="B8D-0N-5wS" id="2HC-O4-2al"/>
+                                        </connections>
+                                    </button>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Oaj-AJ-2wu"/>
                                 <toolbarItem reference="YCJ-Fo-NXy"/>
                                 <toolbarItem reference="v2F-34-nZh"/>
                                 <toolbarItem reference="YCJ-Fo-NXy"/>
+                                <toolbarItem reference="bRF-MR-Jhg"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -427,6 +444,7 @@
                     </window>
                     <connections>
                         <outlet property="navigationSegmentedControl" destination="G8z-dn-YiJ" id="xgf-IG-CAn"/>
+                        <outlet property="syncButton" destination="4SE-7m-I3e" id="jDl-8K-tq9"/>
                         <outlet property="titleLabel" destination="haN-yq-7Gl" id="5bk-Wf-OHl"/>
                         <segue destination="E7L-kO-4OK" kind="relationship" relationship="window.shadowedContentViewController" id="eLh-lG-8Ck"/>
                     </connections>
@@ -539,7 +557,6 @@
                                                 <action trigger="doubleAction" selector="doubleClickAction:" target="uw9-uF-Klt" id="5g7-ho-FBY"/>
                                                 <outlet property="dataSource" destination="uw9-uF-Klt" id="ABR-6v-788"/>
                                                 <outlet property="delegate" destination="uw9-uF-Klt" id="uxU-Za-RY5"/>
-                                                <outlet property="menu" destination="U7s-Ag-zeW" id="L5w-mO-7qF"/>
                                             </connections>
                                         </outlineView>
                                     </subviews>
@@ -566,35 +583,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="contextualMenu" destination="U7s-Ag-zeW" id="55p-3G-lMU"/>
                         <outlet property="outlineView" destination="7HU-X2-rtd" id="htJ-11-mPE"/>
                         <outlet property="searchField" destination="c9B-Uq-hmr" id="K3G-NF-g4n"/>
                     </connections>
                 </viewController>
                 <customObject id="EBP-sp-XR7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <menu id="U7s-Ag-zeW">
-                    <items>
-                        <menuItem title="Open in browser" id="um2-kS-waR">
-                            <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="openInBrowser:" target="uw9-uF-Klt" id="UNc-hc-c3R"/>
-                            </connections>
-                        </menuItem>
-                        <menuItem isSeparatorItem="YES" id="RoT-CO-QKL"/>
-                        <menuItem title="Sync OpenStreetMap element" tag="10" id="fmN-8D-mzp">
-                            <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="syncSelectedOpenStreetMapElement:" target="uw9-uF-Klt" id="fRP-au-7WH"/>
-                            </connections>
-                        </menuItem>
-                        <menuItem title="Sync Wikidata entries" tag="11" id="LiN-Yj-cbb">
-                            <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="syncSelectedWikidataEntries:" target="uw9-uF-Klt" id="iPG-Pu-OZZ"/>
-                            </connections>
-                        </menuItem>
-                    </items>
-                </menu>
             </objects>
             <point key="canvasLocation" x="591" y="494"/>
         </scene>
@@ -667,5 +660,6 @@
     <resources>
         <image name="NSGoBackTemplate" width="9" height="12"/>
         <image name="NSGoForwardTemplate" width="9" height="12"/>
+        <image name="NSRefreshTemplate" width="11" height="15"/>
     </resources>
 </document>

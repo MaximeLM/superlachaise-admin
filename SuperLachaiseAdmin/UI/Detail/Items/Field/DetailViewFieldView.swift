@@ -33,13 +33,13 @@ final class DetailViewFieldView: NSView {
 
     // MARK: Subviews
 
-    @IBOutlet private weak var nameLabel: NSTextField?
+    @IBOutlet private var nameLabel: NSTextField?
 
-    @IBOutlet private weak var valueLabel: NSTextField?
+    @IBOutlet private var valueLabel: NSTextField?
 
     // MARK: Layout
 
-    @IBOutlet private weak var nameWidthConstraint: NSLayoutConstraint?
+    @IBOutlet private var nameWidthConstraint: NSLayoutConstraint?
 
     override func layout() {
         let nameWidth = nameWidthConstraint?.constant ?? 0

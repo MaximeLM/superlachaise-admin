@@ -23,7 +23,7 @@ final class DetailViewURLView: NSView {
 
     // MARK: Subviews
 
-    @IBOutlet private weak var label: NSTextField?
+    @IBOutlet private var label: NSTextField?
 
     // MARK: Lifecycle
 

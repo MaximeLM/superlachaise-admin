@@ -8,21 +8,21 @@
 import Foundation
 import RealmSwift
 
-extension WikipediaPage: RealmDeletable, RealmListable, RealmOpenableInBrowser {
+extension WikipediaPage: Deletable, Listable, OpenableInBrowser {
 
-    // MARK: RealmDeletable
+    // MARK: Deletable
 
     func delete() {
         realm?.delete(self)
     }
 
-    // MARK: RealmIdentifiable
+    // MARK: Identifiable
 
     var identifier: String {
         return rawWikipediaId
     }
 
-    // MARK: RealmListable
+    // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<WikipediaPage> {
         return { realm in
@@ -40,7 +40,7 @@ extension WikipediaPage: RealmDeletable, RealmListable, RealmOpenableInBrowser {
         }
     }
 
-    // MARK: RealmOpenableInBrowser
+    // MARK: OpenableInBrowser
 
     var externalURL: URL? {
         guard let wikipediaId = wikipediaId else {

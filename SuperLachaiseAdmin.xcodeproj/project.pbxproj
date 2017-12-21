@@ -44,9 +44,10 @@
 		5570F9B31FEC4E3C000DA3C9 /* WikipediaPage+Id.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B21FEC4E3C000DA3C9 /* WikipediaPage+Id.swift */; };
 		5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B41FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift */; };
 		5570F9B71FEC5043000DA3C9 /* WikipediaPage+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B61FEC5043000DA3C9 /* WikipediaPage+Protocols.swift */; };
+		5570F9B91FEC5755000DA3C9 /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B81FEC5755000DA3C9 /* Syncable.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
-		55A8D23B1FCF52A900BB00BC /* RealmDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* RealmDeletable.swift */; };
+		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
 		55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2421FCF5BA500BB00BC /* Config.swift */; };
 		55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2441FCF5C3A00BB00BC /* OpenStreetMapConfig.swift */; };
 		55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2481FCF5D9D00BB00BC /* BoundingBox.swift */; };
@@ -85,8 +86,8 @@
 		55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536EB1FD326D400036FFC /* ListViewRootItem.swift */; };
 		55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536FB1FD33D1B00036FFC /* ListViewObjectItem.swift */; };
 		55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536FE1FD33E0C00036FFC /* ListViewObjectListItem.swift */; };
-		55B537011FD3413800036FFC /* RealmListable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B537001FD3413800036FFC /* RealmListable.swift */; };
-		55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B537061FD351C800036FFC /* RealmIdentifiable.swift */; };
+		55B537011FD3413800036FFC /* Listable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B537001FD3413800036FFC /* Listable.swift */; };
+		55B537071FD351C800036FFC /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B537061FD351C800036FFC /* Identifiable.swift */; };
 		55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B897DE1FC9D17600FC4EF6 /* Main.storyboard */; };
 		55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E11FCB169F00FC4EF6 /* RealmContext.swift */; };
 		55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E41FCB1CED00FC4EF6 /* Logger.swift */; };
@@ -99,7 +100,7 @@
 		55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */; };
 		55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */; };
 		55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB48021FCCE4C0003F3610 /* Errors.swift */; };
-		55E8A3AA1FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3A91FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift */; };
+		55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */; };
 		55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */; };
 		55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */; };
 		55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */; };
@@ -146,9 +147,10 @@
 		5570F9B21FEC4E3C000DA3C9 /* WikipediaPage+Id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+Id.swift"; sourceTree = "<group>"; };
 		5570F9B41FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+Requests.swift"; sourceTree = "<group>"; };
 		5570F9B61FEC5043000DA3C9 /* WikipediaPage+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+Protocols.swift"; sourceTree = "<group>"; };
+		5570F9B81FEC5755000DA3C9 /* Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syncable.swift; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
-		55A8D23A1FCF52A900BB00BC /* RealmDeletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDeletable.swift; sourceTree = "<group>"; };
+		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
 		55A8D2421FCF5BA500BB00BC /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		55A8D2441FCF5C3A00BB00BC /* OpenStreetMapConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapConfig.swift; sourceTree = "<group>"; };
 		55A8D2481FCF5D9D00BB00BC /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
@@ -187,8 +189,8 @@
 		55B536EB1FD326D400036FFC /* ListViewRootItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewRootItem.swift; sourceTree = "<group>"; };
 		55B536FB1FD33D1B00036FFC /* ListViewObjectItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewObjectItem.swift; sourceTree = "<group>"; };
 		55B536FE1FD33E0C00036FFC /* ListViewObjectListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewObjectListItem.swift; sourceTree = "<group>"; };
-		55B537001FD3413800036FFC /* RealmListable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmListable.swift; sourceTree = "<group>"; };
-		55B537061FD351C800036FFC /* RealmIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmIdentifiable.swift; sourceTree = "<group>"; };
+		55B537001FD3413800036FFC /* Listable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listable.swift; sourceTree = "<group>"; };
+		55B537061FD351C800036FFC /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 		55B897DE1FC9D17600FC4EF6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		55B897E11FCB169F00FC4EF6 /* RealmContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmContext.swift; sourceTree = "<group>"; };
 		55B897E41FCB1CED00FC4EF6 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -201,7 +203,7 @@
 		55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElement.swift; sourceTree = "<group>"; };
 		55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Id.swift"; sourceTree = "<group>"; };
 		55CB48021FCCE4C0003F3610 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		55E8A3A91FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmOpenableInBrowser.swift; sourceTree = "<group>"; };
+		55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenableInBrowser.swift; sourceTree = "<group>"; };
 		55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Protocols.swift"; sourceTree = "<group>"; };
 		55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaisePOI+Protocols.swift"; sourceTree = "<group>"; };
 		55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaisePOI.swift; sourceTree = "<group>"; };
@@ -359,10 +361,6 @@
 			isa = PBXGroup;
 			children = (
 				55B897E11FCB169F00FC4EF6 /* RealmContext.swift */,
-				55A8D23A1FCF52A900BB00BC /* RealmDeletable.swift */,
-				55B537061FD351C800036FFC /* RealmIdentifiable.swift */,
-				55B537001FD3413800036FFC /* RealmListable.swift */,
-				55E8A3A91FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -409,6 +407,18 @@
 				5570F9B61FEC5043000DA3C9 /* WikipediaPage+Protocols.swift */,
 			);
 			path = WikipediaPage;
+			sourceTree = "<group>";
+		};
+		5570F9BA1FEC5AE4000DA3C9 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				55A8D23A1FCF52A900BB00BC /* Deletable.swift */,
+				55B537061FD351C800036FFC /* Identifiable.swift */,
+				55B537001FD3413800036FFC /* Listable.swift */,
+				55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */,
+				5570F9B81FEC5755000DA3C9 /* Syncable.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		5587F9EF1FCF6904004C9E28 /* Root */ = {
@@ -639,6 +649,7 @@
 				55B365891FDDAE6600EB84BD /* WikidataEntry */,
 				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 				5570F9AF1FEC4D71000DA3C9 /* WikipediaPage */,
+				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -848,6 +859,7 @@
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
 				5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
+				5570F9B91FEC5755000DA3C9 /* Syncable.swift in Sources */,
 				5513EF711FE6D76100BD3A22 /* NSTextField+HTML.swift in Sources */,
 				55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */,
 				55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */,
@@ -867,7 +879,7 @@
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
 				55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */,
 				5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */,
-				55B537011FD3413800036FFC /* RealmListable.swift in Sources */,
+				55B537011FD3413800036FFC /* Listable.swift in Sources */,
 				5570F9B31FEC4E3C000DA3C9 /* WikipediaPage+Id.swift in Sources */,
 				55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */,
 				5513EF611FE6C30F00BD3A22 /* DetailViewURLView.swift in Sources */,
@@ -899,7 +911,7 @@
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
 				5570F99E1FEB1335000DA3C9 /* MainWindowModel.swift in Sources */,
-				55B537071FD351C800036FFC /* RealmIdentifiable.swift in Sources */,
+				55B537071FD351C800036FFC /* Identifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
 				5570F9A51FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
@@ -926,12 +938,12 @@
 				55AB3DEC1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift in Sources */,
 				55B365971FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
-				55E8A3AA1FD8A9EE000B6FC2 /* RealmOpenableInBrowser.swift in Sources */,
+				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				55B3658B1FDDAE7A00EB84BD /* WikidataEntry.swift in Sources */,
-				55A8D23B1FCF52A900BB00BC /* RealmDeletable.swift in Sources */,
+				55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */,
 				5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

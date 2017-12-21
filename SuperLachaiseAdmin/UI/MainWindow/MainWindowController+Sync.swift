@@ -17,4 +17,11 @@ extension MainWindowController {
         taskController.syncWikidataEntries()
     }
 
+    @IBAction func syncCurrentModel(_ sender: Any?) {
+        guard let model = model.value as? Syncable else {
+            return
+        }
+        model.sync(taskController: taskController)
+    }
+
 }

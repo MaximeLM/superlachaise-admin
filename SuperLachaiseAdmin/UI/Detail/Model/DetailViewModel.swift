@@ -21,7 +21,7 @@ extension DetailViewModel {
 
     init(_ object: Any, items: [[DetailViewItem]]) {
         self.title = "\(type(of: object)): \(object)"
-        if let object = object as? RealmOpenableInBrowser {
+        if let object = object as? OpenableInBrowser {
             self.url = object.externalURL
         } else {
             self.url = nil
