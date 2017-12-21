@@ -37,7 +37,7 @@ extension WikipediaPage {
     var wikipediaId: WikipediaId? {
         get {
             guard let wikipediaId = WikipediaId(rawValue: rawWikipediaId) else {
-                Logger.warning("Invalid rawWikipediaId: \(rawWikipediaId)")
+                assertionFailure()
                 return nil
             }
             return wikipediaId

@@ -43,7 +43,7 @@ extension OpenStreetMapElement {
     var openStreetMapId: OpenStreetMapId? {
         get {
             guard let openStreetMapId = OpenStreetMapId(rawValue: rawOpenStreetMapId) else {
-                Logger.warning("Invalid rawOpenStreetMapId: \(rawOpenStreetMapId)")
+                assertionFailure()
                 return nil
             }
             return openStreetMapId

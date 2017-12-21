@@ -63,6 +63,10 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
         window?.titleVisibility = .hidden
         syncButton?.toolTip = "Sync current object"
 
+        configureObservables()
+    }
+
+    private func configureObservables() {
         let disposeBag = DisposeBag()
 
         // Publish the model each time the model is changed or the realm is saved
@@ -81,22 +85,34 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             .disposed(by: disposeBag)
 
         // Subscribe to child view controller selections
-        rootViewController?.didSelectModel
+
+        rootViewController?.didSingleClickModel?
             .distinctUntilChanged { $0 as Object }
             .subscribe(onNext: { model in
                 self.selectNewModel(model)
             })
             .disposed(by: disposeBag)
 
-        // Update root view controller with model
-        if let rootViewController = rootViewController {
+        rootViewController?.didDoubleClickModel?
+            .subscribe(onNext: { model in
+                self.newTab(self.instantiate(model: model))
+            })
+            .disposed(by: disposeBag)
+
+        // Subscribe child view controller to model
+
+        if let rootViewControllerModel = rootViewController?.model {
 
             model.asObservable()
-                .bind(to: rootViewController.model)
+                .bind(to: rootViewControllerModel)
                 .disposed(by: disposeBag)
 
+        }
+
+        if let rootViewControllerRefreshModel = rootViewController?.refreshModel {
+
             refreshModel.asObservable()
-                .bind(to: rootViewController.refreshModel)
+                .bind(to: rootViewControllerRefreshModel)
                 .disposed(by: disposeBag)
 
         }

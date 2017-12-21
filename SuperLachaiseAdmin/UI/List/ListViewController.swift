@@ -11,7 +11,9 @@ import RxSwift
 
 protocol ListViewControllerType: NSObjectProtocol {
 
-    var didSelectModel: Observable<MainWindowModel> { get }
+    var didSingleClickModel: Observable<MainWindowModel> { get }
+
+    var didDoubleClickModel: Observable<MainWindowModel> { get }
 
 }
 
@@ -29,11 +31,19 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Properties
 
-    var didSelectModel: Observable<MainWindowModel> {
-        return _didSelectModel.asObservable()
+    var didSingleClickModel: Observable<MainWindowModel> {
+        return didSingleClickModelSubject.asObservable()
     }
 
-    private let _didSelectModel = PublishSubject<MainWindowModel>()
+    var didDoubleClickModel: Observable<MainWindowModel> {
+        return didDoubleClickModelSubject.asObservable()
+    }
+
+    let didSingleClickModelSubject = PublishSubject<MainWindowModel>()
+
+    let didDoubleClickModelSubject = PublishSubject<MainWindowModel>()
+
+    var shouldPerformSingleClickAction = false
 
     // MARK: Subviews
 
@@ -107,15 +117,6 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         }
 
         return view
-    }
-
-    func outlineViewSelectionDidChange(_ notification: Notification) {
-        guard let outlineView = outlineView else {
-            return
-        }
-        if let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem {
-            _didSelectModel.onNext(item.object)
-        }
     }
 
 }
