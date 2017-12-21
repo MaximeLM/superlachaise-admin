@@ -9,6 +9,13 @@ import Cocoa
 
 extension MainWindowController {
 
+    @IBAction func syncCurrentModel(_ sender: Any?) {
+        guard let model = model.value as? Syncable else {
+            return
+        }
+        model.sync(taskController: taskController)
+    }
+
     @IBAction func syncOpenStreetMapElements(_ sender: Any?) {
         taskController.syncOpenStreetMapElements()
     }
@@ -17,11 +24,8 @@ extension MainWindowController {
         taskController.syncWikidataEntries()
     }
 
-    @IBAction func syncCurrentModel(_ sender: Any?) {
-        guard let model = model.value as? Syncable else {
-            return
-        }
-        model.sync(taskController: taskController)
+    @IBAction func syncWikipediaPages(_ sender: Any?) {
+        taskController.syncWikipediaPages()
     }
 
 }

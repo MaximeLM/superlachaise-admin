@@ -45,6 +45,10 @@
 		5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B41FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift */; };
 		5570F9B71FEC5043000DA3C9 /* WikipediaPage+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B61FEC5043000DA3C9 /* WikipediaPage+Protocols.swift */; };
 		5570F9B91FEC5755000DA3C9 /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B81FEC5755000DA3C9 /* Syncable.swift */; };
+		5570F9BE1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9BD1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift */; };
+		5570F9C01FEC6ED3000DA3C9 /* SyncWikipediaPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9BF1FEC6ED3000DA3C9 /* SyncWikipediaPages.swift */; };
+		5570F9C21FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C11FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift */; };
+		5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
@@ -148,6 +152,10 @@
 		5570F9B41FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+Requests.swift"; sourceTree = "<group>"; };
 		5570F9B61FEC5043000DA3C9 /* WikipediaPage+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+Protocols.swift"; sourceTree = "<group>"; };
 		5570F9B81FEC5755000DA3C9 /* Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syncable.swift; sourceTree = "<group>"; };
+		5570F9BD1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIEndpoint+Wikipedia.swift"; sourceTree = "<group>"; };
+		5570F9BF1FEC6ED3000DA3C9 /* SyncWikipediaPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWikipediaPages.swift; sourceTree = "<group>"; };
+		5570F9C11FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+Wikipedia.swift"; sourceTree = "<group>"; };
+		5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+MainWindowModel.swift"; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
@@ -394,6 +402,7 @@
 				5570F9A41FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift */,
 				5570F9A61FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift */,
 				5570F9A81FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift */,
+				5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -419,6 +428,24 @@
 				5570F9B81FEC5755000DA3C9 /* Syncable.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		5570F9BB1FEC6D82000DA3C9 /* Wikipedia */ = {
+			isa = PBXGroup;
+			children = (
+				5570F9BC1FEC6D8C000DA3C9 /* API */,
+				5570F9C11FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift */,
+				5570F9BF1FEC6ED3000DA3C9 /* SyncWikipediaPages.swift */,
+			);
+			path = Wikipedia;
+			sourceTree = "<group>";
+		};
+		5570F9BC1FEC6D8C000DA3C9 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				5570F9BD1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		5587F9EF1FCF6904004C9E28 /* Root */ = {
@@ -466,6 +493,7 @@
 				55A8D2501FCF5F9C00BB00BC /* TaskController.swift */,
 				55CB47E81FCCD182003F3610 /* OpenStreetMap */,
 				55B3658F1FDDB21500EB84BD /* Wikidata */,
+				5570F9BB1FEC6D82000DA3C9 /* Wikipedia */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -495,29 +523,29 @@
 			isa = PBXGroup;
 			children = (
 				55B365B31FE060AE00EB84BD /* Types */,
-				55B365A41FDDE05500EB84BD /* WikidataAPI */,
+				55B365A41FDDE05500EB84BD /* API */,
 				55B365921FDDB28800EB84BD /* TaskController+Wikidata.swift */,
 				55B365981FDDB5E400EB84BD /* SyncWikidataEntries.swift */,
 			);
 			path = Wikidata;
 			sourceTree = "<group>";
 		};
-		55B3659E1FDDDA8C00EB84BD /* OverpassAPI */ = {
+		55B3659E1FDDDA8C00EB84BD /* API */ = {
 			isa = PBXGroup;
 			children = (
 				55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */,
 				55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */,
 			);
-			path = OverpassAPI;
+			path = API;
 			sourceTree = "<group>";
 		};
-		55B365A41FDDE05500EB84BD /* WikidataAPI */ = {
+		55B365A41FDDE05500EB84BD /* API */ = {
 			isa = PBXGroup;
 			children = (
 				55B365901FDDB23300EB84BD /* APIEndpoint+Wikidata.swift */,
 				55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */,
 			);
-			path = WikidataAPI;
+			path = API;
 			sourceTree = "<group>";
 		};
 		55B365A71FDDE83E00EB84BD /* Collections */ = {
@@ -616,7 +644,7 @@
 			isa = PBXGroup;
 			children = (
 				55B365B11FE0608C00EB84BD /* Types */,
-				55B3659E1FDDDA8C00EB84BD /* OverpassAPI */,
+				55B3659E1FDDDA8C00EB84BD /* API */,
 				55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */,
 				55CB47F61FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift */,
 			);
@@ -886,10 +914,12 @@
 				558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */,
 				55B365951FDDB33E00EB84BD /* WikidataConfig.swift in Sources */,
 				55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */,
+				5570F9C21FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift in Sources */,
 				55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */,
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
 				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
 				5570F9A11FEB1AB5000DA3C9 /* MainWindowController+Sync.swift in Sources */,
+				5570F9C01FEC6ED3000DA3C9 /* SyncWikipediaPages.swift in Sources */,
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
 				55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */,
 				55AB3E091FE32A500011AF47 /* WikidataEntry+Date.swift in Sources */,
@@ -910,6 +940,7 @@
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
+				5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */,
 				5570F99E1FEB1335000DA3C9 /* MainWindowModel.swift in Sources */,
 				55B537071FD351C800036FFC /* Identifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
@@ -927,6 +958,7 @@
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
 				5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
+				5570F9BE1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift in Sources */,
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,

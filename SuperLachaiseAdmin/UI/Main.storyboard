@@ -328,6 +328,12 @@
                                                 <action selector="syncWikidataEntries:" target="Ady-hI-5gd" id="GIZ-GS-jSH"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Wikipedia pages" id="Uhh-MX-gT0">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="syncWikipediaPages:" target="Ady-hI-5gd" id="mAC-nD-Z5n"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
