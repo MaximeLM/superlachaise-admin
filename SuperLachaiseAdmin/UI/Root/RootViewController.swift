@@ -10,13 +10,15 @@ import RxSwift
 
 protocol RootViewControllerType: NSObjectProtocol {
 
+    var model: MainWindowModel? { get set }
+
+    var refreshModel: MainWindowModel? { get set }
+
     var didSingleClickModel: Observable<MainWindowModel>? { get }
 
     var didDoubleClickModel: Observable<MainWindowModel>? { get }
 
-    var model: MainWindowModel? { get set }
-
-    var refreshModel: MainWindowModel? { get set }
+    var searchValue: String? { get set }
 
 }
 
@@ -56,6 +58,15 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     var didDoubleClickModel: Observable<MainWindowModel>? {
         return listViewController?.didDoubleClickModel
+    }
+
+    var searchValue: String? {
+        get {
+            return listViewController?.searchValue
+        }
+        set {
+            listViewController?.searchValue = newValue
+        }
     }
 
     // MARK: Child view controllers

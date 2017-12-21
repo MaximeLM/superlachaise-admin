@@ -385,6 +385,23 @@
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <toolbar key="toolbar" implicitIdentifier="DBF60FC8-C6B2-4186-8493-3FFC4001BE05" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Nko-oY-gPa">
                             <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="39277A04-21E3-4491-B9B0-B1AA23A25973" label="" paletteLabel="Search" id="m5A-G2-2A3">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="96" height="22"/>
+                                    <size key="maxSize" width="200" height="22"/>
+                                    <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" id="TkP-bA-QKO">
+                                        <rect key="frame" x="0.0" y="14" width="200" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="Irr-hU-eRe">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </searchFieldCell>
+                                        <connections>
+                                            <action selector="searchAction:" target="B8D-0N-5wS" id="QL5-Hf-LZx"/>
+                                        </connections>
+                                    </searchField>
+                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="01A2B034-0FF2-4E47-9B63-961972340244" label="" paletteLabel="Navigation" autovalidates="NO" id="Oaj-AJ-2wu">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="70" height="24"/>
@@ -437,6 +454,7 @@
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
+                                <toolbarItem reference="m5A-G2-2A3"/>
                                 <toolbarItem reference="Oaj-AJ-2wu"/>
                                 <toolbarItem reference="YCJ-Fo-NXy"/>
                                 <toolbarItem reference="v2F-34-nZh"/>
@@ -450,6 +468,7 @@
                     </window>
                     <connections>
                         <outlet property="navigationSegmentedControl" destination="G8z-dn-YiJ" id="xgf-IG-CAn"/>
+                        <outlet property="searchField" destination="TkP-bA-QKO" id="M1v-mq-SIg"/>
                         <outlet property="syncButton" destination="4SE-7m-I3e" id="jDl-8K-tq9"/>
                         <outlet property="titleLabel" destination="haN-yq-7Gl" id="5bk-Wf-OHl"/>
                         <segue destination="E7L-kO-4OK" kind="relationship" relationship="window.shadowedContentViewController" id="eLh-lG-8Ck"/>
@@ -494,28 +513,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="150" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9B-Uq-hmr">
-                                <rect key="frame" x="4" y="274" width="142" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="22" id="ZEg-Vx-QNB"/>
-                                </constraints>
-                                <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="7bd-Wm-ztz">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </searchFieldCell>
-                                <connections>
-                                    <action selector="searchAction:" target="uw9-uF-Klt" id="rS5-qY-Fdx"/>
-                                </connections>
-                            </searchField>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gce-xu-0fd">
-                                <rect key="frame" x="0.0" y="0.0" width="150" height="270"/>
+                                <rect key="frame" x="0.0" y="0.0" width="150" height="300"/>
                                 <clipView key="contentView" drawsBackground="NO" id="3bs-dC-ytc">
-                                    <rect key="frame" x="0.0" y="0.0" width="150" height="270"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="150" height="300"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="0uk-5Z-T6a" id="7HU-X2-rtd">
-                                            <rect key="frame" x="0.0" y="0.0" width="150" height="270"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="2" height="3"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -581,17 +586,13 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="Gce-xu-0fd" firstAttribute="leading" secondItem="qrn-Cw-7PM" secondAttribute="leading" id="C62-L9-0An"/>
-                            <constraint firstItem="Gce-xu-0fd" firstAttribute="top" secondItem="c9B-Uq-hmr" secondAttribute="bottom" constant="4" id="NGd-ov-O6r"/>
-                            <constraint firstAttribute="trailing" secondItem="c9B-Uq-hmr" secondAttribute="trailing" constant="4" id="NmG-HM-1zO"/>
+                            <constraint firstItem="Gce-xu-0fd" firstAttribute="top" secondItem="qrn-Cw-7PM" secondAttribute="top" id="JDd-dE-MqG"/>
                             <constraint firstAttribute="bottom" secondItem="Gce-xu-0fd" secondAttribute="bottom" id="SM5-xu-m7q"/>
-                            <constraint firstItem="c9B-Uq-hmr" firstAttribute="leading" secondItem="qrn-Cw-7PM" secondAttribute="leading" constant="4" id="eZ7-p7-Zum"/>
                             <constraint firstAttribute="trailing" secondItem="Gce-xu-0fd" secondAttribute="trailing" id="rNz-fY-tO6"/>
-                            <constraint firstItem="c9B-Uq-hmr" firstAttribute="top" secondItem="qrn-Cw-7PM" secondAttribute="top" constant="4" id="rPK-R1-WJS"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="outlineView" destination="7HU-X2-rtd" id="htJ-11-mPE"/>
-                        <outlet property="searchField" destination="c9B-Uq-hmr" id="K3G-NF-g4n"/>
                     </connections>
                 </viewController>
                 <customObject id="EBP-sp-XR7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

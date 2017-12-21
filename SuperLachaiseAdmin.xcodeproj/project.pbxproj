@@ -49,6 +49,7 @@
 		5570F9C01FEC6ED3000DA3C9 /* SyncWikipediaPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9BF1FEC6ED3000DA3C9 /* SyncWikipediaPages.swift */; };
 		5570F9C21FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C11FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift */; };
 		5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */; };
+		5570F9C81FEC7A74000DA3C9 /* MainWindowController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C71FEC7A74000DA3C9 /* MainWindowController+Search.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
@@ -156,6 +157,7 @@
 		5570F9BF1FEC6ED3000DA3C9 /* SyncWikipediaPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWikipediaPages.swift; sourceTree = "<group>"; };
 		5570F9C11FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+Wikipedia.swift"; sourceTree = "<group>"; };
 		5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikipediaPage+MainWindowModel.swift"; sourceTree = "<group>"; };
+		5570F9C71FEC7A74000DA3C9 /* MainWindowController+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainWindowController+Search.swift"; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
@@ -590,6 +592,7 @@
 				55B536E41FD31C6800036FFC /* MainWindowController.swift */,
 				5570F9A21FEB1B35000DA3C9 /* MainWindowController+Navigation.swift */,
 				5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */,
+				5570F9C71FEC7A74000DA3C9 /* MainWindowController+Search.swift */,
 				5570F9A01FEB1AB5000DA3C9 /* MainWindowController+Sync.swift */,
 				5570F99C1FEB1328000DA3C9 /* Model */,
 			);
@@ -975,6 +978,7 @@
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				55B3658B1FDDAE7A00EB84BD /* WikidataEntry.swift in Sources */,
+				5570F9C81FEC7A74000DA3C9 /* MainWindowController+Search.swift in Sources */,
 				55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */,
 				5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */,
 			);

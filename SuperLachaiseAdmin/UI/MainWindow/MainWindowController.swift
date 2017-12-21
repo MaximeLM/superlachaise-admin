@@ -36,9 +36,11 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     // MARK: Subviews
 
-    @IBOutlet var titleLabel: NSTextField?
+    @IBOutlet var searchField: NSSearchField?
 
     @IBOutlet var navigationSegmentedControl: NSSegmentedControl?
+
+    @IBOutlet var titleLabel: NSTextField?
 
     @IBOutlet var syncButton: NSButton?
 

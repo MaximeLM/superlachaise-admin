@@ -14,6 +14,8 @@ protocol ListViewControllerType: NSObjectProtocol {
 
     var didDoubleClickModel: Observable<MainWindowModel> { get }
 
+    var searchValue: String? { get set }
+
 }
 
 final class ListViewController: NSViewController, ListViewControllerType {
@@ -44,20 +46,17 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     var shouldPerformSingleClickAction = false
 
-    // MARK: Subviews
+    var searchValue: String? {
+        didSet {
+            rootItem?.filter = searchValue ?? ""
+        }
+    }
 
-    @IBOutlet var searchField: NSSearchField?
+    // MARK: Subviews
 
     @IBOutlet var outlineView: NSOutlineView?
 
-    @IBOutlet var contextualMenu: NSMenu?
-
     // Lifecycle
-
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        searchField?.refusesFirstResponder = false
-    }
 
     override func viewWillAppear() {
         super.viewWillAppear()

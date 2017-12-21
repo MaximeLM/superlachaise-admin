@@ -9,18 +9,6 @@ import Cocoa
 
 extension ListViewController {
 
-    // MARK: Main menu
-
-    @IBAction func find(_ sender: Any?) {
-        view.window?.makeFirstResponder(searchField)
-    }
-
-    // MARK: Subviews
-
-    @IBAction func searchAction(_ searchField: NSSearchField) {
-        rootItem?.filter = searchField.stringValue
-    }
-
     @IBAction func outlineViewSingleClickAction(_ outlineView: NSOutlineView) {
         let item = outlineView.item(atRow: outlineView.clickedRow)
 
