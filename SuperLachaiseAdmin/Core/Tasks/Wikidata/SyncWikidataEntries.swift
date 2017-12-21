@@ -13,7 +13,7 @@ final class SyncWikidataEntries: Task {
 
     enum Scope {
         case all
-        case list(wikidataIds: [String])
+        case single(wikidataId: String)
     }
 
     let scope: Scope
@@ -57,8 +57,8 @@ private extension SyncWikidataEntries {
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
                 return OpenStreetMapElement.all()(realm).flatMap { $0.wikidataId }
             }
-        case let .list(wikidataIds):
-            return Single.just(wikidataIds)
+        case let .single(wikidataId):
+            return Single.just([wikidataId])
         }
     }
 
@@ -297,7 +297,7 @@ private extension SyncWikidataEntries {
         switch scope {
         case .all:
             orphanedObjects = Set(WikidataEntry.all()(realm))
-        case .list:
+        case .single:
             orphanedObjects = Set()
         }
 

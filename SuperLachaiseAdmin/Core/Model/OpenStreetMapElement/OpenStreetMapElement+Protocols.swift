@@ -49,10 +49,7 @@ extension OpenStreetMapElement: Deletable, Listable, OpenableInBrowser, Syncable
     // MARK: Syncable
 
     func sync(taskController: TaskController) {
-        guard let openStreetMapId = openStreetMapId else {
-            return
-        }
-        taskController.syncOpenStreetMapElement([openStreetMapId])
+        taskController.syncOpenStreetMapElement(self)
     }
 
 }

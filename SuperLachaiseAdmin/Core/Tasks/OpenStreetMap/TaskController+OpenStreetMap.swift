@@ -15,9 +15,13 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncOpenStreetMapElement(_ openStreetMapIds: [OpenStreetMapId]) {
-        let scope: SyncOpenStreetMapElements.Scope = .list(openStreetMapIds: openStreetMapIds)
-        let task = SyncOpenStreetMapElements(scope: scope, config: config.openStreetMap, endpoint: overpassAPIEndpoint)
+    func syncOpenStreetMapElement(_ openStreetMapElement: OpenStreetMapElement) {
+        guard let openStreetMapId = openStreetMapElement.openStreetMapId else {
+            return
+        }
+        let task = SyncOpenStreetMapElements(scope: .single(openStreetMapId: openStreetMapId),
+                                             config: config.openStreetMap,
+                                             endpoint: overpassAPIEndpoint)
         enqueue(task)
     }
 

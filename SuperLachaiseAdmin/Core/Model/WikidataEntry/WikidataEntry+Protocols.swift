@@ -50,7 +50,7 @@ extension WikidataEntry: Deletable, Listable, OpenableInBrowser, Syncable {
     // MARK: Syncable
 
     func sync(taskController: TaskController) {
-        taskController.syncWikidataEntries(ids: [wikidataId])
+        taskController.syncWikidataEntry(self)
     }
 
 }

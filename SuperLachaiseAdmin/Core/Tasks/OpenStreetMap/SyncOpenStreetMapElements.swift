@@ -13,7 +13,7 @@ final class SyncOpenStreetMapElements: Task {
 
     enum Scope {
         case all
-        case list(openStreetMapIds: [OpenStreetMapId])
+        case single(openStreetMapId: OpenStreetMapId)
     }
 
     let scope: Scope
@@ -49,8 +49,8 @@ private extension SyncOpenStreetMapElements {
             getElements = OverpassGetElements(endpoint: endpoint,
                                               boundingBox: config.boundingBox,
                                               fetchedTags: config.fetchedTags)
-        case let .list(openStreetMapIds):
-            getElements = OverpassGetElements(endpoint: endpoint, openStreetMapIds: openStreetMapIds)
+        case let .single(openStreetMapId):
+            getElements = OverpassGetElements(endpoint: endpoint, openStreetMapIds: [openStreetMapId])
         }
         return getElements.asSingle()
     }
@@ -145,7 +145,7 @@ private extension SyncOpenStreetMapElements {
         switch scope {
         case .all:
             orphanedObjects = Set(OpenStreetMapElement.all()(realm))
-        case .list:
+        case .single:
             orphanedObjects = Set()
         }
 
