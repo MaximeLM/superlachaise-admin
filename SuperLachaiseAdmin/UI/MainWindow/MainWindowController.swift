@@ -26,9 +26,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     static var isFirstWindow = true
 
-    var retainedSelf: MainWindowController?
-
-    let disposeBag = DisposeBag()
+    var disposeBag: DisposeBag?
 
     var modelHistory: [MainWindowModel] = []
 
@@ -58,32 +56,29 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             windowFrameAutosaveName = autosaveName
         }
 
-        // Keep the instance alive until the window closes
-        retainedSelf = self
-
         window?.titleVisibility = .hidden
 
-        let model = self.model
+        let disposeBag = DisposeBag()
 
         // Republish the model each time the realm is saved
         Observable<(Realm, Realm.Notification)>.from(realm: realmContext.viewRealm)
-            .map { _ in model.value }
+            .map { _ in self.model.value }
             .bind(to: model)
             .disposed(by: disposeBag)
 
         // Update title from model
         model.asObservable()
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
-            .subscribe(onNext: { [weak self] title in
-                self?.window?.title = title
-                self?.titleLabel?.stringValue = title
+            .subscribe(onNext: { title in
+                self.window?.title = title
+                self.titleLabel?.stringValue = title
             })
             .disposed(by: disposeBag)
 
         // Subscribe to child view controller selections
         rootViewController?.didSelectModel
-            .subscribe(onNext: { [weak self] model in
-                self?.selectNewModel(model)
+            .subscribe(onNext: { model in
+                self.selectNewModel(model)
             })
             .disposed(by: disposeBag)
 
@@ -94,10 +89,11 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
                 .disposed(by: disposeBag)
         }
 
+        self.disposeBag = disposeBag
     }
 
     func windowWillClose(_ notification: Notification) {
-        retainedSelf = nil
+        disposeBag = nil
     }
 
 }

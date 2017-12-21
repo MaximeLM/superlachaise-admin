@@ -56,9 +56,10 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let didSelectModel = _didSelectModel
         listViewController?.didSelectModel
-            .subscribe(onNext: { [weak self] model in
-                self?._didSelectModel.onNext(model)
+            .subscribe(onNext: { model in
+                didSelectModel.onNext(model)
             })
             .disposed(by: disposeBag)
 

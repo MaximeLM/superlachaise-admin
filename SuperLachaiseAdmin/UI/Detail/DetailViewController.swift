@@ -24,9 +24,9 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Subviews
 
-    @IBOutlet weak var  scrollView: NSScrollView?
+    @IBOutlet weak var scrollView: NSScrollView?
 
-    @IBOutlet weak var  stackView: NSStackView?
+    @IBOutlet weak var stackView: NSStackView?
 
     // MARK: Properties
 
@@ -38,21 +38,23 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
         super.viewDidLoad()
 
         // Bind the model to the stack view
-        model.asObservable()
-            .map { $0?.detailViewModel().views() ?? [] }
-            .subscribe(onNext: { [weak self] views in
-                self?.stackView?.setViews(views, in: .top)
-            })
-            .disposed(by: disposeBag)
+        if let stackView = stackView {
+            model.asObservable()
+                .map { $0?.detailViewModel().views() ?? [] }
+                .subscribe(onNext: { views in
+                    stackView.setViews(views, in: .top)
+                })
+                .disposed(by: disposeBag)
+        }
 
         // Scroll to top on model identity change
-        model.asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                if let documentView = self?.scrollView?.documentView {
+        if let documentView = scrollView?.documentView {
+            model.asObservable()
+                .subscribe(onNext: { _ in
                     documentView.scroll(NSPoint(x: 0, y: documentView.bounds.height))
-                }
-            })
-            .disposed(by: disposeBag)
+                })
+                .disposed(by: disposeBag)
+        }
 
     }
 
