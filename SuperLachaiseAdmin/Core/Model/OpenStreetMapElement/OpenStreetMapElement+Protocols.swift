@@ -43,13 +43,7 @@ extension OpenStreetMapElement: RealmDeletable, RealmListable, RealmOpenableInBr
     // MARK: RealmOpenableInBrowser
 
     var externalURL: URL? {
-        guard let openStreetMapId = openStreetMapId,
-            let baseURL = URL(string: "https://www.openstreetmap.org") else {
-                return nil
-        }
-        return baseURL
-            .appendingPathComponent(openStreetMapId.elementType.rawValue)
-            .appendingPathComponent("\(openStreetMapId.numericId)")
+        return URL(string: "https://www.openstreetmap.org/\(rawOpenStreetMapId)")
     }
 
 }

@@ -1,39 +1,38 @@
 //
-//  WikidataEntry+Protocols.swift
+//  WikipediaPage+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 10/12/2017.
+//  Created by Maxime Le Moine on 21/12/2017.
 //
 
 import Foundation
 import RealmSwift
 
-extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
+extension WikipediaPage: RealmDeletable, RealmListable, RealmOpenableInBrowser {
 
     // MARK: RealmDeletable
 
     func delete() {
-        realm?.delete(localizations)
         realm?.delete(self)
     }
 
     // MARK: RealmIdentifiable
 
     var identifier: String {
-        return wikidataId
+        return rawWikipediaId
     }
 
     // MARK: RealmListable
 
-    static func list(filter: String) -> (Realm) -> Results<WikidataEntry> {
+    static func list(filter: String) -> (Realm) -> Results<WikipediaPage> {
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "wikidataId"),
+                    SortDescriptor(keyPath: "rawWikipediaId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR rawWikipediaId contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }
@@ -44,7 +43,10 @@ extension WikidataEntry: RealmDeletable, RealmListable, RealmOpenableInBrowser {
     // MARK: RealmOpenableInBrowser
 
     var externalURL: URL? {
-        return URL(string: "https://www.wikidata.org/wiki/\(wikidataId)")
+        guard let wikipediaId = wikipediaId else {
+            return nil
+        }
+        return URL(string: "https://\(wikipediaId.language).wikipedia.org/wiki/\(wikipediaId.title)")
     }
 
 }

@@ -1,5 +1,5 @@
 //
-//  SuperLachaise+Requests.swift
+//  SuperLachaisePOI+Requests.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 12/12/2017.
