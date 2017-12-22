@@ -486,7 +486,7 @@
                         <splitViewItem holdingPriority="255" behavior="contentList" id="7TS-PQ-JGI"/>
                         <splitViewItem id="oMJ-2a-YY5"/>
                     </splitViewItems>
-                    <splitView key="splitView" autosaveName="RootSplitView" dividerStyle="thin" vertical="YES" id="VXZ-Xs-VPF">
+                    <splitView key="splitView" autosaveName="" dividerStyle="thin" vertical="YES" id="VXZ-Xs-VPF">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>

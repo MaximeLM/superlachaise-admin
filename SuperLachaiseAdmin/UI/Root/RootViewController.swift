@@ -69,6 +69,8 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
         }
     }
 
+    static var isFirstWindow = true
+
     // MARK: Child view controllers
 
     var listViewController: ListViewControllerType? {
@@ -77,6 +79,16 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     var detailViewController: DetailViewControllerType? {
         return detailSplitViewItem?.viewController as? DetailViewControllerType
+    }
+
+    // MARK: Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if RootViewController.isFirstWindow {
+            RootViewController.isFirstWindow = false
+            splitView.autosaveName = NSSplitView.AutosaveName("RootSplitView")
+        }
     }
 
 }

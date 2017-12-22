@@ -17,11 +17,6 @@ final class WikidataGetEntities {
 
     // MARK: Init
 
-    enum RequestError: Error {
-        case invalidBaseURL(URL)
-        case invalidComponents(URLComponents)
-    }
-
     init(endpoint: APIEndpointType, wikidataIds: [String], languages: [String]) {
         self.endpoint = endpoint
         self.wikidataIds = wikidataIds.uniqueValues()
@@ -37,18 +32,13 @@ final class WikidataGetEntities {
             .asSingle()
     }
 
-    private func mergeEntities(entities: [WikidataEntity], chunkEntities: [WikidataEntity]) -> [WikidataEntity] {
-        var entities = entities
-        entities.append(contentsOf: chunkEntities)
-        Logger.debug("\(entities.count)/\(wikidataIds.count)")
-        return entities
-    }
+}
 
-    // MARK: Chunk query
+private extension WikidataGetEntities {
 
-    private func chunkRequest(wikidataIdsChunk: [String]) throws -> URLRequest {
+    func chunkRequest(wikidataIdsChunk: [String]) throws -> URLRequest {
         guard var components = URLComponents(url: endpoint.baseURL, resolvingAgainstBaseURL: false) else {
-            throw RequestError.invalidBaseURL(endpoint.baseURL)
+            throw WikidataGetEntitiesError.invalidBaseURL(endpoint.baseURL)
         }
         let props = ["labels", "descriptions", "claims", "sitelinks"]
         components.queryItems = [
@@ -59,52 +49,62 @@ final class WikidataGetEntities {
             URLQueryItem(name: "props", value: props.joined(separator: "|")),
         ]
         guard let url = components.url else {
-            throw RequestError.invalidComponents(components)
+            throw WikidataGetEntitiesError.invalidComponents(components)
         }
         return URLRequest(url: url)
     }
 
-    private func chunkEntities(wikidataIdsChunk: [String]) -> Single<[WikidataEntity]> {
-        do {
-            let request = try self.chunkRequest(wikidataIdsChunk: wikidataIdsChunk)
-            return endpoint.data(request: request)
-                .map { try JSONDecoder().decode(WikidataGetEntitiesResult.self, from: $0) }
-                .map { chunkResult in
-                    if let warnings = chunkResult.warnings {
-                        warnings.forEach { keyValue1 in
-                            keyValue1.value.forEach { keyValue2 in
-                                Logger.warning("[\(keyValue1.key) - \(keyValue2.key)] \(keyValue2.value)")
-                            }
+    func chunkEntities(wikidataIdsChunk: [String]) throws -> Single<[WikidataEntity]> {
+        let request = try self.chunkRequest(wikidataIdsChunk: wikidataIdsChunk)
+        return endpoint.data(request: request)
+            .map { try JSONDecoder().decode(WikidataGetEntitiesResult.self, from: $0) }
+            .map { result in
+                if let warnings = result.warnings {
+                    warnings.forEach { keyValue1 in
+                        keyValue1.value.forEach { keyValue2 in
+                            Logger.warning("[\(keyValue1.key) - \(keyValue2.key)] \(keyValue2.value)")
                         }
                     }
-                    if let error = chunkResult.error {
+                }
+                if let error = result.error {
+                    throw error
+                }
+                guard let entities = result.entities else {
+                    throw WikidataGetEntitiesError.noEntities
+                }
+                guard entities.count == wikidataIdsChunk.count else {
+                    throw WikidataGetEntitiesError.missingEntities
+                }
+                return Array(entities.values)
+            }
+            .catchError { error in
+                guard let resultError = error as? WikidataGetEntitiesResultError,
+                    resultError.code == "no-such-entity",
+                    let id = resultError.id,
+                    let index = wikidataIdsChunk.index(of: id) else {
                         throw error
-                    }
-                    guard let entities = chunkResult.entities else {
-                        throw WikidataGetEntitiesError.noEntities
-                    }
-                    guard entities.count == wikidataIdsChunk.count else {
-                        throw WikidataGetEntitiesError.missingEntities
-                    }
-                    return Array(entities.values)
                 }
-                .catchError { error in
-                    guard let chunkError = error as? WikidataGetEntitiesResultError,
-                        chunkError.code == "no-such-entity",
-                        let id = chunkError.id,
-                        let index = wikidataIdsChunk.index(of: id) else {
-                            throw error
-                    }
-                    Logger.warning(chunkError.info)
-                    var updatedChunk = wikidataIdsChunk
-                    updatedChunk.remove(at: index)
-                    return self.chunkEntities(wikidataIdsChunk: updatedChunk)
-                }
-        } catch {
-            return Single.error(error)
-        }
+                Logger.warning(resultError.info)
+                var updatedChunk = wikidataIdsChunk
+                updatedChunk.remove(at: index)
+                return try self.chunkEntities(wikidataIdsChunk: updatedChunk)
+            }
     }
 
+    func mergeEntities(entities: [WikidataEntity], chunkEntities: [WikidataEntity]) -> [WikidataEntity] {
+        var entities = entities
+        entities.append(contentsOf: chunkEntities)
+        Logger.debug("\(entities.count)/\(wikidataIds.count)")
+        return entities
+    }
+
+}
+
+private enum WikidataGetEntitiesError: Error {
+    case invalidBaseURL(URL)
+    case invalidComponents(URLComponents)
+    case noEntities
+    case missingEntities
 }
 
 private struct WikidataGetEntitiesResult: Decodable {
@@ -117,14 +117,7 @@ private struct WikidataGetEntitiesResult: Decodable {
 }
 
 private struct WikidataGetEntitiesResultError: Decodable, Error {
-
     let code: String
     let info: String
     let id: String?
-
-}
-
-private enum WikidataGetEntitiesError: Error {
-    case noEntities
-    case missingEntities
 }

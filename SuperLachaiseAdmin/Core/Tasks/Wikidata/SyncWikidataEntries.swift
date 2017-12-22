@@ -68,17 +68,23 @@ private extension SyncWikidataEntries {
      Recursively get secondary entries
     */
     func withSecondaryWikidataEntries(wikidataIds: [String]) -> Single<[String]> {
-        return secondaryWikidataIds(wikidataIds: wikidataIds)
-            .flatMap { secondaryWikidataIds in
-                if secondaryWikidataIds.isEmpty {
-                    return Single.just(wikidataIds)
-                } else {
-                    return self.wikidataEntities(wikidataIds: secondaryWikidataIds)
-                        .flatMap(self.saveWikidataEntries)
-                        .do(onNext: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
-                        .map { wikidataIds + $0 }
+        switch scope {
+        case .all:
+            return secondaryWikidataIds(wikidataIds: wikidataIds)
+                .flatMap { secondaryWikidataIds in
+                    if secondaryWikidataIds.isEmpty {
+                        return Single.just(wikidataIds)
+                    } else {
+                        return self.wikidataEntities(wikidataIds: secondaryWikidataIds)
+                            .flatMap(self.saveWikidataEntries)
+                            .do(onNext: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
+                            .map { wikidataIds + $0 }
+                    }
                 }
-            }
+        case .single:
+            return Single.just([])
+        }
+
     }
 
     func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {

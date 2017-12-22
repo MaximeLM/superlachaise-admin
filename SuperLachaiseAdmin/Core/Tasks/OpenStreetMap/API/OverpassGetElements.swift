@@ -51,27 +51,6 @@ final class OverpassGetElements {
 
     // MARK: Execution
 
-    enum RequestError: Error {
-        case invalidBody(String)
-    }
-
-    func request() throws -> URLRequest {
-        let interpreterURL = endpoint.baseURL.appendingPathComponent("interpreter")
-        var request = URLRequest(url: interpreterURL)
-        request.httpMethod = "POST"
-
-        var queryLines = subqueries
-        queryLines.insert("[out:json];(", at: 0)
-        queryLines.append(");out center;")
-        let body = queryLines.joined(separator: "\n")
-        guard let httpBody = body.data(using: .utf8) else {
-            throw RequestError.invalidBody(body)
-        }
-        request.httpBody = httpBody
-
-        return request
-    }
-
     func asSingle() -> Single<[OverpassElement]> {
         do {
             let request = try self.request()
@@ -84,8 +63,33 @@ final class OverpassGetElements {
 
 }
 
+private extension OverpassGetElements {
+
+    func request() throws -> URLRequest {
+        let interpreterURL = endpoint.baseURL.appendingPathComponent("interpreter")
+        var request = URLRequest(url: interpreterURL)
+        request.httpMethod = "POST"
+
+        var queryLines = subqueries
+        queryLines.insert("[out:json];(", at: 0)
+        queryLines.append(");out center;")
+        let body = queryLines.joined(separator: "\n")
+        guard let httpBody = body.data(using: .utf8) else {
+            throw OverpassGetElementsError.invalidBody(body)
+        }
+        request.httpBody = httpBody
+
+        return request
+    }
+
+}
+
 private struct OverpassGetElementsResult: Decodable {
 
     let elements: [OverpassElement]
 
+}
+
+private enum OverpassGetElementsError: Error {
+    case invalidBody(String)
 }
