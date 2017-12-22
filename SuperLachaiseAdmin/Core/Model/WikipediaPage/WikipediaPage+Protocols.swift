@@ -32,8 +32,7 @@ extension WikipediaPage: Deletable, Listable, OpenableInBrowser, Syncable {
                     SortDescriptor(keyPath: "rawWikipediaId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR rawWikipediaId contains[cd] %@",
-                                            filter, filter)
+                let predicate = NSPredicate(format: "name contains[cd] %@", filter)
                 results = results.filter(predicate)
             }
             return results
@@ -46,7 +45,8 @@ extension WikipediaPage: Deletable, Listable, OpenableInBrowser, Syncable {
         guard let wikipediaId = wikipediaId else {
             return nil
         }
-        return URL(string: "https://\(wikipediaId.language).wikipedia.org/wiki/\(wikipediaId.title)")
+        return URL(string: "https://\(wikipediaId.language).wikipedia.org/wiki")?
+            .appendingPathComponent(wikipediaId.title)
     }
 
     // MARK: Syncable

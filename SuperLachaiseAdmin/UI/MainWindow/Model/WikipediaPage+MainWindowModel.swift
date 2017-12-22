@@ -12,13 +12,12 @@ extension WikipediaPage: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
-                DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "Language", value: wikipediaId?.language),
                 DetailViewFieldItem(name: "Title", value: wikipediaId?.title),
             ],
             [
-                DetailViewFieldItem(name: "Abstract", value: abstract),
                 DetailViewFieldItem(name: "Default sort", value: defaultSort),
+                DetailViewFieldItem(name: "Extract (raw)", value: extract),
             ],
         ])
     }

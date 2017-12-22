@@ -27,8 +27,6 @@ final class SyncWikidataEntries: Task {
         self.endpoint = endpoint
     }
 
-    private let realmDispatchQueue = DispatchQueue(label: "SyncWikidataEntries.realm")
-
     // MARK: Execution
 
     func asSingle() -> Single<Void> {
@@ -36,6 +34,10 @@ final class SyncWikidataEntries: Task {
             .flatMap(self.withSecondaryWikidataEntries)
             .flatMap(self.deleteOrphans)
     }
+
+    // MARK: Private properties
+
+    private let realmDispatchQueue = DispatchQueue(label: "SyncWikidataEntries.realm")
 
 }
 
@@ -117,6 +119,8 @@ private extension SyncWikidataEntries {
             try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm).wikidataId
         }
     }
+
+    // MARK: Wikidata entry
 
     func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
         // Wikidata Id

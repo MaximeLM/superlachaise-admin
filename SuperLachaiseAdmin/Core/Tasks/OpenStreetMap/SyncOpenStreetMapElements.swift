@@ -27,14 +27,16 @@ final class SyncOpenStreetMapElements: Task {
         self.endpoint = endpoint
     }
 
-    private let realmDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
-
     // MARK: Execution
 
     func asSingle() -> Single<Void> {
         return openStreetMapElements()
             .flatMap(self.deleteOrphans)
     }
+
+    // MARK: Private properties
+
+    private let realmDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
 
 }
 
@@ -76,6 +78,8 @@ private extension SyncOpenStreetMapElements {
             try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)?.rawOpenStreetMapId
         }
     }
+
+    // MARK: OpenStreetMap element
 
     func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement? {
         // OpenStreetMapId

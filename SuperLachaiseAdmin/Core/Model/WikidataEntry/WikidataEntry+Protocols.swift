@@ -44,7 +44,8 @@ extension WikidataEntry: Deletable, Listable, OpenableInBrowser, Syncable {
     // MARK: OpenableInBrowser
 
     var externalURL: URL? {
-        return URL(string: "https://www.wikidata.org/wiki/\(wikidataId)")
+        return URL(string: "https://www.wikidata.org/wiki")?
+            .appendingPathComponent(wikidataId)
     }
 
     // MARK: Syncable

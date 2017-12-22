@@ -43,7 +43,8 @@ extension OpenStreetMapElement: Deletable, Listable, OpenableInBrowser, Syncable
     // MARK: OpenableInBrowser
 
     var externalURL: URL? {
-        return URL(string: "https://www.openstreetmap.org/\(rawOpenStreetMapId)")
+        return URL(string: "https://www.openstreetmap.org")?
+            .appendingPathComponent(rawOpenStreetMapId)
     }
 
     // MARK: Syncable

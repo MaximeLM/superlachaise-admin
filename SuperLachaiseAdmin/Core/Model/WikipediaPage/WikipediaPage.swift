@@ -15,8 +15,8 @@ final class WikipediaPage: Object {
 
     @objc dynamic var name: String?
 
-    @objc dynamic var abstract: String?
     @objc dynamic var defaultSort: String?
+    @objc dynamic var extract: String?
 
     @objc dynamic var deleted = false
 
@@ -25,9 +25,7 @@ final class WikipediaPage: Object {
     }
 
     override var description: String {
-        return [name, rawWikipediaId]
-            .flatMap { $0 }
-            .joined(separator: " - ")
+        return rawWikipediaId
     }
 
 }
