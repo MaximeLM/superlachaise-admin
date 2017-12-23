@@ -17,6 +17,7 @@ extension WikipediaPage: MainWindowModelType {
             ],
             [
                 DetailViewFieldItem(name: "Default sort", value: defaultSort),
+                DetailViewFieldItem(name: "Extract", value: extract, isHTML: true),
                 DetailViewFieldItem(name: "Extract (raw)", value: extract),
             ],
         ])

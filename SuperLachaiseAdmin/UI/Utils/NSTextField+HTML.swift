@@ -14,14 +14,19 @@ extension NSTextField {
             return attributedStringValue.string
         }
         set {
-            let font = self.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
-            let style = "font-family:'\(font.fontName)'; font-size:\(font.pointSize)px;"
+            let fontSize = self.font?.pointSize ?? NSFont.systemFontSize
+            let style = "font-family:'Verdana'; font-size:\(fontSize)px;"
             let html = "<span style=\"\(style)\">\(newValue)</span>"
             guard let data = html.data(using: .utf8) else {
                 assertionFailure()
                 return
             }
-            guard let attributedString = NSAttributedString(html: data, options: [:], documentAttributes: nil) else {
+            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+                .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue),
+            ]
+            guard let attributedString = NSAttributedString(html: data,
+                                                            options: options,
+                                                            documentAttributes: nil) else {
                 assertionFailure()
                 return
             }

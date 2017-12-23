@@ -13,10 +13,22 @@ struct DetailViewFieldItem: DetailViewItem {
 
     let value: Any?
 
+    let isHTML: Bool
+
+    init(name: String, value: Any?, isHTML: Bool = false) {
+        self.name = name
+        self.value = value
+        self.isHTML = isHTML
+    }
+
     var view: NSView? {
         let view: DetailViewFieldView? = NSNib.instantiate("DetailViewFieldView")
         view?.name = name
-        view?.value = value
+        if isHTML {
+            view?.htmlValue = value
+        } else {
+            view?.value = value
+        }
         return view
     }
 

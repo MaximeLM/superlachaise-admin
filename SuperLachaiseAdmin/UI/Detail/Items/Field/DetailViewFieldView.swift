@@ -31,6 +31,16 @@ final class DetailViewFieldView: NSView {
         }
     }
 
+    var htmlValue: Any? {
+        didSet {
+            if let htmlValue = htmlValue {
+                valueLabel?.htmlStringValue = "\(htmlValue)"
+            } else {
+                valueLabel?.stringValue = ""
+            }
+        }
+    }
+
     // MARK: Subviews
 
     @IBOutlet private var nameLabel: NSTextField?
@@ -46,6 +56,14 @@ final class DetailViewFieldView: NSView {
         nameLabel?.preferredMaxLayoutWidth = nameWidth
         valueLabel?.preferredMaxLayoutWidth = bounds.width - nameWidth - 2 * 20 - 8
         super.layout()
+    }
+
+    // MARK: Lifecycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        valueLabel?.allowsEditingTextAttributes = true
+        valueLabel?.isSelectable = true
     }
 
 }
