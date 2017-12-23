@@ -24,7 +24,7 @@ final class WikipediaGetPages {
     // MARK: Execution
 
     func asSingle() -> Single<[WikipediaAPIPage]> {
-        return Observable.from(wikipediaTitles.chunked(by: 50))
+        return Observable.from(wikipediaTitles.chunked(by: 20))
             .flatMap(self.chunkEntities)
             .reduce([], accumulator: self.mergeEntities)
             .asSingle()
@@ -33,25 +33,6 @@ final class WikipediaGetPages {
 }
 
 private extension WikipediaGetPages {
-
-    func chunkRequest(wikipediaTitlesChunk: [String]) throws -> URLRequest {
-        guard var components = URLComponents(url: endpoint.baseURL, resolvingAgainstBaseURL: false) else {
-            throw WikipediaGetPagesError.invalidBaseURL(endpoint.baseURL)
-        }
-        let props = ["revisions", "extracts"]
-        components.queryItems = [
-            URLQueryItem(name: "action", value: "query"),
-            URLQueryItem(name: "exintro", value: ""),
-            URLQueryItem(name: "format", value: "json"),
-            URLQueryItem(name: "prop", value: props.joined(separator: "|")),
-            URLQueryItem(name: "rvprop", value: "content"),
-            URLQueryItem(name: "titles", value: wikipediaTitlesChunk.joined(separator: "|")),
-        ]
-        guard let url = components.url else {
-            throw WikipediaGetPagesError.invalidComponents(components)
-        }
-        return URLRequest(url: url)
-    }
 
     func chunkEntities(wikipediaTitlesChunk: [String]) throws -> Single<[WikipediaAPIPage]> {
         let request = try self.chunkRequest(wikipediaTitlesChunk: wikipediaTitlesChunk)
@@ -67,6 +48,9 @@ private extension WikipediaGetPages {
                 }
                 if let error = result.error {
                     throw error
+                }
+                guard result.continue == nil else {
+                    throw WikipediaGetPagesError.hasContinue
                 }
                 guard let pagesDict = result.query?.pages else {
                     throw WikipediaGetPagesError.noPages
@@ -91,6 +75,25 @@ private extension WikipediaGetPages {
             }
     }
 
+    func chunkRequest(wikipediaTitlesChunk: [String]) throws -> URLRequest {
+        guard var components = URLComponents(url: endpoint.baseURL, resolvingAgainstBaseURL: false) else {
+            throw WikipediaGetPagesError.invalidBaseURL(endpoint.baseURL)
+        }
+        let props = ["revisions", "extracts"]
+        components.queryItems = [
+            URLQueryItem(name: "action", value: "query"),
+            URLQueryItem(name: "exintro", value: ""),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "prop", value: props.joined(separator: "|")),
+            URLQueryItem(name: "rvprop", value: "content"),
+            URLQueryItem(name: "titles", value: wikipediaTitlesChunk.joined(separator: "|")),
+        ]
+        guard let url = components.url else {
+            throw WikipediaGetPagesError.invalidComponents(components)
+        }
+        return URLRequest(url: url)
+    }
+
     func mergeEntities(entities: [WikipediaAPIPage], chunkEntities: [WikipediaAPIPage]) -> [WikipediaAPIPage] {
         var entities = entities
         entities.append(contentsOf: chunkEntities)
@@ -106,6 +109,7 @@ private enum WikipediaGetPagesError: Error {
     case pageNormalized
     case noPages
     case missingPages
+    case hasContinue
 }
 
 //swiftlint:disable identifier_name
@@ -116,6 +120,7 @@ private struct WikipediaGetPagesResult: Decodable {
 
     let error: WikipediaGetPagesResultError?
     let warnings: [String: [String: String]]?
+    let `continue`: WikipediaGetPagesResultContinue?
 
 }
 
@@ -124,6 +129,10 @@ private struct WikipediaGetPagesResultQuery: Decodable {
     let pages: [String: WikipediaAPIPage]?
 
     let normalized: [WikipediaGetPagesResultNormalization]?
+
+}
+
+private struct WikipediaGetPagesResultContinue: Decodable {
 
 }
 

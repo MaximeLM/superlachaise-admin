@@ -26,7 +26,7 @@ final class WikidataGetEntities {
     // MARK: Execution
 
     func asSingle() -> Single<[WikidataEntity]> {
-        return Observable.from(wikidataIds.chunked(by: 50))
+        return Observable.from(wikidataIds.chunked(by: 20))
             .flatMap(self.chunkEntities)
             .reduce([], accumulator: self.mergeEntities)
             .asSingle()
@@ -35,24 +35,6 @@ final class WikidataGetEntities {
 }
 
 private extension WikidataGetEntities {
-
-    func chunkRequest(wikidataIdsChunk: [String]) throws -> URLRequest {
-        guard var components = URLComponents(url: endpoint.baseURL, resolvingAgainstBaseURL: false) else {
-            throw WikidataGetEntitiesError.invalidBaseURL(endpoint.baseURL)
-        }
-        let props = ["labels", "descriptions", "claims", "sitelinks"]
-        components.queryItems = [
-            URLQueryItem(name: "action", value: "wbgetentities"),
-            URLQueryItem(name: "format", value: "json"),
-            URLQueryItem(name: "ids", value: wikidataIdsChunk.joined(separator: "|")),
-            URLQueryItem(name: "languages", value: languages.joined(separator: "|")),
-            URLQueryItem(name: "props", value: props.joined(separator: "|")),
-        ]
-        guard let url = components.url else {
-            throw WikidataGetEntitiesError.invalidComponents(components)
-        }
-        return URLRequest(url: url)
-    }
 
     func chunkEntities(wikidataIdsChunk: [String]) throws -> Single<[WikidataEntity]> {
         let request = try self.chunkRequest(wikidataIdsChunk: wikidataIdsChunk)
@@ -89,6 +71,24 @@ private extension WikidataGetEntities {
                 updatedChunk.remove(at: index)
                 return try self.chunkEntities(wikidataIdsChunk: updatedChunk)
             }
+    }
+
+    func chunkRequest(wikidataIdsChunk: [String]) throws -> URLRequest {
+        guard var components = URLComponents(url: endpoint.baseURL, resolvingAgainstBaseURL: false) else {
+            throw WikidataGetEntitiesError.invalidBaseURL(endpoint.baseURL)
+        }
+        let props = ["labels", "descriptions", "claims", "sitelinks"]
+        components.queryItems = [
+            URLQueryItem(name: "action", value: "wbgetentities"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "ids", value: wikidataIdsChunk.joined(separator: "|")),
+            URLQueryItem(name: "languages", value: languages.joined(separator: "|")),
+            URLQueryItem(name: "props", value: props.joined(separator: "|")),
+        ]
+        guard let url = components.url else {
+            throw WikidataGetEntitiesError.invalidComponents(components)
+        }
+        return URLRequest(url: url)
     }
 
     func mergeEntities(entities: [WikidataEntity], chunkEntities: [WikidataEntity]) -> [WikidataEntity] {
