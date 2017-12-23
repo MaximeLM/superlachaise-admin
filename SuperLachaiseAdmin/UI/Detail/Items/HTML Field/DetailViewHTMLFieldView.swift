@@ -24,8 +24,10 @@ final class DetailViewHTMLFieldView: NSView {
     var value: Any? {
         didSet {
             if let value = value {
+                scrollView?.isHidden = false
                 valueLabel?.htmlStringValue = "\(value)"
             } else {
+                scrollView?.isHidden = true
                 valueLabel?.stringValue = ""
             }
         }
@@ -34,6 +36,8 @@ final class DetailViewHTMLFieldView: NSView {
     // MARK: Subviews
 
     @IBOutlet private var nameLabel: NSTextField?
+
+    @IBOutlet private var scrollView: NSScrollView?
 
     @IBOutlet private var valueLabel: NSTextField?
 
