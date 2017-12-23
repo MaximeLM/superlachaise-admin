@@ -30,7 +30,6 @@ final class DetailViewURLView: NSView {
     override func awakeFromNib() {
         super.awakeFromNib()
         label?.allowsEditingTextAttributes = true
-        label?.isSelectable = true
     }
 
     // MARK: Layout

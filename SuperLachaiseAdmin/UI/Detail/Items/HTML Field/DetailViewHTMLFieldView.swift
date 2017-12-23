@@ -1,5 +1,5 @@
 //
-//  DetailViewFieldView.swift
+//  DetailViewHTMLFieldView.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 17/12/2017.
@@ -7,7 +7,7 @@
 
 import Cocoa
 
-final class DetailViewFieldView: NSView {
+final class DetailViewHTMLFieldView: NSView {
 
     // MARK: Properties
 
@@ -24,7 +24,7 @@ final class DetailViewFieldView: NSView {
     var value: Any? {
         didSet {
             if let value = value {
-                valueLabel?.stringValue = "\(value)"
+                valueLabel?.htmlStringValue = "\(value)"
             } else {
                 valueLabel?.stringValue = ""
             }
@@ -44,8 +44,15 @@ final class DetailViewFieldView: NSView {
     override func layout() {
         let nameWidth = nameWidthConstraint?.constant ?? 0
         nameLabel?.preferredMaxLayoutWidth = nameWidth
-        valueLabel?.preferredMaxLayoutWidth = bounds.width - nameWidth - 2 * 20 - 8
+        valueLabel?.preferredMaxLayoutWidth = bounds.width - nameWidth - 2 * 20 - 3 * 8
         super.layout()
+    }
+
+    // MARK: Lifecycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        valueLabel?.allowsEditingTextAttributes = true
     }
 
 }

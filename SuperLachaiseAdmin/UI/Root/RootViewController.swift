@@ -14,7 +14,7 @@ protocol RootViewControllerType: NSObjectProtocol {
 
     var refreshModel: MainWindowModel? { get set }
 
-    var didSingleClickModel: Observable<MainWindowModel>? { get }
+    var didSelectModel: Observable<MainWindowModel>? { get }
 
     var didDoubleClickModel: Observable<MainWindowModel>? { get }
 
@@ -52,8 +52,8 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
 
     // MARK: Properties
 
-    var didSingleClickModel: Observable<MainWindowModel>? {
-        return listViewController?.didSingleClickModel
+    var didSelectModel: Observable<MainWindowModel>? {
+        return listViewController?.didSelectModel
     }
 
     var didDoubleClickModel: Observable<MainWindowModel>? {

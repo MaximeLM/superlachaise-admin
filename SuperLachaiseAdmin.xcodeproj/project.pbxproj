@@ -53,6 +53,9 @@
 		5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C91FED9249000DA3C9 /* WikipediaGetPages.swift */; };
 		5570F9CD1FEDA00D000DA3C9 /* WikipediaAPIPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9CC1FEDA00D000DA3C9 /* WikipediaAPIPage.swift */; };
 		5570F9CF1FEDAA11000DA3C9 /* WikidataLocalizedEntry+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9CE1FEDAA11000DA3C9 /* WikidataLocalizedEntry+Requests.swift */; };
+		5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */; };
+		5570F9D51FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */; };
+		5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
@@ -164,6 +167,9 @@
 		5570F9C91FED9249000DA3C9 /* WikipediaGetPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaGetPages.swift; sourceTree = "<group>"; };
 		5570F9CC1FEDA00D000DA3C9 /* WikipediaAPIPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaAPIPage.swift; sourceTree = "<group>"; };
 		5570F9CE1FEDAA11000DA3C9 /* WikidataLocalizedEntry+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataLocalizedEntry+Requests.swift"; sourceTree = "<group>"; };
+		5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewHTMLFieldView.xib; sourceTree = "<group>"; };
+		5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldItem.swift; sourceTree = "<group>"; };
+		5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldView.swift; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
@@ -267,6 +273,7 @@
 				5513EF5F1FE6C30100BD3A22 /* URL */,
 				5513EF721FE6DF1D00BD3A22 /* Field */,
 				5513EF881FE6F9BF00BD3A22 /* Inline Field */,
+				5570F9D01FEE8AF1000DA3C9 /* HTML Field */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -464,6 +471,16 @@
 				5570F9CC1FEDA00D000DA3C9 /* WikipediaAPIPage.swift */,
 			);
 			path = Types;
+			sourceTree = "<group>";
+		};
+		5570F9D01FEE8AF1000DA3C9 /* HTML Field */ = {
+			isa = PBXGroup;
+			children = (
+				5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */,
+				5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */,
+				5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */,
+			);
+			path = "HTML Field";
 			sourceTree = "<group>";
 		};
 		5587F9EF1FCF6904004C9E28 /* Root */ = {
@@ -816,6 +833,7 @@
 				5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */,
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
 				5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */,
+				5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */,
 				5513EF591FE6BAC000BD3A22 /* DetailViewTitleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -925,6 +943,7 @@
 				5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */,
 				55A8D24C1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift in Sources */,
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
+				5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */,
 				55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */,
 				5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */,
 				55B537011FD3413800036FFC /* Listable.swift in Sources */,
@@ -1001,6 +1020,7 @@
 				5570F9C81FEC7A74000DA3C9 /* MainWindowController+Search.swift in Sources */,
 				55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */,
 				5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */,
+				5570F9D51FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

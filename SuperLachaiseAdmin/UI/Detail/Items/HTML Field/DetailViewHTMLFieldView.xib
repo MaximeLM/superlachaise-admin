@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="DetailViewHTMLFieldView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="23"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="kD1-tP-k7y">
+                    <rect key="frame" x="18" y="6" width="154" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="Gl1-1M-FgP"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="sXg-g3-Niv">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <scrollView verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NgH-0i-2JE" customClass="NoScrollView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                    <rect key="frame" x="178" y="0.0" width="282" height="23"/>
+                    <clipView key="contentView" id="gei-Sg-gbS" customClass="FlippedClipView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                        <rect key="frame" x="1" y="1" width="280" height="21"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view translatesAutoresizingMaskIntoConstraints="NO" id="l9m-G4-Fj0">
+                                <rect key="frame" x="0.0" y="0.0" width="280" height="21"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bRh-rV-w34">
+                                        <rect key="frame" x="6" y="0.0" width="37" height="19"/>
+                                        <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="Value" id="EXQ-QG-Ik8">
+                                            <font key="font" size="12" name="Verdana"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="bRh-rV-w34" firstAttribute="top" secondItem="l9m-G4-Fj0" secondAttribute="top" constant="2" id="1Ct-bG-NGv"/>
+                                    <constraint firstItem="bRh-rV-w34" firstAttribute="leading" secondItem="l9m-G4-Fj0" secondAttribute="leading" constant="8" id="XBh-LN-Y0s"/>
+                                    <constraint firstAttribute="bottom" secondItem="bRh-rV-w34" secondAttribute="bottom" id="zp9-TT-2XJ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="l9m-G4-Fj0" firstAttribute="leading" secondItem="gei-Sg-gbS" secondAttribute="leading" id="65d-f6-iQW"/>
+                            <constraint firstAttribute="trailing" secondItem="l9m-G4-Fj0" secondAttribute="trailing" id="EYF-fZ-N05"/>
+                            <constraint firstItem="l9m-G4-Fj0" firstAttribute="top" secondItem="gei-Sg-gbS" secondAttribute="top" id="fab-nc-T1C"/>
+                            <constraint firstAttribute="bottom" secondItem="l9m-G4-Fj0" secondAttribute="bottom" id="vvq-4G-4zd"/>
+                        </constraints>
+                        <color key="backgroundColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Csd-HD-xCO">
+                        <rect key="frame" x="-100" y="-100" width="285" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ETm-eQ-bAr">
+                        <rect key="frame" x="265" y="1" width="16" height="21"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="kD1-tP-k7y" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="7uM-jJ-Wyn"/>
+                <constraint firstAttribute="bottom" secondItem="kD1-tP-k7y" secondAttribute="bottom" priority="750" id="MxV-iZ-1F0"/>
+                <constraint firstItem="NgH-0i-2JE" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="O22-yv-7wd"/>
+                <constraint firstAttribute="trailing" secondItem="NgH-0i-2JE" secondAttribute="trailing" constant="20" id="RBT-AT-rpl"/>
+                <constraint firstAttribute="bottom" secondItem="NgH-0i-2JE" secondAttribute="bottom" priority="750" id="WEi-lY-TWZ"/>
+                <constraint firstItem="NgH-0i-2JE" firstAttribute="leading" secondItem="kD1-tP-k7y" secondAttribute="trailing" constant="8" id="WSj-CE-zUc"/>
+                <constraint firstItem="kD1-tP-k7y" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="XPS-xj-YVO"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kD1-tP-k7y" secondAttribute="bottom" id="pFz-M8-Mep"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="NgH-0i-2JE" secondAttribute="bottom" id="x1q-5h-c4j"/>
+            </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="kD1-tP-k7y" id="cUe-Hl-Wf6"/>
+                <outlet property="nameWidthConstraint" destination="Gl1-1M-FgP" id="d6X-wY-Vd1"/>
+                <outlet property="valueLabel" destination="bRh-rV-w34" id="wxH-ys-flW"/>
+            </connections>
+        </customView>
+    </objects>
+</document>

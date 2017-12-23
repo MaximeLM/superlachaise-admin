@@ -565,8 +565,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <action trigger="doubleAction" selector="outlineViewDoubleClickAction:" target="uw9-uF-Klt" id="6Wh-yA-VTv"/>
-                                                <action selector="outlineViewSingleClickAction:" target="uw9-uF-Klt" id="VJo-in-JvV"/>
+                                                <action trigger="doubleAction" selector="doubleClickAction:" target="uw9-uF-Klt" id="S6F-MI-4yL"/>
                                                 <outlet property="dataSource" destination="uw9-uF-Klt" id="ABR-6v-788"/>
                                                 <outlet property="delegate" destination="uw9-uF-Klt" id="uxU-Za-RY5"/>
                                             </connections>

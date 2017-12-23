@@ -10,7 +10,7 @@ import RxSwift
 
 protocol ListViewControllerType: NSObjectProtocol {
 
-    var didSingleClickModel: Observable<MainWindowModel> { get }
+    var didSelectModel: Observable<MainWindowModel> { get }
 
     var didDoubleClickModel: Observable<MainWindowModel> { get }
 
@@ -32,19 +32,19 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Properties
 
-    var didSingleClickModel: Observable<MainWindowModel> {
-        return didSingleClickModelSubject.asObservable()
+    var didSelectModel: Observable<MainWindowModel> {
+        return didSelectModelSubject.asObservable()
     }
 
     var didDoubleClickModel: Observable<MainWindowModel> {
         return didDoubleClickModelSubject.asObservable()
     }
 
-    let didSingleClickModelSubject = PublishSubject<MainWindowModel>()
+    let didSelectModelSubject = PublishSubject<MainWindowModel>()
 
     let didDoubleClickModelSubject = PublishSubject<MainWindowModel>()
 
-    var shouldPerformSingleClickAction = false
+    var pendingSelectedModel: MainWindowModel?
 
     var searchValue: String? {
         didSet {
@@ -115,6 +115,29 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         }
 
         return view
+    }
+
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        // Cancel selection
+        pendingSelectedModel = nil
+
+        guard let outlineView = outlineView else {
+            return
+        }
+        guard let item = outlineView.item(atRow: outlineView.selectedRow) as? ListViewObjectItem else {
+            return
+        }
+
+        // Delay event to prevent collision with double click
+        pendingSelectedModel = item.object
+        let deadline: DispatchTime = .now() + .milliseconds(250)
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            guard let pendingSelectedModel = self.pendingSelectedModel else {
+                return
+            }
+            self.pendingSelectedModel = nil
+            self.didSelectModelSubject.onNext(pendingSelectedModel)
+        }
     }
 
 }

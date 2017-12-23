@@ -14,7 +14,7 @@
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gn3-jX-0OH" customClass="ClickableTextField" customModule="SuperLachaiseAdmin" customModuleProvider="target">
                     <rect key="frame" x="18" y="0.0" width="30" height="19"/>
-                    <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" title="URL" id="DBY-ea-sIK">
+                    <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" title="URL" id="DBY-ea-sIK">
                         <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

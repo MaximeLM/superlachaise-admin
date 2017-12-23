@@ -93,7 +93,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
         }
 
         // Subscribe to child view controller selections
-        rootViewController?.didSingleClickModel?
+        rootViewController?.didSelectModel?
             .distinctUntilChanged { $0 as Object }
             .subscribe(onNext: { model in
                 self.selectNewModel(model)
