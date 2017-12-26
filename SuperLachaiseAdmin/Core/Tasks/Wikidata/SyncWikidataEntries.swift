@@ -72,7 +72,7 @@ private extension SyncWikidataEntries {
         case .all:
             // Get wikidata ids from OpenStreetMap elements
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return OpenStreetMapElement.all()(realm).flatMap { $0.wikidataId }
+                return OpenStreetMapElement.all()(realm).flatMap { $0.wikidataEntry?.wikidataId }
             }
         case let .single(wikidataId):
             return Single.just([wikidataId])

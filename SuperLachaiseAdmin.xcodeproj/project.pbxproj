@@ -631,7 +631,6 @@
 				5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */,
 				5570F9C71FEC7A74000DA3C9 /* MainWindowController+Search.swift */,
 				5570F9A01FEB1AB5000DA3C9 /* MainWindowController+Tasks.swift */,
-				5570F99C1FEB1328000DA3C9 /* Model */,
 			);
 			path = MainWindow;
 			sourceTree = "<group>";
@@ -651,6 +650,7 @@
 			isa = PBXGroup;
 			children = (
 				55B897DE1FC9D17600FC4EF6 /* Main.storyboard */,
+				5570F99C1FEB1328000DA3C9 /* Model */,
 				55B536E31FD31C5300036FFC /* MainWindow */,
 				5587F9EF1FCF6904004C9E28 /* Root */,
 				55BD408B1FD30B3C005ACD89 /* List */,

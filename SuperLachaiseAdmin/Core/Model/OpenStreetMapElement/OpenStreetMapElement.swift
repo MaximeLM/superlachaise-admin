@@ -16,7 +16,8 @@ final class OpenStreetMapElement: Object {
     @objc dynamic var latitude: Double = 0
     @objc dynamic var longitude: Double = 0
     @objc dynamic var name: String?
-    @objc dynamic var wikidataId: String?
+
+    @objc dynamic var wikidataEntry: WikidataEntry?
 
     @objc dynamic var deleted = false
 

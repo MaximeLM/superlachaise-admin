@@ -21,7 +21,7 @@ extension OpenStreetMapElement: MainWindowModelType {
                 DetailViewFieldItem(name: "Longitude", value: longitude),
             ],
             [
-                DetailViewFieldItem(name: "Wikidata ID", value: wikidataId),
+                //DetailViewFieldItem(name: "Wikidata ID", value: wikidataId),
             ],
         ])
     }
