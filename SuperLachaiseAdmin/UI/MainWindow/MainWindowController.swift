@@ -42,6 +42,10 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     @IBOutlet var titleLabel: NSTextField?
 
+    @IBOutlet var taskCountButton: NSButton?
+
+    @IBOutlet var cancelTaskButton: NSButton?
+
     @IBOutlet var syncButton: NSButton?
 
     // MARK: Child view controllers
@@ -64,33 +68,21 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
         window?.titleVisibility = .hidden
         syncButton?.toolTip = "Sync current object"
+        cancelTaskButton?.toolTip = "Cancel current task"
 
-        configureObservables()
+        let disposeBag = DisposeBag()
+        bindModel(disposeBag: disposeBag)
+        bindViews(disposeBag: disposeBag)
+        self.disposeBag = disposeBag
     }
 
-    private func configureObservables() {
-        let disposeBag = DisposeBag()
+    private func bindModel(disposeBag: DisposeBag) {
 
         // Publish the model each time the model is changed or the realm is saved
         let realmObservable = Observable<(Realm, Realm.Notification)>.from(realm: realmContext.viewRealm)
         Observable.merge(model.asObservable(), realmObservable.map { _ in self.model.value })
             .bind(to: refreshModel)
             .disposed(by: disposeBag)
-
-        // Update views from model
-        refreshModel.asObservable()
-            .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
-            .subscribe(onNext: { title in
-                self.window?.title = title
-                self.titleLabel?.stringValue = title
-            })
-            .disposed(by: disposeBag)
-        if let syncButton = syncButton {
-            model.asObservable()
-                .map { $0 is Syncable }
-                .bind(to: syncButton.rx.isEnabled)
-                .disposed(by: disposeBag)
-        }
 
         // Subscribe to child view controller selections
         rootViewController?.didSelectModel?
@@ -117,7 +109,51 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             })
             .disposed(by: disposeBag)
 
-        self.disposeBag = disposeBag
+    }
+
+    private func bindViews(disposeBag: DisposeBag) {
+
+        // Bind title
+        refreshModel.asObservable()
+            .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
+            .subscribe(onNext: { title in
+                self.window?.title = title
+                self.titleLabel?.stringValue = title
+            })
+            .disposed(by: disposeBag)
+
+        // Bind sync button
+        if let syncButton = syncButton {
+            model.asObservable()
+                .map { $0 is Syncable }
+                .bind(to: syncButton.rx.isEnabled)
+                .disposed(by: disposeBag)
+        }
+
+        // Bind task count button
+        if let taskCountButton = taskCountButton {
+            taskController.runningTasks.asObservable()
+                .subscribe(onNext: { taskOperations in
+                    taskCountButton.title = "\(taskOperations.count)"
+                    if taskOperations.isEmpty {
+                        taskCountButton.toolTip = "No running task"
+                    } else {
+                        taskCountButton.toolTip = taskOperations
+                            .map { $0.description }
+                            .joined(separator: "\n")
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
+
+        // Bind cancel task button
+        if let cancelTaskButton = cancelTaskButton {
+            taskController.runningTasks.asObservable()
+                .map { !$0.isEmpty }
+                .bind(to: cancelTaskButton.rx.isEnabled )
+                .disposed(by: disposeBag)
+        }
+
     }
 
     func windowWillClose(_ notification: Notification) {

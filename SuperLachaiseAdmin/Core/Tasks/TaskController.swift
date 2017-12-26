@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 final class TaskController {
 
@@ -15,8 +16,16 @@ final class TaskController {
     init(config: Config, realmContext: RealmContext) {
         self.config = config
         self.realmContext = realmContext
+
         self.operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
+
+        let runningTasks = self.runningTasks
+        self.observation = operationQueue.observe(\OperationQueue.operations) { operationQueue, _ in
+            DispatchQueue.main.async {
+                runningTasks.value = operationQueue.operations.flatMap { $0 as? TaskOperation }
+            }
+        }
     }
 
     // MARK: API endpoints
@@ -29,12 +38,12 @@ final class TaskController {
 
     private let operationQueue: OperationQueue
 
+    private var observation: NSKeyValueObservation?
+
+    let runningTasks = Variable<[TaskOperation]>([])
+
     func enqueue(_ task: Task) {
-        _ = task.asSingle()
-            .enqueue(in: operationQueue)
-            .do(onSubscribe: { Logger.info("\(task) started") })
-            .subscribe(onError: { Logger.error("\(task) failed: \($0)") },
-                       onCompleted: { Logger.success("\(task) succeeded") })
+        operationQueue.addOperation(TaskOperation(task: task))
     }
 
 }

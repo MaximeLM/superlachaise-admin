@@ -11,9 +11,20 @@ import RxSwift
 
 final class SyncWikipediaPages: Task {
 
-    enum Scope {
+    enum Scope: CustomStringConvertible {
+
         case all
         case single(wikipediaId: WikipediaId)
+
+        var description: String {
+            switch self {
+            case .all:
+                return "all"
+            case let .single(wikipediaId):
+                return wikipediaId.description
+            }
+        }
+
     }
 
     let scope: Scope
@@ -23,6 +34,10 @@ final class SyncWikipediaPages: Task {
     init(scope: Scope, endpoint: @escaping (String) -> APIEndpointType) {
         self.scope = scope
         self.endpoint = endpoint
+    }
+
+    var description: String {
+        return "\(type(of: self)) (\(scope.description))"
     }
 
     // MARK: Execution

@@ -16,7 +16,7 @@ struct OpenStreetMapId {
     let numericId: Int64
 }
 
-extension OpenStreetMapId: Equatable {
+extension OpenStreetMapId: Equatable, CustomStringConvertible {
 
     init?(rawValue: String) {
         let components = rawValue.components(separatedBy: "/")
@@ -34,6 +34,10 @@ extension OpenStreetMapId: Equatable {
 
     static func == (lhs: OpenStreetMapId, rhs: OpenStreetMapId) -> Bool {
         return lhs.elementType == rhs.elementType && lhs.numericId == rhs.numericId
+    }
+
+    var description: String {
+        return rawValue
     }
 
 }

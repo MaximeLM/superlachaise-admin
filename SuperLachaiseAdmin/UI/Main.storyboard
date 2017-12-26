@@ -372,7 +372,7 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="61" y="-97"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -383,7 +383,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="DBF60FC8-C6B2-4186-8493-3FFC4001BE05" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Nko-oY-gPa">
+                        <toolbar key="toolbar" implicitIdentifier="DBF60FC8-C6B2-4186-8493-3FFC4001BE05" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="Nko-oY-gPa">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="39277A04-21E3-4491-B9B0-B1AA23A25973" label="" paletteLabel="Search" id="m5A-G2-2A3">
                                     <nil key="toolTip"/>
@@ -436,6 +436,35 @@
                                     </textField>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="YCJ-Fo-NXy"/>
+                                <toolbarItem implicitItemIdentifier="4ECB0279-B9BE-4402-BE2C-DAF6B6693E92" label="" paletteLabel="Task Count" autovalidates="NO" id="xOP-pl-mbZ">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="25" height="21"/>
+                                    <size key="maxSize" width="25" height="24"/>
+                                    <button key="view" verticalHuggingPriority="750" id="ZcK-9B-NOK">
+                                        <rect key="frame" x="21" y="14" width="25" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="inline" title="0" bezelStyle="inline" alignment="center" state="on" borderStyle="border" inset="2" id="dbv-aE-7v6">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="systemBold"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="0641EE3E-9FB8-4CF1-A36A-7969EE21EBD6" label="" paletteLabel="Cancel Task" image="NSStopProgressTemplate" id="UZB-8Y-UkB">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="32" height="24"/>
+                                    <size key="maxSize" width="32" height="27"/>
+                                    <button key="view" verticalHuggingPriority="750" id="3Cq-lr-3EQ">
+                                        <rect key="frame" x="20" y="14" width="32" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="S1l-IX-5oz">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="cancelCurrentTask:" target="B8D-0N-5wS" id="DdG-nA-4mC"/>
+                                        </connections>
+                                    </button>
+                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="FC06C4F8-0A15-4EC7-A09C-4FA1583E9B0D" label="" paletteLabel="Sync" image="NSRefreshTemplate" id="bRF-MR-Jhg">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="32" height="24"/>
@@ -459,6 +488,8 @@
                                 <toolbarItem reference="YCJ-Fo-NXy"/>
                                 <toolbarItem reference="v2F-34-nZh"/>
                                 <toolbarItem reference="YCJ-Fo-NXy"/>
+                                <toolbarItem reference="xOP-pl-mbZ"/>
+                                <toolbarItem reference="UZB-8Y-UkB"/>
                                 <toolbarItem reference="bRF-MR-Jhg"/>
                             </defaultToolbarItems>
                         </toolbar>
@@ -467,9 +498,11 @@
                         </connections>
                     </window>
                     <connections>
+                        <outlet property="cancelTaskButton" destination="3Cq-lr-3EQ" id="9bk-eF-0SR"/>
                         <outlet property="navigationSegmentedControl" destination="G8z-dn-YiJ" id="xgf-IG-CAn"/>
                         <outlet property="searchField" destination="TkP-bA-QKO" id="M1v-mq-SIg"/>
                         <outlet property="syncButton" destination="4SE-7m-I3e" id="jDl-8K-tq9"/>
+                        <outlet property="taskCountButton" destination="ZcK-9B-NOK" id="BwH-Ve-2L8"/>
                         <outlet property="titleLabel" destination="haN-yq-7Gl" id="5bk-Wf-OHl"/>
                         <segue destination="E7L-kO-4OK" kind="relationship" relationship="window.shadowedContentViewController" id="eLh-lG-8Ck"/>
                     </connections>
@@ -668,5 +701,6 @@
         <image name="NSGoBackTemplate" width="9" height="12"/>
         <image name="NSGoForwardTemplate" width="9" height="12"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
+        <image name="NSStopProgressTemplate" width="11" height="11"/>
     </resources>
 </document>

@@ -1,5 +1,5 @@
 //
-//  MainWindowController+Sync.swift
+//  MainWindowController+Tasks.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 20/12/2017.
@@ -14,6 +14,10 @@ extension MainWindowController {
             return
         }
         model.sync(taskController: taskController)
+    }
+
+    @IBAction func cancelCurrentTask(_ sender: Any?) {
+        taskController.runningTasks.value.first?.cancel()
     }
 
     @IBAction func syncOpenStreetMapElements(_ sender: Any?) {

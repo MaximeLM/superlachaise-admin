@@ -11,9 +11,20 @@ import RxSwift
 
 final class SyncOpenStreetMapElements: Task {
 
-    enum Scope {
+    enum Scope: CustomStringConvertible {
+
         case all
         case single(openStreetMapId: OpenStreetMapId)
+
+        var description: String {
+            switch self {
+            case .all:
+                return "all"
+            case let .single(openStreetMapId):
+                return openStreetMapId.description
+            }
+        }
+
     }
 
     let scope: Scope
@@ -25,6 +36,10 @@ final class SyncOpenStreetMapElements: Task {
         self.scope = scope
         self.config = config
         self.endpoint = endpoint
+    }
+
+    var description: String {
+        return "\(type(of: self)) (\(scope.description))"
     }
 
     // MARK: Execution

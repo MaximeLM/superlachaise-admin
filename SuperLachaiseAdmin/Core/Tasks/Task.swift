@@ -13,11 +13,3 @@ protocol Task: CustomStringConvertible {
     func asSingle() -> Single<Void>
 
 }
-
-extension Task {
-
-    var description: String {
-        return "\(type(of: self))"
-    }
-
-}

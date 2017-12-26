@@ -36,7 +36,7 @@ extension Operation: Disposable {
  Wraps a subscription in a concurrent operation
  The operation starts by subscribing to its observable and finishes when the subscription is disposed
  */
-private final class ObservableOperation<E>: ConcurrentOperation {
+class ObservableOperation<E>: ConcurrentOperation {
 
     let observable: Observable<E>
     let observer: ((Event<E>) -> Void)

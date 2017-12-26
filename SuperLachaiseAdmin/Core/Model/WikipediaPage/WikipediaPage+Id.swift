@@ -12,7 +12,7 @@ struct WikipediaId {
     let title: String
 }
 
-extension WikipediaId: Equatable {
+extension WikipediaId: Equatable, CustomStringConvertible {
 
     init?(rawValue: String) {
         let components = rawValue.components(separatedBy: "/")
@@ -28,6 +28,10 @@ extension WikipediaId: Equatable {
 
     static func == (lhs: WikipediaId, rhs: WikipediaId) -> Bool {
         return lhs.language == rhs.language && lhs.title == rhs.title
+    }
+
+    var description: String {
+        return rawValue
     }
 
 }
