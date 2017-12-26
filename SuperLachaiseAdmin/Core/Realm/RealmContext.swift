@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import RxSwift
 
 final class RealmContext {
 
@@ -17,6 +18,12 @@ final class RealmContext {
     var viewRealm: Realm {
         assertIsMainThread()
         return _viewRealm
+    }
+
+    var viewRealmSaveNotification: Observable<Void> {
+        return Observable<(Realm, Realm.Notification)>.from(realm: viewRealm)
+            .map { _ in }
+            .catchErrorJustReturn(())
     }
 
     let databaseDirectoryURL: URL

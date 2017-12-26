@@ -24,8 +24,6 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     lazy var realmContext = AppContainer.realmContext
 
-    lazy var taskController = AppContainer.taskController
-
     // MARK: Model
 
     var rootItem: ListViewRootItem?
@@ -52,6 +50,8 @@ final class ListViewController: NSViewController, ListViewControllerType {
         }
     }
 
+    let disposeBag = DisposeBag()
+
     // MARK: Subviews
 
     @IBOutlet var outlineView: NSOutlineView?
@@ -62,6 +62,17 @@ final class ListViewController: NSViewController, ListViewControllerType {
         super.viewWillAppear()
         self.rootItem = ListViewRootItem(realm: self.realmContext.viewRealm)
         outlineView?.reloadData()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        realmContext.viewRealmSaveNotification
+            .subscribe(onNext: { [weak self] _ in
+                self?.outlineView?.reloadData()
+            })
+            .disposed(by: disposeBag)
+
     }
 
 }
@@ -97,22 +108,6 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         let text = itemModel.text
         view.textField?.stringValue = text
         view.toolTip = text
-
-        itemModel.reload = { [weak outlineView] item in
-            guard let outlineView = outlineView else {
-                return
-            }
-
-            let selectedItem = outlineView.item(atRow: outlineView.selectedRow) as? ListViewItem
-            let isSelectedItemChildren = (outlineView.parent(forItem: selectedItem) as? ListViewItem)?.isEqual(item)
-                ?? false
-            outlineView.reloadItem(item, reloadChildren: true)
-
-            if isSelectedItemChildren, let selectedItem = selectedItem,
-                let row = item.children?.index(where: { $0.identifier == selectedItem.identifier }) {
-                outlineView.selectRowIndexes([outlineView.row(forItem: item) + row + 1], byExtendingSelection: false)
-            }
-        }
 
         return view
     }

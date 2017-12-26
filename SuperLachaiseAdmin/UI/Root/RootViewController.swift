@@ -12,8 +12,6 @@ protocol RootViewControllerType: NSObjectProtocol {
 
     var model: MainWindowModel? { get set }
 
-    var refreshModel: MainWindowModel? { get set }
-
     var didSelectModel: Observable<MainWindowModel>? { get }
 
     var didDoubleClickModel: Observable<MainWindowModel>? { get }
@@ -32,15 +30,6 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
         }
         set {
             detailViewController?.model = newValue
-        }
-    }
-
-    var refreshModel: MainWindowModel? {
-        get {
-            return detailViewController?.refreshModel
-        }
-        set {
-            detailViewController?.refreshModel = newValue
         }
     }
 

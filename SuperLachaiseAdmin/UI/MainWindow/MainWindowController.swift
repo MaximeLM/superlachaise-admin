@@ -22,8 +22,6 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     let model = Variable<MainWindowModel?>(nil)
 
-    let refreshModel = Variable<MainWindowModel?>(nil)
-
     // MARK: Properties
 
     static var isFirstWindow = true
@@ -78,12 +76,6 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     private func bindModel(disposeBag: DisposeBag) {
 
-        // Publish the model each time the model is changed or the realm is saved
-        let realmObservable = Observable<(Realm, Realm.Notification)>.from(realm: realmContext.viewRealm)
-        Observable.merge(model.asObservable(), realmObservable.map { _ in self.model.value })
-            .bind(to: refreshModel)
-            .disposed(by: disposeBag)
-
         // Subscribe to child view controller selections
         rootViewController?.didSelectModel?
             .distinctUntilChanged { $0 as Object }
@@ -97,15 +89,10 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             })
             .disposed(by: disposeBag)
 
-        // Subscribe child view controller to model
+        // Subscribe root view controller to model
         model.asObservable()
             .subscribe(onNext: { model in
                 self.rootViewController?.model = model
-            })
-            .disposed(by: disposeBag)
-        refreshModel.asObservable()
-            .subscribe(onNext: { model in
-                self.rootViewController?.refreshModel = model
             })
             .disposed(by: disposeBag)
 
@@ -114,7 +101,8 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
     private func bindViews(disposeBag: DisposeBag) {
 
         // Bind title
-        refreshModel.asObservable()
+        Observable.merge(model.asObservable(),
+                         realmContext.viewRealmSaveNotification.map { _ in self.model.value })
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
             .subscribe(onNext: { title in
                 self.window?.title = title
