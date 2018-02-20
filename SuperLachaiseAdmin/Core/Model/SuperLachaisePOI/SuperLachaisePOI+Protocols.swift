@@ -8,18 +8,18 @@
 import Foundation
 import RealmSwift
 
-extension SuperLachaisePOI: Deletable, Listable {
-
-    // MARK: Deletable
-
-    func delete() {
-        realm?.delete(self)
-    }
+extension SuperLachaisePOI: Identifiable, Deletable, Listable {
 
     // MARK: Identifiable
 
     var identifier: String {
         return wikidataId
+    }
+
+    // MARK: Deletable
+
+    func delete() {
+        realm?.delete(self)
     }
 
     // MARK: Listable

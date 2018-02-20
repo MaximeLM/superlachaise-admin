@@ -8,18 +8,18 @@
 import Foundation
 import RealmSwift
 
-extension WikipediaPage: Deletable, Listable, OpenableInBrowser, Syncable {
-
-    // MARK: Deletable
-
-    func delete() {
-        realm?.delete(self)
-    }
+extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
 
     // MARK: Identifiable
 
     var identifier: String {
         return rawWikipediaId
+    }
+
+    // MARK: Deletable
+
+    func delete() {
+        realm?.delete(self)
     }
 
     // MARK: Listable

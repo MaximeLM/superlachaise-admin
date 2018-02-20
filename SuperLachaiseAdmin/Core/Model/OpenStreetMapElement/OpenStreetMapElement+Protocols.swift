@@ -8,18 +8,18 @@
 import Foundation
 import RealmSwift
 
-extension OpenStreetMapElement: Deletable, Listable, OpenableInBrowser, Syncable {
-
-    // MARK: Deletable
-
-    func delete() {
-        realm?.delete(self)
-    }
+extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
 
     // MARK: Identifiable
 
     var identifier: String {
         return rawOpenStreetMapId
+    }
+
+    // MARK: Deletable
+
+    func delete() {
+        realm?.delete(self)
     }
 
     // MARK: Listable

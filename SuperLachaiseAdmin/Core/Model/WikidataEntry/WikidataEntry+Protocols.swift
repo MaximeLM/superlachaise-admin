@@ -8,19 +8,19 @@
 import Foundation
 import RealmSwift
 
-extension WikidataEntry: Deletable, Listable, OpenableInBrowser, Syncable {
+extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+
+    // MARK: Identifiable
+
+    var identifier: String {
+        return wikidataId
+    }
 
     // MARK: Deletable
 
     func delete() {
         realm?.delete(localizations)
         realm?.delete(self)
-    }
-
-    // MARK: Identifiable
-
-    var identifier: String {
-        return wikidataId
     }
 
     // MARK: Listable
