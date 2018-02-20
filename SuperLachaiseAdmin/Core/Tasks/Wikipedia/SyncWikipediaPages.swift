@@ -123,7 +123,7 @@ private extension SyncWikipediaPages {
     func wikipediaPages() -> Single<[String]> {
         return wikipediaTitlesByLanguage()
             .flatMap(self.wikipediaPages)
-            .do(onNext: { Logger.info("Fetched \($0.count) \(WikipediaPage.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(WikipediaPage.self)(s)") })
     }
 
     func wikipediaPages(wikipediaTitlesByLanguage: [String: [String]]) -> Single<[String]> {

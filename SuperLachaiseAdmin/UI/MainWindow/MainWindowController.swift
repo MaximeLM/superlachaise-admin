@@ -7,6 +7,7 @@
 
 import Cocoa
 import RealmSwift
+import RxCocoa
 import RxRealm
 import RxSwift
 
@@ -20,7 +21,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
 
     // MARK: Model
 
-    let model = Variable<MainWindowModel?>(nil)
+    let model = BehaviorRelay<MainWindowModel?>(value: nil)
 
     // MARK: Properties
 

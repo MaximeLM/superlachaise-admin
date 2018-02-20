@@ -11,7 +11,7 @@ extension MainWindowController {
 
     func instantiate(model: MainWindowModel? = nil) -> MainWindowController? {
         let newWindowController = storyboard?.instantiateInitialController() as? MainWindowController
-        newWindowController?.model.value = model
+        newWindowController?.model.accept(model)
         return newWindowController
     }
 

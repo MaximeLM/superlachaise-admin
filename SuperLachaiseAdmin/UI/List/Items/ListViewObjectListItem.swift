@@ -26,14 +26,14 @@ final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObjec
             return _filter.value
         }
         set {
-            _filter.value = newValue
+            _filter.accept(newValue)
         }
     }
 
     init(baseText: String, realm: Realm, filter: String) {
         self.baseText = baseText
         self.identifier = "ListViewObjectListItem.\(Element.self)"
-        self._filter = Variable(filter)
+        self._filter = BehaviorRelay(value: filter)
 
         super.init()
         _filter.asObservable()
@@ -73,8 +73,8 @@ final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObjec
 
     private let disposeBag = DisposeBag()
 
-    private let _filter: Variable<String>
+    private let _filter: BehaviorRelay<String>
 
-    private let _children = Variable<[ListViewItem]>([])
+    private let _children = BehaviorRelay<[ListViewItem]>(value: [])
 
 }

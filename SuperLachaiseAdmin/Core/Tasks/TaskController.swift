@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxCocoa
 import RxSwift
 
 final class TaskController {
@@ -23,7 +24,7 @@ final class TaskController {
         let runningTasks = self.runningTasks
         self.observation = operationQueue.observe(\OperationQueue.operations) { operationQueue, _ in
             DispatchQueue.main.async {
-                runningTasks.value = operationQueue.operations.flatMap { $0 as? TaskOperation }
+                runningTasks.accept(operationQueue.operations.flatMap { $0 as? TaskOperation })
             }
         }
     }
@@ -40,7 +41,7 @@ final class TaskController {
 
     private var observation: NSKeyValueObservation?
 
-    let runningTasks = Variable<[TaskOperation]>([])
+    let runningTasks = BehaviorRelay<[TaskOperation]>(value: [])
 
     func enqueue(_ task: Task) {
         operationQueue.addOperation(TaskOperation(task: task))

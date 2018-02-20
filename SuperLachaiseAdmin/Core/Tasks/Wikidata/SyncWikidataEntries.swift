@@ -64,7 +64,7 @@ private extension SyncWikidataEntries {
         return primaryWikidataIds()
             .flatMap(self.wikidataEntities)
             .flatMap(self.saveWikidataEntries)
-            .do(onNext: { Logger.info("Fetched \($0.count) primary \(WikidataEntry.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) primary \(WikidataEntry.self)(s)") })
     }
 
     func primaryWikidataIds() -> Single<[String]> {
@@ -94,7 +94,7 @@ private extension SyncWikidataEntries {
                     } else {
                         return self.wikidataEntities(wikidataIds: secondaryWikidataIds)
                             .flatMap(self.saveWikidataEntries)
-                            .do(onNext: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
+                            .do(onSuccess: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
                             .map { wikidataIds + $0 }
                     }
                 }

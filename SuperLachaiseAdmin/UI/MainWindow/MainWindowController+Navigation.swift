@@ -49,7 +49,7 @@ extension MainWindowController {
     }
 
     private func updateNavigation() {
-        self.model.value = modelHistory[modelHistoryIndex]
+        self.model.accept(modelHistory[modelHistoryIndex])
         navigationSegmentedControl?.setEnabled(canNavigateBack, forSegment: 0)
         navigationSegmentedControl?.setEnabled(canNavigateForward, forSegment: 1)
     }
