@@ -134,12 +134,10 @@ private extension SyncOpenStreetMapElements {
         // Wikidata entry
         let wikidataTags = ["wikidata", "subject:wikidata"]
         let wikidataId = wikidataTags.flatMap { overpassElement.tags[$0] }.first
-        if let wikidataId = wikidataId {
-            openStreetMapElement.wikidataEntry = WikidataEntry.findOrCreate(wikidataId: wikidataId)(realm)
-        } else {
+        if wikidataId == nil {
             Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
-            openStreetMapElement.wikidataEntry = nil
         }
+        openStreetMapElement.wikidataId = wikidataId
 
         return openStreetMapElement
     }
