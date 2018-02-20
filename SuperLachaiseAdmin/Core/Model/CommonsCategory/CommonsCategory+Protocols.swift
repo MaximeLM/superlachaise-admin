@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser {
+extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
 
     // MARK: Identifiable
 
@@ -46,6 +46,12 @@ extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser 
         }
         return URL(string: "https://commons.wikimedia.org/wiki")?
             .appendingPathComponent("Category:\(name)")
+    }
+
+    // MARK: Syncable
+
+    func sync(taskController: TaskController) {
+        taskController.syncCommonsCategory(self)
     }
 
 }

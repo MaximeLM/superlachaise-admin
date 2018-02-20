@@ -34,6 +34,7 @@ final class TaskController {
     lazy var overpassAPIEndpoint: APIEndpointType = APIEndpoint.overpass
     lazy var wikidataAPIEndpoint: APIEndpointType = APIEndpoint.wikidata
     lazy var wikipediaAPIEndpoint: (String) -> APIEndpointType = { APIEndpoint.wikipedia(language: $0) }
+    lazy var commonsAPIEndpoint: APIEndpointType = APIEndpoint.commons
 
     // MARK: Tasks
 
