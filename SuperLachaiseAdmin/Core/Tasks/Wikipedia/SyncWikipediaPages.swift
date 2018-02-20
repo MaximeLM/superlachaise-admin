@@ -53,7 +53,7 @@ final class SyncWikipediaPages: Task {
 
     private lazy var defaultSortRegularExpression: NSRegularExpression? = {
         do {
-            return try NSRegularExpression(pattern: "[\\s]*^\\{\\{DEFAULTSORT:(.*)\\}\\}[\\s]*$",
+            return try NSRegularExpression(pattern: "^[\\s]*\\{\\{DEFAULTSORT:(.*)\\}\\}[\\s]*$",
                                            options: [.anchorsMatchLines])
         } catch {
             assertionFailure("\(error)")
@@ -207,17 +207,12 @@ private extension SyncWikipediaPages {
         guard let wikitext = wikipediaAPIPage.revisions?.first?.wikitext else {
             return nil
         }
-
-        let inputRange = NSRange(location: 0, length: wikitext.utf16.count)
+        let inputRange = NSRange(wikitext.startIndex..., in: wikitext)
         let regularExpressions = [defaultSortRegularExpression, cleDeTriRegularExpression]
         let match = regularExpressions.flatMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
 
-        if let match = match {
-            let matchRange = match.range(at: 1)
-            let startIndex = wikitext.index(wikitext.startIndex, offsetBy: matchRange.location)
-            let endIndex = wikitext.index(startIndex, offsetBy: matchRange.length)
-
-            return String(wikitext[startIndex..<endIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
+        if let match = match, let range = Range(match.range(at: 1), in: wikitext) {
+            return String(wikitext[range]).trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return nil
         }
@@ -228,16 +223,12 @@ private extension SyncWikipediaPages {
             return nil
         }
 
-        let inputRange = NSRange(location: 0, length: wikitext.utf16.count)
+        let inputRange = NSRange(wikitext.startIndex..., in: wikitext)
         let regularExpressions = [redirectRegularExpression]
         let match = regularExpressions.flatMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
 
-        if let match = match {
-            let matchRange = match.range(at: 1)
-            let startIndex = wikitext.index(wikitext.startIndex, offsetBy: matchRange.location)
-            let endIndex = wikitext.index(startIndex, offsetBy: matchRange.length)
-
-            return String(wikitext[startIndex..<endIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
+        if let match = match, let range = Range(match.range(at: 1), in: wikitext) {
+            return String(wikitext[range]).trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return nil
         }
