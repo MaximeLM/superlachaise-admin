@@ -28,7 +28,7 @@ extension CommonsCategory {
                 return commonsCategory
             } else {
                 return realm.create(CommonsCategory.self,
-                                    value: ["name": name],
+                                    value: ["commonsId": name],
                                     update: false)
             }
         }

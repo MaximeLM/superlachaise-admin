@@ -16,7 +16,7 @@ extension TaskController {
     }
 
     func syncCommonsCategory(_ commonsCategory: CommonsCategory) {
-        let task = SyncCommonsCategories(scope: .single(name: commonsCategory.name),
+        let task = SyncCommonsCategories(scope: .single(commonsId: commonsCategory.commonsId),
                                          endpoint: commonsAPIEndpoint)
         enqueue(task)
     }

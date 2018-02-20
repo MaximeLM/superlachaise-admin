@@ -14,14 +14,14 @@ final class SyncCommonsCategories: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(name: String)
+        case single(commonsId: String)
 
         var description: String {
             switch self {
             case .all:
                 return "all"
-            case let .single(name):
-                return name
+            case let .single(commonsId):
+                return commonsId
             }
         }
 

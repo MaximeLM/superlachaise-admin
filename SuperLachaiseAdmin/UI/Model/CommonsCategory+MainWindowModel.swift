@@ -12,14 +12,14 @@ extension CommonsCategory: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
-                DetailViewFieldItem(name: "Name", value: name),
+                DetailViewFieldItem(name: "ID", value: commonsId),
             ],
             [
                 DetailViewFieldItem(name: "Default sort", value: defaultSort),
             ],
             [
-                DetailViewFieldItem(name: "Main file name", value: mainCommonsFileName),
-                DetailViewFieldItem(name: "Files names", value: Array(commonsFilesNames)),
+                DetailViewFieldItem(name: "Main file ID", value: mainCommonsFileId),
+                DetailViewFieldItem(name: "Files IDs", value: Array(commonsFilesIds)),
             ],
         ])
     }
