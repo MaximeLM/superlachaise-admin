@@ -63,7 +63,7 @@ final class SyncCommonsCategories: Task {
 
     private lazy var redirectRegularExpression: NSRegularExpression? = {
         do {
-            return try NSRegularExpression(pattern: "^[\\s]*\\{\\{Category redirect|[\\s]*Category:(.*)\\}\\}[\\s]*$",
+            return try NSRegularExpression(pattern: "^[\\s]*\\{\\{Category redirect\\|[\\s]*Category:(.*)\\}\\}[\\s]*$",
                                            options: [.anchorsMatchLines])
         } catch {
             assertionFailure("\(error)")

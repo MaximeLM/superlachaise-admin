@@ -41,10 +41,6 @@ extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser,
     // MARK: OpenableInBrowser
 
     var externalURL: URL? {
-        guard let commonsCategoryId = commonsCategoryId
-            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
-                return nil
-        }
         return URL(string: "https://commons.wikimedia.org/wiki")?
             .appendingPathComponent("Category:\(commonsCategoryId)")
     }
