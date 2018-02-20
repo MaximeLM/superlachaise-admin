@@ -31,6 +31,10 @@
 		5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
+		55609F8D203CC2B00060E3F9 /* CommonsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F8C203CC2B00060E3F9 /* CommonsCategory.swift */; };
+		55609F8F203CC4A90060E3F9 /* CommonsCategory+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F8E203CC4A90060E3F9 /* CommonsCategory+Requests.swift */; };
+		55609F91203CC4EA0060E3F9 /* CommonsCategory+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F90203CC4EA0060E3F9 /* CommonsCategory+Protocols.swift */; };
+		55609F93203CC5A80060E3F9 /* CommonsCategory+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F92203CC5A80060E3F9 /* CommonsCategory+MainWindowModel.swift */; };
 		5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F98C1FEAFA35000DA3C9 /* Array+Utils.swift */; };
 		5570F98F1FEAFB3C000DA3C9 /* ClickableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F98E1FEAFB3C000DA3C9 /* ClickableTextField.swift */; };
 		5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */; };
@@ -146,6 +150,10 @@
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55605C0F1FC9C6120010BC5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55609F8C203CC2B00060E3F9 /* CommonsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsCategory.swift; sourceTree = "<group>"; };
+		55609F8E203CC4A90060E3F9 /* CommonsCategory+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsCategory+Requests.swift"; sourceTree = "<group>"; };
+		55609F90203CC4EA0060E3F9 /* CommonsCategory+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsCategory+Protocols.swift"; sourceTree = "<group>"; };
+		55609F92203CC5A80060E3F9 /* CommonsCategory+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsCategory+MainWindowModel.swift"; sourceTree = "<group>"; };
 		5570F98C1FEAFA35000DA3C9 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 		5570F98E1FEAFB3C000DA3C9 /* ClickableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickableTextField.swift; sourceTree = "<group>"; };
 		5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainWindowController+NewWindow.swift"; sourceTree = "<group>"; };
@@ -369,6 +377,16 @@
 			path = SuperLachaiseAdmin;
 			sourceTree = "<group>";
 		};
+		55609F8B203CC2A00060E3F9 /* CommonsCategory */ = {
+			isa = PBXGroup;
+			children = (
+				55609F8C203CC2B00060E3F9 /* CommonsCategory.swift */,
+				55609F8E203CC4A90060E3F9 /* CommonsCategory+Requests.swift */,
+				55609F90203CC4EA0060E3F9 /* CommonsCategory+Protocols.swift */,
+			);
+			path = CommonsCategory;
+			sourceTree = "<group>";
+		};
 		5570F9891FEAF9A9000DA3C9 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +438,7 @@
 				5570F9A61FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift */,
 				5570F9A81FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift */,
 				5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */,
+				55609F92203CC5A80060E3F9 /* CommonsCategory+MainWindowModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -717,6 +736,7 @@
 				55B365891FDDAE6600EB84BD /* WikidataEntry */,
 				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 				5570F9AF1FEC4D71000DA3C9 /* WikipediaPage */,
+				55609F8B203CC2A00060E3F9 /* CommonsCategory */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
 			);
 			path = Model;
@@ -924,6 +944,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55609F93203CC5A80060E3F9 /* CommonsCategory+MainWindowModel.swift in Sources */,
 				55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */,
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
 				5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */,
@@ -954,6 +975,7 @@
 				55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */,
 				5513EF611FE6C30F00BD3A22 /* DetailViewURLView.swift in Sources */,
 				558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */,
+				55609F8D203CC2B00060E3F9 /* CommonsCategory.swift in Sources */,
 				55B365951FDDB33E00EB84BD /* WikidataConfig.swift in Sources */,
 				55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */,
 				5570F9C21FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift in Sources */,
@@ -969,6 +991,7 @@
 				55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */,
 				55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */,
 				55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */,
+				55609F8F203CC4A90060E3F9 /* CommonsCategory+Requests.swift in Sources */,
 				55AB3DEE1FE092940011AF47 /* OpenStreetMapElement+Requests.swift in Sources */,
 				5570F9A31FEB1B35000DA3C9 /* MainWindowController+Navigation.swift in Sources */,
 				5513EF5B1FE6BACC00BD3A22 /* DetailViewTitleView.swift in Sources */,
@@ -998,6 +1021,7 @@
 				55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
+				55609F91203CC4EA0060E3F9 /* CommonsCategory+Protocols.swift in Sources */,
 				5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
