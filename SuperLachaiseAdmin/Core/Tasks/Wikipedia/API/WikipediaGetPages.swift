@@ -112,8 +112,6 @@ private enum WikipediaGetPagesError: Error {
     case hasContinue
 }
 
-//swiftlint:disable identifier_name
-
 private struct WikipediaGetPagesResult: Decodable {
 
     let query: WikipediaGetPagesResultQuery?

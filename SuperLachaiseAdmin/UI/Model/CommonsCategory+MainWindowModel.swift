@@ -12,7 +12,7 @@ extension CommonsCategory: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
-                DetailViewFieldItem(name: "ID", value: commonsId),
+                DetailViewFieldItem(name: "ID", value: commonsCategoryId),
             ],
             [
                 DetailViewFieldItem(name: "Default sort", value: defaultSort),

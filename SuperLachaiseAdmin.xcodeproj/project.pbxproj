@@ -38,6 +38,8 @@
 		55609F96203CC7140060E3F9 /* SyncCommonsCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F95203CC7140060E3F9 /* SyncCommonsCategories.swift */; };
 		55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */; };
 		55609F9B203CC86C0060E3F9 /* APIEndpoint+Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F9A203CC86C0060E3F9 /* APIEndpoint+Commons.swift */; };
+		55609F9D203CCFA30060E3F9 /* CommonsGetCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F9C203CCFA30060E3F9 /* CommonsGetCategories.swift */; };
+		55609FA0203CCFF70060E3F9 /* CommonsAPICategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F9F203CCFF70060E3F9 /* CommonsAPICategory.swift */; };
 		5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F98C1FEAFA35000DA3C9 /* Array+Utils.swift */; };
 		5570F98F1FEAFB3C000DA3C9 /* ClickableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F98E1FEAFB3C000DA3C9 /* ClickableTextField.swift */; };
 		5570F99A1FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */; };
@@ -160,6 +162,8 @@
 		55609F95203CC7140060E3F9 /* SyncCommonsCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCommonsCategories.swift; sourceTree = "<group>"; };
 		55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+Commons.swift"; sourceTree = "<group>"; };
 		55609F9A203CC86C0060E3F9 /* APIEndpoint+Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIEndpoint+Commons.swift"; sourceTree = "<group>"; };
+		55609F9C203CCFA30060E3F9 /* CommonsGetCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsGetCategories.swift; sourceTree = "<group>"; };
+		55609F9F203CCFF70060E3F9 /* CommonsAPICategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsAPICategory.swift; sourceTree = "<group>"; };
 		5570F98C1FEAFA35000DA3C9 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 		5570F98E1FEAFB3C000DA3C9 /* ClickableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickableTextField.swift; sourceTree = "<group>"; };
 		5570F9991FEB0C64000DA3C9 /* MainWindowController+NewWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainWindowController+NewWindow.swift"; sourceTree = "<group>"; };
@@ -396,6 +400,7 @@
 		55609F94203CC6900060E3F9 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				55609F9E203CCFEA0060E3F9 /* Types */,
 				55609F99203CC8600060E3F9 /* API */,
 				55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */,
 				55609F95203CC7140060E3F9 /* SyncCommonsCategories.swift */,
@@ -407,8 +412,17 @@
 			isa = PBXGroup;
 			children = (
 				55609F9A203CC86C0060E3F9 /* APIEndpoint+Commons.swift */,
+				55609F9C203CCFA30060E3F9 /* CommonsGetCategories.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		55609F9E203CCFEA0060E3F9 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				55609F9F203CCFF70060E3F9 /* CommonsAPICategory.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 		5570F9891FEAF9A9000DA3C9 /* Core */ = {
@@ -1012,6 +1026,7 @@
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
 				55B365841FDD9EA900EB84BD /* AppContainer.swift in Sources */,
 				55AB3E091FE32A500011AF47 /* WikidataEntry+Date.swift in Sources */,
+				55609FA0203CCFF70060E3F9 /* CommonsAPICategory.swift in Sources */,
 				5570F9CF1FEDAA11000DA3C9 /* WikidataLocalizedEntry+Requests.swift in Sources */,
 				55B365821FDB206B00EB84BD /* Realm+Async.swift in Sources */,
 				55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */,
@@ -1034,6 +1049,7 @@
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
 				55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
+				55609F9D203CCFA30060E3F9 /* CommonsGetCategories.swift in Sources */,
 				5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */,
 				5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */,
 				5570F99E1FEB1335000DA3C9 /* MainWindowModel.swift in Sources */,

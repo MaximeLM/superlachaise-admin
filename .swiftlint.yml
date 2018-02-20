@@ -36,6 +36,7 @@ identifier_name:
   excluded:
     - id
     - of
+    - to
 line_length:
   ignores_comments: true
 trailing_comma:

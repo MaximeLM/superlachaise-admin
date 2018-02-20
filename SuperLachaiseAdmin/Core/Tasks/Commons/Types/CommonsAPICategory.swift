@@ -1,19 +1,18 @@
 //
-//  WikipediaAPIPage.swift
+//  CommonsAPICategory.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 22/12/2017.
+//  Created by Maxime Le Moine on 20/02/2018.
 //
 
 import Foundation
 
-struct WikipediaAPIPage: Decodable, CustomStringConvertible {
+struct CommonsAPICategory: Decodable {
 
     let title: String
     let missing: String?
 
-    let revisions: [WikipediaAPIPageRevision]?
-    let extract: String?
+    let revisions: [CommonsAPICategoryRevision]?
 
     var description: String {
         return title
@@ -21,7 +20,7 @@ struct WikipediaAPIPage: Decodable, CustomStringConvertible {
 
 }
 
-struct WikipediaAPIPageRevision: Decodable {
+struct CommonsAPICategoryRevision: Decodable {
 
     let wikitext: String
 

@@ -11,7 +11,7 @@ import RealmSwift
 final class CommonsCategory: Object {
 
     // Title without "Category:"
-    @objc dynamic var commonsId = ""
+    @objc dynamic var commonsCategoryId = ""
 
     @objc dynamic var defaultSort: String?
 
@@ -21,11 +21,11 @@ final class CommonsCategory: Object {
     @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {
-        return "commonsId"
+        return "commonsCategoryId"
     }
 
     override var description: String {
-        return commonsId
+        return commonsCategoryId
     }
 
 }

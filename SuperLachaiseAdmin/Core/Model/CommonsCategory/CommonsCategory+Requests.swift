@@ -16,19 +16,19 @@ extension CommonsCategory {
         }
     }
 
-    static func find(name: CommonsCategory) -> (Realm) -> CommonsCategory? {
+    static func find(commonsCategoryId: String) -> (Realm) -> CommonsCategory? {
         return { realm in
-            realm.object(ofType: CommonsCategory.self, forPrimaryKey: name)
+            realm.object(ofType: CommonsCategory.self, forPrimaryKey: commonsCategoryId)
         }
     }
 
-    static func findOrCreate(name: CommonsCategory) -> (Realm) -> CommonsCategory {
+    static func findOrCreate(commonsCategoryId: String) -> (Realm) -> CommonsCategory {
         return { realm in
-            if let commonsCategory = find(name: name)(realm) {
+            if let commonsCategory = find(commonsCategoryId: commonsCategoryId)(realm) {
                 return commonsCategory
             } else {
                 return realm.create(CommonsCategory.self,
-                                    value: ["commonsId": name],
+                                    value: ["commonsCategoryId": commonsCategoryId],
                                     update: false)
             }
         }

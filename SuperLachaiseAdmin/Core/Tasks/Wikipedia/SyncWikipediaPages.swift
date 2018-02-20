@@ -75,7 +75,7 @@ final class SyncWikipediaPages: Task {
         do {
             return try NSRegularExpression(pattern: "^[\\s]*#REDIRECT[\\s]*\\[\\[(.*)\\]\\][\\s]*$",
                                            options: [.anchorsMatchLines])
-        } catch {//"^[\s]*#REDIRECT[\s]*\[\[(.*)\]\][\s]*$"
+        } catch {
             assertionFailure("\(error)")
             return nil
         }
@@ -207,6 +207,7 @@ private extension SyncWikipediaPages {
         guard let wikitext = wikipediaAPIPage.revisions?.first?.wikitext else {
             return nil
         }
+
         let inputRange = NSRange(wikitext.startIndex..., in: wikitext)
         let regularExpressions = [defaultSortRegularExpression, cleDeTriRegularExpression]
         let match = regularExpressions.flatMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
@@ -231,6 +232,39 @@ private extension SyncWikipediaPages {
             return String(wikitext[range]).trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return nil
+        }
+    }
+
+    // MARK: Orphans
+
+    func deleteOrphans(fetchedWikipediaIds: [WikipediaId]) -> Single<Void> {
+        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
+            try realm.write {
+                try self.deleteOrphans(fetchedWikipediaIds: fetchedWikipediaIds, realm: realm)
+            }
+        }
+    }
+
+    func deleteOrphans(fetchedWikipediaIds: [WikipediaId], realm: Realm) throws {
+        // List existing objects
+        var orphanedObjects: Set<WikipediaPage>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(WikipediaPage.all()(realm))
+        case .single:
+            orphanedObjects = Set()
+        }
+
+        orphanedObjects = orphanedObjects.filter {
+            guard let wikipediaId = $0.wikipediaId else {
+                return true
+            }
+            return !fetchedWikipediaIds.contains(wikipediaId)
+        }
+
+        if !orphanedObjects.isEmpty {
+            orphanedObjects.forEach { $0.deleted = true }
+            Logger.info("Flagged \(orphanedObjects.count) \(WikipediaPage.self)(s) for deletion")
         }
     }
 

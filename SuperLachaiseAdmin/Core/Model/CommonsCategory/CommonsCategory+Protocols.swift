@@ -13,7 +13,7 @@ extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser,
     // MARK: Identifiable
 
     var identifier: String {
-        return commonsId
+        return commonsCategoryId
     }
 
     // MARK: Deletable
@@ -28,10 +28,10 @@ extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser,
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
-                    SortDescriptor(keyPath: "commonsId"),
+                    SortDescriptor(keyPath: "commonsCategoryId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "commonsId contains[cd] %@", filter)
+                let predicate = NSPredicate(format: "commonsCategoryId contains[cd] %@", filter)
                 results = results.filter(predicate)
             }
             return results
@@ -41,11 +41,12 @@ extension CommonsCategory: Identifiable, Deletable, Listable, OpenableInBrowser,
     // MARK: OpenableInBrowser
 
     var externalURL: URL? {
-        guard let commonsId = commonsId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
-            return nil
+        guard let commonsCategoryId = commonsCategoryId
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+                return nil
         }
         return URL(string: "https://commons.wikimedia.org/wiki")?
-            .appendingPathComponent("Category:\(commonsId)")
+            .appendingPathComponent("Category:\(commonsCategoryId)")
     }
 
     // MARK: Syncable
