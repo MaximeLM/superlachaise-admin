@@ -65,6 +65,8 @@
 		5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */; };
 		5570F9D51FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */; };
 		5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */; };
+		557EE6CE203E164200C9BD59 /* CommonsGetCategoryMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EE6CD203E164200C9BD59 /* CommonsGetCategoryMembers.swift */; };
+		557EE6D0203E1D7200C9BD59 /* CommonsAPICategoryMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EE6CF203E1D7200C9BD59 /* CommonsAPICategoryMembers.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
@@ -189,6 +191,8 @@
 		5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewHTMLFieldView.xib; sourceTree = "<group>"; };
 		5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldItem.swift; sourceTree = "<group>"; };
 		5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldView.swift; sourceTree = "<group>"; };
+		557EE6CD203E164200C9BD59 /* CommonsGetCategoryMembers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsGetCategoryMembers.swift; sourceTree = "<group>"; };
+		557EE6CF203E1D7200C9BD59 /* CommonsAPICategoryMembers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsAPICategoryMembers.swift; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
@@ -413,6 +417,7 @@
 			children = (
 				55609F9A203CC86C0060E3F9 /* APIEndpoint+Commons.swift */,
 				55609F9C203CCFA30060E3F9 /* CommonsGetCategories.swift */,
+				557EE6CD203E164200C9BD59 /* CommonsGetCategoryMembers.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -421,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				55609F9F203CCFF70060E3F9 /* CommonsAPICategory.swift */,
+				557EE6CF203E1D7200C9BD59 /* CommonsAPICategoryMembers.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -1012,6 +1018,7 @@
 				55B537011FD3413800036FFC /* Listable.swift in Sources */,
 				5570F9B31FEC4E3C000DA3C9 /* WikipediaPage+Id.swift in Sources */,
 				55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */,
+				557EE6CE203E164200C9BD59 /* CommonsGetCategoryMembers.swift in Sources */,
 				5513EF611FE6C30F00BD3A22 /* DetailViewURLView.swift in Sources */,
 				558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */,
 				55609F8D203CC2B00060E3F9 /* CommonsCategory.swift in Sources */,
@@ -1055,6 +1062,7 @@
 				5570F99E1FEB1335000DA3C9 /* MainWindowModel.swift in Sources */,
 				55B537071FD351C800036FFC /* Identifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
+				557EE6D0203E1D7200C9BD59 /* CommonsAPICategoryMembers.swift in Sources */,
 				55609F9B203CC86C0060E3F9 /* APIEndpoint+Commons.swift in Sources */,
 				5570F9A51FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,

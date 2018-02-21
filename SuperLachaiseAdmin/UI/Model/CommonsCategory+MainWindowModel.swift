@@ -18,8 +18,8 @@ extension CommonsCategory: MainWindowModelType {
                 DetailViewFieldItem(name: "Default sort", value: defaultSort),
             ],
             [
-                DetailViewFieldItem(name: "Main file ID", value: mainCommonsFileId),
-                DetailViewFieldItem(name: "Files IDs", value: Array(commonsFilesIds)),
+                DetailViewFieldItem(name: "Main Commons File ID", value: mainCommonsFileId),
+                DetailViewFieldItem(name: "Commons Files IDs", value: Array(commonsFilesIds)),
             ],
         ])
     }
