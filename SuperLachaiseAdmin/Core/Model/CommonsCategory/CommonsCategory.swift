@@ -16,7 +16,6 @@ final class CommonsCategory: Object {
     @objc dynamic var defaultSort: String?
 
     @objc dynamic var mainCommonsFileId: String?
-    let commonsFilesIds = List<String>()
 
     @objc dynamic var deleted = false
 

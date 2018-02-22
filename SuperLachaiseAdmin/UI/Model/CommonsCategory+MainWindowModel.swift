@@ -19,7 +19,6 @@ extension CommonsCategory: MainWindowModelType {
             ],
             [
                 DetailViewFieldItem(name: "Main Commons File ID", value: mainCommonsFileId),
-                DetailViewFieldItem(name: "Commons Files IDs", value: Array(commonsFilesIds)),
             ],
         ])
     }

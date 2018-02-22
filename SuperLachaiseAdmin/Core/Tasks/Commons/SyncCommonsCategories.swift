@@ -112,7 +112,6 @@ private extension SyncCommonsCategories {
         return commonsCategoriesIds()
             .flatMap(self.commonsCategories)
             .do(onSuccess: { Logger.info("Fetched \($0.count) \(CommonsCategory.self)(s)") })
-            .flatMap(self.withCategoryMembers)
     }
 
     func commonsCategories(commonsCategoriesIds: [String]) -> Single<[String]> {
@@ -213,46 +212,6 @@ private extension SyncCommonsCategories {
         } else {
             return nil
         }
-    }
-
-    // MARK: Category members
-
-    func withCategoryMembers(commonsCategoriesIds: [String]) -> Single<[String]> {
-        return CommonsGetCategoryMembers(endpoint: endpoint, commonsCategoriesIds: commonsCategoriesIds)
-            .asSingle()
-            .flatMap(self.saveCategoryMembers)
-    }
-
-    func saveCategoryMembers(categoryMembers: [String: [CommonsAPICategoryMember]]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.saveCategoryMembers(categoryMembers: categoryMembers, realm: realm)
-            }
-        }
-    }
-
-    func saveCategoryMembers(categoryMembers: [String: [CommonsAPICategoryMember]], realm: Realm) throws -> [String] {
-        return try categoryMembers.map { commonsCategoryId, categoryMembers in
-            try self.saveCategoryMembers(commonsCategoryId: commonsCategoryId,
-                                         categoryMembers: categoryMembers,
-                                         realm: realm).commonsCategoryId
-        }
-    }
-
-    func saveCategoryMembers(commonsCategoryId: String,
-                             categoryMembers: [CommonsAPICategoryMember],
-                             realm: Realm) throws -> CommonsCategory {
-        guard let commonsCategory = CommonsCategory.find(commonsCategoryId: commonsCategoryId)(realm) else {
-            throw SyncCommonsCategoriesError.commonsCategoryNotFound(commonsCategoryId)
-        }
-        let commonsFilesIds = categoryMembers.map { categoryMember -> String in
-            if !categoryMember.title.hasPrefix("File:") {
-                Logger.warning("Invalid \(CommonsAPICategoryMember.self) title: \(categoryMember.title)")
-            }
-            return String(categoryMember.title.dropFirst(5))
-        }
-        commonsCategory.commonsFilesIds.replaceAll(objects: commonsFilesIds)
-        return commonsCategory
     }
 
     // MARK: Orphans
