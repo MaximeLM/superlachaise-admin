@@ -181,9 +181,20 @@ private extension SyncWikidataEntries {
         wikidataEntry.wikidataCategoriesIds.replaceAll(objects: wikidataCategoriesIds)
 
         // Image Commons IDs
-        wikidataEntry.imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, nature: nature)
-        wikidataEntry.imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity,
-                                                                         nature: nature)
+        let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, nature: nature)
+        if imageCommonsId == nil && (nature == .grave || nature == .monument) {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
+        }
+        wikidataEntry.imageCommonsId = imageCommonsId
+
+        // Image of grave Commons ID
+        if nature == .person {
+            let imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity, nature: nature)
+            if imageOfGraveCommonsId == nil {
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
+            }
+            wikidataEntry.imageOfGraveCommonsId = imageOfGraveCommonsId
+        }
 
         // Commons category ID
         wikidataEntry.commonsCategoryId = self.commonsCategoryId(wikidataEntity: wikidataEntity, nature: nature)
@@ -312,33 +323,15 @@ private extension SyncWikidataEntries {
     }
 
     func imageCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
-        let commonsId = wikidataEntity.claims(.image)
+        return wikidataEntity.claims(.image)
             .flatMap { $0.mainsnak.stringValue }
             .first
-        if commonsId == nil {
-            Logger.warning("\(WikidataEntry.self) \(wikidataEntity) has no image")
-        }
-        return commonsId
     }
 
     func imageOfGraveCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
-        guard let nature = nature else {
-            return nil
-        }
-
-        switch nature {
-        case .person:
-            let commonsId = wikidataEntity.claims(.imageOfGrave)
-                .flatMap { $0.mainsnak.stringValue }
-                .first
-            if commonsId == nil {
-                Logger.warning("\(WikidataEntry.self) \(wikidataEntity) has no image of grave")
-            }
-            return commonsId
-        case .grave, .monument:
-            return nil
-        }
-
+        return wikidataEntity.claims(.imageOfGrave)
+            .flatMap { $0.mainsnak.stringValue }
+            .first
     }
 
     // MARK: Orphans
