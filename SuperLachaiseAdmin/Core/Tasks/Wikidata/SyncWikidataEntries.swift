@@ -196,9 +196,6 @@ private extension SyncWikidataEntries {
             wikidataEntry.imageOfGraveCommonsId = imageOfGraveCommonsId
         }
 
-        // Commons category ID
-        wikidataEntry.commonsCategoryId = self.commonsCategoryId(wikidataEntity: wikidataEntity, nature: nature)
-
         // Dates
         wikidataEntry.dateOfBirth = try wikidataDate(wikidataEntity: wikidataEntity,
                                                      nature: nature,
@@ -292,34 +289,6 @@ private extension SyncWikidataEntries {
             .flatMap { $0.mainsnak.timeValue }
             .max { $0.precision < $1.precision }
             .map { try $0.wikidataDate() }
-    }
-
-    func commonsCategoryId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
-        guard let nature = nature else {
-            return nil
-        }
-
-        let commonsCategoriesIds: [String]
-        switch nature {
-        case .person:
-            commonsCategoriesIds = wikidataEntity.claims(.placeOfInterment)
-                .filter {
-                    guard let entityName = $0.mainsnak.entityName else {
-                        return false
-                    }
-                    return config.validLocations.contains(entityName)
-                }
-                .flatMap { $0.qualifiers(.commonsCategory).flatMap { $0.stringValue } }
-        case .grave, .monument:
-            commonsCategoriesIds = wikidataEntity.claims(.commonsCategory)
-                .flatMap { $0.mainsnak.stringValue }
-        }
-
-        if commonsCategoriesIds.count > 1 {
-            Logger.warning("\(WikidataEntity.self) \(wikidataEntity) has multiple Commons categories")
-        }
-
-        return commonsCategoriesIds.first
     }
 
     func imageCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {

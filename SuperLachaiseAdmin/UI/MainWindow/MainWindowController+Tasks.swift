@@ -32,8 +32,4 @@ extension MainWindowController {
         taskController.syncWikipediaPages()
     }
 
-    @IBAction func syncCommonsCategories(_ sender: Any?) {
-        taskController.syncCommonsCategories()
-    }
-
 }

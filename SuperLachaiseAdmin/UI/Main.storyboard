@@ -334,12 +334,6 @@
                                                 <action selector="syncWikipediaPages:" target="Ady-hI-5gd" id="mAC-nD-Z5n"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Commons categories" id="0a2-QR-FgH">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="syncCommonsCategories:" target="Ady-hI-5gd" id="aMY-Il-Dg0"/>
-                                            </connections>
-                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

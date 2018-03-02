@@ -14,7 +14,6 @@ final class WikidataEntry: Object {
 
     @objc dynamic var name: String?
     @objc dynamic var rawNature = ""
-    @objc dynamic var commonsCategoryId: String?
 
     @objc dynamic var imageCommonsId: String?
     @objc dynamic var imageOfGraveCommonsId: String? // for persons

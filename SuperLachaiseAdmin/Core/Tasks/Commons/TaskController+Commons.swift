@@ -9,16 +9,4 @@ import Foundation
 
 extension TaskController {
 
-    func syncCommonsCategories() {
-        let task = SyncCommonsCategories(scope: .all,
-                                         endpoint: commonsAPIEndpoint)
-        enqueue(task)
-    }
-
-    func syncCommonsCategory(_ commonsCategory: CommonsCategory) {
-        let task = SyncCommonsCategories(scope: .single(commonsCategoryId: commonsCategory.commonsCategoryId),
-                                         endpoint: commonsAPIEndpoint)
-        enqueue(task)
-    }
-
 }
