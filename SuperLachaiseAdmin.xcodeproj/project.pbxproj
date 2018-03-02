@@ -99,7 +99,7 @@
 		55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */; };
 		55B365B01FDDF93400EB84BD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AF1FDDF93400EB84BD /* Task.swift */; };
 		55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */; };
-		55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */; };
+		55B365C01FE07D7D00EB84BD /* WikidataEntry+Nature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365BF1FE07D7D00EB84BD /* WikidataEntry+Nature.swift */; };
 		55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */; };
 		55B365C71FE07FDB00EB84BD /* WikidataPropertyName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365C61FE07FDB00EB84BD /* WikidataPropertyName.swift */; };
 		55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E41FD31C6800036FFC /* MainWindowController.swift */; };
@@ -223,7 +223,7 @@
 		55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataClaim.swift; sourceTree = "<group>"; };
 		55B365AF1FDDF93400EB84BD /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataLocalizedEntry.swift; sourceTree = "<group>"; };
-		55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Kind.swift"; sourceTree = "<group>"; };
+		55B365BF1FE07D7D00EB84BD /* WikidataEntry+Nature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Nature.swift"; sourceTree = "<group>"; };
 		55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataEntityName.swift; sourceTree = "<group>"; };
 		55B365C61FE07FDB00EB84BD /* WikidataPropertyName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataPropertyName.swift; sourceTree = "<group>"; };
 		55B536E41FD31C6800036FFC /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
@@ -599,7 +599,7 @@
 			children = (
 				55B3658A1FDDAE7A00EB84BD /* WikidataEntry.swift */,
 				55AB3E081FE32A500011AF47 /* WikidataEntry+Date.swift */,
-				55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */,
+				55B365BF1FE07D7D00EB84BD /* WikidataEntry+Nature.swift */,
 				55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */,
 				55B3658C1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift */,
 			);
@@ -1062,7 +1062,7 @@
 				5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B3658D1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift in Sources */,
-				55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */,
+				55B365C01FE07D7D00EB84BD /* WikidataEntry+Nature.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
 				55609F91203CC4EA0060E3F9 /* CommonsCategory+Protocols.swift in Sources */,

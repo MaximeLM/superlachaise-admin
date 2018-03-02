@@ -40,4 +40,7 @@ extension WikidataPropertyName {
 
     static let commonsCategory = WikidataPropertyName(rawValue: "P373")
 
+    static let image = WikidataPropertyName(rawValue: "P18")
+    static let imageOfGrave = WikidataPropertyName(rawValue: "P1442")
+
 }

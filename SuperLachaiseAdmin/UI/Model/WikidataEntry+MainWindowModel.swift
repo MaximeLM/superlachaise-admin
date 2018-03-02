@@ -25,6 +25,8 @@ extension WikidataEntry: MainWindowModelType {
                 DetailViewFieldItem(name: "Secondary Wikidata IDs", value: Array(secondaryWikidataIds)),
                 DetailViewFieldItem(name: "Wikidata categories IDs", value: Array(wikidataCategoriesIds)),
                 DetailViewFieldItem(name: "Commons category ID", value: commonsCategoryId),
+                DetailViewFieldItem(name: "Image Commons ID", value: imageCommonsId),
+                DetailViewFieldItem(name: "Image of grave Commons ID", value: imageOfGraveCommonsId),
             ],
         ])
     }

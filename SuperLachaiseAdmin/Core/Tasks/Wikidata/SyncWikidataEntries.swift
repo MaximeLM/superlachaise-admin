@@ -180,6 +180,11 @@ private extension SyncWikidataEntries {
         let wikidataCategoriesIds = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
         wikidataEntry.wikidataCategoriesIds.replaceAll(objects: wikidataCategoriesIds)
 
+        // Image Commons IDs
+        wikidataEntry.imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, nature: nature)
+        wikidataEntry.imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity,
+                                                                         nature: nature)
+
         // Commons category ID
         wikidataEntry.commonsCategoryId = self.commonsCategoryId(wikidataEntity: wikidataEntity, nature: nature)
 
@@ -304,6 +309,36 @@ private extension SyncWikidataEntries {
         }
 
         return commonsCategoriesIds.first
+    }
+
+    func imageCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
+        let commonsId = wikidataEntity.claims(.image)
+            .flatMap { $0.mainsnak.stringValue }
+            .first
+        if commonsId == nil {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntity) has no image")
+        }
+        return commonsId
+    }
+
+    func imageOfGraveCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
+        guard let nature = nature else {
+            return nil
+        }
+
+        switch nature {
+        case .person:
+            let commonsId = wikidataEntity.claims(.imageOfGrave)
+                .flatMap { $0.mainsnak.stringValue }
+                .first
+            if commonsId == nil {
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntity) has no image of grave")
+            }
+            return commonsId
+        case .grave, .monument:
+            return nil
+        }
+
     }
 
     // MARK: Orphans

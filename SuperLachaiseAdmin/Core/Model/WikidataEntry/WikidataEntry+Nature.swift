@@ -1,5 +1,5 @@
 //
-//  WikidataEntry+Kind.swift
+//  WikidataEntry+Nature.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 12/12/2017.

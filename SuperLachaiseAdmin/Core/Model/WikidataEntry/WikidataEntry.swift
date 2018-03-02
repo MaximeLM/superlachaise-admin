@@ -16,6 +16,9 @@ final class WikidataEntry: Object {
     @objc dynamic var rawNature = ""
     @objc dynamic var commonsCategoryId: String?
 
+    @objc dynamic var imageCommonsId: String?
+    @objc dynamic var imageOfGraveCommonsId: String? // for persons
+
     // Stored in UTC
     @objc dynamic var rawDateOfBirth: Date?
     @objc dynamic var rawDateOfBirthPrecision = ""
