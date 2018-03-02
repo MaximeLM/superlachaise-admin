@@ -29,6 +29,12 @@
 		5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */; };
 		5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */; };
 		5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */; };
+		555CF53C2049F28D005CE48F /* CommonsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF53B2049F28D005CE48F /* CommonsFile.swift */; };
+		555CF53E2049F387005CE48F /* CommonsFile+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF53D2049F387005CE48F /* CommonsFile+Requests.swift */; };
+		555CF5402049F3CC005CE48F /* CommonsFile+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF53F2049F3CC005CE48F /* CommonsFile+Protocols.swift */; };
+		555CF5422049F462005CE48F /* CommonsFile+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF5412049F462005CE48F /* CommonsFile+MainWindowModel.swift */; };
+		555CF5442049F507005CE48F /* CommonsFile+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF5432049F507005CE48F /* CommonsFile+URL.swift */; };
+		555CF5462049F5C5005CE48F /* SyncCommonsFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF5452049F5C5005CE48F /* SyncCommonsFiles.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */; };
@@ -144,6 +150,12 @@
 		5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldView.swift; sourceTree = "<group>"; };
 		5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldItem.swift; sourceTree = "<group>"; };
 		5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoScrollView.swift; sourceTree = "<group>"; };
+		555CF53B2049F28D005CE48F /* CommonsFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsFile.swift; sourceTree = "<group>"; };
+		555CF53D2049F387005CE48F /* CommonsFile+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+Requests.swift"; sourceTree = "<group>"; };
+		555CF53F2049F3CC005CE48F /* CommonsFile+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+Protocols.swift"; sourceTree = "<group>"; };
+		555CF5412049F462005CE48F /* CommonsFile+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+MainWindowModel.swift"; sourceTree = "<group>"; };
+		555CF5432049F507005CE48F /* CommonsFile+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+URL.swift"; sourceTree = "<group>"; };
+		555CF5452049F5C5005CE48F /* SyncCommonsFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCommonsFiles.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -342,6 +354,17 @@
 			path = "Inline Field";
 			sourceTree = "<group>";
 		};
+		555CF53A2049F280005CE48F /* CommonsFile */ = {
+			isa = PBXGroup;
+			children = (
+				555CF53B2049F28D005CE48F /* CommonsFile.swift */,
+				555CF5432049F507005CE48F /* CommonsFile+URL.swift */,
+				555CF53D2049F387005CE48F /* CommonsFile+Requests.swift */,
+				555CF53F2049F3CC005CE48F /* CommonsFile+Protocols.swift */,
+			);
+			path = CommonsFile;
+			sourceTree = "<group>";
+		};
 		55605BFA1FC9C6120010BC5F = {
 			isa = PBXGroup;
 			children = (
@@ -379,6 +402,7 @@
 				55609F9E203CCFEA0060E3F9 /* Types */,
 				55609F99203CC8600060E3F9 /* API */,
 				55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */,
+				555CF5452049F5C5005CE48F /* SyncCommonsFiles.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -449,6 +473,7 @@
 				5570F9A61FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift */,
 				5570F9A81FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift */,
 				5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */,
+				555CF5412049F462005CE48F /* CommonsFile+MainWindowModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -747,6 +772,7 @@
 				55B365891FDDAE6600EB84BD /* WikidataEntry */,
 				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 				5570F9AF1FEC4D71000DA3C9 /* WikipediaPage */,
+				555CF53A2049F280005CE48F /* CommonsFile */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
 			);
 			path = Model;
@@ -960,16 +986,20 @@
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
 				5570F9B91FEC5755000DA3C9 /* Syncable.swift in Sources */,
 				5513EF711FE6D76100BD3A22 /* NSTextField+HTML.swift in Sources */,
+				555CF5442049F507005CE48F /* CommonsFile+URL.swift in Sources */,
 				55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */,
 				55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */,
+				555CF5462049F5C5005CE48F /* SyncCommonsFiles.swift in Sources */,
 				55BD408D1FD30B4B005ACD89 /* ListViewController.swift in Sources */,
 				5570F9A91FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift in Sources */,
+				555CF5402049F3CC005CE48F /* CommonsFile+Protocols.swift in Sources */,
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
 				55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
 				5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */,
 				5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
+				555CF53C2049F28D005CE48F /* CommonsFile.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
 				55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */,
 				55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */,
@@ -1013,6 +1043,7 @@
 				55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */,
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
+				555CF53E2049F387005CE48F /* CommonsFile+Requests.swift in Sources */,
 				55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
 				5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */,
@@ -1028,6 +1059,7 @@
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B3658D1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift in Sources */,
 				55B365C01FE07D7D00EB84BD /* WikidataEntry+Nature.swift in Sources */,
+				555CF5422049F462005CE48F /* CommonsFile+MainWindowModel.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
 				5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */,

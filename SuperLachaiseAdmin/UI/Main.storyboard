@@ -334,6 +334,12 @@
                                                 <action selector="syncWikipediaPages:" target="Ady-hI-5gd" id="mAC-nD-Z5n"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Commons files" id="Rr8-N1-gTK">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="syncCommonsFiles:" target="Ady-hI-5gd" id="nC5-KC-n8c"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

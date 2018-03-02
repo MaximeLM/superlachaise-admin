@@ -46,6 +46,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                   realm: self.realm, filter: self.filter),
             ListViewObjectListItem<WikipediaPage>(baseText: "Wikipedia pages",
                                                   realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<CommonsFile>(baseText: "Commons files",
+                                                realm: self.realm, filter: self.filter),
         ]
     }()
 

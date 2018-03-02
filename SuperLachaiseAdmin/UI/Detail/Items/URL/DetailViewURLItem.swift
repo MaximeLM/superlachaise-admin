@@ -9,7 +9,7 @@ import Cocoa
 
 struct DetailViewURLItem: DetailViewItem {
 
-    let url: URL
+    let url: URL?
 
     var view: NSView? {
         let view: DetailViewURLView? = NSNib.instantiate("DetailViewURLView")

@@ -37,6 +37,7 @@ final class RealmContext {
             deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
             deleteFlaggedObjects(type: WikidataEntry.self, realm: realm)
             deleteFlaggedObjects(type: WikipediaPage.self, realm: realm)
+            deleteFlaggedObjects(type: CommonsFile.self, realm: realm)
         }
     }
 

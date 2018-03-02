@@ -9,4 +9,14 @@ import Foundation
 
 extension TaskController {
 
+    func syncCommonsFiles() {
+        let task = SyncCommonsFiles(scope: .all, endpoint: commonsAPIEndpoint)
+        enqueue(task)
+    }
+
+    func syncCommonsFile(_ commonsFile: CommonsFile) {
+        let task = SyncCommonsFiles(scope: .single(commonsId: commonsFile.commonsId), endpoint: commonsAPIEndpoint)
+        enqueue(task)
+    }
+
 }
