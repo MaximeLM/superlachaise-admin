@@ -44,6 +44,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                          realm: self.realm, filter: self.filter),
             ListViewObjectListItem<WikidataEntry>(baseText: "Wikidata entries",
                                                   realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<WikidataCategory>(baseText: "Wikidata categories",
+                                                     realm: self.realm, filter: self.filter),
             ListViewObjectListItem<WikipediaPage>(baseText: "Wikipedia pages",
                                                   realm: self.realm, filter: self.filter),
             ListViewObjectListItem<CommonsFile>(baseText: "Commons files",

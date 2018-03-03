@@ -28,6 +28,10 @@ extension MainWindowController {
         taskController.syncWikidataEntries()
     }
 
+    @IBAction func syncWikidataCategories(_ sender: Any?) {
+        taskController.syncWikidataCategories()
+    }
+
     @IBAction func syncWikipediaPages(_ sender: Any?) {
         taskController.syncWikipediaPages()
     }
