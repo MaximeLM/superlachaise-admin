@@ -9,9 +9,9 @@ import Foundation
 
 struct WikipediaAPIPage: Decodable, CustomStringConvertible {
 
-    let title: String
     let missing: String?
 
+    let title: String
     let revisions: [WikipediaAPIPageRevision]?
     let extract: String?
 

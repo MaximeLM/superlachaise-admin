@@ -25,8 +25,8 @@ final class WikipediaGetPages {
 
     func asSingle() -> Single<[WikipediaAPIPage]> {
         return Observable.from(wikipediaTitles.chunked(by: 20))
-            .flatMap(self.chunkEntities)
-            .reduce([], accumulator: self.mergeEntities)
+            .flatMap(self.chunkPages)
+            .reduce([], accumulator: self.mergePages)
             .asSingle()
     }
 
@@ -34,7 +34,7 @@ final class WikipediaGetPages {
 
 private extension WikipediaGetPages {
 
-    func chunkEntities(wikipediaTitlesChunk: [String]) throws -> Single<[WikipediaAPIPage]> {
+    func chunkPages(wikipediaTitlesChunk: [String]) throws -> Single<[WikipediaAPIPage]> {
         let request = try self.chunkRequest(wikipediaTitlesChunk: wikipediaTitlesChunk)
         return endpoint.data(request: request)
             .map { try JSONDecoder().decode(WikipediaGetPagesResult.self, from: $0) }
@@ -66,7 +66,7 @@ private extension WikipediaGetPages {
                 }
                 return pages.filter { page in
                     if page.missing != nil {
-                        Logger.warning("Page \(page.title) is missing")
+                        Logger.warning("Page \(page) is missing")
                         return false
                     } else {
                         return true
@@ -94,11 +94,11 @@ private extension WikipediaGetPages {
         return URLRequest(url: url)
     }
 
-    func mergeEntities(entities: [WikipediaAPIPage], chunkEntities: [WikipediaAPIPage]) -> [WikipediaAPIPage] {
-        var entities = entities
-        entities.append(contentsOf: chunkEntities)
-        Logger.debug("\(entities.count)/\(wikipediaTitles.count)")
-        return entities
+    func mergePages(pages: [WikipediaAPIPage], chunkPages: [WikipediaAPIPage]) -> [WikipediaAPIPage] {
+        var pages = pages
+        pages.append(contentsOf: chunkPages)
+        Logger.debug("\(pages.count)/\(wikipediaTitles.count)")
+        return pages
     }
 
 }

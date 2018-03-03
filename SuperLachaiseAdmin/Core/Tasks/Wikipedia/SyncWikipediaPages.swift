@@ -44,7 +44,7 @@ final class SyncWikipediaPages: Task {
 
     func asSingle() -> Single<Void> {
         return wikipediaPages()
-            .map { _ in }
+            .flatMap(self.deleteOrphans)
     }
 
     // MARK: Private properties
@@ -237,15 +237,15 @@ private extension SyncWikipediaPages {
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedWikipediaIds: [WikipediaId]) -> Single<Void> {
+    func deleteOrphans(fetchedRawWikipediaIds: [String]) -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.deleteOrphans(fetchedWikipediaIds: fetchedWikipediaIds, realm: realm)
+                try self.deleteOrphans(fetchedRawWikipediaIds: fetchedRawWikipediaIds, realm: realm)
             }
         }
     }
 
-    func deleteOrphans(fetchedWikipediaIds: [WikipediaId], realm: Realm) throws {
+    func deleteOrphans(fetchedRawWikipediaIds: [String], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<WikipediaPage>
         switch scope {
@@ -255,12 +255,7 @@ private extension SyncWikipediaPages {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter {
-            guard let wikipediaId = $0.wikipediaId else {
-                return true
-            }
-            return !fetchedWikipediaIds.contains(wikipediaId)
-        }
+        orphanedObjects = orphanedObjects.filter { !fetchedRawWikipediaIds.contains($0.rawWikipediaId) }
 
         if !orphanedObjects.isEmpty {
             orphanedObjects.forEach { $0.deleted = true }

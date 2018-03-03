@@ -13,14 +13,14 @@ final class CommonsFile: Object {
     // title without "File:"
     @objc dynamic var commonsId = ""
 
-    @objc dynamic var author: String?
-    @objc dynamic var license: String?
-
     @objc dynamic var width: Float = 0
     @objc dynamic var height: Float = 0
 
     @objc dynamic var rawImageURL = ""
     @objc dynamic var thumbnailURLTemplate = "" // Replace {{width}} with the desired width
+
+    @objc dynamic var author: String?
+    @objc dynamic var license: String?
 
     @objc dynamic var deleted = false
 
