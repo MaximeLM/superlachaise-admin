@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="OOS-aj-Kkc" customClass="DetailViewURLFieldView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="17"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="kLh-h5-Veh">
+                    <rect key="frame" x="18" y="0.0" width="154" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="xhf-6S-3X5"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="Nt6-So-bXi">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="WUg-BQ-jmn" customClass="ClickableTextField" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                    <rect key="frame" x="176" y="0.0" width="38" height="17"/>
+                    <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="Value" id="WpF-8c-h82">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="kLh-h5-Veh" firstAttribute="top" secondItem="OOS-aj-Kkc" secondAttribute="top" id="5wa-kw-f6K"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kLh-h5-Veh" secondAttribute="bottom" id="9x0-Sr-7iQ"/>
+                <constraint firstAttribute="bottom" secondItem="kLh-h5-Veh" secondAttribute="bottom" priority="750" id="NeE-jz-D1h"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WUg-BQ-jmn" secondAttribute="bottom" id="V1s-zR-H4u"/>
+                <constraint firstItem="WUg-BQ-jmn" firstAttribute="top" secondItem="OOS-aj-Kkc" secondAttribute="top" id="aXM-8X-1gy"/>
+                <constraint firstItem="kLh-h5-Veh" firstAttribute="leading" secondItem="OOS-aj-Kkc" secondAttribute="leading" constant="20" id="cFn-7r-yKY"/>
+                <constraint firstAttribute="bottom" secondItem="WUg-BQ-jmn" secondAttribute="bottom" priority="750" id="ddv-g1-2Tq"/>
+                <constraint firstItem="WUg-BQ-jmn" firstAttribute="leading" secondItem="kLh-h5-Veh" secondAttribute="trailing" constant="8" id="mgV-UH-XlL"/>
+            </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="kLh-h5-Veh" id="BdR-7O-Jh2"/>
+                <outlet property="nameWidthConstraint" destination="xhf-6S-3X5" id="XW8-hN-TRK"/>
+                <outlet property="valueLabel" destination="WUg-BQ-jmn" id="pKT-X4-eLg"/>
+            </connections>
+        </customView>
+    </objects>
+</document>

@@ -19,7 +19,7 @@ extension CommonsFile: MainWindowModelType {
                 DetailViewFieldItem(name: "Height", value: height),
             ],
             [
-                DetailViewFieldItem(name: "Image URL", value: imageURL),
+                DetailViewURLFieldItem(name: "Image URL", value: imageURL),
                 DetailViewFieldItem(name: "Thumbnail URL template", value: thumbnailURLTemplate),
             ],
             [
