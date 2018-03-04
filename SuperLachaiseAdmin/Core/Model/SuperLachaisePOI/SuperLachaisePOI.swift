@@ -14,7 +14,7 @@ final class SuperLachaisePOI: Object {
 
     @objc dynamic var openStreetMapElement: OpenStreetMapElement?
     @objc dynamic var primaryWikidataEntry: WikidataEntry?
-    let secondayWikidataEntries = List<WikidataEntry>()
+    let secondaryWikidataEntries = List<WikidataEntry>()
 
     @objc dynamic var name: String?
 
