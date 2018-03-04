@@ -160,9 +160,14 @@ private extension SyncWikidataEntries {
             }
             localization.summary = summary
 
-            // Wikipedia title
-            let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title
-            localization.wikipediaTitle = wikipediaTitle
+            // Wikipedia page
+            if let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title {
+                let wikipediaId = WikipediaId(language: language, title: wikipediaTitle)
+                localization.wikipediaPage = WikipediaPage.findOrCreate(wikipediaId: wikipediaId)(realm)
+            } else {
+                localization.wikipediaPage = nil
+            }
+
         }
 
         // Name
@@ -180,20 +185,20 @@ private extension SyncWikidataEntries {
         let wikidataCategoriesIds = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
         wikidataEntry.wikidataCategoriesIds.replaceAll(objects: wikidataCategoriesIds)
 
-        // Image Commons IDs
+        // Image
         let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, nature: nature)
         if imageCommonsId == nil && (nature == .grave || nature == .monument) {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
         }
-        wikidataEntry.imageCommonsId = imageCommonsId
+        wikidataEntry.image = imageCommonsId.map { CommonsFile.findOrCreate(commonsId: $0)(realm) }
 
-        // Image of grave Commons ID
+        // Image of grave
         if nature == .person {
             let imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity, nature: nature)
             if imageOfGraveCommonsId == nil {
                 Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
             }
-            wikidataEntry.imageOfGraveCommonsId = imageOfGraveCommonsId
+            wikidataEntry.imageOfGrave = imageOfGraveCommonsId.map { CommonsFile.findOrCreate(commonsId: $0)(realm) }
         }
 
         // Dates

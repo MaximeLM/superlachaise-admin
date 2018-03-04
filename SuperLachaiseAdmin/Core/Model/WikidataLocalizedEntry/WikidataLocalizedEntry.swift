@@ -14,7 +14,7 @@ final class WikidataLocalizedEntry: Object {
 
     @objc dynamic var name: String?
     @objc dynamic var summary: String?
-    @objc dynamic var wikipediaTitle: String?
+    @objc dynamic var wikipediaPage: WikipediaPage?
 
     @objc dynamic var wikidataEntry: WikidataEntry?
 

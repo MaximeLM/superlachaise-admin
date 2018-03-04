@@ -94,14 +94,14 @@ private extension SyncWikipediaPages {
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
                 return WikidataLocalizedEntry.all()(realm)
                     .reduce([:]) { partialResult, wikidataLocalizedEntry in
-                        guard let wikipediaTitles = wikidataLocalizedEntry.wikipediaTitle else {
+                        guard let wikipediaTitle = wikidataLocalizedEntry.wikipediaPage?.wikipediaId?.title else {
                             return partialResult
                         }
                         var partialResult = partialResult
                         if partialResult[wikidataLocalizedEntry.language] == nil {
                             partialResult[wikidataLocalizedEntry.language] = []
                         }
-                        partialResult[wikidataLocalizedEntry.language]?.append(wikipediaTitles)
+                        partialResult[wikidataLocalizedEntry.language]?.append(wikipediaTitle)
                         return partialResult
                     }
             }

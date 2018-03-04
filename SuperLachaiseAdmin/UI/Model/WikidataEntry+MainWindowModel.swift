@@ -24,8 +24,8 @@ extension WikidataEntry: MainWindowModelType {
             [
                 DetailViewFieldItem(name: "Secondary Wikidata IDs", value: Array(secondaryWikidataIds)),
                 DetailViewFieldItem(name: "Wikidata categories IDs", value: Array(wikidataCategoriesIds)),
-                DetailViewFieldItem(name: "Image Commons ID", value: imageCommonsId),
-                DetailViewFieldItem(name: "Image of grave Commons ID", value: imageOfGraveCommonsId),
+                DetailViewToOneFieldItem(name: "Image", value: image),
+                DetailViewToOneFieldItem(name: "Image of grave", value: imageOfGrave),
             ],
         ])
     }
@@ -35,7 +35,7 @@ extension WikidataEntry: MainWindowModelType {
             DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
                 DetailViewFieldItem(name: "Name", value: $0.name),
                 DetailViewFieldItem(name: "Description", value: $0.summary),
-                DetailViewFieldItem(name: "Wikipedia title", value: $0.wikipediaTitle),
+                DetailViewToOneFieldItem(name: "Wikipedia page", value: $0.wikipediaPage),
             ])
         }
     }
