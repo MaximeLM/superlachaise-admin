@@ -45,6 +45,10 @@
 		555CF558204B0234005CE48F /* DetailViewURLFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF557204B0234005CE48F /* DetailViewURLFieldView.swift */; };
 		555CF55A204B0286005CE48F /* DetailViewURLFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF559204B0286005CE48F /* DetailViewURLFieldItem.swift */; };
 		555CF55C204B02D5005CE48F /* DetailViewURLFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 555CF55B204B02D5005CE48F /* DetailViewURLFieldView.xib */; };
+		555CF560204C1453005CE48F /* DetailViewImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 555CF55F204C1453005CE48F /* DetailViewImageView.xib */; };
+		555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF561204C1519005CE48F /* DetailViewImageView.swift */; };
+		555CF564204C156C005CE48F /* DetailViewImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF563204C156C005CE48F /* DetailViewImageItem.swift */; };
+		555CF566204C1728005CE48F /* CommonsFile+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF565204C1728005CE48F /* CommonsFile+Size.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */; };
@@ -167,7 +171,7 @@
 		555CF5432049F507005CE48F /* CommonsFile+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+URL.swift"; sourceTree = "<group>"; };
 		555CF5452049F5C5005CE48F /* SyncCommonsFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCommonsFiles.swift; sourceTree = "<group>"; };
 		555CF547204A032B005CE48F /* CommonsGetImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsGetImages.swift; sourceTree = "<group>"; };
-		555CF549204A0338005CE48F /* CommonsAPIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommonsAPIImage.swift; path = SuperLachaiseAdmin/Core/Tasks/Commons/API/CommonsAPIImage.swift; sourceTree = SOURCE_ROOT; };
+		555CF549204A0338005CE48F /* CommonsAPIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommonsAPIImage.swift; path = SuperLachaiseAdmin/Core/Tasks/Commons/Types/CommonsAPIImage.swift; sourceTree = SOURCE_ROOT; };
 		555CF54C204AFD5C005CE48F /* WikidataCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataCategory.swift; sourceTree = "<group>"; };
 		555CF54E204AFDB3005CE48F /* WikidataCategory+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataCategory+Requests.swift"; sourceTree = "<group>"; };
 		555CF550204AFDE4005CE48F /* WikidataCategory+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataCategory+Protocols.swift"; sourceTree = "<group>"; };
@@ -176,6 +180,10 @@
 		555CF557204B0234005CE48F /* DetailViewURLFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewURLFieldView.swift; sourceTree = "<group>"; };
 		555CF559204B0286005CE48F /* DetailViewURLFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewURLFieldItem.swift; sourceTree = "<group>"; };
 		555CF55B204B02D5005CE48F /* DetailViewURLFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewURLFieldView.xib; sourceTree = "<group>"; };
+		555CF55F204C1453005CE48F /* DetailViewImageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewImageView.xib; sourceTree = "<group>"; };
+		555CF561204C1519005CE48F /* DetailViewImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewImageView.swift; sourceTree = "<group>"; };
+		555CF563204C156C005CE48F /* DetailViewImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewImageItem.swift; sourceTree = "<group>"; };
+		555CF565204C1728005CE48F /* CommonsFile+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+Size.swift"; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -309,6 +317,7 @@
 				5513EF811FE6F2BF00BD3A22 /* Separator */,
 				5513EF571FE6BAAE00BD3A22 /* Title */,
 				5513EF5F1FE6C30100BD3A22 /* URL */,
+				555CF55E204C142F005CE48F /* Image */,
 				5513EF721FE6DF1D00BD3A22 /* Field */,
 				5513EF881FE6F9BF00BD3A22 /* Inline Field */,
 				5570F9D01FEE8AF1000DA3C9 /* HTML Field */,
@@ -379,6 +388,7 @@
 			isa = PBXGroup;
 			children = (
 				555CF53B2049F28D005CE48F /* CommonsFile.swift */,
+				555CF565204C1728005CE48F /* CommonsFile+Size.swift */,
 				555CF5432049F507005CE48F /* CommonsFile+URL.swift */,
 				555CF53D2049F387005CE48F /* CommonsFile+Requests.swift */,
 				555CF53F2049F3CC005CE48F /* CommonsFile+Protocols.swift */,
@@ -404,6 +414,24 @@
 				555CF55B204B02D5005CE48F /* DetailViewURLFieldView.xib */,
 			);
 			path = "URL Field";
+			sourceTree = "<group>";
+		};
+		555CF55D204C140D005CE48F /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				555CF549204A0338005CE48F /* CommonsAPIImage.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+		555CF55E204C142F005CE48F /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				555CF563204C156C005CE48F /* DetailViewImageItem.swift */,
+				555CF561204C1519005CE48F /* DetailViewImageView.swift */,
+				555CF55F204C1453005CE48F /* DetailViewImageView.xib */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -440,7 +468,7 @@
 		55609F94203CC6900060E3F9 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				55609F9E203CCFEA0060E3F9 /* Types */,
+				555CF55D204C140D005CE48F /* Types */,
 				55609F99203CC8600060E3F9 /* API */,
 				55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */,
 				555CF5452049F5C5005CE48F /* SyncCommonsFiles.swift */,
@@ -455,14 +483,6 @@
 				555CF547204A032B005CE48F /* CommonsGetImages.swift */,
 			);
 			path = API;
-			sourceTree = "<group>";
-		};
-		55609F9E203CCFEA0060E3F9 /* Types */ = {
-			isa = PBXGroup;
-			children = (
-				555CF549204A0338005CE48F /* CommonsAPIImage.swift */,
-			);
-			path = Types;
 			sourceTree = "<group>";
 		};
 		5570F9891FEAF9A9000DA3C9 /* Core */ = {
@@ -935,6 +955,7 @@
 				55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */,
 				55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */,
 				5513EF8A1FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib in Resources */,
+				555CF560204C1453005CE48F /* DetailViewImageView.xib in Resources */,
 				5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */,
 				555CF55C204B02D5005CE48F /* DetailViewURLFieldView.xib in Resources */,
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
@@ -1006,6 +1027,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRealm/RxRealm.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1014,6 +1036,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRealm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1052,9 +1075,11 @@
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
 				55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */,
 				55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */,
+				555CF566204C1728005CE48F /* CommonsFile+Size.swift in Sources */,
 				5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */,
 				555CF54A204A0338005CE48F /* CommonsAPIImage.swift in Sources */,
 				55A8D24C1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift in Sources */,
+				555CF564204C156C005CE48F /* DetailViewImageItem.swift in Sources */,
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
 				5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */,
 				55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */,
@@ -1135,6 +1160,7 @@
 				55AB3DEC1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift in Sources */,
 				55B365971FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
+				555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
