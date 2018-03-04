@@ -137,7 +137,7 @@ private extension SyncOpenStreetMapElements {
         if wikidataId == nil {
             Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }
-        openStreetMapElement.wikidataId = wikidataId
+        openStreetMapElement.wikidataEntry = wikidataId.map { WikidataEntry.findOrCreate(wikidataId: $0)(realm) }
 
         return openStreetMapElement
     }

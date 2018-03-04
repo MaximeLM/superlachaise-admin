@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="zPh-hT-oJh" customClass="DetailViewToOneFieldView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="18"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="1Ye-jN-yQQ">
+                    <rect key="frame" x="18" y="1" width="154" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="vaW-y8-uwf"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="RfZ-sQ-HqI">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1NB-0c-eYr">
+                    <rect key="frame" x="178" y="-1" width="68" height="19"/>
+                    <buttonCell key="cell" type="recessed" title="Value" bezelStyle="recessed" image="NSFollowLinkFreestandingTemplate" imagePosition="right" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="L0X-ab-EKd">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="systemBold" size="12"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="navigate:" target="zPh-hT-oJh" id="6lm-8b-TVT"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="1Ye-jN-yQQ" firstAttribute="leading" secondItem="zPh-hT-oJh" secondAttribute="leading" constant="20" id="3Yv-sR-Jmx"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="1NB-0c-eYr" secondAttribute="bottom" id="3qp-Wm-nv8"/>
+                <constraint firstAttribute="bottom" secondItem="1NB-0c-eYr" secondAttribute="bottom" priority="750" id="BQi-dS-l6a"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="1Ye-jN-yQQ" secondAttribute="bottom" id="R7l-GG-D6l"/>
+                <constraint firstItem="1NB-0c-eYr" firstAttribute="top" secondItem="zPh-hT-oJh" secondAttribute="top" id="dvE-ak-P9V"/>
+                <constraint firstItem="1Ye-jN-yQQ" firstAttribute="top" secondItem="zPh-hT-oJh" secondAttribute="top" id="mKQ-zF-NIA"/>
+                <constraint firstItem="1NB-0c-eYr" firstAttribute="leading" secondItem="1Ye-jN-yQQ" secondAttribute="trailing" constant="8" id="v0U-YP-cnV"/>
+            </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="1Ye-jN-yQQ" id="pu6-Gx-ZNR"/>
+                <outlet property="nameWidthConstraint" destination="vaW-y8-uwf" id="SpB-p0-VJf"/>
+                <outlet property="valueButton" destination="1NB-0c-eYr" id="cdf-29-TrY"/>
+            </connections>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSFollowLinkFreestandingTemplate" width="14" height="14"/>
+    </resources>
+</document>
