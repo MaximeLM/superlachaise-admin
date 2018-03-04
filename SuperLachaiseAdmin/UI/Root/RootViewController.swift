@@ -12,10 +12,6 @@ protocol RootViewControllerType: NSObjectProtocol {
 
     var model: MainWindowModel? { get set }
 
-    var didSelectModel: Observable<MainWindowModel>? { get }
-
-    var didDoubleClickModel: Observable<MainWindowModel>? { get }
-
     var searchValue: String? { get set }
 
 }
@@ -40,14 +36,6 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
     @IBOutlet var detailSplitViewItem: NSSplitViewItem?
 
     // MARK: Properties
-
-    var didSelectModel: Observable<MainWindowModel>? {
-        return listViewController?.didSelectModel
-    }
-
-    var didDoubleClickModel: Observable<MainWindowModel>? {
-        return listViewController?.didDoubleClickModel
-    }
 
     var searchValue: String? {
         get {

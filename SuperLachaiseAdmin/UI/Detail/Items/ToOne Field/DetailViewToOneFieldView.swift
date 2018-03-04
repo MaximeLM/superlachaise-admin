@@ -55,7 +55,11 @@ final class DetailViewToOneFieldView: NSView {
         guard let value = value else {
             return
         }
-        (window?.windowController as? MainWindowController)?.selectNewModel(value)
+        if NSApp.currentEvent?.modifierFlags.contains(.command) ?? false {
+            mainWindowController?.selectModelInNewTab(value)
+        } else {
+            mainWindowController?.selectModelIfNeeded(value)
+        }
     }
 
 }

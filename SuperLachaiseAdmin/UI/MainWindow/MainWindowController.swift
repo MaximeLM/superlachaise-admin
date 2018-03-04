@@ -11,7 +11,31 @@ import RxCocoa
 import RxRealm
 import RxSwift
 
-final class MainWindowController: NSWindowController, NSWindowDelegate {
+protocol MainWindowControllerType: NSObjectProtocol {
+
+    func selectModelIfNeeded(_ model: MainWindowModel)
+
+    func selectModelInNewTab(_ model: MainWindowModel)
+
+}
+
+extension NSViewController {
+
+    var mainWindowController: MainWindowControllerType? {
+        return view.mainWindowController
+    }
+
+}
+
+extension NSView {
+
+    var mainWindowController: MainWindowControllerType? {
+        return window?.windowController as? MainWindowControllerType
+    }
+
+}
+
+final class MainWindowController: NSWindowController, MainWindowControllerType, NSWindowDelegate {
 
     // MARK: Dependencies
 
@@ -22,6 +46,16 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
     // MARK: Model
 
     let model = BehaviorRelay<MainWindowModel?>(value: nil)
+
+    func selectModelIfNeeded(_ model: MainWindowModel) {
+        if (model as Object) != self.model.value {
+            selectNewModel(model)
+        }
+    }
+
+    func selectModelInNewTab(_ model: MainWindowModel) {
+        newTab(instantiate(model: model))
+    }
 
     // MARK: Properties
 
@@ -76,19 +110,6 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func bindModel(disposeBag: DisposeBag) {
-
-        // Subscribe to child view controller selections
-        rootViewController?.didSelectModel?
-            .distinctUntilChanged { $0 as Object }
-            .subscribe(onNext: { model in
-                self.selectNewModel(model)
-            })
-            .disposed(by: disposeBag)
-        rootViewController?.didDoubleClickModel?
-            .subscribe(onNext: { model in
-                self.newTab(self.instantiate(model: model))
-            })
-            .disposed(by: disposeBag)
 
         // Subscribe root view controller to model
         model.asObservable()

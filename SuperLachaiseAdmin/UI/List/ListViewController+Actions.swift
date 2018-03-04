@@ -15,7 +15,7 @@ extension ListViewController {
 
         let item = outlineView.item(atRow: outlineView.clickedRow)
         if let item = item as? ListViewObjectItem {
-            didDoubleClickModelSubject.onNext(item.object)
+            mainWindowController?.selectModelInNewTab(item.object)
         } else if outlineView.isExpandable(item) {
             if outlineView.isItemExpanded(item) {
                 outlineView.collapseItem(item)

@@ -10,10 +10,6 @@ import RxSwift
 
 protocol ListViewControllerType: NSObjectProtocol {
 
-    var didSelectModel: Observable<MainWindowModel> { get }
-
-    var didDoubleClickModel: Observable<MainWindowModel> { get }
-
     var searchValue: String? { get set }
 
 }
@@ -29,18 +25,6 @@ final class ListViewController: NSViewController, ListViewControllerType {
     var rootItem: ListViewRootItem?
 
     // MARK: Properties
-
-    var didSelectModel: Observable<MainWindowModel> {
-        return didSelectModelSubject.asObservable()
-    }
-
-    var didDoubleClickModel: Observable<MainWindowModel> {
-        return didDoubleClickModelSubject.asObservable()
-    }
-
-    let didSelectModelSubject = PublishSubject<MainWindowModel>()
-
-    let didDoubleClickModelSubject = PublishSubject<MainWindowModel>()
 
     var pendingSelectedModel: MainWindowModel?
 
@@ -147,7 +131,7 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
                 return
             }
             self.pendingSelectedModel = nil
-            self.didSelectModelSubject.onNext(pendingSelectedModel)
+            self.mainWindowController?.selectModelIfNeeded(pendingSelectedModel)
         }
     }
 
