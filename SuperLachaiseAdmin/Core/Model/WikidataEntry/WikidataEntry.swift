@@ -25,7 +25,7 @@ final class WikidataEntry: Object {
     @objc dynamic var rawDateOfDeathPrecision = ""
 
     let secondaryWikidataIds = List<String>()
-    let wikidataCategoriesIds = List<String>()
+    let wikidataCategories = List<WikidataCategory>()
     let localizations = LinkingObjects(fromType: WikidataLocalizedEntry.self, property: "wikidataEntry")
 
     @objc dynamic var deleted = false

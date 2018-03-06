@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="1ZB-kb-GZj" customClass="DetailViewToManyFieldView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="18"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="MWE-R2-YcM">
+                    <rect key="frame" x="18" y="1" width="154" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="ojc-gG-q0j"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="cWk-hy-9iH">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <scrollView verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iw3-fV-Zev" customClass="NoScrollView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                    <rect key="frame" x="178" y="0.0" width="282" height="18"/>
+                    <clipView key="contentView" id="01A-x7-6gL" customClass="FlippedClipView" customModule="SuperLachaiseAdmin" customModuleProvider="target">
+                        <rect key="frame" x="1" y="1" width="280" height="16"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view translatesAutoresizingMaskIntoConstraints="NO" id="l60-l6-HBh">
+                                <rect key="frame" x="0.0" y="0.0" width="280" height="16"/>
+                                <subviews>
+                                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSd-Hv-jq5">
+                                        <rect key="frame" x="0.0" y="8" width="280" height="0.0"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="sSd-Hv-jq5" secondAttribute="trailing" id="51k-dS-UgU"/>
+                                    <constraint firstItem="sSd-Hv-jq5" firstAttribute="leading" secondItem="l60-l6-HBh" secondAttribute="leading" id="m1t-xh-4E5"/>
+                                    <constraint firstItem="sSd-Hv-jq5" firstAttribute="top" secondItem="l60-l6-HBh" secondAttribute="top" constant="8" id="tRw-X2-hU3"/>
+                                    <constraint firstAttribute="bottom" secondItem="sSd-Hv-jq5" secondAttribute="bottom" constant="8" id="teY-wi-cIH"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="l60-l6-HBh" firstAttribute="leading" secondItem="01A-x7-6gL" secondAttribute="leading" id="3dD-vq-RuZ"/>
+                            <constraint firstAttribute="bottom" secondItem="l60-l6-HBh" secondAttribute="bottom" id="4Ir-Y8-Z8h"/>
+                            <constraint firstItem="l60-l6-HBh" firstAttribute="top" secondItem="01A-x7-6gL" secondAttribute="top" id="c2k-Gn-2vN"/>
+                            <constraint firstAttribute="trailing" secondItem="l60-l6-HBh" secondAttribute="trailing" id="wPl-zV-DRk"/>
+                        </constraints>
+                        <color key="backgroundColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1g2-QC-8te">
+                        <rect key="frame" x="-100" y="-100" width="285" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="ye0-QI-Syq">
+                        <rect key="frame" x="265" y="1" width="16" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Iw3-fV-Zev" firstAttribute="top" secondItem="1ZB-kb-GZj" secondAttribute="top" id="5wb-7g-pxa"/>
+                <constraint firstItem="Iw3-fV-Zev" firstAttribute="leading" secondItem="MWE-R2-YcM" secondAttribute="trailing" constant="8" id="BmD-PX-UtU"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Iw3-fV-Zev" secondAttribute="bottom" id="SnW-Hs-ZVf"/>
+                <constraint firstItem="MWE-R2-YcM" firstAttribute="top" secondItem="1ZB-kb-GZj" secondAttribute="top" id="eWu-zG-XtE"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="MWE-R2-YcM" secondAttribute="bottom" id="kyN-dH-cpP"/>
+                <constraint firstAttribute="trailing" secondItem="Iw3-fV-Zev" secondAttribute="trailing" constant="20" id="n1X-Cv-Ven"/>
+                <constraint firstAttribute="bottom" secondItem="Iw3-fV-Zev" secondAttribute="bottom" priority="750" id="rux-xJ-a7f"/>
+                <constraint firstItem="MWE-R2-YcM" firstAttribute="leading" secondItem="1ZB-kb-GZj" secondAttribute="leading" constant="20" id="sEp-ac-mcu"/>
+                <constraint firstAttribute="bottom" secondItem="MWE-R2-YcM" secondAttribute="bottom" priority="750" id="z7w-tF-JxA"/>
+            </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="MWE-R2-YcM" id="eB1-me-xRZ"/>
+                <outlet property="nameWidthConstraint" destination="ojc-gG-q0j" id="bS2-ad-8g2"/>
+                <outlet property="stackView" destination="sSd-Hv-jq5" id="QJB-zq-3xE"/>
+            </connections>
+        </customView>
+    </objects>
+</document>

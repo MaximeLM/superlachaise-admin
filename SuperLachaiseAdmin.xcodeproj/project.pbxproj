@@ -29,6 +29,11 @@
 		5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */; };
 		5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */; };
 		5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */; };
+		55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */; };
+		55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */; };
+		55348634204CB2440036143D /* DetailViewToManyFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55348633204CB2440036143D /* DetailViewToManyFieldView.xib */; };
+		55348636204CB2DD0036143D /* DetailViewToManyFieldButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55348635204CB2DD0036143D /* DetailViewToManyFieldButton.xib */; };
+		55348638204CB3550036143D /* DetailViewToManyFieldButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55348637204CB3550036143D /* DetailViewToManyFieldButton.swift */; };
 		555CF53C2049F28D005CE48F /* CommonsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF53B2049F28D005CE48F /* CommonsFile.swift */; };
 		555CF53E2049F387005CE48F /* CommonsFile+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF53D2049F387005CE48F /* CommonsFile+Requests.swift */; };
 		555CF5402049F3CC005CE48F /* CommonsFile+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF53F2049F3CC005CE48F /* CommonsFile+Protocols.swift */; };
@@ -167,6 +172,11 @@
 		5513EF8B1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldView.swift; sourceTree = "<group>"; };
 		5513EF8D1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewInlineFieldItem.swift; sourceTree = "<group>"; };
 		5513EF8F1FE708B400BD3A22 /* NoScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoScrollView.swift; sourceTree = "<group>"; };
+		5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldView.swift; sourceTree = "<group>"; };
+		55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldItem.swift; sourceTree = "<group>"; };
+		55348633204CB2440036143D /* DetailViewToManyFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToManyFieldView.xib; sourceTree = "<group>"; };
+		55348635204CB2DD0036143D /* DetailViewToManyFieldButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToManyFieldButton.xib; sourceTree = "<group>"; };
+		55348637204CB3550036143D /* DetailViewToManyFieldButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldButton.swift; sourceTree = "<group>"; };
 		555CF53B2049F28D005CE48F /* CommonsFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonsFile.swift; sourceTree = "<group>"; };
 		555CF53D2049F387005CE48F /* CommonsFile+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+Requests.swift"; sourceTree = "<group>"; };
 		555CF53F2049F3CC005CE48F /* CommonsFile+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonsFile+Protocols.swift"; sourceTree = "<group>"; };
@@ -329,6 +339,7 @@
 				5570F9D01FEE8AF1000DA3C9 /* HTML Field */,
 				555CF556204B01F6005CE48F /* URL Field */,
 				555CF567204C52F4005CE48F /* ToOne Field */,
+				5534862E204CB1A30036143D /* ToMany Field */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -389,6 +400,18 @@
 				5513EF891FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib */,
 			);
 			path = "Inline Field";
+			sourceTree = "<group>";
+		};
+		5534862E204CB1A30036143D /* ToMany Field */ = {
+			isa = PBXGroup;
+			children = (
+				55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */,
+				5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */,
+				55348633204CB2440036143D /* DetailViewToManyFieldView.xib */,
+				55348637204CB3550036143D /* DetailViewToManyFieldButton.swift */,
+				55348635204CB2DD0036143D /* DetailViewToManyFieldButton.xib */,
+			);
+			path = "ToMany Field";
 			sourceTree = "<group>";
 		};
 		555CF53A2049F280005CE48F /* CommonsFile */ = {
@@ -979,7 +1002,9 @@
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
 				5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */,
 				5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */,
+				55348636204CB2DD0036143D /* DetailViewToManyFieldButton.xib in Resources */,
 				5513EF591FE6BAC000BD3A22 /* DetailViewTitleView.xib in Resources */,
+				55348634204CB2440036143D /* DetailViewToManyFieldView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1089,6 +1114,7 @@
 				5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */,
 				5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
+				55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */,
 				555CF53C2049F28D005CE48F /* CommonsFile.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
 				55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */,
@@ -1111,6 +1137,7 @@
 				55B365951FDDB33E00EB84BD /* WikidataConfig.swift in Sources */,
 				55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */,
 				5570F9C21FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift in Sources */,
+				55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */,
 				55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */,
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
 				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
@@ -1172,6 +1199,7 @@
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
+				55348638204CB3550036143D /* DetailViewToManyFieldButton.swift in Sources */,
 				5513EF871FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift in Sources */,
 				5513EF421FE4998C00BD3A22 /* DetailViewController.swift in Sources */,
 				5570F9B71FEC5043000DA3C9 /* WikipediaPage+Protocols.swift in Sources */,

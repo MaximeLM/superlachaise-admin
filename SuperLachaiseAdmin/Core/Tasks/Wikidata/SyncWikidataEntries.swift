@@ -181,9 +181,10 @@ private extension SyncWikidataEntries {
         let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, nature: nature)
         wikidataEntry.secondaryWikidataIds.replaceAll(objects: secondaryWikidataIds)
 
-        // Wikidata category ids
-        let wikidataCategoriesIds = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
-        wikidataEntry.wikidataCategoriesIds.replaceAll(objects: wikidataCategoriesIds)
+        // Wikidata categories
+        let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
+            .map { WikidataCategory.findOrCreate(wikidataId: $0)(realm) }
+        wikidataEntry.wikidataCategories.replaceAll(objects: wikidataCategories)
 
         // Image
         let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, nature: nature)
