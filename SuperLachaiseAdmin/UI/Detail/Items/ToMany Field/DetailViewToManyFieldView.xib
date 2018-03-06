@@ -75,6 +75,7 @@
                 <constraint firstAttribute="bottom" secondItem="MWE-R2-YcM" secondAttribute="bottom" priority="750" id="z7w-tF-JxA"/>
             </constraints>
             <connections>
+                <outlet property="borderView" destination="Iw3-fV-Zev" id="TO9-xz-gu5"/>
                 <outlet property="nameLabel" destination="MWE-R2-YcM" id="eB1-me-xRZ"/>
                 <outlet property="nameWidthConstraint" destination="ojc-gG-q0j" id="bS2-ad-8g2"/>
                 <outlet property="stackView" destination="sSd-Hv-jq5" id="QJB-zq-3xE"/>

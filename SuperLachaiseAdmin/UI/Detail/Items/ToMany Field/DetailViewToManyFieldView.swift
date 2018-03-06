@@ -29,6 +29,7 @@ final class DetailViewToManyFieldView: NSView {
                 return view
             }
             stackView?.setViews(views, in: .top)
+            borderView?.isHidden = value.isEmpty
         }
     }
 
@@ -36,6 +37,7 @@ final class DetailViewToManyFieldView: NSView {
 
     @IBOutlet private var nameLabel: NSTextField?
 
+    @IBOutlet private var borderView: NSView?
     @IBOutlet private var stackView: NSStackView?
 
     // MARK: Layout

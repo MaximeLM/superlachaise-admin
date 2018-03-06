@@ -23,4 +23,17 @@ final class DetailViewToManyFieldButton: NSView {
 
     @IBOutlet private var button: NSButton?
 
+    // MARK: Action
+
+    @IBAction func navigate(_ sender: Any?) {
+        guard let value = value else {
+            return
+        }
+        if NSApp.currentEvent?.modifierFlags.contains(.command) ?? false {
+            mainWindowController?.selectModelInNewTab(value)
+        } else {
+            mainWindowController?.selectModelIfNeeded(value)
+        }
+    }
+
 }

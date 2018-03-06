@@ -21,6 +21,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="systemBold" size="12"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="navigate:" target="djA-ML-EAx" id="1T4-14-CUB"/>
+                    </connections>
                 </button>
             </subviews>
             <constraints>

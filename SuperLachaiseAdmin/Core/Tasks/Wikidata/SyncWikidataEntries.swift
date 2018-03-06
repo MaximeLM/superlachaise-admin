@@ -107,7 +107,7 @@ private extension SyncWikidataEntries {
     func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             return wikidataIds.flatMap { WikidataEntry.find(wikidataId: $0)(realm) }
-                .flatMap { Array($0.secondaryWikidataIds) }
+                .flatMap { $0.secondaryWikidataEntries.map { $0.wikidataId } }
                 .filter { !wikidataIds.contains($0) }
         }
     }
@@ -177,9 +177,10 @@ private extension SyncWikidataEntries {
         let nature = wikidataEntryNature(wikidataEntity: wikidataEntity)
         wikidataEntry.nature = nature
 
-        // Secondary wikidata ids
-        let secondaryWikidataIds = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, nature: nature)
-        wikidataEntry.secondaryWikidataIds.replaceAll(objects: secondaryWikidataIds)
+        // Secondary wikidata entries
+        let secondaryWikidataEntries = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, nature: nature)
+            .map { WikidataEntry.findOrCreate(wikidataId: $0)(realm) }
+        wikidataEntry.secondaryWikidataEntries.replaceAll(objects: secondaryWikidataEntries)
 
         // Wikidata categories
         let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
@@ -203,12 +204,10 @@ private extension SyncWikidataEntries {
         }
 
         // Dates
-        wikidataEntry.dateOfBirth = try wikidataDate(wikidataEntity: wikidataEntity,
-                                                     nature: nature,
-                                                     claim: .dateOfBirth)
-        wikidataEntry.dateOfDeath = try wikidataDate(wikidataEntity: wikidataEntity,
-                                                     nature: nature,
-                                                     claim: .dateOfDeath)
+        wikidataEntry.dateOfBirth = try wikidataDate(
+            wikidataEntity: wikidataEntity, nature: nature, claim: .dateOfBirth)
+        wikidataEntry.dateOfDeath = try wikidataDate(
+            wikidataEntity: wikidataEntity, nature: nature, claim: .dateOfDeath)
 
         return wikidataEntry
     }

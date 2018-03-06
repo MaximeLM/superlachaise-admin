@@ -22,7 +22,7 @@ extension WikidataEntry: MainWindowModelType {
                 DetailViewFieldItem(name: "Date of death", value: dateOfDeath),
             ],
             [
-                DetailViewFieldItem(name: "Secondary Wikidata IDs", value: Array(secondaryWikidataIds)),
+                DetailViewToManyFieldItem(name: "Secondary Wikidata entries", value: Array(secondaryWikidataEntries)),
                 DetailViewToManyFieldItem(name: "Wikidata categories", value: Array(wikidataCategories)),
                 DetailViewToOneFieldItem(name: "Image", value: image),
                 DetailViewToOneFieldItem(name: "Image of grave", value: imageOfGrave),
