@@ -12,6 +12,7 @@ extension SuperLachaisePOI: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
+                DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "Language", value: superLachaiseId?.language),
                 DetailViewFieldItem(name: "Wikidata ID", value: superLachaiseId?.wikidataId),
             ],

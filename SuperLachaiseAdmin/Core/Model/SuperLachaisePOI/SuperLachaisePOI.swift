@@ -16,6 +16,9 @@ final class SuperLachaisePOI: Object {
     @objc dynamic var latitude: Double = 0
     @objc dynamic var longitude: Double = 0
 
+    // For debugging (not localized)
+    @objc dynamic var name: String?
+
     @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {
@@ -23,7 +26,9 @@ final class SuperLachaisePOI: Object {
     }
 
     override var description: String {
-        return rawSuperLachaiseId
+        return [name, superLachaiseId?.language, superLachaiseId?.wikidataId]
+            .flatMap { $0 }
+            .joined(separator: " - ")
     }
 
 }

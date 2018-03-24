@@ -137,8 +137,11 @@ private extension SyncSuperLachaisePOIs {
         let superLachaiseId = SuperLachaiseId(language: language, wikidataId: wikidataEntry.wikidataId)
         let superLachaisePOI = SuperLachaisePOI.findOrCreate(superLachaiseId: superLachaiseId)(realm)
         superLachaisePOI.deleted = false
+
+        superLachaisePOI.name = openStreetMapElement.name
         superLachaisePOI.latitude = openStreetMapElement.latitude
         superLachaisePOI.longitude = openStreetMapElement.longitude
+
         return superLachaisePOI
     }
 
