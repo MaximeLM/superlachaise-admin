@@ -13,4 +13,6 @@ struct PereLachaiseConfig: Config {
 
     let wikidata: WikidataConfig = PereLachaiseWikidataConfig()
 
+    let superLachaise: SuperLachaiseConfig = PereLachaiseSuperLachaiseConfig()
+
 }

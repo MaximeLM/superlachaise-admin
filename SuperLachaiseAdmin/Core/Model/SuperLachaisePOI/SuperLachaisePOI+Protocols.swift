@@ -13,7 +13,7 @@ extension SuperLachaisePOI: Identifiable, Deletable, Listable, Syncable {
     // MARK: Identifiable
 
     var identifier: String {
-        return wikidataId
+        return rawSuperLachaiseId
     }
 
     // MARK: Deletable
@@ -28,11 +28,10 @@ extension SuperLachaisePOI: Identifiable, Deletable, Listable, Syncable {
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "wikidataId"),
+                    SortDescriptor(keyPath: "rawSuperLachaiseId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
+                let predicate = NSPredicate(format: "rawSuperLachaiseId contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }

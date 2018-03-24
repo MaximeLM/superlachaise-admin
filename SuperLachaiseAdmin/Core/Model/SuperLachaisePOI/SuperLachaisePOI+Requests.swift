@@ -16,18 +16,20 @@ extension SuperLachaisePOI {
         }
     }
 
-    static func find(wikidataId: String) -> (Realm) -> SuperLachaisePOI? {
+    static func find(superLachaiseId: SuperLachaiseId) -> (Realm) -> SuperLachaisePOI? {
         return { realm in
-            realm.object(ofType: SuperLachaisePOI.self, forPrimaryKey: wikidataId)
+            realm.object(ofType: SuperLachaisePOI.self, forPrimaryKey: superLachaiseId.rawValue)
         }
     }
 
-    static func findOrCreate(wikidataId: String) -> (Realm) -> SuperLachaisePOI {
+    static func findOrCreate(superLachaiseId: SuperLachaiseId) -> (Realm) -> SuperLachaisePOI {
         return { realm in
-            if let superLachaisePOI = find(wikidataId: wikidataId)(realm) {
+            if let superLachaisePOI = find(superLachaiseId: superLachaiseId)(realm) {
                 return superLachaisePOI
             } else {
-                return realm.create(SuperLachaisePOI.self, value: ["wikidataId": wikidataId], update: false)
+                return realm.create(SuperLachaisePOI.self,
+                                    value: ["rawSuperLachaiseId": superLachaiseId.rawValue],
+                                    update: false)
             }
         }
     }

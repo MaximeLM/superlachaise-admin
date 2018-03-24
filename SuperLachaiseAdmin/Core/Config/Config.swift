@@ -10,7 +10,7 @@ import Foundation
 protocol Config {
 
     var openStreetMap: OpenStreetMapConfig { get }
-
     var wikidata: WikidataConfig { get }
+    var superLachaise: SuperLachaiseConfig { get }
 
 }

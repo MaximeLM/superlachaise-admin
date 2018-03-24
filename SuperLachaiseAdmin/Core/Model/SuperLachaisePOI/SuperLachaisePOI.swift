@@ -10,25 +10,20 @@ import RealmSwift
 
 final class SuperLachaisePOI: Object {
 
-    @objc dynamic var wikidataId: String = ""
+    // Serialized as language/wikidataId
+    @objc dynamic var rawSuperLachaiseId: String = ""
 
-    @objc dynamic var openStreetMapElement: OpenStreetMapElement?
-    @objc dynamic var primaryWikidataEntry: WikidataEntry?
-    let secondaryWikidataEntries = List<WikidataEntry>()
-    @objc dynamic var image: CommonsFile?
-
-    @objc dynamic var name: String?
+    @objc dynamic var latitude: Double = 0
+    @objc dynamic var longitude: Double = 0
 
     @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {
-        return "wikidataId"
+        return "rawSuperLachaiseId"
     }
 
     override var description: String {
-        return [name, wikidataId]
-            .flatMap { $0 }
-            .joined(separator: " - ")
+        return rawSuperLachaiseId
     }
 
 }
