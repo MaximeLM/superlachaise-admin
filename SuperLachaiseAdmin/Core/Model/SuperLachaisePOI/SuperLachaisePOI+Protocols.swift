@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension SuperLachaisePOI: Identifiable, Deletable, Listable {
+extension SuperLachaisePOI: Identifiable, Deletable, Listable, Syncable {
 
     // MARK: Identifiable
 
@@ -38,6 +38,12 @@ extension SuperLachaisePOI: Identifiable, Deletable, Listable {
             }
             return results
         }
+    }
+
+    // MARK: Syncable
+
+    func sync(taskController: TaskController) {
+        taskController.syncSuperLachaisePOI(self)
     }
 
 }

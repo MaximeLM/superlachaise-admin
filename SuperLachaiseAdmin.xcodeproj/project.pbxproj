@@ -86,6 +86,8 @@
 		5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */; };
 		5570F9D51FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */; };
 		5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */; };
+		5576A261206689C600F1FC9D /* SyncSuperLachaisePOIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncSuperLachaisePOIs.swift */; };
+		5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
@@ -231,6 +233,8 @@
 		5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewHTMLFieldView.xib; sourceTree = "<group>"; };
 		5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldItem.swift; sourceTree = "<group>"; };
 		5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldView.swift; sourceTree = "<group>"; };
+		5576A260206689C600F1FC9D /* SyncSuperLachaisePOIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSuperLachaisePOIs.swift; sourceTree = "<group>"; };
+		5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+SuperLachaise.swift"; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
@@ -572,12 +576,12 @@
 			isa = PBXGroup;
 			children = (
 				5570F99D1FEB1335000DA3C9 /* MainWindowModel.swift */,
-				5570F9A41FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift */,
 				5570F9A61FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift */,
 				5570F9A81FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift */,
 				555CF554204AFEC3005CE48F /* WikidataCategory+MainWindowModel.swift */,
 				5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */,
 				555CF5412049F462005CE48F /* CommonsFile+MainWindowModel.swift */,
+				5570F9A41FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -643,6 +647,15 @@
 			path = "HTML Field";
 			sourceTree = "<group>";
 		};
+		5576A25F2066896400F1FC9D /* SuperLachaise */ = {
+			isa = PBXGroup;
+			children = (
+				5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */,
+				5576A260206689C600F1FC9D /* SyncSuperLachaisePOIs.swift */,
+			);
+			path = SuperLachaise;
+			sourceTree = "<group>";
+		};
 		5587F9EF1FCF6904004C9E28 /* Root */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,6 +704,7 @@
 				55B3658F1FDDB21500EB84BD /* Wikidata */,
 				5570F9BB1FEC6D82000DA3C9 /* Wikipedia */,
 				55609F94203CC6900060E3F9 /* Commons */,
+				5576A25F2066896400F1FC9D /* SuperLachaise */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -872,13 +886,13 @@
 		55CB47F81FCCDA72003F3610 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				55F46B681FD488B4005B90BF /* SuperLachaisePOI */,
 				55CB47FA1FCCDAEC003F3610 /* OpenStreetMapElement */,
 				55B365891FDDAE6600EB84BD /* WikidataEntry */,
 				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 				555CF54B204AFD4A005CE48F /* WikidataCategory */,
 				5570F9AF1FEC4D71000DA3C9 /* WikipediaPage */,
 				555CF53A2049F280005CE48F /* CommonsFile */,
+				55F46B681FD488B4005B90BF /* SuperLachaisePOI */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
 			);
 			path = Model;
@@ -1133,6 +1147,7 @@
 				5570F9B31FEC4E3C000DA3C9 /* WikipediaPage+Id.swift in Sources */,
 				55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */,
 				5513EF611FE6C30F00BD3A22 /* DetailViewURLView.swift in Sources */,
+				5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */,
 				558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */,
 				55B365951FDDB33E00EB84BD /* WikidataConfig.swift in Sources */,
 				55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */,
@@ -1211,6 +1226,7 @@
 				555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
+				5576A261206689C600F1FC9D /* SyncSuperLachaisePOIs.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				5570F9CD1FEDA00D000DA3C9 /* WikipediaAPIPage.swift in Sources */,

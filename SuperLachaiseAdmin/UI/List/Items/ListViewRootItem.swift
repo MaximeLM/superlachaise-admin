@@ -38,8 +38,6 @@ final class ListViewRootItem: NSObject, ListViewItem {
 
     private lazy var _children: [ListViewObjectListItemType] = { [unowned self] in
         [
-            ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs",
-                                                     realm: self.realm, filter: self.filter),
             ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements",
                                                          realm: self.realm, filter: self.filter),
             ListViewObjectListItem<WikidataEntry>(baseText: "Wikidata entries",
@@ -50,6 +48,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                   realm: self.realm, filter: self.filter),
             ListViewObjectListItem<CommonsFile>(baseText: "Commons files",
                                                 realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs",
+                                                     realm: self.realm, filter: self.filter),
         ]
     }()
 

@@ -346,6 +346,12 @@
                                                 <action selector="syncCommonsFiles:" target="Ady-hI-5gd" id="nC5-KC-n8c"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="SuperLachaise POIs" id="WZ3-3v-7hd">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="syncSuperLachaisePOIs:" target="Ady-hI-5gd" id="CEx-Rf-oZ2"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

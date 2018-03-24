@@ -40,4 +40,8 @@ extension MainWindowController {
         taskController.syncCommonsFiles()
     }
 
+    @IBAction func syncSuperLachaisePOIs(_ sender: Any?) {
+        taskController.syncSuperLachaisePOIs()
+    }
+
 }
