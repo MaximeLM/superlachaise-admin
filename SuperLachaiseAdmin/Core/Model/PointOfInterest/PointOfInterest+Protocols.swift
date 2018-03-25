@@ -1,39 +1,38 @@
 //
-//  SuperLachaiseEntry+Protocols.swift
+//  PointOfInterest+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 25/03/2018.
+//  Created by Maxime Le Moine on 07/12/2017.
 //
 
 import Foundation
 import RealmSwift
 
-extension SuperLachaiseEntry: Identifiable, Deletable, Listable, Syncable {
+extension PointOfInterest: Identifiable, Deletable, Listable, Syncable {
 
     // MARK: Identifiable
 
     var identifier: String {
-        return wikidataId
+        return id
     }
 
     // MARK: Deletable
 
     func delete() {
-        realm?.delete(localizations)
         realm?.delete(self)
     }
 
     // MARK: Listable
 
-    static func list(filter: String) -> (Realm) -> Results<SuperLachaiseEntry> {
+    static func list(filter: String) -> (Realm) -> Results<PointOfInterest> {
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "wikidataId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }
@@ -44,7 +43,7 @@ extension SuperLachaiseEntry: Identifiable, Deletable, Listable, Syncable {
     // MARK: Syncable
 
     func sync(taskController: TaskController) {
-        //taskController.syncWikidataEntry(self)
+        taskController.syncPointOfInterest(self)
     }
 
 }

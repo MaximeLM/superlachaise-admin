@@ -1,5 +1,5 @@
 //
-//  SuperLachaisePOI.swift
+//  PointOfInterest.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 03/12/2017.
@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class SuperLachaisePOI: Object {
+final class PointOfInterest: Object {
 
     // Wikidata ID is used (more stable than OpenStreetMap ID)
     @objc dynamic var id: String = ""

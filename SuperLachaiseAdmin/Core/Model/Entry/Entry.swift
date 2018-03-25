@@ -1,5 +1,5 @@
 //
-//  SuperLachaiseEntry.swift
+//  Entry.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 25/03/2018.
@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class SuperLachaiseEntry: Object {
+final class Entry: Object {
 
     @objc dynamic var wikidataId: String = ""
 
@@ -21,7 +21,7 @@ final class SuperLachaiseEntry: Object {
     @objc dynamic var rawDateOfDeath: Date?
     @objc dynamic var rawDateOfDeathPrecision = ""
 
-    let localizations = LinkingObjects(fromType: SuperLachaiseLocalizedEntry.self, property: "superLachaiseEntry")
+    let localizations = LinkingObjects(fromType: LocalizedEntry.self, property: "entry")
 
     @objc dynamic var deleted = false
 

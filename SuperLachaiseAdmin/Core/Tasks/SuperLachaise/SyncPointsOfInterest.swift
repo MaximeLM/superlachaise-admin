@@ -1,5 +1,5 @@
 //
-//  SyncSuperLachaisePOIs.swift
+//  SyncPointsOfInterest.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 24/03/2018.
@@ -11,7 +11,7 @@ import Foundation
 import RealmSwift
 import RxSwift
 
-final class SyncSuperLachaisePOIs: Task {
+final class SyncPointsOfInterest: Task {
 
     enum Scope: CustomStringConvertible {
 
@@ -44,43 +44,43 @@ final class SyncSuperLachaisePOIs: Task {
     func asSingle() -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                let superLachaisePOIs = self.superLachaisePOIs(realm: realm)
-                self.deleteOrphans(syncedObjects: superLachaisePOIs, realm: realm)
+                let pointsOfInterest = self.pointsOfInterest(realm: realm)
+                self.deleteOrphans(syncedObjects: pointsOfInterest, realm: realm)
             }
         }
     }
 
     // MARK: Private properties
 
-    private let realmDispatchQueue = DispatchQueue(label: "SyncSuperLachaisePOIs.realm")
+    private let realmDispatchQueue = DispatchQueue(label: "SyncPointsOfInterest.realm")
 
 }
 
-private extension SyncSuperLachaisePOIs {
+private extension SyncPointsOfInterest {
 
-    func superLachaisePOIs(realm: Realm) -> [SuperLachaisePOI] {
-        let superLachaisePOIs = openStreetMapElements(realm: realm)
-            .flatMap { openStreetMapElement -> SuperLachaisePOI? in
+    func pointsOfInterest(realm: Realm) -> [PointOfInterest] {
+        let pointsOfInterest = openStreetMapElements(realm: realm)
+            .flatMap { openStreetMapElement -> PointOfInterest? in
                 guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
                     Logger.warning(
                         "\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata entry; skipping")
                     return nil
                 }
-                return superLachaisePOI(openStreetMapElement: openStreetMapElement,
-                                        wikidataEntry: wikidataEntry,
-                                        realm: realm)
+                return pointOfInterest(openStreetMapElement: openStreetMapElement,
+                                       wikidataEntry: wikidataEntry,
+                                       realm: realm)
             }
 
-        let crossReference = Dictionary(grouping: superLachaisePOIs, by: { $0 })
+        let crossReference = Dictionary(grouping: pointsOfInterest, by: { $0 })
         let duplicates = crossReference.filter { $0.value.count > 1 }
         for duplicate in duplicates {
             Logger.warning("""
-                \(SuperLachaisePOI.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
+                \(PointOfInterest.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
                 skipping
                 """)
         }
 
-        return superLachaisePOIs
+        return pointsOfInterest
             .filter { !duplicates.keys.contains($0) }
     }
 
@@ -94,27 +94,27 @@ private extension SyncSuperLachaisePOIs {
         }
     }
 
-    func superLachaisePOI(openStreetMapElement: OpenStreetMapElement,
-                          wikidataEntry: WikidataEntry,
-                          realm: Realm) -> SuperLachaisePOI? {
-        let superLachaisePOI = SuperLachaisePOI.findOrCreate(id: wikidataEntry.wikidataId)(realm)
-        superLachaisePOI.deleted = false
+    func pointOfInterest(openStreetMapElement: OpenStreetMapElement,
+                         wikidataEntry: WikidataEntry,
+                         realm: Realm) -> PointOfInterest? {
+        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
+        pointOfInterest.deleted = false
 
-        superLachaisePOI.name = openStreetMapElement.name
-        superLachaisePOI.latitude = openStreetMapElement.latitude
-        superLachaisePOI.longitude = openStreetMapElement.longitude
+        pointOfInterest.name = openStreetMapElement.name
+        pointOfInterest.latitude = openStreetMapElement.latitude
+        pointOfInterest.longitude = openStreetMapElement.longitude
 
-        return superLachaisePOI
+        return pointOfInterest
     }
 
     // MARK: Orphans
 
-    func deleteOrphans(syncedObjects: [SuperLachaisePOI], realm: Realm) {
+    func deleteOrphans(syncedObjects: [PointOfInterest], realm: Realm) {
         // List existing objects
-        var orphanedObjects: Set<SuperLachaisePOI>
+        var orphanedObjects: Set<PointOfInterest>
         switch scope {
         case .all:
-            orphanedObjects = Set(SuperLachaisePOI.all()(realm))
+            orphanedObjects = Set(PointOfInterest.all()(realm))
         case .single:
             orphanedObjects = Set()
         }
@@ -123,7 +123,7 @@ private extension SyncSuperLachaisePOIs {
 
         if !orphanedObjects.isEmpty {
             orphanedObjects.forEach { $0.deleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(SuperLachaisePOI.self)(s) for deletion")
+            Logger.info("Flagged \(orphanedObjects.count) \(PointOfInterest.self)(s) for deletion")
         }
     }
 

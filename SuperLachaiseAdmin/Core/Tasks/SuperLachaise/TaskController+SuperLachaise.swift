@@ -9,13 +9,13 @@ import Foundation
 
 extension TaskController {
 
-    func syncSuperLachaisePOIs() {
-        let task = SyncSuperLachaisePOIs(scope: .all)
+    func syncPointsOfInterest() {
+        let task = SyncPointsOfInterest(scope: .all)
         enqueue(task)
     }
 
-    func syncSuperLachaisePOI(_ superLachaisePOI: SuperLachaisePOI) {
-        let task = SyncSuperLachaisePOIs(scope: .single(id: superLachaisePOI.id))
+    func syncPointOfInterest(_ pointOfInterest: PointOfInterest) {
+        let task = SyncPointsOfInterest(scope: .single(id: pointOfInterest.id))
         enqueue(task)
     }
 

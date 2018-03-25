@@ -1,5 +1,5 @@
 //
-//  SuperLachaiseEntry+Kind.swift
+//  Entry+Kind.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 25/03/2018.
@@ -7,7 +7,11 @@
 
 import Foundation
 
-extension SuperLachaiseEntry {
+enum EntryKind: String {
+    case person, grave, monument
+}
+
+extension Entry {
 
     var kind: EntryKind? {
         get {

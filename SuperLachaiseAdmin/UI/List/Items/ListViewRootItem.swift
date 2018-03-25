@@ -48,10 +48,10 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                   realm: self.realm, filter: self.filter),
             ListViewObjectListItem<CommonsFile>(baseText: "Commons files",
                                                 realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs",
-                                                     realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<SuperLachaiseEntry>(baseText: "SuperLachaise entries",
-                                                       realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<PointOfInterest>(baseText: "Points of interest",
+                                                    realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<Entry>(baseText: "Entries",
+                                          realm: self.realm, filter: self.filter),
         ]
     }()
 

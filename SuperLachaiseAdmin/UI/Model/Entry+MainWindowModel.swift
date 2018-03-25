@@ -1,5 +1,5 @@
 //
-//  SuperLachaiseEntry+MainWindowModel.swift
+//  Entry+MainWindowModel.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 25/03/2018.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension SuperLachaiseEntry: MainWindowModelType {
+extension Entry: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

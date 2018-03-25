@@ -57,15 +57,13 @@
 		555CF569204C5320005CE48F /* DetailViewToOneFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 555CF568204C5320005CE48F /* DetailViewToOneFieldView.xib */; };
 		555CF56B204C5363005CE48F /* DetailViewToOneFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF56A204C5363005CE48F /* DetailViewToOneFieldView.swift */; };
 		555CF56D204C53F4005CE48F /* DetailViewToOneFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF56C204C53F4005CE48F /* DetailViewToOneFieldItem.swift */; };
-		555EB4D92067C95A009A6054 /* EntryDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4D82067C95A009A6054 /* EntryDate.swift */; };
-		555EB4DB2067C9F6009A6054 /* EntryKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4DA2067C9F6009A6054 /* EntryKind.swift */; };
-		555EB4DE2067CA67009A6054 /* SuperLachaiseEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4DD2067CA67009A6054 /* SuperLachaiseEntry.swift */; };
-		555EB4E02067CA97009A6054 /* SuperLachaiseEntry+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4DF2067CA97009A6054 /* SuperLachaiseEntry+Date.swift */; };
-		555EB4E22067CAB0009A6054 /* SuperLachaiseEntry+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E12067CAB0009A6054 /* SuperLachaiseEntry+Kind.swift */; };
-		555EB4E42067CAD6009A6054 /* SuperLachaiseEntry+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E32067CAD6009A6054 /* SuperLachaiseEntry+Requests.swift */; };
-		555EB4E62067CB04009A6054 /* SuperLachaiseEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E52067CB04009A6054 /* SuperLachaiseEntry+Protocols.swift */; };
-		555EB4E92067CB50009A6054 /* SuperLachaiseLocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E82067CB50009A6054 /* SuperLachaiseLocalizedEntry.swift */; };
-		555EB4ED2067CCD6009A6054 /* SuperLachaiseEntry+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4EC2067CCD6009A6054 /* SuperLachaiseEntry+MainWindowModel.swift */; };
+		555EB4DE2067CA67009A6054 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4DD2067CA67009A6054 /* Entry.swift */; };
+		555EB4E02067CA97009A6054 /* Entry+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4DF2067CA97009A6054 /* Entry+Date.swift */; };
+		555EB4E22067CAB0009A6054 /* Entry+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E12067CAB0009A6054 /* Entry+Kind.swift */; };
+		555EB4E42067CAD6009A6054 /* Entry+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E32067CAD6009A6054 /* Entry+Requests.swift */; };
+		555EB4E62067CB04009A6054 /* Entry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E52067CB04009A6054 /* Entry+Protocols.swift */; };
+		555EB4E92067CB50009A6054 /* LocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4E82067CB50009A6054 /* LocalizedEntry.swift */; };
+		555EB4ED2067CCD6009A6054 /* Entry+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */; };
@@ -76,7 +74,7 @@
 		5570F99E1FEB1335000DA3C9 /* MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F99D1FEB1335000DA3C9 /* MainWindowModel.swift */; };
 		5570F9A11FEB1AB5000DA3C9 /* MainWindowController+Tasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A01FEB1AB5000DA3C9 /* MainWindowController+Tasks.swift */; };
 		5570F9A31FEB1B35000DA3C9 /* MainWindowController+Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A21FEB1B35000DA3C9 /* MainWindowController+Navigation.swift */; };
-		5570F9A51FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A41FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift */; };
+		5570F9A51FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A41FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift */; };
 		5570F9A71FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A61FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift */; };
 		5570F9A91FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A81FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift */; };
 		5570F9B11FEC4D7E000DA3C9 /* WikipediaPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9B01FEC4D7E000DA3C9 /* WikipediaPage.swift */; };
@@ -95,7 +93,7 @@
 		5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */; };
 		5570F9D51FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */; };
 		5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */; };
-		5576A261206689C600F1FC9D /* SyncSuperLachaisePOIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncSuperLachaisePOIs.swift */; };
+		5576A261206689C600F1FC9D /* SyncPointsOfInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */; };
 		5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */; };
 		5576A267206697AC00F1FC9D /* SuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */; };
 		5576A269206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */; };
@@ -109,7 +107,7 @@
 		55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D24D1FCF5F0100BB00BC /* PereLachaiseConfig.swift */; };
 		55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2501FCF5F9C00BB00BC /* TaskController.swift */; };
 		55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */; };
-		55AB3DEC1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DEB1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift */; };
+		55AB3DEC1FE091D90011AF47 /* PointOfInterest+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DEB1FE091D90011AF47 /* PointOfInterest+Requests.swift */; };
 		55AB3DEE1FE092940011AF47 /* OpenStreetMapElement+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DED1FE092940011AF47 /* OpenStreetMapElement+Requests.swift */; };
 		55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */; };
 		55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DF11FE1E5350011AF47 /* RealmList+Replace.swift */; };
@@ -157,8 +155,8 @@
 		55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB48021FCCE4C0003F3610 /* Errors.swift */; };
 		55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */; };
 		55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */; };
-		55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */; };
-		55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */; };
+		55E8A3AE1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */; };
+		55F46B6A1FD488C3005B90BF /* PointOfInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B691FD488C3005B90BF /* PointOfInterest.swift */; };
 		55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B6F1FD497FD005B90BF /* ListViewController+Actions.swift */; };
 /* End PBXBuildFile section */
 
@@ -213,15 +211,13 @@
 		555CF568204C5320005CE48F /* DetailViewToOneFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToOneFieldView.xib; sourceTree = "<group>"; };
 		555CF56A204C5363005CE48F /* DetailViewToOneFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToOneFieldView.swift; sourceTree = "<group>"; };
 		555CF56C204C53F4005CE48F /* DetailViewToOneFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToOneFieldItem.swift; sourceTree = "<group>"; };
-		555EB4D82067C95A009A6054 /* EntryDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDate.swift; sourceTree = "<group>"; };
-		555EB4DA2067C9F6009A6054 /* EntryKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryKind.swift; sourceTree = "<group>"; };
-		555EB4DD2067CA67009A6054 /* SuperLachaiseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaiseEntry.swift; sourceTree = "<group>"; };
-		555EB4DF2067CA97009A6054 /* SuperLachaiseEntry+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaiseEntry+Date.swift"; sourceTree = "<group>"; };
-		555EB4E12067CAB0009A6054 /* SuperLachaiseEntry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaiseEntry+Kind.swift"; sourceTree = "<group>"; };
-		555EB4E32067CAD6009A6054 /* SuperLachaiseEntry+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaiseEntry+Requests.swift"; sourceTree = "<group>"; };
-		555EB4E52067CB04009A6054 /* SuperLachaiseEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaiseEntry+Protocols.swift"; sourceTree = "<group>"; };
-		555EB4E82067CB50009A6054 /* SuperLachaiseLocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaiseLocalizedEntry.swift; sourceTree = "<group>"; };
-		555EB4EC2067CCD6009A6054 /* SuperLachaiseEntry+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaiseEntry+MainWindowModel.swift"; sourceTree = "<group>"; };
+		555EB4DD2067CA67009A6054 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		555EB4DF2067CA97009A6054 /* Entry+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entry+Date.swift"; sourceTree = "<group>"; };
+		555EB4E12067CAB0009A6054 /* Entry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entry+Kind.swift"; sourceTree = "<group>"; };
+		555EB4E32067CAD6009A6054 /* Entry+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entry+Requests.swift"; sourceTree = "<group>"; };
+		555EB4E52067CB04009A6054 /* Entry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entry+Protocols.swift"; sourceTree = "<group>"; };
+		555EB4E82067CB50009A6054 /* LocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedEntry.swift; sourceTree = "<group>"; };
+		555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entry+MainWindowModel.swift"; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -234,7 +230,7 @@
 		5570F99D1FEB1335000DA3C9 /* MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowModel.swift; sourceTree = "<group>"; };
 		5570F9A01FEB1AB5000DA3C9 /* MainWindowController+Tasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainWindowController+Tasks.swift"; sourceTree = "<group>"; };
 		5570F9A21FEB1B35000DA3C9 /* MainWindowController+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainWindowController+Navigation.swift"; sourceTree = "<group>"; };
-		5570F9A41FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaisePOI+MainWindowModel.swift"; sourceTree = "<group>"; };
+		5570F9A41FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointOfInterest+MainWindowModel.swift"; sourceTree = "<group>"; };
 		5570F9A61FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+MainWindowModel.swift"; sourceTree = "<group>"; };
 		5570F9A81FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+MainWindowModel.swift"; sourceTree = "<group>"; };
 		5570F9B01FEC4D7E000DA3C9 /* WikipediaPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaPage.swift; sourceTree = "<group>"; };
@@ -253,7 +249,7 @@
 		5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewHTMLFieldView.xib; sourceTree = "<group>"; };
 		5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldItem.swift; sourceTree = "<group>"; };
 		5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldView.swift; sourceTree = "<group>"; };
-		5576A260206689C600F1FC9D /* SyncSuperLachaisePOIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSuperLachaisePOIs.swift; sourceTree = "<group>"; };
+		5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncPointsOfInterest.swift; sourceTree = "<group>"; };
 		5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+SuperLachaise.swift"; sourceTree = "<group>"; };
 		5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaiseConfig.swift; sourceTree = "<group>"; };
 		5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseSuperLachaiseConfig.swift; sourceTree = "<group>"; };
@@ -267,7 +263,7 @@
 		55A8D24D1FCF5F0100BB00BC /* PereLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseConfig.swift; sourceTree = "<group>"; };
 		55A8D2501FCF5F9C00BB00BC /* TaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskController.swift; sourceTree = "<group>"; };
 		55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+OpenStreetMap.swift"; sourceTree = "<group>"; };
-		55AB3DEB1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaisePOI+Requests.swift"; sourceTree = "<group>"; };
+		55AB3DEB1FE091D90011AF47 /* PointOfInterest+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointOfInterest+Requests.swift"; sourceTree = "<group>"; };
 		55AB3DED1FE092940011AF47 /* OpenStreetMapElement+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Requests.swift"; sourceTree = "<group>"; };
 		55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Requests.swift"; sourceTree = "<group>"; };
 		55AB3DF11FE1E5350011AF47 /* RealmList+Replace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmList+Replace.swift"; sourceTree = "<group>"; };
@@ -315,8 +311,8 @@
 		55CB48021FCCE4C0003F3610 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenableInBrowser.swift; sourceTree = "<group>"; };
 		55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Protocols.swift"; sourceTree = "<group>"; };
-		55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperLachaisePOI+Protocols.swift"; sourceTree = "<group>"; };
-		55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaisePOI.swift; sourceTree = "<group>"; };
+		55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointOfInterest+Protocols.swift"; sourceTree = "<group>"; };
+		55F46B691FD488C3005B90BF /* PointOfInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointOfInterest.swift; sourceTree = "<group>"; };
 		55F46B6F1FD497FD005B90BF /* ListViewController+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListViewController+Actions.swift"; sourceTree = "<group>"; };
 		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
@@ -500,33 +496,24 @@
 			path = "ToOne Field";
 			sourceTree = "<group>";
 		};
-		555EB4D72067C94C009A6054 /* Types */ = {
+		555EB4DC2067CA55009A6054 /* Entry */ = {
 			isa = PBXGroup;
 			children = (
-				555EB4D82067C95A009A6054 /* EntryDate.swift */,
-				555EB4DA2067C9F6009A6054 /* EntryKind.swift */,
+				555EB4DD2067CA67009A6054 /* Entry.swift */,
+				555EB4DF2067CA97009A6054 /* Entry+Date.swift */,
+				555EB4E12067CAB0009A6054 /* Entry+Kind.swift */,
+				555EB4E32067CAD6009A6054 /* Entry+Requests.swift */,
+				555EB4E52067CB04009A6054 /* Entry+Protocols.swift */,
 			);
-			path = Types;
+			path = Entry;
 			sourceTree = "<group>";
 		};
-		555EB4DC2067CA55009A6054 /* SuperLachaiseEntry */ = {
+		555EB4E72067CB40009A6054 /* LocalizedEntry */ = {
 			isa = PBXGroup;
 			children = (
-				555EB4DD2067CA67009A6054 /* SuperLachaiseEntry.swift */,
-				555EB4DF2067CA97009A6054 /* SuperLachaiseEntry+Date.swift */,
-				555EB4E12067CAB0009A6054 /* SuperLachaiseEntry+Kind.swift */,
-				555EB4E32067CAD6009A6054 /* SuperLachaiseEntry+Requests.swift */,
-				555EB4E52067CB04009A6054 /* SuperLachaiseEntry+Protocols.swift */,
+				555EB4E82067CB50009A6054 /* LocalizedEntry.swift */,
 			);
-			path = SuperLachaiseEntry;
-			sourceTree = "<group>";
-		};
-		555EB4E72067CB40009A6054 /* SuperLachaiseLocalizedEntry */ = {
-			isa = PBXGroup;
-			children = (
-				555EB4E82067CB50009A6054 /* SuperLachaiseLocalizedEntry.swift */,
-			);
-			path = SuperLachaiseLocalizedEntry;
+			path = LocalizedEntry;
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -632,8 +619,8 @@
 				555CF554204AFEC3005CE48F /* WikidataCategory+MainWindowModel.swift */,
 				5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */,
 				555CF5412049F462005CE48F /* CommonsFile+MainWindowModel.swift */,
-				5570F9A41FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift */,
-				555EB4EC2067CCD6009A6054 /* SuperLachaiseEntry+MainWindowModel.swift */,
+				5570F9A41FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift */,
+				555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -703,7 +690,7 @@
 			isa = PBXGroup;
 			children = (
 				5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */,
-				5576A260206689C600F1FC9D /* SyncSuperLachaisePOIs.swift */,
+				5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */,
 			);
 			path = SuperLachaise;
 			sourceTree = "<group>";
@@ -946,11 +933,10 @@
 				555CF54B204AFD4A005CE48F /* WikidataCategory */,
 				5570F9AF1FEC4D71000DA3C9 /* WikipediaPage */,
 				555CF53A2049F280005CE48F /* CommonsFile */,
-				55F46B681FD488B4005B90BF /* SuperLachaisePOI */,
-				555EB4DC2067CA55009A6054 /* SuperLachaiseEntry */,
-				555EB4E72067CB40009A6054 /* SuperLachaiseLocalizedEntry */,
+				55F46B681FD488B4005B90BF /* PointOfInterest */,
+				555EB4DC2067CA55009A6054 /* Entry */,
+				555EB4E72067CB40009A6054 /* LocalizedEntry */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
-				555EB4D72067C94C009A6054 /* Types */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -974,14 +960,14 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
-		55F46B681FD488B4005B90BF /* SuperLachaisePOI */ = {
+		55F46B681FD488B4005B90BF /* PointOfInterest */ = {
 			isa = PBXGroup;
 			children = (
-				55F46B691FD488C3005B90BF /* SuperLachaisePOI.swift */,
-				55AB3DEB1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift */,
-				55E8A3AD1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift */,
+				55F46B691FD488C3005B90BF /* PointOfInterest.swift */,
+				55AB3DEB1FE091D90011AF47 /* PointOfInterest+Requests.swift */,
+				55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */,
 			);
-			path = SuperLachaisePOI;
+			path = PointOfInterest;
 			sourceTree = "<group>";
 		};
 		7228E91E82198F3E02A4CC6A /* Pods */ = {
@@ -1166,7 +1152,6 @@
 			files = (
 				55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */,
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
-				555EB4D92067C95A009A6054 /* EntryDate.swift in Sources */,
 				555CF551204AFDE4005CE48F /* WikidataCategory+Protocols.swift in Sources */,
 				5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
@@ -1182,11 +1167,11 @@
 				5570F9A91FEB2238000DA3C9 /* WikidataEntry+MainWindowModel.swift in Sources */,
 				555CF5402049F3CC005CE48F /* CommonsFile+Protocols.swift in Sources */,
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
-				55F46B6A1FD488C3005B90BF /* SuperLachaisePOI.swift in Sources */,
+				55F46B6A1FD488C3005B90BF /* PointOfInterest.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
 				5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */,
 				5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */,
-				555EB4E92067CB50009A6054 /* SuperLachaiseLocalizedEntry.swift in Sources */,
+				555EB4E92067CB50009A6054 /* LocalizedEntry.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
 				55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */,
 				555CF53C2049F28D005CE48F /* CommonsFile.swift in Sources */,
@@ -1198,11 +1183,11 @@
 				555CF54A204A0338005CE48F /* CommonsAPIImage.swift in Sources */,
 				55A8D24C1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift in Sources */,
 				555CF564204C156C005CE48F /* DetailViewImageItem.swift in Sources */,
-				555EB4ED2067CCD6009A6054 /* SuperLachaiseEntry+MainWindowModel.swift in Sources */,
+				555EB4ED2067CCD6009A6054 /* Entry+MainWindowModel.swift in Sources */,
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
 				5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */,
 				55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */,
-				555EB4E02067CA97009A6054 /* SuperLachaiseEntry+Date.swift in Sources */,
+				555EB4E02067CA97009A6054 /* Entry+Date.swift in Sources */,
 				555CF54D204AFD5C005CE48F /* WikidataCategory.swift in Sources */,
 				5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */,
 				55B537011FD3413800036FFC /* Listable.swift in Sources */,
@@ -1217,7 +1202,7 @@
 				55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */,
 				55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */,
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
-				55E8A3AE1FD8AED6000B6FC2 /* SuperLachaisePOI+Protocols.swift in Sources */,
+				55E8A3AE1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift in Sources */,
 				5570F9A11FEB1AB5000DA3C9 /* MainWindowController+Tasks.swift in Sources */,
 				5570F9C01FEC6ED3000DA3C9 /* SyncWikipediaPages.swift in Sources */,
 				55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */,
@@ -1235,12 +1220,12 @@
 				555CF548204A032B005CE48F /* CommonsGetImages.swift in Sources */,
 				5513EF741FE6DF2D00BD3A22 /* DetailViewFieldView.swift in Sources */,
 				55B536E71FD3230C00036FFC /* ListViewItem.swift in Sources */,
-				555EB4DE2067CA67009A6054 /* SuperLachaiseEntry.swift in Sources */,
+				555EB4DE2067CA67009A6054 /* Entry.swift in Sources */,
 				5570F9B11FEC4D7E000DA3C9 /* WikipediaPage.swift in Sources */,
 				55B365C71FE07FDB00EB84BD /* WikidataPropertyName.swift in Sources */,
 				5570F9A71FEB2205000DA3C9 /* OpenStreetMapElement+MainWindowModel.swift in Sources */,
 				5570F98F1FEAFB3C000DA3C9 /* ClickableTextField.swift in Sources */,
-				555EB4E62067CB04009A6054 /* SuperLachaiseEntry+Protocols.swift in Sources */,
+				555EB4E62067CB04009A6054 /* Entry+Protocols.swift in Sources */,
 				55B32E961FF25ADC00E97B70 /* TaskOperation.swift in Sources */,
 				55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */,
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
@@ -1249,7 +1234,7 @@
 				555CF56B204C5363005CE48F /* DetailViewToOneFieldView.swift in Sources */,
 				55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
-				555EB4E42067CAD6009A6054 /* SuperLachaiseEntry+Requests.swift in Sources */,
+				555EB4E42067CAD6009A6054 /* Entry+Requests.swift in Sources */,
 				555CF55A204B0286005CE48F /* DetailViewURLFieldItem.swift in Sources */,
 				5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */,
 				5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */,
@@ -1257,11 +1242,11 @@
 				555CF555204AFEC3005CE48F /* WikidataCategory+MainWindowModel.swift in Sources */,
 				555CF54F204AFDB3005CE48F /* WikidataCategory+Requests.swift in Sources */,
 				555CF558204B0234005CE48F /* DetailViewURLFieldView.swift in Sources */,
-				555EB4E22067CAB0009A6054 /* SuperLachaiseEntry+Kind.swift in Sources */,
+				555EB4E22067CAB0009A6054 /* Entry+Kind.swift in Sources */,
 				55B537071FD351C800036FFC /* Identifiable.swift in Sources */,
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
 				55609F9B203CC86C0060E3F9 /* APIEndpoint+Commons.swift in Sources */,
-				5570F9A51FEB21C5000DA3C9 /* SuperLachaisePOI+MainWindowModel.swift in Sources */,
+				5570F9A51FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift in Sources */,
 				5576A269206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
 				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
@@ -1277,7 +1262,6 @@
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
 				5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
-				555EB4DB2067C9F6009A6054 /* EntryKind.swift in Sources */,
 				5570F9BE1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift in Sources */,
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,
@@ -1288,13 +1272,13 @@
 				5570F9B71FEC5043000DA3C9 /* WikipediaPage+Protocols.swift in Sources */,
 				55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
-				55AB3DEC1FE091D90011AF47 /* SuperLachaisePOI+Requests.swift in Sources */,
+				55AB3DEC1FE091D90011AF47 /* PointOfInterest+Requests.swift in Sources */,
 				55B365971FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
 				555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
-				5576A261206689C600F1FC9D /* SyncSuperLachaisePOIs.swift in Sources */,
+				5576A261206689C600F1FC9D /* SyncPointsOfInterest.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				5570F9CD1FEDA00D000DA3C9 /* WikipediaAPIPage.swift in Sources */,

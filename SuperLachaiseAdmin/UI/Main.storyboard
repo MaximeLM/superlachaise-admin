@@ -347,10 +347,10 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="ktc-4z-QXD"/>
-                                        <menuItem title="SuperLachaise POIs" id="WZ3-3v-7hd">
+                                        <menuItem title="Points of interest" id="WZ3-3v-7hd">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="syncSuperLachaisePOIs:" target="Ady-hI-5gd" id="CEx-Rf-oZ2"/>
+                                                <action selector="syncPointsOfInterest:" target="Ady-hI-5gd" id="SDF-w9-JHT"/>
                                             </connections>
                                         </menuItem>
                                     </items>
