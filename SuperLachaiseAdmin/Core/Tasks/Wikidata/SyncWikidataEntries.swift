@@ -173,30 +173,30 @@ private extension SyncWikidataEntries {
         // Name
         wikidataEntry.name = wikidataEntry.localizations.first?.name
 
-        // Nature
-        let nature = wikidataEntryNature(wikidataEntity: wikidataEntity)
-        wikidataEntry.nature = nature
+        // Kind
+        let kind = wikidataEntryKind(wikidataEntity: wikidataEntity)
+        wikidataEntry.kind = kind
 
         // Secondary wikidata entries
-        let secondaryWikidataEntries = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, nature: nature)
+        let secondaryWikidataEntries = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
             .map { WikidataEntry.findOrCreate(wikidataId: $0)(realm) }
         wikidataEntry.secondaryWikidataEntries.replaceAll(objects: secondaryWikidataEntries)
 
         // Wikidata categories
-        let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, nature: nature)
+        let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, kind: kind)
             .map { WikidataCategory.findOrCreate(wikidataId: $0)(realm) }
         wikidataEntry.wikidataCategories.replaceAll(objects: wikidataCategories)
 
         // Image
-        let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, nature: nature)
-        if imageCommonsId == nil && (nature == .grave || nature == .monument) {
+        let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, kind: kind)
+        if imageCommonsId == nil && (kind == .grave || kind == .monument) {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
         }
         wikidataEntry.image = imageCommonsId.map { CommonsFile.findOrCreate(commonsId: $0)(realm) }
 
         // Image of grave
-        if nature == .person {
-            let imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity, nature: nature)
+        if kind == .person {
+            let imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity, kind: kind)
             if imageOfGraveCommonsId == nil {
                 Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
             }
@@ -205,14 +205,14 @@ private extension SyncWikidataEntries {
 
         // Dates
         wikidataEntry.dateOfBirth = try wikidataDate(
-            wikidataEntity: wikidataEntity, nature: nature, claim: .dateOfBirth)
+            wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfBirth)
         wikidataEntry.dateOfDeath = try wikidataDate(
-            wikidataEntity: wikidataEntity, nature: nature, claim: .dateOfDeath)
+            wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfDeath)
 
         return wikidataEntry
     }
 
-    func wikidataEntryNature(wikidataEntity: WikidataEntity) -> WikidataEntryNature? {
+    func wikidataEntryKind(wikidataEntity: WikidataEntity) -> EntryKind? {
         let instanceOfs = wikidataEntity.claims(.instanceOf)
             .flatMap { $0.mainsnak.entityName }
         for instanceOf in instanceOfs {
@@ -229,10 +229,10 @@ private extension SyncWikidataEntries {
         return nil
     }
 
-    func secondaryWikidataIds(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> [String] {
+    func secondaryWikidataIds(wikidataEntity: WikidataEntity, kind: EntryKind?) -> [String] {
         var secondaryWikidataNames: [WikidataEntityName] = []
 
-        if nature == .grave {
+        if kind == .grave {
             // Persons buried in the grave
             let entityNames = wikidataEntity.claims(.instanceOf)
                 .filter { claim in
@@ -246,7 +246,7 @@ private extension SyncWikidataEntries {
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
-        if nature == .monument {
+        if kind == .monument {
             // Subject of the monument
             let claims = [
                 wikidataEntity.claims(.commemorates),
@@ -267,10 +267,10 @@ private extension SyncWikidataEntries {
         return secondaryWikidataNames.map { $0.rawValue }.uniqueValues()
     }
 
-    func wikidataCategoriesIds(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> [String] {
+    func wikidataCategoriesIds(wikidataEntity: WikidataEntity, kind: EntryKind?) -> [String] {
         var wikidataCategoriesNames: [WikidataEntityName] = []
 
-        if nature == .person {
+        if kind == .person {
             let claims = [
                 wikidataEntity.claims(.occupation),
                 wikidataEntity.claims(.sexOrGender),
@@ -285,24 +285,24 @@ private extension SyncWikidataEntries {
     }
 
     func wikidataDate(wikidataEntity: WikidataEntity,
-                      nature: WikidataEntryNature?,
-                      claim: WikidataPropertyName) throws -> WikidataDate? {
-        guard nature == .person else {
+                      kind: EntryKind?,
+                      claim: WikidataPropertyName) throws -> EntryDate? {
+        guard kind == .person else {
             return nil
         }
         return try wikidataEntity.claims(claim)
             .flatMap { $0.mainsnak.timeValue }
             .max { $0.precision < $1.precision }
-            .map { try $0.wikidataDate() }
+            .map { try $0.entryDate() }
     }
 
-    func imageCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
+    func imageCommonsId(wikidataEntity: WikidataEntity, kind: EntryKind?) -> String? {
         return wikidataEntity.claims(.image)
             .flatMap { $0.mainsnak.stringValue }
             .first
     }
 
-    func imageOfGraveCommonsId(wikidataEntity: WikidataEntity, nature: WikidataEntryNature?) -> String? {
+    func imageOfGraveCommonsId(wikidataEntity: WikidataEntity, kind: EntryKind?) -> String? {
         return wikidataEntity.claims(.imageOfGrave)
             .flatMap { $0.mainsnak.stringValue }
             .first

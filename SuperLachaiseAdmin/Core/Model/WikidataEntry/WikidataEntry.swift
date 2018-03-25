@@ -13,7 +13,7 @@ final class WikidataEntry: Object {
     @objc dynamic var wikidataId: String = ""
 
     @objc dynamic var name: String?
-    @objc dynamic var rawNature = ""
+    @objc dynamic var rawKind = ""
 
     @objc dynamic var image: CommonsFile?
     @objc dynamic var imageOfGrave: CommonsFile? // for persons

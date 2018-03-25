@@ -57,6 +57,8 @@
 		555CF569204C5320005CE48F /* DetailViewToOneFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 555CF568204C5320005CE48F /* DetailViewToOneFieldView.xib */; };
 		555CF56B204C5363005CE48F /* DetailViewToOneFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF56A204C5363005CE48F /* DetailViewToOneFieldView.swift */; };
 		555CF56D204C53F4005CE48F /* DetailViewToOneFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555CF56C204C53F4005CE48F /* DetailViewToOneFieldItem.swift */; };
+		555EB4D92067C95A009A6054 /* EntryDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4D82067C95A009A6054 /* EntryDate.swift */; };
+		555EB4DB2067C9F6009A6054 /* EntryKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4DA2067C9F6009A6054 /* EntryKind.swift */; };
 		55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55605C061FC9C6120010BC5F /* AppDelegate.swift */; };
 		55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55605C0A1FC9C6120010BC5F /* Assets.xcassets */; };
 		55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55609F97203CC81E0060E3F9 /* TaskController+Commons.swift */; };
@@ -124,7 +126,7 @@
 		55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */; };
 		55B365B01FDDF93400EB84BD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365AF1FDDF93400EB84BD /* Task.swift */; };
 		55B365BA1FE071CE00EB84BD /* WikidataLocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */; };
-		55B365C01FE07D7D00EB84BD /* WikidataEntry+Nature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365BF1FE07D7D00EB84BD /* WikidataEntry+Nature.swift */; };
+		55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */; };
 		55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */; };
 		55B365C71FE07FDB00EB84BD /* WikidataPropertyName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365C61FE07FDB00EB84BD /* WikidataPropertyName.swift */; };
 		55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B536E41FD31C6800036FFC /* MainWindowController.swift */; };
@@ -204,6 +206,8 @@
 		555CF568204C5320005CE48F /* DetailViewToOneFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToOneFieldView.xib; sourceTree = "<group>"; };
 		555CF56A204C5363005CE48F /* DetailViewToOneFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToOneFieldView.swift; sourceTree = "<group>"; };
 		555CF56C204C53F4005CE48F /* DetailViewToOneFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToOneFieldItem.swift; sourceTree = "<group>"; };
+		555EB4D82067C95A009A6054 /* EntryDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDate.swift; sourceTree = "<group>"; };
+		555EB4DA2067C9F6009A6054 /* EntryKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryKind.swift; sourceTree = "<group>"; };
 		55605C031FC9C6120010BC5F /* SuperLachaiseAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperLachaiseAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55605C061FC9C6120010BC5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55605C0A1FC9C6120010BC5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -273,7 +277,7 @@
 		55B365AD1FDDF38000EB84BD /* WikidataClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataClaim.swift; sourceTree = "<group>"; };
 		55B365AF1FDDF93400EB84BD /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		55B365B91FE071CE00EB84BD /* WikidataLocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataLocalizedEntry.swift; sourceTree = "<group>"; };
-		55B365BF1FE07D7D00EB84BD /* WikidataEntry+Nature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Nature.swift"; sourceTree = "<group>"; };
+		55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataEntry+Kind.swift"; sourceTree = "<group>"; };
 		55B365C41FE07E7F00EB84BD /* WikidataEntityName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataEntityName.swift; sourceTree = "<group>"; };
 		55B365C61FE07FDB00EB84BD /* WikidataPropertyName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataPropertyName.swift; sourceTree = "<group>"; };
 		55B536E41FD31C6800036FFC /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
@@ -480,6 +484,15 @@
 				555CF568204C5320005CE48F /* DetailViewToOneFieldView.xib */,
 			);
 			path = "ToOne Field";
+			sourceTree = "<group>";
+		};
+		555EB4D72067C94C009A6054 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				555EB4D82067C95A009A6054 /* EntryDate.swift */,
+				555EB4DA2067C9F6009A6054 /* EntryKind.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 		55605BFA1FC9C6120010BC5F = {
@@ -720,7 +733,7 @@
 			children = (
 				55B3658A1FDDAE7A00EB84BD /* WikidataEntry.swift */,
 				55AB3E081FE32A500011AF47 /* WikidataEntry+Date.swift */,
-				55B365BF1FE07D7D00EB84BD /* WikidataEntry+Nature.swift */,
+				55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */,
 				55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */,
 				55B3658C1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift */,
 			);
@@ -900,6 +913,7 @@
 				555CF53A2049F280005CE48F /* CommonsFile */,
 				55F46B681FD488B4005B90BF /* SuperLachaisePOI */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
+				555EB4D72067C94C009A6054 /* Types */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1115,6 +1129,7 @@
 			files = (
 				55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */,
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
+				555EB4D92067C95A009A6054 /* EntryDate.swift in Sources */,
 				555CF551204AFDE4005CE48F /* WikidataCategory+Protocols.swift in Sources */,
 				5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
@@ -1209,7 +1224,7 @@
 				5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,
 				55B3658D1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift in Sources */,
-				55B365C01FE07D7D00EB84BD /* WikidataEntry+Nature.swift in Sources */,
+				55B365C01FE07D7D00EB84BD /* WikidataEntry+Kind.swift in Sources */,
 				555CF5422049F462005CE48F /* CommonsFile+MainWindowModel.swift in Sources */,
 				55B536E51FD31C6800036FFC /* MainWindowController.swift in Sources */,
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
@@ -1218,6 +1233,7 @@
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
 				5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
+				555EB4DB2067C9F6009A6054 /* EntryKind.swift in Sources */,
 				5570F9BE1FEC6E26000DA3C9 /* APIEndpoint+Wikipedia.swift in Sources */,
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,

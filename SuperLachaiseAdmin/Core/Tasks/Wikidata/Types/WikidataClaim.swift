@@ -125,7 +125,7 @@ struct WikidataClaimTimeValue: Decodable {
         return date
     }
 
-    func wikidataDatePrecision() throws -> WikidataDatePrecision {
+    func datePrecision() throws -> EntryDate.Precision {
         switch precision {
         case 9:
             return .year
@@ -138,8 +138,8 @@ struct WikidataClaimTimeValue: Decodable {
         }
     }
 
-    func wikidataDate() throws -> WikidataDate {
-        return WikidataDate(date: try date(), precision: try wikidataDatePrecision())
+    func entryDate() throws -> EntryDate {
+        return EntryDate(date: try date(), precision: try datePrecision())
     }
 
 }

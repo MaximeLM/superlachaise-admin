@@ -17,7 +17,7 @@ extension WikidataEntry: MainWindowModelType {
             ],
             localizationsFields(),
             [
-                DetailViewFieldItem(name: "Nature", value: nature),
+                DetailViewFieldItem(name: "Kind", value: kind),
                 DetailViewFieldItem(name: "Date of birth", value: dateOfBirth),
                 DetailViewFieldItem(name: "Date of death", value: dateOfDeath),
             ],
