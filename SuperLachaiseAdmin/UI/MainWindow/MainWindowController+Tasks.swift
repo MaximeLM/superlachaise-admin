@@ -44,4 +44,8 @@ extension MainWindowController {
         taskController.syncPointsOfInterest()
     }
 
+    @IBAction func syncEntries(_ sender: Any?) {
+        taskController.syncEntries()
+    }
+
 }

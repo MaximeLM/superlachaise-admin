@@ -153,6 +153,7 @@
 		55CB47FC1FCCDB02003F3610 /* OpenStreetMapElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */; };
 		55CB47FE1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */; };
 		55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB48021FCCE4C0003F3610 /* Errors.swift */; };
+		55DB6B392067D2D900698430 /* SyncEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DB6B382067D2D900698430 /* SyncEntries.swift */; };
 		55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */; };
 		55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */; };
 		55E8A3AE1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */; };
@@ -309,6 +310,7 @@
 		55CB47FB1FCCDB02003F3610 /* OpenStreetMapElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapElement.swift; sourceTree = "<group>"; };
 		55CB47FD1FCCDDEC003F3610 /* OpenStreetMapElement+Id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Id.swift"; sourceTree = "<group>"; };
 		55CB48021FCCE4C0003F3610 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		55DB6B382067D2D900698430 /* SyncEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEntries.swift; sourceTree = "<group>"; };
 		55E8A3A91FD8A9EE000B6FC2 /* OpenableInBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenableInBrowser.swift; sourceTree = "<group>"; };
 		55E8A3AB1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenStreetMapElement+Protocols.swift"; sourceTree = "<group>"; };
 		55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointOfInterest+Protocols.swift"; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 			children = (
 				5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */,
 				5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */,
+				55DB6B382067D2D900698430 /* SyncEntries.swift */,
 			);
 			path = SuperLachaise;
 			sourceTree = "<group>";
@@ -1227,6 +1230,7 @@
 				5570F98F1FEAFB3C000DA3C9 /* ClickableTextField.swift in Sources */,
 				555EB4E62067CB04009A6054 /* Entry+Protocols.swift in Sources */,
 				55B32E961FF25ADC00E97B70 /* TaskOperation.swift in Sources */,
+				55DB6B392067D2D900698430 /* SyncEntries.swift in Sources */,
 				55B365AC1FDDF33C00EB84BD /* WikidataEntity.swift in Sources */,
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,

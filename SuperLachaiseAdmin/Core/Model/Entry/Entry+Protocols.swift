@@ -44,7 +44,7 @@ extension Entry: Identifiable, Deletable, Listable, Syncable {
     // MARK: Syncable
 
     func sync(taskController: TaskController) {
-        //taskController.syncWikidataEntry(self)
+        taskController.syncEntry(self)
     }
 
 }
