@@ -10,16 +10,12 @@ import Foundation
 extension TaskController {
 
     func syncSuperLachaisePOIs() {
-        let task = SyncSuperLachaisePOIs(scope: .all, config: config.superLachaise)
+        let task = SyncSuperLachaisePOIs(scope: .all)
         enqueue(task)
     }
 
     func syncSuperLachaisePOI(_ superLachaisePOI: SuperLachaisePOI) {
-        guard let superLachaiseId = superLachaisePOI.superLachaiseId else {
-            return
-        }
-        let task = SyncSuperLachaisePOIs(scope: .single(superLachaiseId: superLachaiseId),
-                                         config: config.superLachaise)
+        let task = SyncSuperLachaisePOIs(scope: .single(id: superLachaisePOI.id))
         enqueue(task)
     }
 

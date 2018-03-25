@@ -16,14 +16,14 @@ final class SyncSuperLachaisePOIs: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(superLachaiseId: SuperLachaiseId)
+        case single(id: String)
 
         var description: String {
             switch self {
             case .all:
                 return "all"
-            case let .single(superLachaiseId):
-                return superLachaiseId.description
+            case let .single(id):
+                return id
             }
         }
 
@@ -31,11 +31,8 @@ final class SyncSuperLachaisePOIs: Task {
 
     let scope: Scope
 
-    let config: SuperLachaiseConfig
-
-    init(scope: Scope, config: SuperLachaiseConfig) {
+    init(scope: Scope) {
         self.scope = scope
-        self.config = config
     }
 
     var description: String {
@@ -63,18 +60,15 @@ private extension SyncSuperLachaisePOIs {
 
     func superLachaisePOIs(realm: Realm) -> [SuperLachaisePOI] {
         let superLachaisePOIs = openStreetMapElements(realm: realm)
-            .flatMap { openStreetMapElement -> [SuperLachaisePOI] in
+            .flatMap { openStreetMapElement -> SuperLachaisePOI? in
                 guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
                     Logger.warning(
                         "\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata entry; skipping")
-                    return []
+                    return nil
                 }
-                return config.languages.flatMap { language in
-                    superLachaisePOI(openStreetMapElement: openStreetMapElement,
-                                     wikidataEntry: wikidataEntry,
-                                     language: language,
-                                     realm: realm)
-                }
+                return superLachaisePOI(openStreetMapElement: openStreetMapElement,
+                                        wikidataEntry: wikidataEntry,
+                                        realm: realm)
             }
 
         let crossReference = Dictionary(grouping: superLachaisePOIs, by: { $0 })
@@ -94,48 +88,16 @@ private extension SyncSuperLachaisePOIs {
         switch self.scope {
         case .all:
             return Array(OpenStreetMapElement.all()(realm))
-        case let .single(superLachaiseId):
+        case let .single(id):
             return Array(realm.objects(OpenStreetMapElement.self)
-                .filter("deleted == false && wikidataEntry.wikidataId == %@", superLachaiseId.wikidataId))
+                .filter("deleted == false && wikidataEntry.wikidataId == %@", id))
         }
-    }
-
-    func superLachaisePOIs(result: [SuperLachaisePOI],
-                           openStreetMapElement: OpenStreetMapElement,
-                           realm: Realm) -> [SuperLachaisePOI] {
-        var result = result
-        guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
-            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata entry; skipping")
-            return result
-        }
-
-        for language in config.languages {
-            if let superLachaisePOI = self.superLachaisePOI(
-                openStreetMapElement: openStreetMapElement,
-                wikidataEntry: wikidataEntry,
-                language: language,
-                realm: realm) {
-                if let index = result.index(where: { $0.superLachaiseId == superLachaisePOI.superLachaiseId }) {
-                    Logger.warning("""
-                    \(SuperLachaisePOI.self) \(superLachaisePOI) is referenced by multiple OpenStreetMap elements; \
-                    skipping
-                    """)
-                    result.remove(at: index)
-                } else {
-                    result.append(superLachaisePOI)
-                }
-            }
-        }
-
-        return result
     }
 
     func superLachaisePOI(openStreetMapElement: OpenStreetMapElement,
                           wikidataEntry: WikidataEntry,
-                          language: String,
                           realm: Realm) -> SuperLachaisePOI? {
-        let superLachaiseId = SuperLachaiseId(language: language, wikidataId: wikidataEntry.wikidataId)
-        let superLachaisePOI = SuperLachaisePOI.findOrCreate(superLachaiseId: superLachaiseId)(realm)
+        let superLachaisePOI = SuperLachaisePOI.findOrCreate(id: wikidataEntry.wikidataId)(realm)
         superLachaisePOI.deleted = false
 
         superLachaisePOI.name = openStreetMapElement.name

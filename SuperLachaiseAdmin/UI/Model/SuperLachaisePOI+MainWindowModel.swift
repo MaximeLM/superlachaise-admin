@@ -13,8 +13,7 @@ extension SuperLachaisePOI: MainWindowModelType {
         return DetailViewModel(self, items: [
             [
                 DetailViewFieldItem(name: "Name", value: name),
-                DetailViewFieldItem(name: "Language", value: superLachaiseId?.language),
-                DetailViewFieldItem(name: "Wikidata ID", value: superLachaiseId?.wikidataId),
+                DetailViewFieldItem(name: "ID", value: id),
             ],
             [
                 DetailViewFieldItem(name: "Latitude", value: latitude),

@@ -346,6 +346,7 @@
                                                 <action selector="syncCommonsFiles:" target="Ady-hI-5gd" id="nC5-KC-n8c"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="ktc-4z-QXD"/>
                                         <menuItem title="SuperLachaise POIs" id="WZ3-3v-7hd">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

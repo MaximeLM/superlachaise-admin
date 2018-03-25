@@ -10,8 +10,8 @@ import RealmSwift
 
 final class SuperLachaisePOI: Object {
 
-    // Serialized as language/wikidataId
-    @objc dynamic var rawSuperLachaiseId: String = ""
+    // Wikidata ID is used (more stable than OpenStreetMap ID)
+    @objc dynamic var id: String = ""
 
     @objc dynamic var latitude: Double = 0
     @objc dynamic var longitude: Double = 0
@@ -22,11 +22,11 @@ final class SuperLachaisePOI: Object {
     @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {
-        return "rawSuperLachaiseId"
+        return "id"
     }
 
     override var description: String {
-        return [name, superLachaiseId?.language, superLachaiseId?.wikidataId]
+        return [name, id]
             .flatMap { $0 }
             .joined(separator: " - ")
     }
