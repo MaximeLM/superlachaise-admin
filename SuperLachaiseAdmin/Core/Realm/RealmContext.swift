@@ -39,6 +39,8 @@ final class RealmContext {
             deleteFlaggedObjects(type: WikidataCategory.self, realm: realm)
             deleteFlaggedObjects(type: WikipediaPage.self, realm: realm)
             deleteFlaggedObjects(type: CommonsFile.self, realm: realm)
+            deleteFlaggedObjects(type: SuperLachaisePOI.self, realm: realm)
+            deleteFlaggedObjects(type: SuperLachaiseEntry.self, realm: realm)
         }
     }
 

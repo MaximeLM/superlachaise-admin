@@ -50,6 +50,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                 realm: self.realm, filter: self.filter),
             ListViewObjectListItem<SuperLachaisePOI>(baseText: "SuperLachaise POIs",
                                                      realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<SuperLachaiseEntry>(baseText: "SuperLachaise entries",
+                                                       realm: self.realm, filter: self.filter),
         ]
     }()
 
