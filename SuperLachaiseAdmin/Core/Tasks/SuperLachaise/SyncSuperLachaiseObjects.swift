@@ -112,39 +112,44 @@ private extension SyncSuperLachaiseObjects {
         pointOfInterest.latitude = openStreetMapElement.latitude
         pointOfInterest.longitude = openStreetMapElement.longitude
 
-        guard let kind = wikidataEntry.kind else {
+        guard wikidataEntry.kind != nil else {
             Logger.warning(
                 "\(WikidataEntry.self) \(wikidataEntry) for main entry has no kind; skipping")
             return nil
         }
 
-        switch kind {
-        case .person:
-            guard let mainEntry = entry(wikidataEntry: wikidataEntry, realm: realm) else {
-                pointOfInterest.deleted = true
-                return nil
+        let isMainEntryInteresting = wikidataEntry.isInteresting()
+        let interestingSecondaryEntries = Array(wikidataEntry.secondaryWikidataEntries.filter { $0.isInteresting() })
+
+        let mainWikidataEntry: WikidataEntry
+        let secondaryWikidataEntries: [WikidataEntry]
+        if wikidataEntry.kind == .grave && !isMainEntryInteresting && interestingSecondaryEntries.count == 1 {
+            mainWikidataEntry = interestingSecondaryEntries[0]
+            secondaryWikidataEntries = []
+            Logger.info("Skipping \(wikidataEntry) for interesting secondary entry \(mainWikidataEntry)")
+        } else {
+            mainWikidataEntry = wikidataEntry
+            secondaryWikidataEntries = interestingSecondaryEntries.isEmpty
+                ? Array(wikidataEntry.secondaryWikidataEntries)
+                : interestingSecondaryEntries
+            if !isMainEntryInteresting && interestingSecondaryEntries.isEmpty {
+                Logger.warning("Main \(WikidataEntry.self) \(wikidataEntry) is not interesting")
             }
-            pointOfInterest.mainEntry = mainEntry
-            pointOfInterest.secondaryEntries.removeAll()
-        case .grave:
-            guard let mainEntry = entry(wikidataEntry: wikidataEntry, realm: realm) else {
-                pointOfInterest.deleted = true
-                return nil
-            }
-            pointOfInterest.mainEntry = mainEntry
-            pointOfInterest.secondaryEntries.removeAll()
-            pointOfInterest.secondaryEntries.append(objectsIn: wikidataEntry.secondaryWikidataEntries
-                .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
-        case .monument:
-            guard let mainEntry = entry(wikidataEntry: wikidataEntry, realm: realm) else {
-                pointOfInterest.deleted = true
-                return nil
-            }
-            pointOfInterest.mainEntry = mainEntry
-            pointOfInterest.secondaryEntries.removeAll()
-            pointOfInterest.secondaryEntries.append(objectsIn: wikidataEntry.secondaryWikidataEntries
-                .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
+            wikidataEntry.secondaryWikidataEntries
+                .filter { !secondaryWikidataEntries.contains($0) }
+                .forEach {
+                    Logger.warning("Secondary \(WikidataEntry.self) \($0) is not interesting; skipping")
+                }
         }
+
+        guard let mainEntry = entry(wikidataEntry: mainWikidataEntry, realm: realm) else {
+            pointOfInterest.deleted = true
+            return nil
+        }
+        pointOfInterest.mainEntry = mainEntry
+        pointOfInterest.secondaryEntries.removeAll()
+        pointOfInterest.secondaryEntries.append(objectsIn: secondaryWikidataEntries
+            .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
 
         return pointOfInterest
     }
@@ -193,6 +198,17 @@ private extension SyncSuperLachaiseObjects {
         }
 
         return entry
+    }
+
+}
+
+private extension WikidataEntry {
+
+    func isInteresting() -> Bool {
+        // An entry is interesting if it has a Wikipedia page on at least one localization
+        return !localizations
+            .flatMap { $0.wikipediaPage }
+            .isEmpty
     }
 
 }

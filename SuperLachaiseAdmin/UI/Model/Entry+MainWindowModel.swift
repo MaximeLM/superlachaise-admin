@@ -29,6 +29,7 @@ extension Entry: MainWindowModelType {
             DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
                 DetailViewFieldItem(name: "Name", value: $0.name),
                 DetailViewFieldItem(name: "Description", value: $0.summary),
+                DetailViewFieldItem(name: "Default sort", value: $0.defaultSort),
                 DetailViewFieldItem(name: "Wikipedia title", value: $0.wikipediaTitle),
                 DetailViewHTMLFieldItem(name: "Wikipedia extract", value: $0.wikipediaExtract),
                 DetailViewFieldItem(name: "Wikipedia extract (raw)", value: $0.wikipediaExtract),
