@@ -193,7 +193,12 @@ private extension SyncWikipediaPages {
         }
 
         // Remove trailing white lines and empty paragraphs
-        while let line = lines.last, ["", "<p></p>"].contains(line.trimmingCharacters(in: .whitespaces)) {
+        let emptyLines = [
+            "",
+            "<p></p>",
+            "<p><br></p>",
+        ]
+        while let line = lines.last, emptyLines.contains(line.trimmingCharacters(in: .whitespaces)) {
             lines.removeLast()
         }
 
