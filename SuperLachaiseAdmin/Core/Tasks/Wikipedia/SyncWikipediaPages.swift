@@ -205,7 +205,17 @@ private extension SyncWikipediaPages {
         guard !lines.isEmpty else {
             return nil
         }
-        return lines.joined(separator: "\n")
+        var extract = lines.joined(separator: "\n")
+
+        // Remove unwanted strings
+        let unwantedStrings = [
+            "<sup class=\"reference cite_virgule\">,</sup>",
+        ]
+        for string in unwantedStrings {
+            extract = extract.replacingOccurrences(of: string, with: "")
+        }
+
+        return extract
     }
 
     func defaultSort(wikipediaAPIPage: WikipediaAPIPage) -> String? {
