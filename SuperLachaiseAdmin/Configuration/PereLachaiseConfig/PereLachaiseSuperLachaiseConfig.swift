@@ -9,6 +9,4 @@ import Foundation
 
 struct PereLachaiseSuperLachaiseConfig: SuperLachaiseConfig {
 
-    let languages: [String] = ["fr", "en"]
-
 }

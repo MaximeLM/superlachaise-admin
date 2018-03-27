@@ -24,6 +24,7 @@ final class Entry: Object {
     let localizations = LinkingObjects(fromType: LocalizedEntry.self, property: "entry")
     let mainEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "mainEntry")
     let secondayEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "secondaryEntries")
+    @objc dynamic var image: CommonsFile?
 
     @objc dynamic var deleted = false
 

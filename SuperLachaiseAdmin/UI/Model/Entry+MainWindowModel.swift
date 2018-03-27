@@ -12,6 +12,7 @@ extension Entry: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
+                DetailViewImageItem(url: image?.thumbnailURL(height: 400)),
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: wikidataId),
             ],
@@ -19,6 +20,9 @@ extension Entry: MainWindowModelType {
                 DetailViewFieldItem(name: "Kind", value: kind),
                 DetailViewFieldItem(name: "Date of birth", value: dateOfBirth),
                 DetailViewFieldItem(name: "Date of death", value: dateOfDeath),
+            ],
+            [
+                DetailViewToOneFieldItem(name: "Image", value: image),
             ],
             localizationsFields(),
         ])

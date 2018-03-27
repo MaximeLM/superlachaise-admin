@@ -105,16 +105,12 @@ private extension SyncSuperLachaiseObjects {
     func pointOfInterest(openStreetMapElement: OpenStreetMapElement,
                          wikidataEntry: WikidataEntry,
                          realm: Realm) -> PointOfInterest? {
-        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
-        pointOfInterest.deleted = false
-
-        pointOfInterest.name = openStreetMapElement.name
-        pointOfInterest.latitude = openStreetMapElement.latitude
-        pointOfInterest.longitude = openStreetMapElement.longitude
-
-        guard wikidataEntry.kind != nil else {
-            Logger.warning(
-                "\(WikidataEntry.self) \(wikidataEntry) for main entry has no kind; skipping")
+        guard let kind = wikidataEntry.kind else {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) for main entry has no kind; skipping")
+            return nil
+        }
+        guard let image = (kind == .person) ? wikidataEntry.imageOfGrave : wikidataEntry.image else {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) for main entry has no image; skipping")
             return nil
         }
 
@@ -123,7 +119,7 @@ private extension SyncSuperLachaiseObjects {
 
         let mainWikidataEntry: WikidataEntry
         let secondaryWikidataEntries: [WikidataEntry]
-        if wikidataEntry.kind == .grave && !isMainEntryInteresting && interestingSecondaryEntries.count == 1 {
+        if kind == .grave && !isMainEntryInteresting && interestingSecondaryEntries.count == 1 {
             mainWikidataEntry = interestingSecondaryEntries[0]
             secondaryWikidataEntries = []
             Logger.info("Skipping \(wikidataEntry) for interesting secondary entry \(mainWikidataEntry)")
@@ -143,13 +139,21 @@ private extension SyncSuperLachaiseObjects {
         }
 
         guard let mainEntry = entry(wikidataEntry: mainWikidataEntry, realm: realm) else {
-            pointOfInterest.deleted = true
             return nil
         }
+
+        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
+        pointOfInterest.deleted = false
+
+        pointOfInterest.name = openStreetMapElement.name
+        pointOfInterest.latitude = openStreetMapElement.latitude
+        pointOfInterest.longitude = openStreetMapElement.longitude
+
         pointOfInterest.mainEntry = mainEntry
         pointOfInterest.secondaryEntries.removeAll()
         pointOfInterest.secondaryEntries.append(objectsIn: secondaryWikidataEntries
             .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
+        pointOfInterest.image = image
 
         return pointOfInterest
     }
@@ -157,13 +161,11 @@ private extension SyncSuperLachaiseObjects {
     func entry(wikidataEntry: WikidataEntry, realm: Realm) -> Entry? {
         if wikidataEntry.kind == .person {
             guard wikidataEntry.dateOfBirth != nil else {
-                Logger.warning(
-                    "\(WikidataEntry.self) \(wikidataEntry) has no date of birth; skipping")
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no date of birth; skipping")
                 return nil
             }
             guard wikidataEntry.dateOfDeath != nil else {
-                Logger.warning(
-                    "\(WikidataEntry.self) \(wikidataEntry) has no date of death; skipping")
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no date of death; skipping")
                 return nil
             }
         }
@@ -176,16 +178,16 @@ private extension SyncSuperLachaiseObjects {
         entry.dateOfBirth = wikidataEntry.dateOfBirth
         entry.dateOfDeath = wikidataEntry.dateOfDeath
 
+        entry.image = wikidataEntry.image
+
         wikidataEntry.localizations.forEach { wikidataLocalizedEntry in
             let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
             guard let name = wikidataLocalizedEntry.name else {
-                Logger.warning(
-                    "\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no name; skipping")
+                Logger.warning("\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no name; skipping")
                 return
             }
             guard let summary = wikidataLocalizedEntry.summary else {
-                Logger.warning(
-                    "\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no summary; skipping")
+                Logger.warning("\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no summary; skipping")
                 return
             }
 

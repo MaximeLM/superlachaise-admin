@@ -21,6 +21,7 @@ final class PointOfInterest: Object {
 
     @objc dynamic var mainEntry: Entry?
     let secondaryEntries = List<Entry>()
+    @objc dynamic var image: CommonsFile?
 
     @objc dynamic var deleted = false
 

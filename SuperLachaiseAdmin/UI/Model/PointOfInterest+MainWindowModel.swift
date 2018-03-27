@@ -12,6 +12,7 @@ extension PointOfInterest: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
+                DetailViewImageItem(url: image?.thumbnailURL(height: 400)),
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: id),
             ],
@@ -22,6 +23,7 @@ extension PointOfInterest: MainWindowModelType {
             [
                 DetailViewToOneFieldItem(name: "Main entry", value: mainEntry),
                 DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)),
+                DetailViewToOneFieldItem(name: "Image", value: image),
             ],
         ])
     }

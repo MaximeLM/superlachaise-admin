@@ -9,6 +9,4 @@ import Foundation
 
 protocol SuperLachaiseConfig {
 
-    var languages: [String] { get }
-
 }
