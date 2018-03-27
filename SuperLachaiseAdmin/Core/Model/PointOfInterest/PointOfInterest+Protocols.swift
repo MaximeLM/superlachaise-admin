@@ -43,7 +43,7 @@ extension PointOfInterest: Identifiable, Deletable, Listable, Syncable {
     // MARK: Syncable
 
     func sync(taskController: TaskController) {
-        taskController.syncPointOfInterest(self)
+        taskController.syncSuperLachaiseObject(pointOfInterest: self)
     }
 
 }

@@ -19,6 +19,9 @@ final class PointOfInterest: Object {
     // For debugging (not localized)
     @objc dynamic var name: String?
 
+    @objc dynamic var mainEntry: Entry?
+    let secondaryEntries = List<Entry>()
+
     @objc dynamic var deleted = false
 
     override static func primaryKey() -> String {

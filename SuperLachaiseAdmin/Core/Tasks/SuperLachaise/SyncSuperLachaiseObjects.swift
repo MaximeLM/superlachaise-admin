@@ -1,5 +1,5 @@
 //
-//  SyncPointsOfInterest.swift
+//  SyncSuperLachaiseObjects.swift
 //  SuperLachaiseAdmin
 //
 //  Created by Maxime Le Moine on 24/03/2018.
@@ -11,7 +11,7 @@ import Foundation
 import RealmSwift
 import RxSwift
 
-final class SyncPointsOfInterest: Task {
+final class SyncSuperLachaiseObjects: Task {
 
     enum Scope: CustomStringConvertible {
 
@@ -44,21 +44,31 @@ final class SyncPointsOfInterest: Task {
     func asSingle() -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                let pointsOfInterest = self.pointsOfInterest(realm: realm)
-                self.deleteOrphans(syncedObjects: pointsOfInterest, realm: realm)
+                self.prepareOrphans(realm: realm)
+                self.syncPointsOfInterest(realm: realm)
             }
         }
     }
 
     // MARK: Private properties
 
-    private let realmDispatchQueue = DispatchQueue(label: "SyncPointsOfInterest.realm")
+    private let realmDispatchQueue = DispatchQueue(label: "SyncSuperLachaiseObjects.realm")
 
 }
 
-private extension SyncPointsOfInterest {
+private extension SyncSuperLachaiseObjects {
 
-    func pointsOfInterest(realm: Realm) -> [PointOfInterest] {
+    func prepareOrphans(realm: Realm) {
+        switch self.scope {
+        case .all:
+            PointOfInterest.all()(realm).setValue(true, forKey: "deleted")
+            Entry.all()(realm).setValue(true, forKey: "deleted")
+        case .single:
+            break
+        }
+    }
+
+    func syncPointsOfInterest(realm: Realm) {
         let pointsOfInterest = openStreetMapElements(realm: realm)
             .flatMap { openStreetMapElement -> PointOfInterest? in
                 guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
@@ -78,10 +88,8 @@ private extension SyncPointsOfInterest {
                 \(PointOfInterest.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
                 skipping
                 """)
+            duplicate.key.deleted = true
         }
-
-        return pointsOfInterest
-            .filter { !duplicates.keys.contains($0) }
     }
 
     func openStreetMapElements(realm: Realm) -> [OpenStreetMapElement] {
@@ -105,26 +113,6 @@ private extension SyncPointsOfInterest {
         pointOfInterest.longitude = openStreetMapElement.longitude
 
         return pointOfInterest
-    }
-
-    // MARK: Orphans
-
-    func deleteOrphans(syncedObjects: [PointOfInterest], realm: Realm) {
-        // List existing objects
-        var orphanedObjects: Set<PointOfInterest>
-        switch scope {
-        case .all:
-            orphanedObjects = Set(PointOfInterest.all()(realm))
-        case .single:
-            orphanedObjects = Set()
-        }
-
-        orphanedObjects = orphanedObjects.filter { !syncedObjects.contains($0) }
-
-        if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.deleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(PointOfInterest.self)(s) for deletion")
-        }
     }
 
 }

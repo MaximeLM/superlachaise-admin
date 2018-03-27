@@ -93,7 +93,7 @@
 		5570F9D41FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */; };
 		5570F9D51FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */; };
 		5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */; };
-		5576A261206689C600F1FC9D /* SyncPointsOfInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */; };
+		5576A261206689C600F1FC9D /* SyncSuperLachaiseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */; };
 		5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */; };
 		5576A267206697AC00F1FC9D /* SuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */; };
 		5576A269206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */; };
@@ -249,7 +249,7 @@
 		5570F9D11FEE8B32000DA3C9 /* DetailViewHTMLFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewHTMLFieldView.xib; sourceTree = "<group>"; };
 		5570F9D21FEE8B32000DA3C9 /* DetailViewHTMLFieldItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldItem.swift; sourceTree = "<group>"; };
 		5570F9D31FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewHTMLFieldView.swift; sourceTree = "<group>"; };
-		5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncPointsOfInterest.swift; sourceTree = "<group>"; };
+		5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSuperLachaiseObjects.swift; sourceTree = "<group>"; };
 		5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+SuperLachaise.swift"; sourceTree = "<group>"; };
 		5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaiseConfig.swift; sourceTree = "<group>"; };
 		5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseSuperLachaiseConfig.swift; sourceTree = "<group>"; };
@@ -690,7 +690,7 @@
 			isa = PBXGroup;
 			children = (
 				5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */,
-				5576A260206689C600F1FC9D /* SyncPointsOfInterest.swift */,
+				5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */,
 			);
 			path = SuperLachaise;
 			sourceTree = "<group>";
@@ -1278,7 +1278,7 @@
 				555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
-				5576A261206689C600F1FC9D /* SyncPointsOfInterest.swift in Sources */,
+				5576A261206689C600F1FC9D /* SyncSuperLachaiseObjects.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				5570F9CD1FEDA00D000DA3C9 /* WikipediaAPIPage.swift in Sources */,

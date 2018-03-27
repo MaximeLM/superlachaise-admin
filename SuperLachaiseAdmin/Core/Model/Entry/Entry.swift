@@ -22,6 +22,8 @@ final class Entry: Object {
     @objc dynamic var rawDateOfDeathPrecision = ""
 
     let localizations = LinkingObjects(fromType: LocalizedEntry.self, property: "entry")
+    let mainEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "mainEntry")
+    let secondayEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "secondaryEntries")
 
     @objc dynamic var deleted = false
 

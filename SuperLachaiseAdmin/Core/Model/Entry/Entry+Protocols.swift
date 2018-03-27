@@ -44,7 +44,13 @@ extension Entry: Identifiable, Deletable, Listable, Syncable {
     // MARK: Syncable
 
     func sync(taskController: TaskController) {
-        //taskController.syncWikidataEntry(self)
+        if let pointOfInterest = mainEntryOf.first {
+            taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
+        } else if let pointOfInterest = secondayEntryOf.first {
+            taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
+        } else {
+            Logger.info("\(Entry.self) \(self) has no point of interest")
+        }
     }
 
 }
