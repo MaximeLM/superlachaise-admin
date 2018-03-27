@@ -353,12 +353,6 @@
                                                 <action selector="syncPointsOfInterest:" target="Ady-hI-5gd" id="SDF-w9-JHT"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Entries" id="2lu-ll-Ols">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="syncEntries:" target="Ady-hI-5gd" id="JQJ-l2-9Eh"/>
-                                            </connections>
-                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

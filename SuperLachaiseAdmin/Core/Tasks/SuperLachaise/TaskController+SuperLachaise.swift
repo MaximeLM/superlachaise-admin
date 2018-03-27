@@ -19,14 +19,4 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncEntries() {
-        let task = SyncEntries(scope: .all)
-        enqueue(task)
-    }
-
-    func syncEntry(_ entry: Entry) {
-        let task = SyncEntries(scope: .single(wikidataId: entry.wikidataId))
-        enqueue(task)
-    }
-
 }
