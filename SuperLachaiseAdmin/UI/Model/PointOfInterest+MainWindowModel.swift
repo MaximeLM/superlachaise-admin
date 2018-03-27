@@ -19,6 +19,10 @@ extension PointOfInterest: MainWindowModelType {
                 DetailViewFieldItem(name: "Latitude", value: latitude),
                 DetailViewFieldItem(name: "Longitude", value: longitude),
             ],
+            [
+                DetailViewToOneFieldItem(name: "Main entry", value: mainEntry),
+                DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)),
+            ],
         ])
     }
 

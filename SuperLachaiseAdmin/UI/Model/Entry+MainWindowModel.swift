@@ -15,12 +15,12 @@ extension Entry: MainWindowModelType {
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: wikidataId),
             ],
-            localizationsFields(),
             [
                 DetailViewFieldItem(name: "Kind", value: kind),
                 DetailViewFieldItem(name: "Date of birth", value: dateOfBirth),
                 DetailViewFieldItem(name: "Date of death", value: dateOfDeath),
             ],
+            localizationsFields(),
         ])
     }
 
@@ -29,8 +29,9 @@ extension Entry: MainWindowModelType {
             DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
                 DetailViewFieldItem(name: "Name", value: $0.name),
                 DetailViewFieldItem(name: "Description", value: $0.summary),
-                DetailViewHTMLFieldItem(name: "Extract", value: $0.wikipediaExtract),
-                DetailViewFieldItem(name: "Extract (raw)", value: $0.wikipediaExtract),
+                DetailViewFieldItem(name: "Wikipedia title", value: $0.wikipediaTitle),
+                DetailViewHTMLFieldItem(name: "Wikipedia extract", value: $0.wikipediaExtract),
+                DetailViewFieldItem(name: "Wikipedia extract (raw)", value: $0.wikipediaExtract),
             ])
         }
     }

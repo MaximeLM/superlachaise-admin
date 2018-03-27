@@ -112,7 +112,87 @@ private extension SyncSuperLachaiseObjects {
         pointOfInterest.latitude = openStreetMapElement.latitude
         pointOfInterest.longitude = openStreetMapElement.longitude
 
+        guard let kind = wikidataEntry.kind else {
+            Logger.warning(
+                "\(WikidataEntry.self) \(wikidataEntry) for main entry has no kind; skipping")
+            return nil
+        }
+
+        switch kind {
+        case .person:
+            guard let mainEntry = entry(wikidataEntry: wikidataEntry, realm: realm) else {
+                pointOfInterest.deleted = true
+                return nil
+            }
+            pointOfInterest.mainEntry = mainEntry
+            pointOfInterest.secondaryEntries.removeAll()
+        case .grave:
+            guard let mainEntry = entry(wikidataEntry: wikidataEntry, realm: realm) else {
+                pointOfInterest.deleted = true
+                return nil
+            }
+            pointOfInterest.mainEntry = mainEntry
+            pointOfInterest.secondaryEntries.removeAll()
+            pointOfInterest.secondaryEntries.append(objectsIn: wikidataEntry.secondaryWikidataEntries
+                .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
+        case .monument:
+            guard let mainEntry = entry(wikidataEntry: wikidataEntry, realm: realm) else {
+                pointOfInterest.deleted = true
+                return nil
+            }
+            pointOfInterest.mainEntry = mainEntry
+            pointOfInterest.secondaryEntries.removeAll()
+            pointOfInterest.secondaryEntries.append(objectsIn: wikidataEntry.secondaryWikidataEntries
+                .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
+        }
+
         return pointOfInterest
+    }
+
+    func entry(wikidataEntry: WikidataEntry, realm: Realm) -> Entry? {
+        if wikidataEntry.kind == .person {
+            guard wikidataEntry.dateOfBirth != nil else {
+                Logger.warning(
+                    "\(WikidataEntry.self) \(wikidataEntry) has no date of birth; skipping")
+                return nil
+            }
+            guard wikidataEntry.dateOfDeath != nil else {
+                Logger.warning(
+                    "\(WikidataEntry.self) \(wikidataEntry) has no date of death; skipping")
+                return nil
+            }
+        }
+
+        let entry = Entry.findOrCreate(wikidataId: wikidataEntry.wikidataId)(realm)
+        entry.deleted = false
+
+        entry.name = wikidataEntry.name
+        entry.kind = wikidataEntry.kind
+        entry.dateOfBirth = wikidataEntry.dateOfBirth
+        entry.dateOfDeath = wikidataEntry.dateOfDeath
+
+        wikidataEntry.localizations.forEach { wikidataLocalizedEntry in
+            let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
+            guard let name = wikidataLocalizedEntry.name else {
+                Logger.warning(
+                    "\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no name; skipping")
+                return
+            }
+            guard let summary = wikidataLocalizedEntry.summary else {
+                Logger.warning(
+                    "\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no summary; skipping")
+                return
+            }
+
+            let localizedEntry = entry.findOrCreateLocalization(language: wikidataLocalizedEntry.language)(realm)
+            localizedEntry.name = name
+            localizedEntry.summary = summary
+            localizedEntry.defaultSort = wikipediaPage?.defaultSort ?? name
+            localizedEntry.wikipediaTitle = wikipediaPage?.wikipediaId?.title
+            localizedEntry.wikipediaExtract = wikipediaPage?.extract
+        }
+
+        return entry
     }
 
 }

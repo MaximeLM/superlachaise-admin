@@ -12,8 +12,11 @@ final class LocalizedEntry: Object {
 
     @objc dynamic var language: String = ""
 
-    @objc dynamic var name: String?
-    @objc dynamic var summary: String?
+    @objc dynamic var name = ""
+    @objc dynamic var summary = ""
+    @objc dynamic var defaultSort = ""
+
+    @objc dynamic var wikipediaTitle: String?
     @objc dynamic var wikipediaExtract: String?
 
     @objc dynamic var entry: Entry?
