@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol WikidataConfig {
+struct WikidataConfig: Decodable {
 
-    var languages: [String] { get }
+    let languages: [String]
 
-    var customSecondaryWikidataIds: [WikidataEntityName: [WikidataEntityName]] { get }
+    let customSecondaryWikidataIds: [String: [String]]
 
 }

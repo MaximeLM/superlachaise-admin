@@ -96,15 +96,12 @@
 		5576A261206689C600F1FC9D /* SyncSuperLachaiseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */; };
 		5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */; };
 		5576A267206697AC00F1FC9D /* SuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */; };
-		5576A269206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
 		55A8D2431FCF5BA500BB00BC /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2421FCF5BA500BB00BC /* Config.swift */; };
 		55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2441FCF5C3A00BB00BC /* OpenStreetMapConfig.swift */; };
 		55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2481FCF5D9D00BB00BC /* BoundingBox.swift */; };
-		55A8D24C1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D24B1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift */; };
-		55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D24D1FCF5F0100BB00BC /* PereLachaiseConfig.swift */; };
 		55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2501FCF5F9C00BB00BC /* TaskController.swift */; };
 		55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */; };
 		55AB3DEC1FE091D90011AF47 /* PointOfInterest+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB3DEB1FE091D90011AF47 /* PointOfInterest+Requests.swift */; };
@@ -123,7 +120,6 @@
 		55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365901FDDB23300EB84BD /* APIEndpoint+Wikidata.swift */; };
 		55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365921FDDB28800EB84BD /* TaskController+Wikidata.swift */; };
 		55B365951FDDB33E00EB84BD /* WikidataConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365941FDDB33E00EB84BD /* WikidataConfig.swift */; };
-		55B365971FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365961FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift */; };
 		55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365981FDDB5E400EB84BD /* SyncWikidataEntries.swift */; };
 		55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */; };
 		55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */; };
@@ -164,6 +160,7 @@
 		55F59683206C1B530078D5F0 /* Category+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59682206C1B530078D5F0 /* Category+Protocols.swift */; };
 		55F59685206C1B990078D5F0 /* SyncCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59684206C1B990078D5F0 /* SyncCategories.swift */; };
 		55F59687206C1CE00078D5F0 /* Category+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */; };
+		55F59689206C1EBA0078D5F0 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55F59688206C1EBA0078D5F0 /* Config.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -258,15 +255,12 @@
 		5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSuperLachaiseObjects.swift; sourceTree = "<group>"; };
 		5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+SuperLachaise.swift"; sourceTree = "<group>"; };
 		5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaiseConfig.swift; sourceTree = "<group>"; };
-		5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseSuperLachaiseConfig.swift; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
 		55A8D2421FCF5BA500BB00BC /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		55A8D2441FCF5C3A00BB00BC /* OpenStreetMapConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStreetMapConfig.swift; sourceTree = "<group>"; };
 		55A8D2481FCF5D9D00BB00BC /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
-		55A8D24B1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseOpenStreetMapConfig.swift; sourceTree = "<group>"; };
-		55A8D24D1FCF5F0100BB00BC /* PereLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseConfig.swift; sourceTree = "<group>"; };
 		55A8D2501FCF5F9C00BB00BC /* TaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskController.swift; sourceTree = "<group>"; };
 		55A8D2521FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+OpenStreetMap.swift"; sourceTree = "<group>"; };
 		55AB3DEB1FE091D90011AF47 /* PointOfInterest+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointOfInterest+Requests.swift"; sourceTree = "<group>"; };
@@ -285,7 +279,6 @@
 		55B365901FDDB23300EB84BD /* APIEndpoint+Wikidata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIEndpoint+Wikidata.swift"; sourceTree = "<group>"; };
 		55B365921FDDB28800EB84BD /* TaskController+Wikidata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+Wikidata.swift"; sourceTree = "<group>"; };
 		55B365941FDDB33E00EB84BD /* WikidataConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataConfig.swift; sourceTree = "<group>"; };
-		55B365961FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PereLachaiseWikidataConfig.swift; sourceTree = "<group>"; };
 		55B365981FDDB5E400EB84BD /* SyncWikidataEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWikidataEntries.swift; sourceTree = "<group>"; };
 		55B365A01FDDDB0F00EB84BD /* OverpassGetElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassGetElements.swift; sourceTree = "<group>"; };
 		55B365A21FDDDFEE00EB84BD /* WikidataGetEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikidataGetEntities.swift; sourceTree = "<group>"; };
@@ -326,6 +319,7 @@
 		55F59682206C1B530078D5F0 /* Category+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+Protocols.swift"; sourceTree = "<group>"; };
 		55F59684206C1B990078D5F0 /* SyncCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCategories.swift; sourceTree = "<group>"; };
 		55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+MainWindowModel.swift"; sourceTree = "<group>"; };
+		55F59688206C1EBA0078D5F0 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -551,11 +545,12 @@
 			isa = PBXGroup;
 			children = (
 				55605C061FC9C6120010BC5F /* AppDelegate.swift */,
-				55B3658E1FDDB1E500EB84BD /* Configuration */,
+				55B365831FDD9EA900EB84BD /* AppContainer.swift */,
 				5570F9891FEAF9A9000DA3C9 /* Core */,
 				55B897DD1FC9D15F00FC4EF6 /* UI */,
 				55605C0A1FC9C6120010BC5F /* Assets.xcassets */,
 				55605C0F1FC9C6120010BC5F /* Info.plist */,
+				55F59688206C1EBA0078D5F0 /* Config.plist */,
 			);
 			path = SuperLachaiseAdmin;
 			sourceTree = "<group>";
@@ -739,17 +734,6 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
-		55A8D24A1FCF5E3B00BB00BC /* PereLachaiseConfig */ = {
-			isa = PBXGroup;
-			children = (
-				55A8D24D1FCF5F0100BB00BC /* PereLachaiseConfig.swift */,
-				55A8D24B1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift */,
-				55B365961FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift */,
-				5576A268206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift */,
-			);
-			path = PereLachaiseConfig;
-			sourceTree = "<group>";
-		};
 		55A8D24F1FCF5F8000BB00BC /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
@@ -776,15 +760,6 @@
 				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 			);
 			path = WikidataEntry;
-			sourceTree = "<group>";
-		};
-		55B3658E1FDDB1E500EB84BD /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				55B365831FDD9EA900EB84BD /* AppContainer.swift */,
-				55A8D24A1FCF5E3B00BB00BC /* PereLachaiseConfig */,
-			);
-			path = Configuration;
 			sourceTree = "<group>";
 		};
 		55B3658F1FDDB21500EB84BD /* Wikidata */ = {
@@ -1089,6 +1064,7 @@
 				5513EF8A1FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib in Resources */,
 				555CF560204C1453005CE48F /* DetailViewImageView.xib in Resources */,
 				5513EF851FE6F2EA00BD3A22 /* DetailViewSeparatorView.xib in Resources */,
+				55F59689206C1EBA0078D5F0 /* Config.plist in Resources */,
 				555CF55C204B02D5005CE48F /* DetailViewURLFieldView.xib in Resources */,
 				5513EF6B1FE6C6CB00BD3A22 /* DetailViewURLView.xib in Resources */,
 				5513EF761FE6DF5D00BD3A22 /* DetailViewFieldView.xib in Resources */,
@@ -1218,12 +1194,10 @@
 				555CF566204C1728005CE48F /* CommonsFile+Size.swift in Sources */,
 				5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */,
 				555CF54A204A0338005CE48F /* CommonsAPIImage.swift in Sources */,
-				55A8D24C1FCF5E5000BB00BC /* PereLachaiseOpenStreetMapConfig.swift in Sources */,
 				555CF564204C156C005CE48F /* DetailViewImageItem.swift in Sources */,
 				555EB4ED2067CCD6009A6054 /* Entry+MainWindowModel.swift in Sources */,
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
 				5570F9D61FEE8B32000DA3C9 /* DetailViewHTMLFieldView.swift in Sources */,
-				55A8D24E1FCF5F0100BB00BC /* PereLachaiseConfig.swift in Sources */,
 				555EB4E02067CA97009A6054 /* Entry+Date.swift in Sources */,
 				555CF54D204AFD5C005CE48F /* WikidataCategory.swift in Sources */,
 				5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */,
@@ -1285,7 +1259,6 @@
 				55B365B01FDDF93400EB84BD /* Task.swift in Sources */,
 				55609F9B203CC86C0060E3F9 /* APIEndpoint+Commons.swift in Sources */,
 				5570F9A51FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift in Sources */,
-				5576A269206697CD00F1FC9D /* PereLachaiseSuperLachaiseConfig.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
 				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
 				5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */,
@@ -1313,7 +1286,6 @@
 				55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				55AB3DEC1FE091D90011AF47 /* PointOfInterest+Requests.swift in Sources */,
-				55B365971FDDB36100EB84BD /* PereLachaiseWikidataConfig.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
 				555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,

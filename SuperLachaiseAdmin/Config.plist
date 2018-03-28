@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>openStreetMap</key>
+	<dict>
+		<key>boundingBox</key>
+		<array>
+			<real>48.8575</real>
+			<real>2.3877</real>
+			<real>48.8649</real>
+			<real>2.4006</real>
+		</array>
+		<key>fetchedTags</key>
+		<array>
+			<string>historic=tomb</string>
+			<string>historic=memorial</string>
+		</array>
+		<key>ignoredElements</key>
+		<array>
+			<string>node/1688357881</string>
+			<string>node/5058142865</string>
+			<string>node/5058142866</string>
+			<string>node/5220080010</string>
+			<string>node/5220080011</string>
+			<string>node/5220085953</string>
+			<string>node/5221404534</string>
+		</array>
+	</dict>
+	<key>wikidata</key>
+	<dict>
+		<key>languages</key>
+		<array>
+			<string>fr</string>
+			<string>en</string>
+		</array>
+		<key>customSecondaryWikidataIds</key>
+		<dict>
+			<key>Q15860323</key>
+			<array>
+				<string>Q16204221</string>
+			</array>
+		</dict>
+	</dict>
+	<key>superLachaise</key>
+	<dict>
+		<key>categories</key>
+		<array/>
+	</dict>
+</dict>
+</plist>

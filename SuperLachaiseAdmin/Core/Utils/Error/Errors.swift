@@ -12,7 +12,8 @@ func assertIsMainThread() {
 }
 
 enum Errors: Error {
-
     case notImplemented
-
+    case invalidBoundingBox([Double])
+    case invalidInvalidOpenStreetMapId(String)
+    case configNotFound
 }

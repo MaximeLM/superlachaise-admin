@@ -7,12 +7,39 @@
 
 import Foundation
 
-protocol OpenStreetMapConfig {
+struct OpenStreetMapConfig: Decodable {
 
-    var boundingBox: BoundingBox { get }
+    let boundingBox: BoundingBox
 
-    var fetchedTags: [String] { get }
+    let fetchedTags: [String]
 
-    var ignoredElements: [OpenStreetMapId] { get }
+    let ignoredElements: [OpenStreetMapId]
+
+}
+
+extension BoundingBox: Decodable {
+
+    init(from decoder: Decoder) throws {
+        let coordinates = try decoder.singleValueContainer().decode([Double].self)
+        guard coordinates.count == 4 else {
+            throw Errors.invalidBoundingBox(coordinates)
+        }
+        self.init(minLatitude: coordinates[0],
+                  minLongitude: coordinates[1],
+                  maxLatitude: coordinates[2],
+                  maxLongitude: coordinates[3])
+    }
+
+}
+
+extension OpenStreetMapId: Decodable {
+
+    init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        guard let openStreetMapId = OpenStreetMapId(rawValue: rawValue) else {
+            throw Errors.invalidInvalidOpenStreetMapId(rawValue)
+        }
+        self = openStreetMapId
+    }
 
 }

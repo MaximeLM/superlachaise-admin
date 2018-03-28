@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol Config {
+struct Config: Decodable {
 
-    var openStreetMap: OpenStreetMapConfig { get }
-    var wikidata: WikidataConfig { get }
-    var superLachaise: SuperLachaiseConfig { get }
+    let openStreetMap: OpenStreetMapConfig
+    let wikidata: WikidataConfig
+    let superLachaise: SuperLachaiseConfig
 
 }

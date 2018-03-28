@@ -259,9 +259,9 @@ private extension SyncWikidataEntries {
         }
 
         // Custom secondary entries
-        let wikidataEntityName = WikidataEntityName(rawValue: wikidataEntity.id)
-        if let customSecondaryWikidataIds = config.customSecondaryWikidataIds[wikidataEntityName] {
-            secondaryWikidataNames.append(contentsOf: customSecondaryWikidataIds)
+        if let customSecondaryWikidataIds = config.customSecondaryWikidataIds[wikidataEntity.id] {
+            let customSecondaryWikidataNames = customSecondaryWikidataIds.map { WikidataEntityName(rawValue: $0) }
+            secondaryWikidataNames.append(contentsOf: customSecondaryWikidataNames)
         }
 
         return secondaryWikidataNames.map { $0.rawValue }.uniqueValues()

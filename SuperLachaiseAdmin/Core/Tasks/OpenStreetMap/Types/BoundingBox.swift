@@ -7,4 +7,9 @@
 
 import Foundation
 
-typealias BoundingBox = (minLatitude: Double, minLongitude: Double, maxLatitude: Double, maxLongitude: Double)
+struct BoundingBox {
+    let minLatitude: Double
+    let minLongitude: Double
+    let maxLatitude: Double
+    let maxLongitude: Double
+}
