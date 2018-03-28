@@ -38,6 +38,7 @@ final class RealmContext {
             deleteFlaggedObjects(type: WikidataCategory.self, realm: realm)
             deleteFlaggedObjects(type: WikipediaPage.self, realm: realm)
             deleteFlaggedObjects(type: CommonsFile.self, realm: realm)
+            deleteFlaggedObjects(type: Category.self, realm: realm)
             deleteFlaggedObjects(type: PointOfInterest.self, realm: realm)
             deleteFlaggedObjects(type: Entry.self, realm: realm)
         }

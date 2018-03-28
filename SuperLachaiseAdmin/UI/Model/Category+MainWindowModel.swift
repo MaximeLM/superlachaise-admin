@@ -15,14 +15,15 @@ extension Category: MainWindowModelType {
                 DetailViewFieldItem(name: "ID", value: id),
             ],
             localizationsFields(),
+            [
+                DetailViewToManyFieldItem(name: "Wikidata categories", value: Array(wikidataCategories)),
+            ],
         ])
     }
 
-    private func localizationsFields() -> [DetailViewInlineFieldItem] {
+    private func localizationsFields() -> [DetailViewFieldItem] {
         return localizations.map {
-            DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
-                DetailViewFieldItem(name: "Name", value: $0.name),
-            ])
+            DetailViewFieldItem(name: "Name: \($0.language)", value: $0.name)
         }
     }
 
