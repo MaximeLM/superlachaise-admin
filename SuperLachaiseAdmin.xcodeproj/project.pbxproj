@@ -158,6 +158,12 @@
 		55E8A3AE1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */; };
 		55F46B6A1FD488C3005B90BF /* PointOfInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B691FD488C3005B90BF /* PointOfInterest.swift */; };
 		55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F46B6F1FD497FD005B90BF /* ListViewController+Actions.swift */; };
+		55F5967D206C1A4D0078D5F0 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5967C206C1A4D0078D5F0 /* Category.swift */; };
+		55F5967F206C1A740078D5F0 /* LocalizedCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5967E206C1A740078D5F0 /* LocalizedCategory.swift */; };
+		55F59681206C1B0B0078D5F0 /* Category+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59680206C1B0B0078D5F0 /* Category+Requests.swift */; };
+		55F59683206C1B530078D5F0 /* Category+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59682206C1B530078D5F0 /* Category+Protocols.swift */; };
+		55F59685206C1B990078D5F0 /* SyncCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59684206C1B990078D5F0 /* SyncCategories.swift */; };
+		55F59687206C1CE00078D5F0 /* Category+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -314,6 +320,12 @@
 		55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointOfInterest+Protocols.swift"; sourceTree = "<group>"; };
 		55F46B691FD488C3005B90BF /* PointOfInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointOfInterest.swift; sourceTree = "<group>"; };
 		55F46B6F1FD497FD005B90BF /* ListViewController+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListViewController+Actions.swift"; sourceTree = "<group>"; };
+		55F5967C206C1A4D0078D5F0 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		55F5967E206C1A740078D5F0 /* LocalizedCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedCategory.swift; sourceTree = "<group>"; };
+		55F59680206C1B0B0078D5F0 /* Category+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+Requests.swift"; sourceTree = "<group>"; };
+		55F59682206C1B530078D5F0 /* Category+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+Protocols.swift"; sourceTree = "<group>"; };
+		55F59684206C1B990078D5F0 /* SyncCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCategories.swift; sourceTree = "<group>"; };
+		55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+MainWindowModel.swift"; sourceTree = "<group>"; };
 		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -504,6 +516,7 @@
 				555EB4E12067CAB0009A6054 /* Entry+Kind.swift */,
 				555EB4E32067CAD6009A6054 /* Entry+Requests.swift */,
 				555EB4E52067CB04009A6054 /* Entry+Protocols.swift */,
+				555EB4E72067CB40009A6054 /* LocalizedEntry */,
 			);
 			path = Entry;
 			sourceTree = "<group>";
@@ -619,6 +632,7 @@
 				555CF554204AFEC3005CE48F /* WikidataCategory+MainWindowModel.swift */,
 				5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */,
 				555CF5412049F462005CE48F /* CommonsFile+MainWindowModel.swift */,
+				55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */,
 				5570F9A41FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift */,
 				555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */,
 			);
@@ -690,6 +704,7 @@
 			isa = PBXGroup;
 			children = (
 				5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */,
+				55F59684206C1B990078D5F0 /* SyncCategories.swift */,
 				5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */,
 			);
 			path = SuperLachaise;
@@ -758,6 +773,7 @@
 				55B365BF1FE07D7D00EB84BD /* WikidataEntry+Kind.swift */,
 				55AB3DEF1FE094430011AF47 /* WikidataEntry+Requests.swift */,
 				55B3658C1FDDAEC800EB84BD /* WikidataEntry+Protocols.swift */,
+				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 			);
 			path = WikidataEntry;
 			sourceTree = "<group>";
@@ -929,13 +945,12 @@
 			children = (
 				55CB47FA1FCCDAEC003F3610 /* OpenStreetMapElement */,
 				55B365891FDDAE6600EB84BD /* WikidataEntry */,
-				55B365B81FE071BE00EB84BD /* WikidataLocalizedEntry */,
 				555CF54B204AFD4A005CE48F /* WikidataCategory */,
 				5570F9AF1FEC4D71000DA3C9 /* WikipediaPage */,
 				555CF53A2049F280005CE48F /* CommonsFile */,
+				55F5967A206C1A170078D5F0 /* Category */,
 				55F46B681FD488B4005B90BF /* PointOfInterest */,
 				555EB4DC2067CA55009A6054 /* Entry */,
-				555EB4E72067CB40009A6054 /* LocalizedEntry */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
 			);
 			path = Model;
@@ -968,6 +983,25 @@
 				55E8A3AD1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift */,
 			);
 			path = PointOfInterest;
+			sourceTree = "<group>";
+		};
+		55F5967A206C1A170078D5F0 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				55F5967C206C1A4D0078D5F0 /* Category.swift */,
+				55F59680206C1B0B0078D5F0 /* Category+Requests.swift */,
+				55F59682206C1B530078D5F0 /* Category+Protocols.swift */,
+				55F5967B206C1A270078D5F0 /* LocalizedCategory */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		55F5967B206C1A270078D5F0 /* LocalizedCategory */ = {
+			isa = PBXGroup;
+			children = (
+				55F5967E206C1A740078D5F0 /* LocalizedCategory.swift */,
+			);
+			path = LocalizedCategory;
 			sourceTree = "<group>";
 		};
 		7228E91E82198F3E02A4CC6A /* Pods */ = {
@@ -1151,9 +1185,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */,
+				55F59687206C1CE00078D5F0 /* Category+MainWindowModel.swift in Sources */,
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
 				555CF551204AFDE4005CE48F /* WikidataCategory+Protocols.swift in Sources */,
 				5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */,
+				55F59685206C1B990078D5F0 /* SyncCategories.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
 				5570F9B91FEC5755000DA3C9 /* Syncable.swift in Sources */,
 				5513EF711FE6D76100BD3A22 /* NSTextField+HTML.swift in Sources */,
@@ -1169,6 +1205,7 @@
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
 				55F46B6A1FD488C3005B90BF /* PointOfInterest.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
+				55F5967F206C1A740078D5F0 /* LocalizedCategory.swift in Sources */,
 				5513EF901FE708B400BD3A22 /* NoScrollView.swift in Sources */,
 				5513EF5E1FE6BD3A00BD3A22 /* NSNib+Instantiate.swift in Sources */,
 				555EB4E92067CB50009A6054 /* LocalizedEntry.swift in Sources */,
@@ -1233,6 +1270,7 @@
 				555CF53E2049F387005CE48F /* CommonsFile+Requests.swift in Sources */,
 				555CF56B204C5363005CE48F /* DetailViewToOneFieldView.swift in Sources */,
 				55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */,
+				55F5967D206C1A4D0078D5F0 /* Category.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
 				555EB4E42067CAD6009A6054 /* Entry+Requests.swift in Sources */,
 				555CF55A204B0286005CE48F /* DetailViewURLFieldItem.swift in Sources */,
@@ -1267,6 +1305,8 @@
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
 				55348638204CB3550036143D /* DetailViewToManyFieldButton.swift in Sources */,
+				55F59683206C1B530078D5F0 /* Category+Protocols.swift in Sources */,
+				55F59681206C1B0B0078D5F0 /* Category+Requests.swift in Sources */,
 				5513EF871FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift in Sources */,
 				5513EF421FE4998C00BD3A22 /* DetailViewController.swift in Sources */,
 				5570F9B71FEC5043000DA3C9 /* WikipediaPage+Protocols.swift in Sources */,

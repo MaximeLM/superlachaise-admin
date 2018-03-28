@@ -16,7 +16,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
         self.realm = realm
     }
 
-    var filter: String = "" {
+    var filter = "" {
         didSet {
             _children.forEach { $0.filter = filter }
         }
@@ -26,7 +26,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
 
     let identifier: String = "RootListViewItem"
 
-    let text: String = ""
+    let text = ""
 
     var children: [ListViewItem]? {
         return _children
@@ -48,6 +48,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                   realm: self.realm, filter: self.filter),
             ListViewObjectListItem<CommonsFile>(baseText: "Commons files",
                                                 realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<Category>(baseText: "Categories",
+                                             realm: self.realm, filter: self.filter),
             ListViewObjectListItem<PointOfInterest>(baseText: "Points of interest",
                                                     realm: self.realm, filter: self.filter),
             ListViewObjectListItem<Entry>(baseText: "Entries",

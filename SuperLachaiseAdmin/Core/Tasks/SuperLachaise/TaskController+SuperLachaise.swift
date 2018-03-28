@@ -9,6 +9,16 @@ import Foundation
 
 extension TaskController {
 
+    func syncCategories() {
+        let task = SyncCategories(scope: .all, config: config.superLachaise)
+        enqueue(task)
+    }
+
+    func syncCategory(_ category: Category) {
+        let task = SyncCategories(scope: .single(id: category.id), config: config.superLachaise)
+        enqueue(task)
+    }
+
     func syncSuperLachaiseObjects() {
         let task = SyncSuperLachaiseObjects(scope: .all)
         enqueue(task)

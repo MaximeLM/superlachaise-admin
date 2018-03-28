@@ -15,6 +15,9 @@ extension WikidataCategory: MainWindowModelType {
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: wikidataId),
             ],
+            [
+                DetailViewToManyFieldItem(name: "Categories", value: Array(categories)),
+            ],
         ])
     }
 

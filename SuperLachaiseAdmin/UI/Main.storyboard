@@ -347,6 +347,12 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="ktc-4z-QXD"/>
+                                        <menuItem title="Categories" id="WR3-ls-mrR">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="syncCategories:" target="Ady-hI-5gd" id="QU6-mE-Ug3"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="SuperLachaise objects" id="WZ3-3v-7hd">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

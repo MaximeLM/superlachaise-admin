@@ -40,6 +40,10 @@ extension MainWindowController {
         taskController.syncCommonsFiles()
     }
 
+    @IBAction func syncCategories(_ sender: Any?) {
+        taskController.syncCategories()
+    }
+
     @IBAction func syncSuperLachaiseObjects(_ sender: Any?) {
         taskController.syncSuperLachaiseObjects()
     }

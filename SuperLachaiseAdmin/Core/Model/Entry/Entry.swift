@@ -10,7 +10,7 @@ import RealmSwift
 
 final class Entry: Object {
 
-    @objc dynamic var wikidataId: String = ""
+    @objc dynamic var wikidataId = ""
 
     @objc dynamic var name: String?
     @objc dynamic var rawKind = ""

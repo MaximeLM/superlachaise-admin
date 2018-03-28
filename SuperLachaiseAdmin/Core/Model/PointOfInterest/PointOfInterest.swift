@@ -11,7 +11,7 @@ import RealmSwift
 final class PointOfInterest: Object {
 
     // Wikidata ID is used (more stable than OpenStreetMap ID)
-    @objc dynamic var id: String = ""
+    @objc dynamic var id = ""
 
     @objc dynamic var latitude: Double = 0
     @objc dynamic var longitude: Double = 0

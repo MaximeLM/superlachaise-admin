@@ -10,7 +10,7 @@ import RealmSwift
 
 final class WikidataLocalizedEntry: Object {
 
-    @objc dynamic var language: String = ""
+    @objc dynamic var language = ""
 
     @objc dynamic var name: String?
     @objc dynamic var summary: String?

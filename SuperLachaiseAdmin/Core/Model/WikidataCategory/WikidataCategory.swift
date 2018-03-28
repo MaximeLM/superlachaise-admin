@@ -10,9 +10,11 @@ import RealmSwift
 
 final class WikidataCategory: Object {
 
-    @objc dynamic var wikidataId: String = ""
+    @objc dynamic var wikidataId = ""
 
     @objc dynamic var name: String?
+
+    let categories = List<Category>()
 
     @objc dynamic var deleted = false
 

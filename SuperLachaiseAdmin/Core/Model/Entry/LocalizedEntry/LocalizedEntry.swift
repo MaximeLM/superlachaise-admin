@@ -10,7 +10,7 @@ import RealmSwift
 
 final class LocalizedEntry: Object {
 
-    @objc dynamic var language: String = ""
+    @objc dynamic var language = ""
 
     @objc dynamic var name = ""
     @objc dynamic var summary = ""
