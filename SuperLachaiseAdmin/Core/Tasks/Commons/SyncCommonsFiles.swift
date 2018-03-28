@@ -110,7 +110,7 @@ private extension SyncCommonsFiles {
         }
         let commonsId = String(commonsAPIImage.title.dropFirst(5))
         let commonsFile = CommonsFile.findOrCreate(commonsId: commonsId)(realm)
-        commonsFile.deleted = false
+        commonsFile.isDeleted = false
 
         guard let imageInfo = commonsAPIImage.imageinfo?.first else {
             throw SyncCommonsFilesError.missingImageInfo
@@ -198,7 +198,7 @@ private extension SyncCommonsFiles {
         orphanedObjects = orphanedObjects.filter { !fetchedCommonsIds.contains($0.commonsId) }
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.deleted = true }
+            orphanedObjects.forEach { $0.isDeleted = true }
             Logger.info("Flagged \(orphanedObjects.count) \(CommonsFile.self)(s) for deletion")
         }
     }

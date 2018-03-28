@@ -18,6 +18,8 @@ final class WikidataLocalizedEntry: Object {
 
     @objc dynamic var wikidataEntry: WikidataEntry?
 
+    @objc dynamic var isDeleted = false
+
     override var description: String {
         return [name, language]
             .flatMap { $0 }

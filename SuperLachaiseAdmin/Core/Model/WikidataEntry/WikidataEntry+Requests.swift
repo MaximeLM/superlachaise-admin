@@ -12,7 +12,7 @@ extension WikidataEntry {
 
     static func all() -> (Realm) -> Results<WikidataEntry> {
         return { realm in
-            realm.objects(WikidataEntry.self).filter("deleted == false")
+            realm.objects(WikidataEntry.self).filter("isDeleted == false")
         }
     }
 

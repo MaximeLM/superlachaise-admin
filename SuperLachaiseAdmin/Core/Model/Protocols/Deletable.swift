@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import RealmSwift
 
-protocol Deletable {
+protocol Deletable: RealmCollectionValue {
 
-    var deleted: Bool { get set }
+    var isDeleted: Bool { get set }
 
     func delete()
+
+    static func deleted() -> (Realm) -> Results<Self>
 
 }

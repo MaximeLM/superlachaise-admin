@@ -61,8 +61,8 @@ private extension SyncSuperLachaiseObjects {
     func prepareOrphans(realm: Realm) {
         switch self.scope {
         case .all:
-            PointOfInterest.all()(realm).setValue(true, forKey: "deleted")
-            Entry.all()(realm).setValue(true, forKey: "deleted")
+            PointOfInterest.all()(realm).setValue(true, forKey: "isDeleted")
+            Entry.all()(realm).setValue(true, forKey: "isDeleted")
         case .single:
             break
         }
@@ -88,7 +88,7 @@ private extension SyncSuperLachaiseObjects {
                 \(PointOfInterest.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
                 skipping
                 """)
-            duplicate.key.deleted = true
+            duplicate.key.isDeleted = true
         }
     }
 
@@ -98,7 +98,7 @@ private extension SyncSuperLachaiseObjects {
             return Array(OpenStreetMapElement.all()(realm))
         case let .single(id):
             return Array(realm.objects(OpenStreetMapElement.self)
-                .filter("deleted == false && wikidataEntry.wikidataId == %@", id))
+                .filter("isDeleted == false && wikidataEntry.wikidataId == %@", id))
         }
     }
 
@@ -143,7 +143,7 @@ private extension SyncSuperLachaiseObjects {
         }
 
         let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
-        pointOfInterest.deleted = false
+        pointOfInterest.isDeleted = false
 
         pointOfInterest.name = openStreetMapElement.name
         pointOfInterest.latitude = openStreetMapElement.latitude
@@ -171,7 +171,7 @@ private extension SyncSuperLachaiseObjects {
         }
 
         let entry = Entry.findOrCreate(wikidataId: wikidataEntry.wikidataId)(realm)
-        entry.deleted = false
+        entry.isDeleted = false
 
         entry.name = wikidataEntry.name
         entry.kind = wikidataEntry.kind
@@ -180,6 +180,7 @@ private extension SyncSuperLachaiseObjects {
 
         entry.image = wikidataEntry.image
 
+        entry.localizations.setValue(true, forKey: "isDeleted")
         wikidataEntry.localizations.forEach { wikidataLocalizedEntry in
             let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
             guard let name = wikidataLocalizedEntry.name else {
@@ -192,6 +193,7 @@ private extension SyncSuperLachaiseObjects {
             }
 
             let localizedEntry = entry.findOrCreateLocalization(language: wikidataLocalizedEntry.language)(realm)
+            localizedEntry.isDeleted = false
             localizedEntry.name = name
             localizedEntry.summary = summary
             localizedEntry.defaultSort = wikipediaPage?.defaultSort ?? name

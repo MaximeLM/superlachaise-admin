@@ -140,34 +140,13 @@ private extension SyncWikidataEntries {
     func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
         // Wikidata Id
         let wikidataEntry = WikidataEntry.findOrCreate(wikidataId: wikidataEntity.id)(realm)
-        wikidataEntry.deleted = false
+        wikidataEntry.isDeleted = false
 
         // Localizations
+        wikidataEntry.localizations.setValue(true, forKey: "isDeleted")
         for language in config.languages {
-            let localization = wikidataEntry.findOrCreateLocalization(language: language)(realm)
-
-            // Name
-            let name = wikidataEntity.labels[language]?.value
-            if name == nil {
-                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no name in \(language)")
-            }
-            localization.name = name
-
-            // Summary
-            let summary = wikidataEntity.descriptions[language]?.value
-            if summary == nil {
-                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
-            }
-            localization.summary = summary
-
-            // Wikipedia page
-            if let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title {
-                let wikipediaId = WikipediaId(language: language, title: wikipediaTitle)
-                localization.wikipediaPage = WikipediaPage.findOrCreate(wikipediaId: wikipediaId)(realm)
-            } else {
-                localization.wikipediaPage = nil
-            }
-
+            syncLocalization(
+                wikidataEntry: wikidataEntry, wikidataEntity: wikidataEntity, language: language, realm: realm)
         }
 
         // Name
@@ -210,6 +189,39 @@ private extension SyncWikidataEntries {
             wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfDeath)
 
         return wikidataEntry
+    }
+
+    @discardableResult
+    func syncLocalization(wikidataEntry: WikidataEntry,
+                          wikidataEntity: WikidataEntity,
+                          language: String,
+                          realm: Realm) -> WikidataLocalizedEntry {
+        let localization = wikidataEntry.findOrCreateLocalization(language: language)(realm)
+        localization.isDeleted = false
+
+        // Name
+        let name = wikidataEntity.labels[language]?.value
+        if name == nil {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no name in \(language)")
+        }
+        localization.name = name
+
+        // Summary
+        let summary = wikidataEntity.descriptions[language]?.value
+        if summary == nil {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
+        }
+        localization.summary = summary
+
+        // Wikipedia page
+        if let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title {
+            let wikipediaId = WikipediaId(language: language, title: wikipediaTitle)
+            localization.wikipediaPage = WikipediaPage.findOrCreate(wikipediaId: wikipediaId)(realm)
+        } else {
+            localization.wikipediaPage = nil
+        }
+
+        return localization
     }
 
     func wikidataEntryKind(wikidataEntity: WikidataEntity) -> EntryKind? {
@@ -331,7 +343,7 @@ private extension SyncWikidataEntries {
         orphanedObjects = orphanedObjects.filter { !fetchedWikidataIds.contains($0.wikidataId) }
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.deleted = true }
+            orphanedObjects.forEach { $0.isDeleted = true }
             Logger.info("Flagged \(orphanedObjects.count) \(WikidataEntry.self)(s) for deletion")
         }
     }

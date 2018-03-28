@@ -12,7 +12,7 @@ extension Entry {
 
     static func all() -> (Realm) -> Results<Entry> {
         return { realm in
-            realm.objects(Entry.self).filter("deleted == false")
+            realm.objects(Entry.self).filter("isDeleted == false")
         }
     }
 

@@ -22,6 +22,12 @@ extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syn
         realm?.delete(self)
     }
 
+    static func deleted() -> (Realm) -> Results<CommonsFile> {
+        return { realm in
+            realm.objects(CommonsFile.self).filter("isDeleted == true")
+        }
+    }
+
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<CommonsFile> {

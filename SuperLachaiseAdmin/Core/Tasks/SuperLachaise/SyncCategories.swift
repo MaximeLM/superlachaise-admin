@@ -64,7 +64,7 @@ private extension SyncCategories {
     func prepareOrphans(realm: Realm) {
         switch self.scope {
         case .all:
-            Category.all()(realm).setValue(true, forKey: "deleted")
+            Category.all()(realm).setValue(true, forKey: "isDeleted")
         case .single:
             break
         }
@@ -83,10 +83,12 @@ private extension SyncCategories {
 
     func syncCategory(configCategory: ConfigCategory, realm: Realm) {
         let category = Category.findOrCreate(id: configCategory.id)(realm)
-        category.deleted = false
+        category.isDeleted = false
 
+        category.localizations.setValue(true, forKey: "isDeleted")
         for (language, name) in configCategory.name {
             let localization = category.findOrCreateLocalization(language: language)(realm)
+            localization.isDeleted = false
             localization.name = name
         }
 
@@ -101,7 +103,7 @@ private extension SyncCategories {
     }
 
     func cleanupOrphans(realm: Realm) {
-        let orphans = realm.objects(Category.self).filter("deleted == true")
+        let orphans = realm.objects(Category.self).filter("isDeleted == true")
         orphans.forEach { $0.setWikidataCategories([]) }
     }
 

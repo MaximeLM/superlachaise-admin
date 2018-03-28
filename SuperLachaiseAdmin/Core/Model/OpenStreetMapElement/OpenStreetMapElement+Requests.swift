@@ -12,7 +12,7 @@ extension OpenStreetMapElement {
 
     static func all() -> (Realm) -> Results<OpenStreetMapElement> {
         return { realm in
-            realm.objects(OpenStreetMapElement.self).filter("deleted == false")
+            realm.objects(OpenStreetMapElement.self).filter("isDeleted == false")
         }
     }
 

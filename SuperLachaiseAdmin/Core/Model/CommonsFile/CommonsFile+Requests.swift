@@ -12,7 +12,7 @@ extension CommonsFile {
 
     static func all() -> (Realm) -> Results<CommonsFile> {
         return { realm in
-            realm.objects(CommonsFile.self).filter("deleted == false")
+            realm.objects(CommonsFile.self).filter("isDeleted == false")
         }
     }
 

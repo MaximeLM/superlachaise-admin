@@ -23,6 +23,12 @@ extension Category: Identifiable, Deletable, Listable, Syncable {
         realm?.delete(self)
     }
 
+    static func deleted() -> (Realm) -> Results<Category> {
+        return { realm in
+            realm.objects(Category.self).filter("isDeleted == true")
+        }
+    }
+
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<Category> {

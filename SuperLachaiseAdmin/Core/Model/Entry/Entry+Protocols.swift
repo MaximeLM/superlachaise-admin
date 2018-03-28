@@ -23,6 +23,12 @@ extension Entry: Identifiable, Deletable, Listable, Syncable {
         realm?.delete(self)
     }
 
+    static func deleted() -> (Realm) -> Results<Entry> {
+        return { realm in
+            realm.objects(Entry.self).filter("isDeleted == true")
+        }
+    }
+
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<Entry> {

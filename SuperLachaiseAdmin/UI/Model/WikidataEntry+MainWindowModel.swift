@@ -31,13 +31,15 @@ extension WikidataEntry: MainWindowModelType {
     }
 
     private func localizationsFields() -> [DetailViewInlineFieldItem] {
-        return localizations.map {
-            DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
-                DetailViewFieldItem(name: "Name", value: $0.name),
-                DetailViewFieldItem(name: "Description", value: $0.summary),
-                DetailViewToOneFieldItem(name: "Wikipedia page", value: $0.wikipediaPage),
-            ])
-        }
+        return localizations
+            .filter("isDeleted == false")
+            .map {
+                DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
+                    DetailViewFieldItem(name: "Name", value: $0.name),
+                    DetailViewFieldItem(name: "Description", value: $0.summary),
+                    DetailViewToOneFieldItem(name: "Wikipedia page", value: $0.wikipediaPage),
+                ])
+            }
     }
 
 }

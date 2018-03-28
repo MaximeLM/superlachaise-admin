@@ -21,6 +21,8 @@ final class LocalizedEntry: Object {
 
     @objc dynamic var entry: Entry?
 
+    @objc dynamic var isDeleted = false
+
     override var description: String {
         return [name, language]
             .flatMap { $0 }

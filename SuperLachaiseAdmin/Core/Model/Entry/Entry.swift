@@ -26,7 +26,7 @@ final class Entry: Object {
     let secondayEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "secondaryEntries")
     @objc dynamic var image: CommonsFile?
 
-    @objc dynamic var deleted = false
+    @objc dynamic var isDeleted = false
 
     override static func primaryKey() -> String {
         return "wikidataId"

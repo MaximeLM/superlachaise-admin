@@ -35,12 +35,15 @@ final class RealmContext {
         try realm.write {
             deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
             deleteFlaggedObjects(type: WikidataEntry.self, realm: realm)
+            deleteFlaggedObjects(type: WikidataLocalizedEntry.self, realm: realm)
             deleteFlaggedObjects(type: WikidataCategory.self, realm: realm)
             deleteFlaggedObjects(type: WikipediaPage.self, realm: realm)
             deleteFlaggedObjects(type: CommonsFile.self, realm: realm)
             deleteFlaggedObjects(type: Category.self, realm: realm)
+            deleteFlaggedObjects(type: LocalizedCategory.self, realm: realm)
             deleteFlaggedObjects(type: PointOfInterest.self, realm: realm)
             deleteFlaggedObjects(type: Entry.self, realm: realm)
+            deleteFlaggedObjects(type: LocalizedEntry.self, realm: realm)
         }
     }
 
@@ -102,10 +105,10 @@ final class RealmContext {
     }
 
     private func deleteFlaggedObjects<Element: Object & Deletable>(type: Element.Type, realm: Realm) {
-        let objects = Array(realm.objects(type).filter("deleted == true"))
+        let objects = Array(type.deleted()(realm))
         if !objects.isEmpty {
             objects.forEach { $0.delete() }
-            Logger.info("Deleted \(objects.count) \(type)(s)")
+            Logger.info("deleted \(objects.count) \(type)(s)")
         }
     }
 

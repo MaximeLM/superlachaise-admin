@@ -16,6 +16,8 @@ final class LocalizedCategory: Object {
 
     @objc dynamic var category: Category?
 
+    @objc dynamic var isDeleted = false
+
     override var description: String {
         return [name, language]
             .flatMap { $0 }

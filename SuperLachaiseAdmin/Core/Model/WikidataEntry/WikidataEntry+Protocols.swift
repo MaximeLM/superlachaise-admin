@@ -23,6 +23,12 @@ extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, S
         realm?.delete(self)
     }
 
+    static func deleted() -> (Realm) -> Results<WikidataEntry> {
+        return { realm in
+            realm.objects(WikidataEntry.self).filter("isDeleted == true")
+        }
+    }
+
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<WikidataEntry> {
