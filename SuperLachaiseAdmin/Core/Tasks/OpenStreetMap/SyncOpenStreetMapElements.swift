@@ -99,7 +99,7 @@ private extension SyncOpenStreetMapElements {
     func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement? {
         // OpenStreetMapId
         guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
-            throw OpenStreetMapError.invalidElementType(overpassElement.type)
+            throw SyncOpenStreetMapElementsError.invalidElementType(overpassElement.type)
         }
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
         guard !config.ignoredElements.contains(openStreetMapId) else {
@@ -112,13 +112,13 @@ private extension SyncOpenStreetMapElements {
         switch elementType {
         case .node:
             guard let latitude = overpassElement.lat, let longitude = overpassElement.lon else {
-                throw OpenStreetMapError.coordinateNotFound(openStreetMapId)
+                throw SyncOpenStreetMapElementsError.coordinateNotFound(openStreetMapId)
             }
             openStreetMapElement.latitude = latitude
             openStreetMapElement.longitude = longitude
         case .way, .relation:
             guard let center = overpassElement.center else {
-                throw OpenStreetMapError.centerNotFound(openStreetMapId)
+                throw SyncOpenStreetMapElementsError.centerNotFound(openStreetMapId)
             }
             openStreetMapElement.latitude = center.lat
             openStreetMapElement.longitude = center.lon
@@ -140,12 +140,6 @@ private extension SyncOpenStreetMapElements {
         openStreetMapElement.wikidataEntry = wikidataId.map { WikidataEntry.findOrCreate(wikidataId: $0)(realm) }
 
         return openStreetMapElement
-    }
-
-    enum OpenStreetMapError: Error {
-        case invalidElementType(String)
-        case coordinateNotFound(OpenStreetMapId)
-        case centerNotFound(OpenStreetMapId)
     }
 
     // MARK: Orphans
@@ -176,4 +170,10 @@ private extension SyncOpenStreetMapElements {
         }
     }
 
+}
+
+enum SyncOpenStreetMapElementsError: Error {
+    case invalidElementType(String)
+    case coordinateNotFound(OpenStreetMapId)
+    case centerNotFound(OpenStreetMapId)
 }

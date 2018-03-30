@@ -38,8 +38,7 @@ extension Category: Identifiable, Deletable, Listable, Syncable {
                     SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "id contains[cd] %@",
-                                            filter, filter)
+                let predicate = NSPredicate(format: "id contains[cd] %@", filter)
                 results = results.filter(predicate)
             }
             return results

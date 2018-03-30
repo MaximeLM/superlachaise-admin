@@ -11,6 +11,8 @@ struct SuperLachaiseConfig: Decodable {
 
     let categories: [ConfigCategory]
 
+    let databaseV1CustomMappings: [String: String]?
+
 }
 
 struct ConfigCategory: Decodable {

@@ -54,6 +54,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
                                                     realm: self.realm, filter: self.filter),
             ListViewObjectListItem<Entry>(baseText: "Entries",
                                           realm: self.realm, filter: self.filter),
+            ListViewObjectListItem<DatabaseV1Mapping>(baseText: "Database V1 mappings",
+                                                      realm: self.realm, filter: self.filter),
         ]
     }()
 

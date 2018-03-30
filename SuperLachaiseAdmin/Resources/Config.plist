@@ -62,6 +62,21 @@
 				</array>
 			</dict>
 		</array>
+		<key>databaseV1CustomMappings</key>
+		<dict>
+			<key>2</key>
+			<string>Q5738</string>
+			<key>72</key>
+			<string>Q590823</string>
+			<key>193</key>
+			<string>Q3323370</string>
+			<key>221</key>
+			<string>Q274886</string>
+			<key>222</key>
+			<string>Q192428</string>
+			<key>259</key>
+			<string>Q266561</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

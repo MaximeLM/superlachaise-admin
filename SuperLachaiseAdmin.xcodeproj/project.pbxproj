@@ -96,6 +96,10 @@
 		5576A261206689C600F1FC9D /* SyncSuperLachaiseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */; };
 		5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */; };
 		5576A267206697AC00F1FC9D /* SuperLachaiseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */; };
+		5579C698206ECF8200D9C802 /* DatabaseV1Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579C697206ECF8200D9C802 /* DatabaseV1Mapping.swift */; };
+		5579C69A206ECFCD00D9C802 /* DatabaseV1Mapping+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579C699206ECFCD00D9C802 /* DatabaseV1Mapping+Requests.swift */; };
+		5579C69C206ECFF700D9C802 /* DatabaseV1Mapping+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579C69B206ECFF700D9C802 /* DatabaseV1Mapping+Protocols.swift */; };
+		5579C69E206ED13600D9C802 /* DatabaseV1Mapping+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579C69D206ED13600D9C802 /* DatabaseV1Mapping+MainWindowModel.swift */; };
 		5587F9F11FCF6927004C9E28 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5587F9F01FCF6927004C9E28 /* RootViewController.swift */; };
 		558F26981FCE00D5009BAA8E /* OverpassElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558F26971FCE00D5009BAA8E /* OverpassElement.swift */; };
 		55A8D23B1FCF52A900BB00BC /* Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A8D23A1FCF52A900BB00BC /* Deletable.swift */; };
@@ -164,6 +168,8 @@
 		55F5968B206C2E120078D5F0 /* WikidataLocalizedEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5968A206C2E120078D5F0 /* WikidataLocalizedEntry+Protocols.swift */; };
 		55F5968D206C2FEA0078D5F0 /* LocalizedCategory+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5968C206C2FEA0078D5F0 /* LocalizedCategory+Protocols.swift */; };
 		55F5968F206C30B50078D5F0 /* LocalizedEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5968E206C30B50078D5F0 /* LocalizedEntry+Protocols.swift */; };
+		55F59691206C362B0078D5F0 /* SyncDatabaseV1Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59690206C362B0078D5F0 /* SyncDatabaseV1Mappings.swift */; };
+		55F59697206C3E600078D5F0 /* database_v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 55F59696206C3E600078D5F0 /* database_v1.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -258,6 +264,10 @@
 		5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSuperLachaiseObjects.swift; sourceTree = "<group>"; };
 		5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskController+SuperLachaise.swift"; sourceTree = "<group>"; };
 		5576A266206697AC00F1FC9D /* SuperLachaiseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperLachaiseConfig.swift; sourceTree = "<group>"; };
+		5579C697206ECF8200D9C802 /* DatabaseV1Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseV1Mapping.swift; sourceTree = "<group>"; };
+		5579C699206ECFCD00D9C802 /* DatabaseV1Mapping+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DatabaseV1Mapping+Requests.swift"; sourceTree = "<group>"; };
+		5579C69B206ECFF700D9C802 /* DatabaseV1Mapping+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DatabaseV1Mapping+Protocols.swift"; sourceTree = "<group>"; };
+		5579C69D206ED13600D9C802 /* DatabaseV1Mapping+MainWindowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DatabaseV1Mapping+MainWindowModel.swift"; sourceTree = "<group>"; };
 		5587F9F01FCF6927004C9E28 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		558F26971FCE00D5009BAA8E /* OverpassElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverpassElement.swift; sourceTree = "<group>"; };
 		55A8D23A1FCF52A900BB00BC /* Deletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deletable.swift; sourceTree = "<group>"; };
@@ -326,6 +336,8 @@
 		55F5968A206C2E120078D5F0 /* WikidataLocalizedEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WikidataLocalizedEntry+Protocols.swift"; sourceTree = "<group>"; };
 		55F5968C206C2FEA0078D5F0 /* LocalizedCategory+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalizedCategory+Protocols.swift"; sourceTree = "<group>"; };
 		55F5968E206C30B50078D5F0 /* LocalizedEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalizedEntry+Protocols.swift"; sourceTree = "<group>"; };
+		55F59690206C362B0078D5F0 /* SyncDatabaseV1Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDatabaseV1Mappings.swift; sourceTree = "<group>"; };
+		55F59696206C3E600078D5F0 /* database_v1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = database_v1.json; sourceTree = "<group>"; };
 		9FE676F1A85C068B5E930AB6 /* Pods-SuperLachaiseAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		CC397459331B1FF483D6C8E6 /* Pods-SuperLachaiseAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperLachaiseAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperLachaiseAdmin/Pods-SuperLachaiseAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -555,9 +567,9 @@
 				55B365831FDD9EA900EB84BD /* AppContainer.swift */,
 				5570F9891FEAF9A9000DA3C9 /* Core */,
 				55B897DD1FC9D15F00FC4EF6 /* UI */,
+				5579C695206ECEE700D9C802 /* Resources */,
 				55605C0A1FC9C6120010BC5F /* Assets.xcassets */,
 				55605C0F1FC9C6120010BC5F /* Info.plist */,
-				55F59688206C1EBA0078D5F0 /* Config.plist */,
 			);
 			path = SuperLachaiseAdmin;
 			sourceTree = "<group>";
@@ -637,6 +649,7 @@
 				55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */,
 				5570F9A41FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift */,
 				555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */,
+				5579C69D206ED13600D9C802 /* DatabaseV1Mapping+MainWindowModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -708,8 +721,28 @@
 				5576A26220668A1700F1FC9D /* TaskController+SuperLachaise.swift */,
 				55F59684206C1B990078D5F0 /* SyncCategories.swift */,
 				5576A260206689C600F1FC9D /* SyncSuperLachaiseObjects.swift */,
+				55F59690206C362B0078D5F0 /* SyncDatabaseV1Mappings.swift */,
 			);
 			path = SuperLachaise;
+			sourceTree = "<group>";
+		};
+		5579C695206ECEE700D9C802 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				55F59688206C1EBA0078D5F0 /* Config.plist */,
+				55F59696206C3E600078D5F0 /* database_v1.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5579C696206ECF3F00D9C802 /* DatabaseV1Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				5579C697206ECF8200D9C802 /* DatabaseV1Mapping.swift */,
+				5579C699206ECFCD00D9C802 /* DatabaseV1Mapping+Requests.swift */,
+				5579C69B206ECFF700D9C802 /* DatabaseV1Mapping+Protocols.swift */,
+			);
+			path = DatabaseV1Mapping;
 			sourceTree = "<group>";
 		};
 		5587F9EF1FCF6904004C9E28 /* Root */ = {
@@ -934,6 +967,7 @@
 				55F5967A206C1A170078D5F0 /* Category */,
 				55F46B681FD488B4005B90BF /* PointOfInterest */,
 				555EB4DC2067CA55009A6054 /* Entry */,
+				5579C696206ECF3F00D9C802 /* DatabaseV1Mapping */,
 				5570F9BA1FEC5AE4000DA3C9 /* Protocols */,
 			);
 			path = Model;
@@ -1069,6 +1103,7 @@
 			files = (
 				55605C0B1FC9C6120010BC5F /* Assets.xcassets in Resources */,
 				555CF569204C5320005CE48F /* DetailViewToOneFieldView.xib in Resources */,
+				55F59697206C3E600078D5F0 /* database_v1.json in Resources */,
 				55B897DF1FC9D17700FC4EF6 /* Main.storyboard in Resources */,
 				5513EF8A1FE6F9DA00BD3A22 /* DetailViewInlineFieldView.xib in Resources */,
 				555CF560204C1453005CE48F /* DetailViewImageView.xib in Resources */,
@@ -1201,6 +1236,7 @@
 				55F5968B206C2E120078D5F0 /* WikidataLocalizedEntry+Protocols.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
 				55AB3DF01FE094430011AF47 /* WikidataEntry+Requests.swift in Sources */,
+				5579C69E206ED13600D9C802 /* DatabaseV1Mapping+MainWindowModel.swift in Sources */,
 				55605C071FC9C6120010BC5F /* AppDelegate.swift in Sources */,
 				555CF566204C1728005CE48F /* CommonsFile+Size.swift in Sources */,
 				5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */,
@@ -1253,11 +1289,13 @@
 				55B365991FDDB5E400EB84BD /* SyncWikidataEntries.swift in Sources */,
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
 				555CF53E2049F387005CE48F /* CommonsFile+Requests.swift in Sources */,
+				55F59691206C362B0078D5F0 /* SyncDatabaseV1Mappings.swift in Sources */,
 				555CF56B204C5363005CE48F /* DetailViewToOneFieldView.swift in Sources */,
 				55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */,
 				55F5967D206C1A4D0078D5F0 /* Category.swift in Sources */,
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
 				555EB4E42067CAD6009A6054 /* Entry+Requests.swift in Sources */,
+				5579C698206ECF8200D9C802 /* DatabaseV1Mapping.swift in Sources */,
 				555CF55A204B0286005CE48F /* DetailViewURLFieldItem.swift in Sources */,
 				5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */,
 				5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */,
@@ -1294,12 +1332,14 @@
 				55F59681206C1B0B0078D5F0 /* Category+Requests.swift in Sources */,
 				5513EF871FE6F34F00BD3A22 /* DetailViewSeparatorItem.swift in Sources */,
 				5513EF421FE4998C00BD3A22 /* DetailViewController.swift in Sources */,
+				5579C69A206ECFCD00D9C802 /* DatabaseV1Mapping+Requests.swift in Sources */,
 				5570F9B71FEC5043000DA3C9 /* WikipediaPage+Protocols.swift in Sources */,
 				55B365A11FDDDB0F00EB84BD /* OverpassGetElements.swift in Sources */,
 				55B897E51FCB1CED00FC4EF6 /* Logger.swift in Sources */,
 				55AB3DEC1FE091D90011AF47 /* PointOfInterest+Requests.swift in Sources */,
 				55B080871FCCCEBD0006A0C2 /* APIEndpoint.swift in Sources */,
 				555CF562204C1519005CE48F /* DetailViewImageView.swift in Sources */,
+				5579C69C206ECFF700D9C802 /* DatabaseV1Mapping+Protocols.swift in Sources */,
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
 				5576A261206689C600F1FC9D /* SyncSuperLachaiseObjects.swift in Sources */,

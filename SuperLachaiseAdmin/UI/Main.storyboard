@@ -359,6 +359,12 @@
                                                 <action selector="syncSuperLachaiseObjects:" target="Ady-hI-5gd" id="lwc-q0-DCc"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Database V1 mappings" id="fwt-GY-6Dx">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="syncDatabaseV1Mappings:" target="Ady-hI-5gd" id="TPJ-Jd-rsk"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

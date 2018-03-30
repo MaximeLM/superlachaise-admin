@@ -48,4 +48,8 @@ extension MainWindowController {
         taskController.syncSuperLachaiseObjects()
     }
 
+    @IBAction func syncDatabaseV1Mappings(_ sender: Any?) {
+        taskController.syncDatabaseV1Mappings()
+    }
+
 }

@@ -29,4 +29,15 @@ extension TaskController {
         enqueue(task)
     }
 
+    func syncDatabaseV1Mappings() {
+        let task = SyncDatabaseV1Mappings(scope: .all, config: config.superLachaise)
+        enqueue(task)
+    }
+
+    func syncDatabaseV1Mapping(_ databaseV1Mapping: DatabaseV1Mapping) {
+        let task = SyncDatabaseV1Mappings(scope: .single(monumentId: databaseV1Mapping.monumentId),
+                                          config: config.superLachaise)
+        enqueue(task)
+    }
+
 }
