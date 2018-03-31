@@ -180,6 +180,9 @@ private extension SyncSuperLachaiseObjects {
 
         entry.image = wikidataEntry.image
 
+        entry.categories.removeAll()
+        entry.categories.append(objectsIn: categories(wikidataEntry: wikidataEntry, realm: realm))
+
         entry.localizations.setValue(true, forKey: "isDeleted")
         wikidataEntry.localizations.forEach { wikidataLocalizedEntry in
             let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
@@ -202,6 +205,16 @@ private extension SyncSuperLachaiseObjects {
         }
 
         return entry
+    }
+
+    func categories(wikidataEntry: WikidataEntry, realm: Realm) -> [Category] {
+        let categories = wikidataEntry.wikidataCategories
+            .flatMap { Array($0.categories).uniqueValues() }
+            .sorted { $0.id < $1.id }
+        if categories.isEmpty {
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry)  has no categories")
+        }
+        return categories
     }
 
 }

@@ -44,6 +44,7 @@ final class RealmContext {
             deleteFlaggedObjects(type: PointOfInterest.self, realm: realm)
             deleteFlaggedObjects(type: Entry.self, realm: realm)
             deleteFlaggedObjects(type: LocalizedEntry.self, realm: realm)
+            deleteFlaggedObjects(type: DatabaseV1Mapping.self, realm: realm)
         }
     }
 

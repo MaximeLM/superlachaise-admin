@@ -25,6 +25,7 @@ final class Entry: Object {
     let mainEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "mainEntry")
     let secondayEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "secondaryEntries")
     @objc dynamic var image: CommonsFile?
+    let categories = List<Category>()
 
     @objc dynamic var isDeleted = false
 
