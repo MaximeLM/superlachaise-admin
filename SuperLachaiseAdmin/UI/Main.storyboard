@@ -71,6 +71,19 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="WUP-db-S8V"/>
+                                        <menuItem title="Export to JSON..." id="2hQ-fl-T1w">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="exportToJSON:" target="Ady-hI-5gd" id="QPL-hP-g92"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Export to Realm..." id="jWP-Um-wlf">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="exportToRealm:" target="Ady-hI-5gd" id="vPL-SD-fUe"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="zJu-HC-QSC"/>
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>

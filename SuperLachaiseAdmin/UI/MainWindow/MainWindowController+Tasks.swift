@@ -52,4 +52,26 @@ extension MainWindowController {
         taskController.syncDatabaseV1Mappings()
     }
 
+    @IBAction func exportToJSON(_ sender: Any?) {
+        let panel = NSOpenPanel()
+        panel.message = "Choose the directory in which to save the generated JSON files"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        guard panel.runModal() == .OK, let directoryURL = panel.urls.first else {
+            return
+        }
+        taskController.exportToJSON(directoryURL: directoryURL)
+    }
+
+    @IBAction func exportToRealm(_ sender: Any?) {
+        let panel = NSSavePanel()
+        panel.allowedFileTypes = ["realm"]
+        panel.canCreateDirectories = true
+        guard panel.runModal() == .OK, let fileURL = panel.url else {
+            return
+        }
+        taskController.exportToRealm(fileURL: fileURL)
+    }
+
 }
