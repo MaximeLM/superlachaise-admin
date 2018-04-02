@@ -55,6 +55,7 @@ extension MainWindowController {
     @IBAction func exportToJSON(_ sender: Any?) {
         let panel = NSOpenPanel()
         panel.message = "Choose the directory in which to save the generated JSON files"
+        panel.prompt = "Export"
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
