@@ -12,9 +12,11 @@ import RxSwift
 final class ExportToJSON: Task {
 
     let directoryURL: URL
+    let config: ExportConfig
 
-    init(directoryURL: URL) {
+    init(directoryURL: URL, config: ExportConfig) {
         self.directoryURL = directoryURL
+        self.config = config
     }
 
     var description: String {
@@ -100,7 +102,13 @@ private extension ExportToJSON {
     // MARK: Write files
 
     func writeObjects<O: Encodable>(_ objects: [O], name: String) throws {
-        let data = try jsonEncoder.encode([name: objects])
+        let about: [String: String] = [
+            "license": config.license,
+            "source": config.source,
+            "generated_by": UserAgent.default,
+        ]
+        let export = Export(about: about, data: objects)
+        let data = try jsonEncoder.encode(export)
         try write(data: data, filename: "\(name).json")
     }
 
@@ -113,6 +121,13 @@ private extension ExportToJSON {
         }
         try data.write(to: fileURL)
     }
+
+}
+
+struct Export<O: Encodable>: Encodable {
+
+    let about: [String: String]
+    let data: [O]
 
 }
 

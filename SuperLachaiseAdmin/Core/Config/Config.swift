@@ -12,5 +12,6 @@ struct Config: Decodable {
     let openStreetMap: OpenStreetMapConfig
     let wikidata: WikidataConfig
     let superLachaise: SuperLachaiseConfig
+    let export: ExportConfig
 
 }

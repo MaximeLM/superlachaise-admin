@@ -10,7 +10,7 @@ import Foundation
 extension TaskController {
 
     func exportToJSON(directoryURL: URL) {
-        let task = ExportToJSON(directoryURL: directoryURL)
+        let task = ExportToJSON(directoryURL: directoryURL, config: config.export)
         enqueue(task)
     }
 

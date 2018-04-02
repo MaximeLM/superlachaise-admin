@@ -78,5 +78,12 @@
 			<string>Q266561</string>
 		</dict>
 	</dict>
+	<key>export</key>
+	<dict>
+		<key>license</key>
+		<string>http://opendatacommons.org/licenses/odbl/</string>
+		<key>source</key>
+		<string>https://github.com/MaximeLM/superlachaise-database</string>
+	</dict>
 </dict>
 </plist>
