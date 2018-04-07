@@ -89,7 +89,7 @@ private extension SyncOpenStreetMapElements {
     }
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement], realm: Realm) throws -> [String] {
-        return try overpassElements.flatMap { overpassElement in
+        return try overpassElements.compactMap { overpassElement in
             try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)?.rawOpenStreetMapId
         }
     }
@@ -133,7 +133,7 @@ private extension SyncOpenStreetMapElements {
 
         // Wikidata entry
         let wikidataTags = ["wikidata", "subject:wikidata"]
-        let wikidataId = wikidataTags.flatMap { overpassElement.tags[$0] }.first
+        let wikidataId = wikidataTags.compactMap { overpassElement.tags[$0] }.first
         if wikidataId == nil {
             Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }

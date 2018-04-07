@@ -23,7 +23,7 @@ final class DetailViewToManyFieldView: NSView {
 
     var value: [MainWindowModel] = [] {
         didSet {
-            let views = value.flatMap { model -> NSView? in
+            let views = value.compactMap { model -> NSView? in
                 let view: DetailViewToManyFieldButton? = NSNib.instantiate("DetailViewToManyFieldButton")
                 view?.value = model
                 return view

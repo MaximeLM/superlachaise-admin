@@ -72,7 +72,7 @@ private extension SyncWikidataEntries {
         case .all:
             // Get wikidata ids from OpenStreetMap elements
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return OpenStreetMapElement.all()(realm).flatMap { $0.wikidataEntry?.wikidataId }
+                return OpenStreetMapElement.all()(realm).compactMap { $0.wikidataEntry?.wikidataId }
             }
         case let .single(wikidataId):
             return Single.just([wikidataId])
@@ -106,7 +106,7 @@ private extension SyncWikidataEntries {
 
     func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            return wikidataIds.flatMap { WikidataEntry.find(wikidataId: $0)(realm) }
+            return wikidataIds.compactMap { WikidataEntry.find(wikidataId: $0)(realm) }
                 .flatMap { $0.secondaryWikidataEntries.map { $0.wikidataId } }
                 .filter { !wikidataIds.contains($0) }
         }
@@ -226,7 +226,7 @@ private extension SyncWikidataEntries {
 
     func wikidataEntryKind(wikidataEntity: WikidataEntity) -> EntryKind? {
         let instanceOfs = wikidataEntity.claims(.instanceOf)
-            .flatMap { $0.mainsnak.entityName }
+            .compactMap { $0.mainsnak.entityName }
         for instanceOf in instanceOfs {
             if [.human].contains(instanceOf) {
                 return .person
@@ -254,7 +254,7 @@ private extension SyncWikidataEntries {
                     return [.grave, .tomb, .cardiotaph].contains(entityName)
                 }
                 .flatMap { $0.qualifiers(.of) }
-                .flatMap { $0.entityName }
+                .compactMap { $0.entityName }
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
@@ -266,7 +266,7 @@ private extension SyncWikidataEntries {
             ]
             let entityNames = claims
                 .flatMap { $0 }
-                .flatMap { $0.mainsnak.entityName }
+                .compactMap { $0.mainsnak.entityName }
             secondaryWikidataNames.append(contentsOf: entityNames)
         }
 
@@ -289,7 +289,7 @@ private extension SyncWikidataEntries {
             ]
             let entityNames = claims
                 .flatMap { $0 }
-                .flatMap { $0.mainsnak.entityName }
+                .compactMap { $0.mainsnak.entityName }
             wikidataCategoriesNames.append(contentsOf: entityNames)
         }
 
@@ -303,20 +303,20 @@ private extension SyncWikidataEntries {
             return nil
         }
         return try wikidataEntity.claims(claim)
-            .flatMap { $0.mainsnak.timeValue }
+            .compactMap { $0.mainsnak.timeValue }
             .max { $0.precision < $1.precision }
             .map { try $0.entryDate() }
     }
 
     func imageCommonsId(wikidataEntity: WikidataEntity, kind: EntryKind?) -> String? {
         return wikidataEntity.claims(.image)
-            .flatMap { $0.mainsnak.stringValue }
+            .compactMap { $0.mainsnak.stringValue }
             .first
     }
 
     func imageOfGraveCommonsId(wikidataEntity: WikidataEntity, kind: EntryKind?) -> String? {
         return wikidataEntity.claims(.imageOfGrave)
-            .flatMap { $0.mainsnak.stringValue }
+            .compactMap { $0.mainsnak.stringValue }
             .first
     }
 

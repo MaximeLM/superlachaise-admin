@@ -123,7 +123,7 @@ private extension SyncDatabaseV1Mappings {
             .find(openStreetMapId: OpenStreetMapId(elementType: .way, numericId: numericId))(realm)
         let relation = OpenStreetMapElement
             .find(openStreetMapId: OpenStreetMapId(elementType: .relation, numericId: numericId))(realm)
-        let existingElements = [node, way, relation].flatMap { $0 }
+        let existingElements = [node, way, relation].compactMap { $0 }
 
         guard !existingElements.isEmpty else {
             Logger.error("No OpenStreetMap element for \(monument)")

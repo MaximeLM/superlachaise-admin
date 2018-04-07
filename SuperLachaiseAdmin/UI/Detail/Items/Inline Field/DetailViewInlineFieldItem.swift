@@ -16,7 +16,7 @@ struct DetailViewInlineFieldItem: DetailViewItem {
     var view: NSView? {
         let view: DetailViewInlineFieldView? = NSNib.instantiate("DetailViewInlineFieldView")
         view?.name = name
-        view?.valueViews = valueItems.flatMap { $0.view }
+        view?.valueViews = valueItems.compactMap { $0.view }
         return view
     }
 

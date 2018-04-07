@@ -68,7 +68,7 @@ private extension SyncSuperLachaiseObjects {
 
     func syncPointsOfInterest(realm: Realm) {
         let pointsOfInterest = openStreetMapElements(realm: realm)
-            .flatMap { openStreetMapElement -> PointOfInterest? in
+            .compactMap { openStreetMapElement -> PointOfInterest? in
                 guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
                     Logger.warning(
                         "\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata entry; skipping")
@@ -150,7 +150,7 @@ private extension SyncSuperLachaiseObjects {
         pointOfInterest.mainEntry = mainEntry
         pointOfInterest.secondaryEntries.removeAll()
         pointOfInterest.secondaryEntries.append(objectsIn: secondaryWikidataEntries
-            .flatMap { self.entry(wikidataEntry: $0, realm: realm) })
+            .compactMap { self.entry(wikidataEntry: $0, realm: realm) })
         pointOfInterest.image = image
 
         return pointOfInterest

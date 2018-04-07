@@ -1,9 +1,9 @@
 PODS:
-  - Realm (3.3.0):
-    - Realm/Headers (= 3.3.0)
-  - Realm/Headers (3.3.0)
-  - RealmSwift (3.3.0):
-    - Realm (= 3.3.0)
+  - Realm (3.3.2):
+    - Realm/Headers (= 3.3.2)
+  - Realm/Headers (3.3.2)
+  - RealmSwift (3.3.2):
+    - Realm (= 3.3.2)
   - RxCocoa (4.1.2):
     - RxSwift (~> 4.0)
   - RxRealm (0.7.5):
@@ -22,9 +22,19 @@ DEPENDENCIES:
   - SDWebImage
   - SwiftLint
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Realm
+    - RealmSwift
+    - RxCocoa
+    - RxRealm
+    - RxSwift
+    - SDWebImage
+    - SwiftLint
+
 SPEC CHECKSUMS:
-  Realm: 7d74ad6c5020432f58fe5e1df90bb6d97b2c7fef
-  RealmSwift: b2fa31a09c22e246026766557405505eeaad2b01
+  Realm: d927fbf66df5532cfafc08afb5f7e53ded37b894
+  RealmSwift: 4e903a494e05d866581d69ad6f7e7b879d446baf
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxRealm: a6c6c0a07cb61f34209969ca6657734edfdfff30
   RxSwift: e49536837d9901277638493ea537394d4b55f570
@@ -33,4 +43,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9230b34a00199a338198b1544e92314a91433849
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

@@ -25,7 +25,7 @@ final class LocalizedEntry: Object {
 
     override var description: String {
         return [name, language]
-            .flatMap { $0 }
+            .compactMap { $0 }
             .joined(separator: " - ")
     }
 

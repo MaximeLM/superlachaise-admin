@@ -90,7 +90,7 @@ private extension SyncCategories {
             localization.name = name
         }
 
-        let wikidataCategories = configCategory.wikidataCategoriesIds.flatMap { wikidataId -> WikidataCategory? in
+        let wikidataCategories = configCategory.wikidataCategoriesIds.compactMap { wikidataId -> WikidataCategory? in
             guard let wikidataCategory = WikidataCategory.find(wikidataId: wikidataId)(realm) else {
                 Logger.warning("\(WikidataCategory.self) \(wikidataId) does not exist")
                 return nil

@@ -45,7 +45,7 @@ extension DetailViewModel {
         // Other items
         items.append(contentsOf: self.items.joined(separator: [DetailViewSeparatorItem()]))
 
-        return items.flatMap { $0.view }
+        return items.compactMap { $0.view }
     }
 
 }

@@ -24,7 +24,7 @@ final class WikidataCategory: Object {
 
     override var description: String {
         return [name, wikidataId]
-            .flatMap { $0 }
+            .compactMap { $0 }
             .joined(separator: " - ")
     }
 

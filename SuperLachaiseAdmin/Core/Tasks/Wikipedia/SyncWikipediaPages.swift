@@ -225,7 +225,7 @@ private extension SyncWikipediaPages {
 
         let inputRange = NSRange(wikitext.startIndex..., in: wikitext)
         let regularExpressions = [defaultSortRegularExpression, cleDeTriRegularExpression]
-        let match = regularExpressions.flatMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
+        let match = regularExpressions.compactMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
 
         if let match = match, let range = Range(match.range(at: 1), in: wikitext) {
             return String(wikitext[range]).trimmingCharacters(in: .whitespacesAndNewlines)
@@ -241,7 +241,7 @@ private extension SyncWikipediaPages {
 
         let inputRange = NSRange(wikitext.startIndex..., in: wikitext)
         let regularExpressions = [redirectRegularExpression]
-        let match = regularExpressions.flatMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
+        let match = regularExpressions.compactMap { $0?.firstMatch(in: wikitext, options: [], range: inputRange) }.first
 
         if let match = match, let range = Range(match.range(at: 1), in: wikitext) {
             return String(wikitext[range]).trimmingCharacters(in: .whitespacesAndNewlines)

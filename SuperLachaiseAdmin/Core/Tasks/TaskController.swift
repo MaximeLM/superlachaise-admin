@@ -24,7 +24,7 @@ final class TaskController {
         let runningTasks = self.runningTasks
         self.observation = operationQueue.observe(\OperationQueue.operations) { operationQueue, _ in
             DispatchQueue.main.async {
-                runningTasks.accept(operationQueue.operations.flatMap { $0 as? TaskOperation })
+                runningTasks.accept(operationQueue.operations.compactMap { $0 as? TaskOperation })
             }
         }
     }

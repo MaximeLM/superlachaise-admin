@@ -109,7 +109,7 @@ private extension SyncWikidataCategories {
         wikidataCategory.isDeleted = false
 
         // Localizations
-        let names = config.languages.flatMap { language in
+        let names = config.languages.compactMap { language -> String? in
             let name = wikidataEntity.labels[language]?.value
             if name == nil {
                 Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no name in \(language)")

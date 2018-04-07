@@ -23,7 +23,7 @@ extension NSNib {
             assertionFailure()
             return nil
         }
-        guard let topLevelObject = (topLevelObjects?.flatMap { $0 as? T }.first) else {
+        guard let topLevelObject = (topLevelObjects?.compactMap { $0 as? T }.first) else {
             assertionFailure()
             return nil
         }

@@ -27,7 +27,7 @@ final class OpenStreetMapElement: Object {
 
     override var description: String {
         return [name, rawOpenStreetMapId]
-            .flatMap { $0 }
+            .compactMap { $0 }
             .joined(separator: " - ")
     }
 

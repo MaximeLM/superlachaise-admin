@@ -31,7 +31,7 @@ final class PointOfInterest: Object {
 
     override var description: String {
         return [name, id]
-            .flatMap { $0 }
+            .compactMap { $0 }
             .joined(separator: " - ")
     }
 

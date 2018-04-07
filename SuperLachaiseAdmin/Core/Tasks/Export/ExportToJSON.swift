@@ -63,7 +63,7 @@ private extension ExportToJSON {
     func exportEntries(pointsOfInterest: [PointOfInterest], realm: Realm) throws -> [Entry] {
         let entries = pointsOfInterest
             .flatMap { pointOfInterest -> [Entry] in
-                var entries = [pointOfInterest.mainEntry].flatMap { $0 }
+                var entries = [pointOfInterest.mainEntry].compactMap { $0 }
                 entries.append(contentsOf: Array(pointOfInterest.secondaryEntries))
                 return entries
             }
@@ -89,8 +89,8 @@ private extension ExportToJSON {
     func exportCommonsFiles(pointsOfInterest: [PointOfInterest],
                             entries: [Entry],
                             realm: Realm) throws -> [CommonsFile] {
-        var commonsFiles = pointsOfInterest.flatMap { $0.image }
-        commonsFiles.append(contentsOf: entries.flatMap { $0.image })
+        var commonsFiles = pointsOfInterest.compactMap { $0.image }
+        commonsFiles.append(contentsOf: entries.compactMap { $0.image })
         commonsFiles = commonsFiles
             .filter { $0.isDeleted == false }
             .uniqueValues()
