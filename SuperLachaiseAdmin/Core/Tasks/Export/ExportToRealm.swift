@@ -57,9 +57,6 @@ private extension ExportToRealm {
         ]))
         try destRealm.write {
             try copyObjects(PointOfInterest.self, sourceRealm: sourceRealm, destRealm: destRealm)
-            try copyObjects(Entry.self, sourceRealm: sourceRealm, destRealm: destRealm)
-            try copyObjects(Category.self, sourceRealm: sourceRealm, destRealm: destRealm)
-            try copyObjects(CommonsFile.self, sourceRealm: sourceRealm, destRealm: destRealm)
             try copyObjects(DatabaseV1Mapping.self, sourceRealm: sourceRealm, destRealm: destRealm)
 
             sourceRealm.objects(LocalizedEntry.self).forEach {
