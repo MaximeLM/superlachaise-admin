@@ -191,15 +191,14 @@ private extension SyncWikipediaPages {
             return nil
         }
 
-        // Remove trailing white lines and empty paragraphs
+        // Remove leading and trailing white lines and empty paragraphs
         let emptyLines = [
             "",
             "<p></p>",
             "<p><br></p>",
+            "<p><span></span></p>",
         ]
-        while let line = lines.last, emptyLines.contains(line.trimmingCharacters(in: .whitespaces)) {
-            lines.removeLast()
-        }
+        lines = lines.filter({ !emptyLines.contains($0.trimmingCharacters(in: .whitespaces)) })
 
         guard !lines.isEmpty else {
             return nil
@@ -207,12 +206,14 @@ private extension SyncWikipediaPages {
         var extract = lines.joined(separator: "\n")
 
         // Remove unwanted strings
-        let unwantedStrings = [
-            "<sup class=\"reference cite_virgule\">,</sup>",
-        ]
-        for string in unwantedStrings {
-            extract = extract.replacingOccurrences(of: string, with: "")
-        }
+        extract = extract.replacingOccurrences(of: "<sup class=\"reference cite_virgule\">,</sup>", with: "")
+        extract = extract.replacingOccurrences(of: " (<span><span><span> </span>listen</span></span>)", with: "")
+        extract = extract.replacingOccurrences(of: "(<span></span>, ", with: "(")
+        extract = extract.replacingOccurrences(of: "(<span></span>; ", with: "(")
+        extract = extract.replacingOccurrences(of: "<br style=\"margin-bottom: 1ex;\"></p>", with: "</p>")
+        extract = extract.replacingOccurrences(of: "</ul>", with: "</ul><br/>")
+        extract = extract.replacingOccurrences(of: "<ul id=\"bandeau-portail\"",
+                                               with: "<ul id=\"bandeau-portail\" style=\"display: none;\">")
 
         return extract
     }

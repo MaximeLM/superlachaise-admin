@@ -247,7 +247,7 @@ private extension WikidataEntry {
     func isInteresting() -> Bool {
         // An entry is interesting if it has a Wikipedia page on at least one localization
         return !localizations
-            .flatMap { $0.wikipediaPage }
+            .compactMap { $0.wikipediaPage?.extract }
             .isEmpty
     }
 
