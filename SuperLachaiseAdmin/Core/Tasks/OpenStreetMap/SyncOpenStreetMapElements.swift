@@ -90,7 +90,7 @@ private extension SyncOpenStreetMapElements {
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement], realm: Realm) throws -> [String] {
         return try overpassElements.compactMap { overpassElement in
-            try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)?.rawOpenStreetMapId
+            try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)?.id
         }
     }
 
@@ -133,22 +133,22 @@ private extension SyncOpenStreetMapElements {
         if wikidataId == nil {
             Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }
-        openStreetMapElement.wikidataEntry = wikidataId.map { WikidataEntry.findOrCreate(wikidataId: $0)(realm) }
+        openStreetMapElement.wikidataEntry = wikidataId.map { WikidataEntry.findOrCreate(id: $0)(realm) }
 
         return openStreetMapElement
     }
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedRawOpenStreetMapIds: [String]) -> Single<Void> {
+    func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.deleteOrphans(fetchedRawOpenStreetMapIds: fetchedRawOpenStreetMapIds, realm: realm)
+                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
             }
         }
     }
 
-    func deleteOrphans(fetchedRawOpenStreetMapIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<OpenStreetMapElement>
         switch scope {
@@ -158,7 +158,7 @@ private extension SyncOpenStreetMapElements {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter { !fetchedRawOpenStreetMapIds.contains($0.rawOpenStreetMapId) }
+        orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(OpenStreetMapElement.self)(s)")

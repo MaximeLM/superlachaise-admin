@@ -86,7 +86,7 @@ private extension SyncSuperLachaiseObjects {
             return Array(OpenStreetMapElement.all()(realm))
         case let .single(id):
             return Array(realm.objects(OpenStreetMapElement.self)
-                .filter("wikidataEntry.wikidataId == %@", id))
+                .filter("wikidataEntry.id == %@", id))
         }
     }
 
@@ -130,7 +130,7 @@ private extension SyncSuperLachaiseObjects {
             return nil
         }
 
-        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
+        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.id)(realm)
 
         pointOfInterest.name = openStreetMapElement.name
         pointOfInterest.openStreetMapElement = openStreetMapElement
@@ -156,7 +156,7 @@ private extension SyncSuperLachaiseObjects {
             }
         }
 
-        let entry = Entry.findOrCreate(wikidataId: wikidataEntry.wikidataId)(realm)
+        let entry = Entry.findOrCreate(id: wikidataEntry.id)(realm)
 
         entry.name = wikidataEntry.name
         entry.kind = wikidataEntry.kind

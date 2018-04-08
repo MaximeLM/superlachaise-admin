@@ -10,7 +10,7 @@ import RealmSwift
 
 final class Entry: Object {
 
-    @objc dynamic var wikidataId = ""
+    @objc dynamic var id = ""
 
     @objc dynamic var name: String?
     @objc dynamic var rawKind = ""
@@ -28,11 +28,11 @@ final class Entry: Object {
     let categories = List<Category>()
 
     override static func primaryKey() -> String {
-        return "wikidataId"
+        return "id"
     }
 
     override var description: String {
-        return [name, wikidataId]
+        return [name, id]
             .compactMap { $0 }
             .joined(separator: " - ")
     }

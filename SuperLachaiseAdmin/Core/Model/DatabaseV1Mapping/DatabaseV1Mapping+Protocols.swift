@@ -13,7 +13,7 @@ extension DatabaseV1Mapping: Identifiable, Deletable, Listable, Syncable {
     // MARK: Identifiable
 
     var identifier: String {
-        return "\(monumentId)"
+        return "\(id)"
     }
 
     // MARK: Deletable
@@ -28,7 +28,7 @@ extension DatabaseV1Mapping: Identifiable, Deletable, Listable, Syncable {
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
-                    SortDescriptor(keyPath: "monumentId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
                 let predicate = NSPredicate(

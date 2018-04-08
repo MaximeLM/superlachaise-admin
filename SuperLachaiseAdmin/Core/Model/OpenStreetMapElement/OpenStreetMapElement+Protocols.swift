@@ -13,7 +13,7 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
     // MARK: Identifiable
 
     var identifier: String {
-        return rawOpenStreetMapId
+        return id
     }
 
     // MARK: Deletable
@@ -29,10 +29,10 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
             var results = all()(realm)
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "rawOpenStreetMapId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR rawOpenStreetMapId contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }
@@ -43,8 +43,12 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
     // MARK: OpenableInBrowser
 
     var externalURL: URL? {
+        guard let openStreetMapId = openStreetMapId else {
+            return nil
+        }
         return URL(string: "https://www.openstreetmap.org")?
-            .appendingPathComponent(rawOpenStreetMapId)
+            .appendingPathComponent(openStreetMapId.elementType.rawValue)
+            .appendingPathComponent("\(openStreetMapId.elementType)")
     }
 
     // MARK: Syncable

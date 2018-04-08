@@ -13,7 +13,7 @@ extension CommonsFile: MainWindowModelType {
         return DetailViewModel(self, items: [
             [
                 DetailViewImageItem(commonsFile: self),
-                DetailViewFieldItem(name: "Commons ID", value: commonsId),
+                DetailViewFieldItem(name: "ID", value: id),
             ],
             [
                 DetailViewFieldItem(name: "Width", value: width),

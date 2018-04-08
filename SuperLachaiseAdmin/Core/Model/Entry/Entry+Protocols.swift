@@ -13,7 +13,7 @@ extension Entry: Identifiable, Deletable, Listable, Syncable {
     // MARK: Identifiable
 
     var identifier: String {
-        return wikidataId
+        return id
     }
 
     // MARK: Deletable
@@ -30,10 +30,10 @@ extension Entry: Identifiable, Deletable, Listable, Syncable {
             var results = all()(realm)
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "wikidataId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }

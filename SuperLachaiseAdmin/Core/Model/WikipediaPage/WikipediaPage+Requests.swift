@@ -28,7 +28,7 @@ extension WikipediaPage {
                 return wikipediaPage
             } else {
                 return realm.create(WikipediaPage.self,
-                                    value: ["rawWikipediaId": wikipediaId.rawValue],
+                                    value: ["id": wikipediaId.rawValue],
                                     update: false)
             }
         }

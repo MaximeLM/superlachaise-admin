@@ -15,7 +15,7 @@ extension TaskController {
     }
 
     func syncCommonsFile(_ commonsFile: CommonsFile) {
-        let task = SyncCommonsFiles(scope: .single(commonsId: commonsFile.commonsId), endpoint: commonsAPIEndpoint)
+        let task = SyncCommonsFiles(scope: .single(id: commonsFile.id), endpoint: commonsAPIEndpoint)
         enqueue(task)
     }
 

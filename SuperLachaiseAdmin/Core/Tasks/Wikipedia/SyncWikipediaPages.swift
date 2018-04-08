@@ -151,7 +151,7 @@ private extension SyncWikipediaPages {
 
     func saveWikipediaPages(language: String, wikipediaAPIPages: [WikipediaAPIPage], realm: Realm) throws -> [String] {
         return try wikipediaAPIPages.map { wikipediaAPIPage in
-            try self.wikipediaPage(language: language, wikipediaAPIPage: wikipediaAPIPage, realm: realm).rawWikipediaId
+            try self.wikipediaPage(language: language, wikipediaAPIPage: wikipediaAPIPage, realm: realm).id
         }
     }
 
@@ -245,15 +245,15 @@ private extension SyncWikipediaPages {
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedRawWikipediaIds: [String]) -> Single<Void> {
+    func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.deleteOrphans(fetchedRawWikipediaIds: fetchedRawWikipediaIds, realm: realm)
+                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
             }
         }
     }
 
-    func deleteOrphans(fetchedRawWikipediaIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<WikipediaPage>
         switch scope {
@@ -263,7 +263,7 @@ private extension SyncWikipediaPages {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter { !fetchedRawWikipediaIds.contains($0.rawWikipediaId) }
+        orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(WikipediaPage.self)(s)")

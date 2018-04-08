@@ -16,19 +16,19 @@ extension CommonsFile {
         }
     }
 
-    static func find(commonsId: String) -> (Realm) -> CommonsFile? {
+    static func find(id: String) -> (Realm) -> CommonsFile? {
         return { realm in
-            realm.object(ofType: CommonsFile.self, forPrimaryKey: commonsId)
+            realm.object(ofType: CommonsFile.self, forPrimaryKey: id)
         }
     }
 
-    static func findOrCreate(commonsId: String) -> (Realm) -> CommonsFile {
+    static func findOrCreate(id: String) -> (Realm) -> CommonsFile {
         return { realm in
-            if let commonsFile = find(commonsId: commonsId)(realm) {
+            if let commonsFile = find(id: id)(realm) {
                 return commonsFile
             } else {
                 return realm.create(CommonsFile.self,
-                                    value: ["commonsId": commonsId],
+                                    value: ["id": id],
                                     update: false)
             }
         }

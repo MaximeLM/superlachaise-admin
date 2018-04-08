@@ -40,14 +40,14 @@ extension WikipediaPage {
 
     var wikipediaId: WikipediaId? {
         get {
-            guard let wikipediaId = WikipediaId(rawValue: rawWikipediaId) else {
+            guard let wikipediaId = WikipediaId(rawValue: id) else {
                 assertionFailure()
                 return nil
             }
             return wikipediaId
         }
         set {
-            rawWikipediaId = newValue?.rawValue ?? ""
+            id = newValue?.rawValue ?? ""
         }
     }
 

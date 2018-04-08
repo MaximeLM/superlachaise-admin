@@ -12,7 +12,7 @@ extension DatabaseV1Mapping: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
-                DetailViewFieldItem(name: "Monument ID", value: monumentId),
+                DetailViewFieldItem(name: "Monument ID", value: id),
             ],
             [
                 DetailViewToOneFieldItem(name: "Point of interest", value: pointOfInterest),

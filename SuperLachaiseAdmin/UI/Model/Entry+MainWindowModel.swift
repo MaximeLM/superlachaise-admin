@@ -14,7 +14,7 @@ extension Entry: MainWindowModelType {
             [
                 DetailViewImageItem(commonsFile: image),
                 DetailViewFieldItem(name: "Name", value: name),
-                DetailViewFieldItem(name: "ID", value: wikidataId),
+                DetailViewFieldItem(name: "ID", value: id),
             ],
             [
                 DetailViewFieldItem(name: "Kind", value: kind),

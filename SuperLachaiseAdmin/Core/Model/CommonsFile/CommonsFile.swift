@@ -11,7 +11,7 @@ import RealmSwift
 final class CommonsFile: Object {
 
     // title without "File:"
-    @objc dynamic var commonsId = ""
+    @objc dynamic var id = ""
 
     @objc dynamic var width: Float = 0
     @objc dynamic var height: Float = 0
@@ -23,11 +23,11 @@ final class CommonsFile: Object {
     @objc dynamic var license: String?
 
     override static func primaryKey() -> String {
-        return "commonsId"
+        return "id"
     }
 
     override var description: String {
-        return commonsId
+        return id
     }
 
 }

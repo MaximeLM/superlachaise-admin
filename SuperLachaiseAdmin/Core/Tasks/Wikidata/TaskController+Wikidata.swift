@@ -17,7 +17,7 @@ extension TaskController {
     }
 
     func syncWikidataEntry(_ wikidataEntry: WikidataEntry) {
-        let task = SyncWikidataEntries(scope: .single(wikidataId: wikidataEntry.wikidataId),
+        let task = SyncWikidataEntries(scope: .single(id: wikidataEntry.id),
                                        config: config.wikidata,
                                        endpoint: wikidataAPIEndpoint)
         enqueue(task)
@@ -31,7 +31,7 @@ extension TaskController {
     }
 
     func syncWikidataCategory(_ wikidataCategory: WikidataCategory) {
-        let task = SyncWikidataCategories(scope: .single(wikidataId: wikidataCategory.wikidataId),
+        let task = SyncWikidataCategories(scope: .single(id: wikidataCategory.id),
                                           config: config.wikidata,
                                           endpoint: wikidataAPIEndpoint)
         enqueue(task)

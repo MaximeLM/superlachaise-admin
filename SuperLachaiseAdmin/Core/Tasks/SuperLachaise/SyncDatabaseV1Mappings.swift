@@ -14,14 +14,14 @@ final class SyncDatabaseV1Mappings: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(monumentId: Int)
+        case single(id: Int)
 
         var description: String {
             switch self {
             case .all:
                 return "all"
-            case let .single(monumentId):
-                return "\(monumentId)"
+            case let .single(id):
+                return "\(id)"
             }
         }
 
@@ -45,7 +45,7 @@ final class SyncDatabaseV1Mappings: Task {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
                 let databaseV1Mappings = try self.syncDatabaseV1Mappings(realm: realm)
-                try self.deleteOrphans(fetchedMonumentIds: databaseV1Mappings.map { $0.monumentId }, realm: realm)
+                try self.deleteOrphans(fetchedIds: databaseV1Mappings.map { $0.id }, realm: realm)
             }
         }
     }
@@ -67,8 +67,8 @@ private extension SyncDatabaseV1Mappings {
         switch self.scope {
         case .all:
             break
-        case let .single(monumentId):
-            monuments = monuments.filter { $0.id == monumentId }
+        case let .single(id):
+            monuments = monuments.filter { $0.id == id }
         }
 
         let customMappings = try self.customMappings(realm: realm)
@@ -79,7 +79,7 @@ private extension SyncDatabaseV1Mappings {
 
     func syncDatabaseV1Mapping(
         monument: DatabaseV1Monument, customMappings: [Int: WikidataEntry], realm: Realm) -> DatabaseV1Mapping {
-        let databaseV1Mapping = DatabaseV1Mapping.findOrCreate(monumentId: monument.id)(realm)
+        let databaseV1Mapping = DatabaseV1Mapping.findOrCreate(id: monument.id)(realm)
         databaseV1Mapping.pointOfInterest = pointOfInterest(
             monument: monument, customMappings: customMappings, realm: realm)
         return databaseV1Mapping
@@ -96,8 +96,8 @@ private extension SyncDatabaseV1Mappings {
         if let destName = destName, sourceName != destName {
             Logger.warning("Name mismatch: \(sourceName) - \(destName)")
         }
-        guard let pointOfInterest = PointOfInterest.find(id: wikidataEntry.wikidataId)(realm) else {
-            Logger.error("No point of interest element for \(wikidataEntry.wikidataId)")
+        guard let pointOfInterest = PointOfInterest.find(id: wikidataEntry.id)(realm) else {
+            Logger.error("No point of interest element for \(wikidataEntry.id)")
             return nil
         }
         return pointOfInterest
@@ -141,18 +141,18 @@ private extension SyncDatabaseV1Mappings {
             guard let monumentId = Int($0.key) else {
                 throw SyncDatabaseV1MappingsError.invalidCustomMappingId($0.key)
             }
-            guard let wikidataEntry = WikidataEntry.find(wikidataId: $0.value)(realm) else {
+            guard let wikidataEntry = WikidataEntry.find(id: $0.value)(realm) else {
                 throw SyncDatabaseV1MappingsError.customMappingWikidataEntryNotFound($0.value)
             }
             return (monumentId, wikidataEntry)
         }, uniquingKeysWith: {
-            throw SyncDatabaseV1MappingsError.duplicateCustomMapping($0.wikidataId, $1.wikidataId)
+            throw SyncDatabaseV1MappingsError.duplicateCustomMapping($0.id, $1.id)
         })
     }
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedMonumentIds: [Int], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [Int], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<DatabaseV1Mapping>
         switch scope {
@@ -162,7 +162,7 @@ private extension SyncDatabaseV1Mappings {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter { !fetchedMonumentIds.contains($0.monumentId) }
+        orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(DatabaseV1Mapping.self)(s)")

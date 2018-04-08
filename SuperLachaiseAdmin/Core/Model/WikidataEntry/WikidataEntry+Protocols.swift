@@ -13,7 +13,7 @@ extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, S
     // MARK: Identifiable
 
     var identifier: String {
-        return wikidataId
+        return id
     }
 
     // MARK: Deletable
@@ -30,10 +30,10 @@ extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, S
             var results = all()(realm)
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "wikidataId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
+                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
                                             filter, filter)
                 results = results.filter(predicate)
             }
@@ -45,7 +45,7 @@ extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, S
 
     var externalURL: URL? {
         return URL(string: "https://www.wikidata.org/wiki")?
-            .appendingPathComponent(wikidataId)
+            .appendingPathComponent(id)
     }
 
     // MARK: Syncable

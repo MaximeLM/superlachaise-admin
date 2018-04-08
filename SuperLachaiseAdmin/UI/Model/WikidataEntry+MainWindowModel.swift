@@ -13,7 +13,7 @@ extension WikidataEntry: MainWindowModelType {
         return DetailViewModel(self, items: [
             [
                 DetailViewFieldItem(name: "Name", value: name),
-                DetailViewFieldItem(name: "ID", value: wikidataId),
+                DetailViewFieldItem(name: "ID", value: id),
             ],
             localizationsFields(),
             [

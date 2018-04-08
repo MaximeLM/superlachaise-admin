@@ -67,7 +67,7 @@ private extension ExportToJSON {
         let openStreetMapElements = pointsOfInterest
             .compactMap { $0.openStreetMapElement }
             .uniqueValues()
-            .sorted { $0.rawOpenStreetMapId < $1.rawOpenStreetMapId }
+            .sorted { $0.id < $1.id }
         try writeObjects(openStreetMapElements, name: "openstreetmap_elements")
         return openStreetMapElements
     }
@@ -80,7 +80,7 @@ private extension ExportToJSON {
                 return entries
             }
             .uniqueValues()
-            .sorted { $0.wikidataId < $1.wikidataId }
+            .sorted { $0.id < $1.id }
         try writeObjects(entries, name: "entries")
         return entries
     }
@@ -91,7 +91,7 @@ private extension ExportToJSON {
                 entry.localizations.compactMap { $0.wikipediaPage }
             }
             .uniqueValues()
-            .sorted { $0.rawWikipediaId < $1.rawWikipediaId }
+            .sorted { $0.id < $1.id }
         try writeObjects(wikipediaPages, name: "wikipedia_pages")
         return wikipediaPages
     }
@@ -114,7 +114,7 @@ private extension ExportToJSON {
         commonsFiles.append(contentsOf: entries.compactMap { $0.image })
         commonsFiles = commonsFiles
             .uniqueValues()
-            .sorted { $0.commonsId < $1.commonsId }
+            .sorted { $0.id < $1.id }
         try writeObjects(commonsFiles, name: "commons_files")
         return commonsFiles
     }
@@ -174,7 +174,7 @@ extension CommonsFile: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(commonsId, forKey: .commonsId)
+        try container.encode(id, forKey: .id)
         try container.encode(width, forKey: .width)
         try container.encode(height, forKey: .height)
         try container.encode(imageURL?.absoluteString, forKey: .imageURL)
@@ -184,7 +184,7 @@ extension CommonsFile: Encodable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case commonsId = "commons_id"
+        case id
         case width, height
         case imageURL = "image_url", thumbnailURLTemplate = "thumbnail_url_template"
         case author, license
@@ -196,13 +196,13 @@ extension Entry: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(wikidataId, forKey: .wikidataId)
+        try container.encode(id, forKey: .id)
         try container.encode(kind?.rawValue, forKey: .kind)
         try container.encode(dateOfBirth, forKey: .dateOfBirth)
         try container.encode(dateOfDeath, forKey: .dateOfDeath)
 
         try container.encode(categories.map { $0.id }, forKey: .categories)
-        try container.encode(image?.commonsId, forKey: .image)
+        try container.encode(image?.id, forKey: .image)
 
         let localizations = Dictionary(uniqueKeysWithValues: self.localizations
             .map { localization -> (String, LocalizedEntry) in
@@ -212,7 +212,8 @@ extension Entry: Encodable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case wikidataId = "wikidata_id", kind
+        case id
+        case kind
         case dateOfBirth = "date_of_birth", dateOfDeath = "date_of_death"
         case categories, image, localizations
     }
@@ -255,7 +256,7 @@ extension LocalizedEntry: Encodable {
         try container.encode(name, forKey: .name)
         try container.encode(summary, forKey: .description)
         try container.encode(defaultSort, forKey: .defaultSort)
-        try container.encode(wikipediaPage?.rawWikipediaId, forKey: .wikipediaPage)
+        try container.encode(wikipediaPage?.id, forKey: .wikipediaPage)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -269,7 +270,7 @@ extension OpenStreetMapElement: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(rawOpenStreetMapId, forKey: .id)
+        try container.encode(id, forKey: .id)
         try container.encode(openStreetMapId?.elementType, forKey: .elementType)
         try container.encode(openStreetMapId?.numericId, forKey: .numericId)
         try container.encode(name, forKey: .name)
@@ -306,11 +307,11 @@ extension PointOfInterest: Encodable {
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
 
-        try container.encode(openStreetMapElement?.rawOpenStreetMapId, forKey: .openstreetmapElement)
-        try container.encode(mainEntry?.wikidataId, forKey: .mainEntry)
-        try container.encode(secondaryEntries.map { $0.wikidataId },
+        try container.encode(openStreetMapElement?.id, forKey: .openstreetmapElement)
+        try container.encode(mainEntry?.id, forKey: .mainEntry)
+        try container.encode(secondaryEntries.map { $0.id },
                              forKey: .secondaryEntries)
-        try container.encode(image?.commonsId, forKey: .image)
+        try container.encode(image?.id, forKey: .image)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -327,7 +328,7 @@ extension WikipediaPage: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(rawWikipediaId, forKey: .id)
+        try container.encode(id, forKey: .id)
         try container.encode(wikipediaId?.language, forKey: .language)
         try container.encode(wikipediaId?.title, forKey: .title)
         try container.encode(extract, forKey: .extract)

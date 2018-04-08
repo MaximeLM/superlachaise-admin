@@ -14,14 +14,14 @@ final class SyncWikidataCategories: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(wikidataId: String)
+        case single(id: String)
 
         var description: String {
             switch self {
             case .all:
                 return "all"
-            case let .single(wikidataId):
-                return wikidataId
+            case let .single(id):
+                return id
             }
         }
 
@@ -71,7 +71,7 @@ private extension SyncWikidataCategories {
         case .all:
             // Get wikidata ids from Wikidata entries
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return WikidataEntry.all()(realm).flatMap { $0.wikidataCategories.map { $0.wikidataId } }
+                return WikidataEntry.all()(realm).flatMap { $0.wikidataCategories.map { $0.id } }
             }
         case let .single(wikidataId):
             return Single.just([wikidataId])
@@ -97,7 +97,7 @@ private extension SyncWikidataCategories {
 
     func saveWikidataCategories(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [String] {
         return try wikidataEntities.map { wikidataEntity in
-            try self.wikidataCategory(wikidataEntity: wikidataEntity, realm: realm).wikidataId
+            try self.wikidataCategory(wikidataEntity: wikidataEntity, realm: realm).id
         }
     }
 
@@ -106,7 +106,7 @@ private extension SyncWikidataCategories {
     func wikidataCategory(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataCategory {
         // Wikidata Id
         let wikidataId = wikidataEntity.id
-        let wikidataCategory = WikidataCategory.findOrCreate(wikidataId: wikidataId)(realm)
+        let wikidataCategory = WikidataCategory.findOrCreate(id: wikidataId)(realm)
 
         // Localizations
         let names = config.languages.compactMap { language -> String? in
@@ -133,15 +133,15 @@ private extension SyncWikidataCategories {
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedWikidataIds: [String]) -> Single<Void> {
+    func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.deleteOrphans(fetchedWikidataIds: fetchedWikidataIds, realm: realm)
+                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
             }
         }
     }
 
-    func deleteOrphans(fetchedWikidataIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<WikidataCategory>
         switch scope {
@@ -151,7 +151,7 @@ private extension SyncWikidataCategories {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter { !fetchedWikidataIds.contains($0.wikidataId) }
+        orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(WikidataCategory.self)(s)")

@@ -16,19 +16,19 @@ extension DatabaseV1Mapping {
         }
     }
 
-    static func find(monumentId: Int) -> (Realm) -> DatabaseV1Mapping? {
+    static func find(id: Int) -> (Realm) -> DatabaseV1Mapping? {
         return { realm in
-            realm.object(ofType: DatabaseV1Mapping.self, forPrimaryKey: monumentId)
+            realm.object(ofType: DatabaseV1Mapping.self, forPrimaryKey: id)
         }
     }
 
-    static func findOrCreate(monumentId: Int) -> (Realm) -> DatabaseV1Mapping {
+    static func findOrCreate(id: Int) -> (Realm) -> DatabaseV1Mapping {
         return { realm in
-            if let databaseV1Mapping = find(monumentId: monumentId)(realm) {
+            if let databaseV1Mapping = find(id: id)(realm) {
                 return databaseV1Mapping
             } else {
                 return realm.create(DatabaseV1Mapping.self,
-                                    value: ["monumentId": monumentId],
+                                    value: ["id": id],
                                     update: false)
             }
         }

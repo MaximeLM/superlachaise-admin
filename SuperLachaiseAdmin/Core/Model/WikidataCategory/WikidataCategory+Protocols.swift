@@ -13,7 +13,7 @@ extension WikidataCategory: Identifiable, Deletable, Listable, OpenableInBrowser
     // MARK: Identifiable
 
     var identifier: String {
-        return wikidataId
+        return id
     }
 
     // MARK: Deletable
@@ -29,11 +29,11 @@ extension WikidataCategory: Identifiable, Deletable, Listable, OpenableInBrowser
             var results = all()(realm)
                 .sorted(by: [
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "wikidataId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
                 let predicate = NSPredicate(
-                    format: "name contains[cd] %@ OR wikidataId contains[cd] %@ OR ANY categories.id contains[cd] %@",
+                    format: "name contains[cd] %@ OR id contains[cd] %@ OR ANY categories.id contains[cd] %@",
                     filter, filter, filter)
                 results = results.filter(predicate)
             }
@@ -45,7 +45,7 @@ extension WikidataCategory: Identifiable, Deletable, Listable, OpenableInBrowser
 
     var externalURL: URL? {
         return URL(string: "https://www.wikidata.org/wiki")?
-            .appendingPathComponent(wikidataId)
+            .appendingPathComponent(id)
     }
 
     // MARK: Syncable
