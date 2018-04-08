@@ -28,6 +28,7 @@ extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, S
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
+                    SortDescriptor(keyPath: "defaultSort"),
                     SortDescriptor(keyPath: "name"),
                     SortDescriptor(keyPath: "rawWikipediaId"),
                 ])
