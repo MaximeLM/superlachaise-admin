@@ -20,7 +20,7 @@ final class Category: Object {
     }
 
     override var description: String {
-        return id
+        return "\(id) (\(entries.count))"
     }
 
 }

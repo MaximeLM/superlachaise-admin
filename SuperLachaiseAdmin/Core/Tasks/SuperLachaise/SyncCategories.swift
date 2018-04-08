@@ -63,7 +63,7 @@ private extension SyncCategories {
         switch scope {
         case .all:
             categoriesIds = Category.all()(realm).map { $0.id }
-            categoriesIds.append(contentsOf: config.categories.map { $0.id })
+            categoriesIds.append(contentsOf: config.categoriesNames.map { $0.key })
             categoriesIds = categoriesIds.uniqueValues()
         case let .single(id):
             categoriesIds = [id]
@@ -72,13 +72,13 @@ private extension SyncCategories {
     }
 
     func syncCategory(id: String, realm: Realm) -> Category? {
-        guard let configCategory = config.categories.first(where: { $0.id == id }) else {
-            Logger.warning("No config for \(Category.self) id \(id)")
+        guard let categoryNames = config.categoriesNames.first(where: { $0.key == id }) else {
+            Logger.warning("No category names for \(Category.self) id \(id)")
             return nil
         }
         let category = Category.findOrCreate(id: id)(realm)
 
-        for (language, name) in configCategory.name {
+        for (language, name) in categoryNames.value {
             let localization = category.findOrCreateLocalization(language: language)(realm)
             localization.name = name
         }

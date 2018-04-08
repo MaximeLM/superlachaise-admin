@@ -9,15 +9,8 @@ import Foundation
 
 struct SuperLachaiseConfig: Decodable {
 
-    let categories: [ConfigCategory]
+    let categoriesNames: [String: [String: String]]
 
     let databaseV1CustomMappings: [String: String]?
-
-}
-
-struct ConfigCategory: Decodable {
-
-    let id: String
-    let name: [String: String]
 
 }

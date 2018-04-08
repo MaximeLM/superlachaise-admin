@@ -32,8 +32,9 @@ extension WikidataCategory: Identifiable, Deletable, Listable, OpenableInBrowser
                     SortDescriptor(keyPath: "wikidataId"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR wikidataId contains[cd] %@",
-                                            filter, filter)
+                let predicate = NSPredicate(
+                    format: "name contains[cd] %@ OR wikidataId contains[cd] %@ OR ANY categories.id contains[cd] %@",
+                    filter, filter, filter)
                 results = results.filter(predicate)
             }
             return results
