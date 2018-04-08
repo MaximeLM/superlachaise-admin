@@ -22,12 +22,6 @@ extension WikidataCategory: Identifiable, Deletable, Listable, OpenableInBrowser
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<WikidataCategory> {
-        return { realm in
-            realm.objects(WikidataCategory.self).filter("isDeleted == true")
-        }
-    }
-
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<WikidataCategory> {

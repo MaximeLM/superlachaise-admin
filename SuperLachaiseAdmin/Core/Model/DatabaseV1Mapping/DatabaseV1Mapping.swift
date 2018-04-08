@@ -14,8 +14,6 @@ final class DatabaseV1Mapping: Object {
 
     @objc dynamic var pointOfInterest: PointOfInterest?
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "monumentId"
     }

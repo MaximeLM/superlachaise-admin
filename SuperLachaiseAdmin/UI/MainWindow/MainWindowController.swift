@@ -113,6 +113,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
 
         // Subscribe root view controller to model
         model.asObservable()
+            .map { ($0?.isInvalidated ?? false) ? nil : $0 }
             .subscribe(onNext: { model in
                 self.rootViewController?.model = model
             })
@@ -125,6 +126,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
         // Bind title
         Observable.merge(model.asObservable(),
                          realmContext.viewRealmSaveNotification.map { _ in self.model.value })
+            .filter({ !($0?.isInvalidated ?? false) })
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
             .subscribe(onNext: { title in
                 self.window?.title = title

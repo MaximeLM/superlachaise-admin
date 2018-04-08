@@ -33,6 +33,9 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
     }
 
     func updateViewsFromModel() {
+        guard !(model?.isInvalidated ?? false) else {
+            return
+        }
         let views = model?.detailViewModel().views() ?? []
         stackView?.setViews(views, in: .top)
     }

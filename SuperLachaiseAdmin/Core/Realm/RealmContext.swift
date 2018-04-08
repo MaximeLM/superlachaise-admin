@@ -29,25 +29,6 @@ final class RealmContext {
     let databaseDirectoryURL: URL
     let databaseFileURL: URL
 
-    // MARK: Utils
-
-    func deleteFlaggedObjects(realm: Realm) throws {
-        try realm.write {
-            deleteFlaggedObjects(type: OpenStreetMapElement.self, realm: realm)
-            deleteFlaggedObjects(type: WikidataEntry.self, realm: realm)
-            deleteFlaggedObjects(type: WikidataLocalizedEntry.self, realm: realm)
-            deleteFlaggedObjects(type: WikidataCategory.self, realm: realm)
-            deleteFlaggedObjects(type: WikipediaPage.self, realm: realm)
-            deleteFlaggedObjects(type: CommonsFile.self, realm: realm)
-            deleteFlaggedObjects(type: Category.self, realm: realm)
-            deleteFlaggedObjects(type: LocalizedCategory.self, realm: realm)
-            deleteFlaggedObjects(type: PointOfInterest.self, realm: realm)
-            deleteFlaggedObjects(type: Entry.self, realm: realm)
-            deleteFlaggedObjects(type: LocalizedEntry.self, realm: realm)
-            deleteFlaggedObjects(type: DatabaseV1Mapping.self, realm: realm)
-        }
-    }
-
     // MARK: Init
 
     convenience init(databaseDirectoryName: String, databaseFileName: String) throws {
@@ -82,8 +63,6 @@ final class RealmContext {
         // Keep a Realm opened
         self._viewRealm = try Realm(configuration: configuration)
 
-        try deleteFlaggedObjects(realm: _viewRealm)
-
         Logger.info("database initialized at \(databaseFileURL.path)")
     }
 
@@ -103,14 +82,6 @@ final class RealmContext {
                            totalBytesInMB,
                            "\(shouldCompact)"))
         return shouldCompact
-    }
-
-    private func deleteFlaggedObjects<Element: Object & Deletable>(type: Element.Type, realm: Realm) {
-        let objects = Array(type.deleted()(realm))
-        if !objects.isEmpty {
-            objects.forEach { $0.delete() }
-            Logger.info("deleted \(objects.count) \(type)(s)")
-        }
     }
 
 }

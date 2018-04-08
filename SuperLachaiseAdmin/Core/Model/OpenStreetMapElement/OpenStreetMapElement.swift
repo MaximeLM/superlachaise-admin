@@ -19,8 +19,6 @@ final class OpenStreetMapElement: Object {
 
     @objc dynamic var wikidataEntry: WikidataEntry?
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "rawOpenStreetMapId"
     }

@@ -22,12 +22,6 @@ extension DatabaseV1Mapping: Identifiable, Deletable, Listable, Syncable {
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<DatabaseV1Mapping> {
-        return { realm in
-            realm.objects(DatabaseV1Mapping.self).filter("isDeleted == true")
-        }
-    }
-
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<DatabaseV1Mapping> {

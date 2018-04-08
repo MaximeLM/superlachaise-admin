@@ -44,7 +44,8 @@ final class SyncDatabaseV1Mappings: Task {
     func asSingle() -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.syncDatabaseV1Mappings(realm: realm)
+                let databaseV1Mappings = try self.syncDatabaseV1Mappings(realm: realm)
+                try self.deleteOrphans(fetchedMonumentIds: databaseV1Mappings.map { $0.monumentId }, realm: realm)
             }
         }
     }
@@ -57,16 +58,7 @@ final class SyncDatabaseV1Mappings: Task {
 
 private extension SyncDatabaseV1Mappings {
 
-    func prepareOrphans(realm: Realm) {
-        switch self.scope {
-        case .all:
-            DatabaseV1Mapping.all()(realm).setValue(true, forKey: "isDeleted")
-        case .single:
-            break
-        }
-    }
-
-    func syncDatabaseV1Mappings(realm: Realm) throws {
+    func syncDatabaseV1Mappings(realm: Realm) throws -> [DatabaseV1Mapping] {
         guard let sourceURL = Bundle.main.url(forResource: "database_v1", withExtension: "json") else {
             throw SyncDatabaseV1MappingsError.sourceJsonNotFound
         }
@@ -80,16 +72,17 @@ private extension SyncDatabaseV1Mappings {
         }
 
         let customMappings = try self.customMappings(realm: realm)
-        for monument in monuments {
+        return monuments.map { monument in
             syncDatabaseV1Mapping(monument: monument, customMappings: customMappings, realm: realm)
         }
     }
 
-    func syncDatabaseV1Mapping(monument: DatabaseV1Monument, customMappings: [Int: WikidataEntry], realm: Realm) {
+    func syncDatabaseV1Mapping(
+        monument: DatabaseV1Monument, customMappings: [Int: WikidataEntry], realm: Realm) -> DatabaseV1Mapping {
         let databaseV1Mapping = DatabaseV1Mapping.findOrCreate(monumentId: monument.id)(realm)
-        databaseV1Mapping.isDeleted = false
         databaseV1Mapping.pointOfInterest = pointOfInterest(
             monument: monument, customMappings: customMappings, realm: realm)
+        return databaseV1Mapping
     }
 
     func pointOfInterest(
@@ -155,6 +148,26 @@ private extension SyncDatabaseV1Mappings {
         }, uniquingKeysWith: {
             throw SyncDatabaseV1MappingsError.duplicateCustomMapping($0.wikidataId, $1.wikidataId)
         })
+    }
+
+    // MARK: Orphans
+
+    func deleteOrphans(fetchedMonumentIds: [Int], realm: Realm) throws {
+        // List existing objects
+        var orphanedObjects: Set<DatabaseV1Mapping>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(DatabaseV1Mapping.all()(realm))
+        case .single:
+            orphanedObjects = Set()
+        }
+
+        orphanedObjects = orphanedObjects.filter { !fetchedMonumentIds.contains($0.monumentId) }
+
+        if !orphanedObjects.isEmpty {
+            Logger.info("Deleting \(orphanedObjects.count) \(DatabaseV1Mapping.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
+        }
     }
 
 }

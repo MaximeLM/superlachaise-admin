@@ -16,10 +16,4 @@ extension WikidataLocalizedEntry: Deletable {
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<WikidataLocalizedEntry> {
-        return { realm in
-            realm.objects(WikidataLocalizedEntry.self).filter("isDeleted == true")
-        }
-    }
-
 }

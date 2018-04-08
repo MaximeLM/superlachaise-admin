@@ -42,8 +42,8 @@ final class SyncSuperLachaiseObjects: Task {
     func asSingle() -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                self.prepareOrphans(realm: realm)
-                self.syncPointsOfInterest(realm: realm)
+                let pointsOfInterest = self.syncPointsOfInterest(realm: realm)
+                try self.deleteOrphans(fetchedPointOfInterestIds: pointsOfInterest.map { $0.id }, realm: realm)
             }
         }
     }
@@ -56,17 +56,7 @@ final class SyncSuperLachaiseObjects: Task {
 
 private extension SyncSuperLachaiseObjects {
 
-    func prepareOrphans(realm: Realm) {
-        switch self.scope {
-        case .all:
-            PointOfInterest.all()(realm).setValue(true, forKey: "isDeleted")
-            Entry.all()(realm).setValue(true, forKey: "isDeleted")
-        case .single:
-            break
-        }
-    }
-
-    func syncPointsOfInterest(realm: Realm) {
+    func syncPointsOfInterest(realm: Realm) -> [PointOfInterest] {
         let pointsOfInterest = openStreetMapElements(realm: realm)
             .compactMap { openStreetMapElement -> PointOfInterest? in
                 guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
@@ -86,8 +76,8 @@ private extension SyncSuperLachaiseObjects {
                 \(PointOfInterest.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
                 skipping
                 """)
-            duplicate.key.isDeleted = true
         }
+        return pointsOfInterest.filter({ !duplicates.keys.contains($0) })
     }
 
     func openStreetMapElements(realm: Realm) -> [OpenStreetMapElement] {
@@ -96,7 +86,7 @@ private extension SyncSuperLachaiseObjects {
             return Array(OpenStreetMapElement.all()(realm))
         case let .single(id):
             return Array(realm.objects(OpenStreetMapElement.self)
-                .filter("isDeleted == false && wikidataEntry.wikidataId == %@", id))
+                .filter("wikidataEntry.wikidataId == %@", id))
         }
     }
 
@@ -141,7 +131,6 @@ private extension SyncSuperLachaiseObjects {
         }
 
         let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
-        pointOfInterest.isDeleted = false
 
         pointOfInterest.name = openStreetMapElement.name
         pointOfInterest.latitude = openStreetMapElement.latitude
@@ -169,7 +158,6 @@ private extension SyncSuperLachaiseObjects {
         }
 
         let entry = Entry.findOrCreate(wikidataId: wikidataEntry.wikidataId)(realm)
-        entry.isDeleted = false
 
         entry.name = wikidataEntry.name
         entry.kind = wikidataEntry.kind
@@ -181,7 +169,6 @@ private extension SyncSuperLachaiseObjects {
         entry.categories.removeAll()
         entry.categories.append(objectsIn: categories(wikidataEntry: wikidataEntry, realm: realm))
 
-        entry.localizations.setValue(true, forKey: "isDeleted")
         wikidataEntry.localizations.forEach { wikidataLocalizedEntry in
             let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
             guard let name = wikidataLocalizedEntry.name else {
@@ -194,7 +181,6 @@ private extension SyncSuperLachaiseObjects {
             }
 
             let localizedEntry = entry.findOrCreateLocalization(language: wikidataLocalizedEntry.language)(realm)
-            localizedEntry.isDeleted = false
             localizedEntry.name = name
             localizedEntry.summary = summary
             localizedEntry.defaultSort = wikipediaPage?.defaultSort ?? name
@@ -213,6 +199,44 @@ private extension SyncSuperLachaiseObjects {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry)  has no categories")
         }
         return categories
+    }
+
+    // MARK: Orphans
+
+    func deleteOrphans(fetchedPointOfInterestIds: [String], realm: Realm) throws {
+        // List existing objects
+        var orphanedObjects: Set<PointOfInterest>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(PointOfInterest.all()(realm))
+        case .single:
+            orphanedObjects = Set()
+        }
+
+        orphanedObjects = orphanedObjects.filter { !fetchedPointOfInterestIds.contains($0.id) }
+
+        if !orphanedObjects.isEmpty {
+            Logger.info("Deleting \(orphanedObjects.count) \(PointOfInterest.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
+        }
+
+        try deleteOrphanedEntries(realm: realm)
+    }
+
+    func deleteOrphanedEntries(realm: Realm) throws {
+        // List existing objects
+        let orphanedObjects: Set<Entry>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(Entry.all()(realm).filter("mainEntryOf.@count == 0 && secondayEntryOf.@count == 0"))
+        case .single:
+            orphanedObjects = Set()
+        }
+
+        if !orphanedObjects.isEmpty {
+            Logger.info("Deleting \(orphanedObjects.count) \(Entry.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
+        }
     }
 
 }

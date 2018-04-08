@@ -44,9 +44,8 @@ final class SyncCategories: Task {
     func asSingle() -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                self.prepareOrphans(realm: realm)
-                self.syncCategories(realm: realm)
-                self.cleanupOrphans(realm: realm)
+                let categories = self.syncCategories(realm: realm)
+                try self.deleteOrphans(fetchedCategoryIds: categories.map { $0.id }, realm: realm)
             }
         }
     }
@@ -59,16 +58,7 @@ final class SyncCategories: Task {
 
 private extension SyncCategories {
 
-    func prepareOrphans(realm: Realm) {
-        switch self.scope {
-        case .all:
-            Category.all()(realm).setValue(true, forKey: "isDeleted")
-        case .single:
-            break
-        }
-    }
-
-    func syncCategories(realm: Realm) {
+    func syncCategories(realm: Realm) -> [Category] {
         var configCategories = config.categories
         switch scope {
         case .all:
@@ -76,17 +66,14 @@ private extension SyncCategories {
         case let .single(id):
             configCategories = configCategories.filter { $0.id == id }
         }
-        configCategories.forEach { self.syncCategory(configCategory: $0, realm: realm) }
+        return configCategories.map { self.syncCategory(configCategory: $0, realm: realm) }
     }
 
-    func syncCategory(configCategory: ConfigCategory, realm: Realm) {
+    func syncCategory(configCategory: ConfigCategory, realm: Realm) -> Category {
         let category = Category.findOrCreate(id: configCategory.id)(realm)
-        category.isDeleted = false
 
-        category.localizations.setValue(true, forKey: "isDeleted")
         for (language, name) in configCategory.name {
             let localization = category.findOrCreateLocalization(language: language)(realm)
-            localization.isDeleted = false
             localization.name = name
         }
 
@@ -98,11 +85,28 @@ private extension SyncCategories {
             return wikidataCategory
         }
         category.setWikidataCategories(wikidataCategories)
+
+        return category
     }
 
-    func cleanupOrphans(realm: Realm) {
-        let orphans = realm.objects(Category.self).filter("isDeleted == true")
-        orphans.forEach { $0.setWikidataCategories([]) }
+    // MARK: Orphans
+
+    func deleteOrphans(fetchedCategoryIds: [String], realm: Realm) throws {
+        // List existing objects
+        var orphanedObjects: Set<Category>
+        switch scope {
+        case .all:
+            orphanedObjects = Set(Category.all()(realm))
+        case .single:
+            orphanedObjects = Set()
+        }
+
+        orphanedObjects = orphanedObjects.filter { !fetchedCategoryIds.contains($0.id) }
+
+        if !orphanedObjects.isEmpty {
+            Logger.info("Deleting \(orphanedObjects.count) \(Category.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
+        }
     }
 
 }

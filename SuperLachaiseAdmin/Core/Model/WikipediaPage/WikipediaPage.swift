@@ -18,8 +18,6 @@ final class WikipediaPage: Object {
     @objc dynamic var defaultSort: String?
     @objc dynamic var extract: String?
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "rawWikipediaId"
     }

@@ -12,7 +12,7 @@ extension Category {
 
     static func all() -> (Realm) -> Results<Category> {
         return { realm in
-            realm.objects(Category.self).filter("isDeleted == false")
+            realm.objects(Category.self)
         }
     }
 

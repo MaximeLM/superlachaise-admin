@@ -16,10 +16,4 @@ extension LocalizedEntry: Deletable {
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<LocalizedEntry> {
-        return { realm in
-            realm.objects(LocalizedEntry.self).filter("isDeleted == true")
-        }
-    }
-
 }

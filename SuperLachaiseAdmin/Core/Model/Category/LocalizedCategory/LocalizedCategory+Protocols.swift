@@ -16,10 +16,4 @@ extension LocalizedCategory: Deletable {
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<LocalizedCategory> {
-        return { realm in
-            realm.objects(LocalizedCategory.self).filter("isDeleted == true")
-        }
-    }
-
 }

@@ -106,7 +106,6 @@ private extension SyncWikidataCategories {
     func wikidataCategory(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataCategory {
         // Wikidata Id
         let wikidataCategory = WikidataCategory.findOrCreate(wikidataId: wikidataEntity.id)(realm)
-        wikidataCategory.isDeleted = false
 
         // Localizations
         let names = config.languages.compactMap { language -> String? in
@@ -146,8 +145,8 @@ private extension SyncWikidataCategories {
         orphanedObjects = orphanedObjects.filter { !fetchedWikidataIds.contains($0.wikidataId) }
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.isDeleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(WikidataCategory.self)(s) for deletion")
+            Logger.info("Deleting \(orphanedObjects.count) \(WikidataCategory.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
         }
     }
 

@@ -140,10 +140,8 @@ private extension SyncWikidataEntries {
     func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
         // Wikidata Id
         let wikidataEntry = WikidataEntry.findOrCreate(wikidataId: wikidataEntity.id)(realm)
-        wikidataEntry.isDeleted = false
 
         // Localizations
-        wikidataEntry.localizations.setValue(true, forKey: "isDeleted")
         for language in config.languages {
             syncLocalization(
                 wikidataEntry: wikidataEntry, wikidataEntity: wikidataEntity, language: language, realm: realm)
@@ -197,7 +195,6 @@ private extension SyncWikidataEntries {
                           language: String,
                           realm: Realm) -> WikidataLocalizedEntry {
         let localization = wikidataEntry.findOrCreateLocalization(language: language)(realm)
-        localization.isDeleted = false
 
         // Name
         let name = wikidataEntity.labels[language]?.value
@@ -343,8 +340,8 @@ private extension SyncWikidataEntries {
         orphanedObjects = orphanedObjects.filter { !fetchedWikidataIds.contains($0.wikidataId) }
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.isDeleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(WikidataEntry.self)(s) for deletion")
+            Logger.info("Deleting \(orphanedObjects.count) \(WikidataEntry.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
         }
     }
 

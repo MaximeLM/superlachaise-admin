@@ -23,7 +23,6 @@ extension Category: MainWindowModelType {
 
     private func localizationsFields() -> [DetailViewFieldItem] {
         return localizations
-            .filter("isDeleted == false")
             .map {
                 DetailViewFieldItem(name: "Name: \($0.language)", value: $0.name)
             }

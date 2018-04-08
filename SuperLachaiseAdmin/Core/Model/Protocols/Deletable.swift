@@ -10,10 +10,6 @@ import RealmSwift
 
 protocol Deletable: RealmCollectionValue {
 
-    var isDeleted: Bool { get set }
-
     func delete()
-
-    static func deleted() -> (Realm) -> Results<Self>
 
 }

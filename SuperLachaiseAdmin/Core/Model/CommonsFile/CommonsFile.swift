@@ -22,8 +22,6 @@ final class CommonsFile: Object {
     @objc dynamic var author: String?
     @objc dynamic var license: String?
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "commonsId"
     }

@@ -27,8 +27,6 @@ final class Entry: Object {
     @objc dynamic var image: CommonsFile?
     let categories = List<Category>()
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "wikidataId"
     }

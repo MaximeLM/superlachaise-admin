@@ -12,7 +12,7 @@ extension WikidataCategory {
 
     static func all() -> (Realm) -> Results<WikidataCategory> {
         return { realm in
-            realm.objects(WikidataCategory.self).filter("isDeleted == false")
+            realm.objects(WikidataCategory.self)
         }
     }
 

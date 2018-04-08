@@ -12,7 +12,7 @@ extension DatabaseV1Mapping {
 
     static func all() -> (Realm) -> Results<DatabaseV1Mapping> {
         return { realm in
-            realm.objects(DatabaseV1Mapping.self).filter("isDeleted == false")
+            realm.objects(DatabaseV1Mapping.self)
         }
     }
 

@@ -22,12 +22,6 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<OpenStreetMapElement> {
-        return { realm in
-            realm.objects(OpenStreetMapElement.self).filter("isDeleted == true")
-        }
-    }
-
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<OpenStreetMapElement> {

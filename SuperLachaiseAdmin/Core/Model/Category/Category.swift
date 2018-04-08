@@ -15,8 +15,6 @@ final class Category: Object {
     let localizations = LinkingObjects(fromType: LocalizedCategory.self, property: "category")
     let wikidataCategories = LinkingObjects(fromType: WikidataCategory.self, property: "categories")
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "id"
     }

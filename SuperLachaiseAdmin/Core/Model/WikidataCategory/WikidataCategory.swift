@@ -16,8 +16,6 @@ final class WikidataCategory: Object {
 
     let categories = List<Category>()
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "wikidataId"
     }

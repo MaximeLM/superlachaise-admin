@@ -12,7 +12,7 @@ extension PointOfInterest {
 
     static func all() -> (Realm) -> Results<PointOfInterest> {
         return { realm in
-            realm.objects(PointOfInterest.self).filter("isDeleted == false")
+            realm.objects(PointOfInterest.self)
         }
     }
 

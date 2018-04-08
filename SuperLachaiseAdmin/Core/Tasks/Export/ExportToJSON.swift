@@ -67,7 +67,6 @@ private extension ExportToJSON {
                 entries.append(contentsOf: Array(pointOfInterest.secondaryEntries))
                 return entries
             }
-            .filter { $0.isDeleted == false }
             .uniqueValues()
             .sorted { $0.wikidataId < $1.wikidataId }
         try writeObjects(entries, name: "entries")
@@ -79,7 +78,6 @@ private extension ExportToJSON {
             .flatMap { entry -> [Category] in
                 Array(entry.categories)
             }
-            .filter { $0.isDeleted == false }
             .uniqueValues()
             .sorted { $0.id < $1.id }
         try writeObjects(categories, name: "categories")
@@ -92,7 +90,6 @@ private extension ExportToJSON {
         var commonsFiles = pointsOfInterest.compactMap { $0.image }
         commonsFiles.append(contentsOf: entries.compactMap { $0.image })
         commonsFiles = commonsFiles
-            .filter { $0.isDeleted == false }
             .uniqueValues()
             .sorted { $0.commonsId < $1.commonsId }
         try writeObjects(commonsFiles, name: "commons_files")
@@ -138,7 +135,6 @@ extension Category: Encodable {
         try container.encode(id, forKey: .id)
 
         let localizations = Dictionary(uniqueKeysWithValues: self.localizations
-            .filter("isDeleted == false")
             .map { localization -> (String, LocalizedCategory) in
                 (localization.language, localization)
             })
@@ -182,11 +178,10 @@ extension Entry: Encodable {
         try container.encode(dateOfBirth, forKey: .dateOfBirth)
         try container.encode(dateOfDeath, forKey: .dateOfDeath)
 
-        try container.encode(categories.filter("isDeleted == false").map { $0.id }, forKey: .categories)
+        try container.encode(categories.map { $0.id }, forKey: .categories)
         try container.encode(image?.commonsId, forKey: .image)
 
         let localizations = Dictionary(uniqueKeysWithValues: self.localizations
-            .filter("isDeleted == false")
             .map { localization -> (String, LocalizedEntry) in
                 (localization.language, localization)
             })
@@ -265,7 +260,7 @@ extension PointOfInterest: Encodable {
         try container.encode(longitude.decimalValue, forKey: .longitude)
 
         try container.encode(mainEntry?.wikidataId, forKey: .mainEntry)
-        try container.encode(secondaryEntries.filter("isDeleted == false").map { $0.wikidataId },
+        try container.encode(secondaryEntries.map { $0.wikidataId },
                              forKey: .secondaryEntries)
         try container.encode(image?.commonsId, forKey: .image)
     }

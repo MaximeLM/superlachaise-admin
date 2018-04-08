@@ -106,7 +106,6 @@ private extension SyncOpenStreetMapElements {
             return nil
         }
         let openStreetMapElement = OpenStreetMapElement.findOrCreate(openStreetMapId: openStreetMapId)(realm)
-        openStreetMapElement.isDeleted = false
 
         // Coordinate
         switch elementType {
@@ -165,8 +164,8 @@ private extension SyncOpenStreetMapElements {
         orphanedObjects = orphanedObjects.filter { !fetchedRawOpenStreetMapIds.contains($0.rawOpenStreetMapId) }
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.isDeleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(OpenStreetMapElement.self)(s) for deletion")
+            Logger.info("Deleting \(orphanedObjects.count) \(OpenStreetMapElement.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
         }
     }
 

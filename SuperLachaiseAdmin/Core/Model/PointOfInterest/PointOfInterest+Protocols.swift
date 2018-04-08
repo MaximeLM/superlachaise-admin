@@ -22,12 +22,6 @@ extension PointOfInterest: Identifiable, Deletable, Listable, Syncable {
         realm?.delete(self)
     }
 
-    static func deleted() -> (Realm) -> Results<PointOfInterest> {
-        return { realm in
-            realm.objects(PointOfInterest.self).filter("isDeleted == true")
-        }
-    }
-
     // MARK: Listable
 
     static func list(filter: String) -> (Realm) -> Results<PointOfInterest> {

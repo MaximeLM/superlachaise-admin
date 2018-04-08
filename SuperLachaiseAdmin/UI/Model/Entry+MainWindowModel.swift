@@ -31,7 +31,6 @@ extension Entry: MainWindowModelType {
 
     private func localizationsFields() -> [DetailViewInlineFieldItem] {
         return localizations
-            .filter("isDeleted == false")
             .map {
                 DetailViewInlineFieldItem(name: "Localization: \($0.language)", valueItems: [
                     DetailViewFieldItem(name: "Name", value: $0.name),

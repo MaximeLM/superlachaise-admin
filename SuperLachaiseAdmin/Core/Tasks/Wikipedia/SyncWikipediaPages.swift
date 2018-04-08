@@ -160,7 +160,6 @@ private extension SyncWikipediaPages {
         // Wikipedia Id
         let wikipediaId = WikipediaId(language: language, title: wikipediaAPIPage.title)
         let wikipediaPage = WikipediaPage.findOrCreate(wikipediaId: wikipediaId)(realm)
-        wikipediaPage.isDeleted = false
 
         // Name
         wikipediaPage.name = wikipediaAPIPage.title
@@ -273,8 +272,8 @@ private extension SyncWikipediaPages {
         orphanedObjects = orphanedObjects.filter { !fetchedRawWikipediaIds.contains($0.rawWikipediaId) }
 
         if !orphanedObjects.isEmpty {
-            orphanedObjects.forEach { $0.isDeleted = true }
-            Logger.info("Flagged \(orphanedObjects.count) \(WikipediaPage.self)(s) for deletion")
+            Logger.info("Deleting \(orphanedObjects.count) \(WikipediaPage.self)(s)")
+            orphanedObjects.forEach { $0.delete() }
         }
     }
 

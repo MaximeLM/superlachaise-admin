@@ -12,7 +12,7 @@ extension WikipediaPage {
 
     static func all() -> (Realm) -> Results<WikipediaPage> {
         return { realm in
-            realm.objects(WikipediaPage.self).filter("isDeleted == false")
+            realm.objects(WikipediaPage.self)
         }
     }
 

@@ -23,8 +23,6 @@ final class PointOfInterest: Object {
     let secondaryEntries = List<Entry>()
     @objc dynamic var image: CommonsFile?
 
-    @objc dynamic var isDeleted = false
-
     override static func primaryKey() -> String {
         return "id"
     }
