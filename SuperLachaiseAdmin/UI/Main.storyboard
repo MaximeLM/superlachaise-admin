@@ -77,12 +77,6 @@
                                                 <action selector="exportToJSON:" target="Ady-hI-5gd" id="QPL-hP-g92"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Export to Realm..." id="jWP-Um-wlf">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="exportToRealm:" target="Ady-hI-5gd" id="vPL-SD-fUe"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="zJu-HC-QSC"/>
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>

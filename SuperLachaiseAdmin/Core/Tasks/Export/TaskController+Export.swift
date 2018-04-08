@@ -14,9 +14,4 @@ extension TaskController {
         enqueue(task)
     }
 
-    func exportToRealm(fileURL: URL) {
-        let task = ExportToRealm(fileURL: fileURL)
-        enqueue(task)
-    }
-
 }
