@@ -171,7 +171,8 @@ private extension SyncSuperLachaiseObjects {
 
         wikidataEntry.localizations.forEach { wikidataLocalizedEntry in
             let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
-            guard let name = wikidataLocalizedEntry.name else {
+            guard let name = wikidataLocalizedEntry.wikipediaPage?.wikipediaId?.title ??
+                wikidataLocalizedEntry.name else {
                 Logger.warning("\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no name; skipping")
                 return
             }
