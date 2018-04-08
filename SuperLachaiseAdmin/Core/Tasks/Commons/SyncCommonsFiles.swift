@@ -166,6 +166,7 @@ private extension SyncCommonsFiles {
             .compactMap {
                 let trimmedLine = $0
                     .replacingOccurrences(of: " (talk)", with: "")
+                    .replacingOccurrences(of: "User:", with: "")
                     .trimmingCharacters(in: .whitespacesAndNewlines)
                     .trimmingCharacters(in: CharacterSet(charactersIn: "\u{FFFC}•\t"))
                 if trimmedLine == "Attribution" || trimmedLine.hasPrefix("(required by the license)") {
