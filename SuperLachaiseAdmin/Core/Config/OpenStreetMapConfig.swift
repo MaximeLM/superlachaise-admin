@@ -13,8 +13,6 @@ struct OpenStreetMapConfig: Decodable {
 
     let fetchedTags: [String]
 
-    let ignoredElements: [OpenStreetMapId]
-
 }
 
 extension BoundingBox: Decodable {
@@ -28,18 +26,6 @@ extension BoundingBox: Decodable {
                   minLongitude: coordinates[1],
                   maxLatitude: coordinates[2],
                   maxLongitude: coordinates[3])
-    }
-
-}
-
-extension OpenStreetMapId: Decodable {
-
-    init(from decoder: Decoder) throws {
-        let rawValue = try decoder.singleValueContainer().decode(String.self)
-        guard let openStreetMapId = OpenStreetMapId(rawValue: rawValue) else {
-            throw Errors.invalidInvalidOpenStreetMapId(rawValue)
-        }
-        self = openStreetMapId
     }
 
 }

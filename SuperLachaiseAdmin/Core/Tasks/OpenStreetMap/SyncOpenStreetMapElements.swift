@@ -102,9 +102,6 @@ private extension SyncOpenStreetMapElements {
             throw SyncOpenStreetMapElementsError.invalidElementType(overpassElement.type)
         }
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
-        guard !config.ignoredElements.contains(openStreetMapId) else {
-            return nil
-        }
         let openStreetMapElement = OpenStreetMapElement.findOrCreate(openStreetMapId: openStreetMapId)(realm)
 
         // Coordinate

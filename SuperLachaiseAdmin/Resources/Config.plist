@@ -16,16 +16,6 @@
 			<string>historic=tomb</string>
 			<string>historic=memorial</string>
 		</array>
-		<key>ignoredElements</key>
-		<array>
-			<string>node/1688357881</string>
-			<string>node/5058142865</string>
-			<string>node/5058142866</string>
-			<string>node/5220080010</string>
-			<string>node/5220080011</string>
-			<string>node/5220085953</string>
-			<string>node/5221404534</string>
-		</array>
 	</dict>
 	<key>wikidata</key>
 	<dict>
