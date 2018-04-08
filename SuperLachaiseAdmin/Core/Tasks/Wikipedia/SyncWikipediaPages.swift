@@ -213,7 +213,7 @@ private extension SyncWikipediaPages {
         extract = extract.replacingOccurrences(of: "<br style=\"margin-bottom: 1ex;\"></p>", with: "</p>")
         extract = extract.replacingOccurrences(of: "</ul>", with: "</ul><br/>")
         extract = extract.replacingOccurrences(of: "<ul id=\"bandeau-portail\"",
-                                               with: "<ul id=\"bandeau-portail\" style=\"display: none;\">")
+                                               with: "<ul id=\"bandeau-portail\" style=\"display: none;\"")
 
         return extract
     }
