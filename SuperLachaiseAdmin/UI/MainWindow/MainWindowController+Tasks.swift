@@ -20,6 +20,17 @@ extension MainWindowController {
         taskController.runningTasks.value.first?.cancel()
     }
 
+    @IBAction func syncAll(_ sender: Any?) {
+        taskController.syncOpenStreetMapElements()
+        taskController.syncWikidataEntries()
+        taskController.syncWikidataCategories()
+        taskController.syncWikipediaPages()
+        taskController.syncCommonsFiles()
+        taskController.syncCategories()
+        taskController.syncSuperLachaiseObjects()
+        taskController.syncDatabaseV1Mappings()
+    }
+
     @IBAction func syncOpenStreetMapElements(_ sender: Any?) {
         taskController.syncOpenStreetMapElements()
     }
