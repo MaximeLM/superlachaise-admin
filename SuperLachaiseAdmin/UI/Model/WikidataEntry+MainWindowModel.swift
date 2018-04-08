@@ -22,8 +22,10 @@ extension WikidataEntry: MainWindowModelType {
                 DetailViewFieldItem(name: "Date of death", value: dateOfDeath),
             ],
             [
-                DetailViewToManyFieldItem(name: "Secondary Wikidata entries", value: Array(secondaryWikidataEntries)),
-                DetailViewToManyFieldItem(name: "Wikidata categories", value: Array(wikidataCategories)),
+                DetailViewToManyFieldItem(name: "Secondary Wikidata entries",
+                                          value: Array(secondaryWikidataEntries.sorted(byKeyPath: "name"))),
+                DetailViewToManyFieldItem(name: "Wikidata categories",
+                                          value: Array(wikidataCategories.sorted(byKeyPath: "name"))),
                 DetailViewToOneFieldItem(name: "Image", value: image),
                 DetailViewToOneFieldItem(name: "Image of grave", value: imageOfGrave),
             ],

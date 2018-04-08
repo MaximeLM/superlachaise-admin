@@ -105,7 +105,8 @@ private extension SyncWikidataCategories {
 
     func wikidataCategory(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataCategory {
         // Wikidata Id
-        let wikidataCategory = WikidataCategory.findOrCreate(wikidataId: wikidataEntity.id)(realm)
+        let wikidataId = wikidataEntity.id
+        let wikidataCategory = WikidataCategory.findOrCreate(wikidataId: wikidataId)(realm)
 
         // Localizations
         let names = config.languages.compactMap { language -> String? in
@@ -118,6 +119,14 @@ private extension SyncWikidataCategories {
 
         // Name
         wikidataCategory.name = names.first
+
+        // Categories
+        if let categories = config.categories[wikidataId]?.map({ Category.findOrCreate(id: $0)(realm) }) {
+            wikidataCategory.categories.replaceAll(objects: categories)
+        } else {
+            Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no categories")
+            wikidataCategory.categories.removeAll()
+        }
 
         return wikidataCategory
     }

@@ -31,6 +31,17 @@
 				<string>Q16204221</string>
 			</array>
 		</dict>
+		<key>categories</key>
+		<dict>
+			<key>Q6581072</key>
+			<array>
+				<string>women</string>
+			</array>
+			<key>Q6581097</key>
+			<array>
+				<string>men</string>
+			</array>
+		</dict>
 	</dict>
 	<key>superLachaise</key>
 	<dict>
@@ -46,11 +57,18 @@
 					<key>en</key>
 					<string>men</string>
 				</dict>
-				<key>wikidataCategoriesIds</key>
-				<array>
-					<string>Q6581097</string>
-				</array>
 			</dict>
+            <dict>
+                <key>id</key>
+                <string>women</string>
+                <key>name</key>
+                <dict>
+                    <key>fr</key>
+                    <string>femmes</string>
+                    <key>en</key>
+                    <string>women</string>
+                </dict>
+            </dict>
 		</array>
 		<key>databaseV1CustomMappings</key>
 		<dict>

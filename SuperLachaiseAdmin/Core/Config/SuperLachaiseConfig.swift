@@ -19,6 +19,5 @@ struct ConfigCategory: Decodable {
 
     let id: String
     let name: [String: String]
-    let wikidataCategoriesIds: [String]
 
 }

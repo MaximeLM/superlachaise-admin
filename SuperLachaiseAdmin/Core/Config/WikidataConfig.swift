@@ -13,4 +13,6 @@ struct WikidataConfig: Decodable {
 
     let customSecondaryWikidataIds: [String: [String]]
 
+    let categories: [String: [String]]
+
 }

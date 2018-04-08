@@ -23,7 +23,7 @@ extension Entry: MainWindowModelType {
             ],
             [
                 DetailViewToOneFieldItem(name: "Image", value: image),
-                DetailViewToManyFieldItem(name: "Categories", value: Array(categories)),
+                DetailViewToManyFieldItem(name: "Categories", value: Array(categories.sorted(byKeyPath: "id"))),
             ],
             localizationsFields(),
         ])

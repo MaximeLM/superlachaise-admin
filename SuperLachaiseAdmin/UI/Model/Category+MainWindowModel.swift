@@ -10,16 +10,13 @@ import Foundation
 extension Category: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
-        let wikidataCategories = realm?.objects(WikidataCategory.self)
-            .filter("ANY categories == %@", self)
         return DetailViewModel(self, items: [
             [
                 DetailViewFieldItem(name: "ID", value: id),
             ],
             localizationsFields(),
             [
-                DetailViewToManyFieldItem(name: "Wikidata categories",
-                                          value: wikidataCategories.map { Array($0) } ?? []),
+                DetailViewToManyFieldItem(name: "Entries", value: Array(entries.sorted(byKeyPath: "name"))),
             ],
         ])
     }
