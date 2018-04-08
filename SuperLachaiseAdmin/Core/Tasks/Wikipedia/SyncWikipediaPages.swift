@@ -28,11 +28,12 @@ final class SyncWikipediaPages: Task {
     }
 
     let scope: Scope
-
+    let config: WikipediaConfig
     let endpoint: (String) -> APIEndpointType
 
-    init(scope: Scope, endpoint: @escaping (String) -> APIEndpointType) {
+    init(scope: Scope, config: WikipediaConfig, endpoint: @escaping (String) -> APIEndpointType) {
         self.scope = scope
+        self.config = config
         self.endpoint = endpoint
     }
 
@@ -192,28 +193,20 @@ private extension SyncWikipediaPages {
         }
 
         // Remove leading and trailing white lines and empty paragraphs
-        let emptyLines = [
-            "",
-            "<p></p>",
-            "<p><br></p>",
-            "<p><span></span></p>",
-        ]
-        lines = lines.filter({ !emptyLines.contains($0.trimmingCharacters(in: .whitespaces)) })
+        let trimmedLines = config.extractTrimmedLines
+        lines = lines.filter({ !trimmedLines.contains($0.trimmingCharacters(in: .whitespaces)) })
 
         guard !lines.isEmpty else {
             return nil
         }
         var extract = lines.joined(separator: "\n")
 
-        // Remove unwanted strings
-        extract = extract.replacingOccurrences(of: "<sup class=\"reference cite_virgule\">,</sup>", with: "")
-        extract = extract.replacingOccurrences(of: " (<span><span><span> </span>listen</span></span>)", with: "")
-        extract = extract.replacingOccurrences(of: "(<span></span>, ", with: "(")
-        extract = extract.replacingOccurrences(of: "(<span></span>; ", with: "(")
-        extract = extract.replacingOccurrences(of: "<br style=\"margin-bottom: 1ex;\"></p>", with: "</p>")
-        extract = extract.replacingOccurrences(of: "</ul>", with: "</ul><br/>")
-        extract = extract.replacingOccurrences(of: "<ul id=\"bandeau-portail\"",
-                                               with: "<ul id=\"bandeau-portail\" style=\"display: none;\"")
+        // Replace unwanted strings
+        for substitutions in config.extractSubstitutions {
+            for (key, value) in substitutions {
+                extract = extract.replacingOccurrences(of: key, with: value)
+            }
+        }
 
         return extract
     }
