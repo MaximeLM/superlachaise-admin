@@ -15,6 +15,7 @@ final class WikidataCategory: Object {
     @objc dynamic var name: String?
 
     let categories = List<Category>()
+    let wikidataEntries = LinkingObjects(fromType: WikidataEntry.self, property: "wikidataCategories")
 
     override static func primaryKey() -> String {
         return "wikidataId"

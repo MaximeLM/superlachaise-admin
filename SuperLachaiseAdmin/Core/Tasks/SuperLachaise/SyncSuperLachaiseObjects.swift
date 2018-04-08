@@ -193,7 +193,8 @@ private extension SyncSuperLachaiseObjects {
 
     func categories(wikidataEntry: WikidataEntry, realm: Realm) -> [Category] {
         let categories = wikidataEntry.wikidataCategories
-            .flatMap { Array($0.categories).uniqueValues() }
+            .flatMap { Array($0.categories) }
+            .uniqueValues()
             .sorted { $0.id < $1.id }
         if categories.isEmpty {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry)  has no categories")
