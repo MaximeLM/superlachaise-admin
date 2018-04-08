@@ -41,7 +41,6 @@ struct WikidataClaimSnak: Decodable {
 
     var timeValue: WikidataClaimTimeValue? {
         guard let timeValue = datavalue?.timeValue else {
-            Logger.warning("[\(property)] Expected timeValue")
             return nil
         }
         return timeValue

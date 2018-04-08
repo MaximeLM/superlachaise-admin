@@ -300,7 +300,14 @@ private extension SyncWikidataEntries {
             return nil
         }
         return try wikidataEntity.claims(claim)
-            .compactMap { $0.mainsnak.timeValue }
+            .compactMap { wikidataClaim -> WikidataClaimTimeValue? in
+                guard let timeValue = wikidataClaim.mainsnak.timeValue else {
+                    Logger.warning(
+                        "\(WikidataEntity.self) \(wikidataEntity) has an invalid timeValue for \(claim.rawValue)")
+                    return nil
+                }
+                return timeValue
+            }
             .max { $0.precision < $1.precision }
             .map { try $0.entryDate() }
     }
