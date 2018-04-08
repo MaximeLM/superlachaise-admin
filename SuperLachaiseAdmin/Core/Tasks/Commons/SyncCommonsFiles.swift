@@ -146,25 +146,36 @@ private extension SyncCommonsFiles {
     }
 
     func author(imageInfo: CommonsAPIImageInfo) -> String? {
-        guard var artist = imageInfo.extmetadata.artist?.value else {
+        guard var author = imageInfo.extmetadata.artist?.value else {
             return nil
         }
 
         // Strip HTML
-        if let htmlData = artist.data(using: .utf8) {
+        if let htmlData = author.data(using: .utf8) {
             let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
                 .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue),
             ]
             if let attributedString = NSAttributedString(html: htmlData, options: options, documentAttributes: nil) {
-                artist = attributedString.string
+                author = attributedString.string
             }
         }
 
-        // Trim
-        artist = artist.trimmingCharacters(in: .whitespacesAndNewlines)
-        artist = artist.trimmingCharacters(in: CharacterSet(charactersIn: "\u{FFFC}"))
+        // Cleanup, put on one line
+        author = author
+            .split(separator: "\n")
+            .compactMap {
+                let trimmedLine = $0
+                    .replacingOccurrences(of: " (talk)", with: "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .trimmingCharacters(in: CharacterSet(charactersIn: "\u{FFFC}•\t"))
+                if trimmedLine == "Attribution" || trimmedLine.hasPrefix("(required by the license)") {
+                    return nil
+                }
+                return trimmedLine
+            }
+            .joined(separator: " - ")
 
-        return artist
+        return author
     }
 
     func license(imageInfo: CommonsAPIImageInfo) -> String? {
