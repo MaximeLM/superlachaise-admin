@@ -12,7 +12,7 @@ extension Entry: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
-                DetailViewImageItem(url: image?.thumbnailURL(height: 400)),
+                DetailViewImageItem(commonsFile: image),
                 DetailViewFieldItem(name: "Name", value: name),
                 DetailViewFieldItem(name: "ID", value: wikidataId),
             ],

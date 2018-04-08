@@ -12,7 +12,7 @@ extension CommonsFile: MainWindowModelType {
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
             [
-                DetailViewImageItem(url: thumbnailURL(height: 400)),
+                DetailViewImageItem(commonsFile: self),
                 DetailViewFieldItem(name: "Commons ID", value: commonsId),
             ],
             [

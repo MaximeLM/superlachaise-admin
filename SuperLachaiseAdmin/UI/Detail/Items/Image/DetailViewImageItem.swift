@@ -9,11 +9,11 @@ import Cocoa
 
 struct DetailViewImageItem: DetailViewItem {
 
-    let url: URL?
+    let commonsFile: CommonsFile?
 
     var view: NSView? {
         let view: DetailViewImageView? = NSNib.instantiate("DetailViewImageView")
-        view?.url = url
+        view?.commonsFile = commonsFile
         return view
     }
 

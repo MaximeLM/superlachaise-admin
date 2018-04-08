@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,11 +13,12 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="o3C-xJ-fdq">
-                    <rect key="frame" x="240" y="0.0" width="0.0" height="200"/>
+                    <rect key="frame" x="140" y="0.0" width="200" height="200"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="200" id="29z-LU-aoD"/>
                         <constraint firstAttribute="height" priority="750" constant="200" id="dS2-pj-xfi"/>
                     </constraints>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="0S7-oX-WEn"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="0S7-oX-WEn"/>
                 </imageView>
             </subviews>
             <constraints>
@@ -27,6 +28,8 @@
             </constraints>
             <connections>
                 <outlet property="imageView" destination="o3C-xJ-fdq" id="pQp-1w-WV9"/>
+                <outlet property="imageViewHeight" destination="dS2-pj-xfi" id="Eor-3O-UmF"/>
+                <outlet property="imageViewWidth" destination="29z-LU-aoD" id="DzB-U0-Jc2"/>
             </connections>
         </customView>
     </objects>
