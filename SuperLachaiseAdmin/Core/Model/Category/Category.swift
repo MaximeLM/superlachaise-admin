@@ -13,7 +13,6 @@ final class Category: Object {
     @objc dynamic var id = ""
 
     let localizations = LinkingObjects(fromType: LocalizedCategory.self, property: "category")
-    let wikidataCategories = LinkingObjects(fromType: WikidataCategory.self, property: "categories")
 
     override static func primaryKey() -> String {
         return "id"

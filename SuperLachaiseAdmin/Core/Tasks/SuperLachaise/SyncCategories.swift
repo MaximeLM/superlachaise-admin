@@ -84,7 +84,7 @@ private extension SyncCategories {
             }
             return wikidataCategory
         }
-        category.setWikidataCategories(wikidataCategories)
+        category.setWikidataCategories(wikidataCategories, realm: realm)
 
         return category
     }
@@ -113,8 +113,8 @@ private extension SyncCategories {
 
 private extension Category {
 
-    func setWikidataCategories(_ newWikidataCategories: [WikidataCategory]) {
-        for wikidataCategory in wikidataCategories {
+    func setWikidataCategories(_ newWikidataCategories: [WikidataCategory], realm: Realm) {
+        for wikidataCategory in realm.objects(WikidataCategory.self).filter("ANY categories == %@", self) {
             if let index = wikidataCategory.categories.index(of: self) {
                 wikidataCategory.categories.remove(at: index)
             }
