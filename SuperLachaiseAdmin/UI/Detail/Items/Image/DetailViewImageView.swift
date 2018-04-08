@@ -15,10 +15,9 @@ final class DetailViewImageView: NSView {
     var commonsFile: CommonsFile? {
         didSet {
             if let commonsFile = commonsFile {
-                imageView?.sd_setImage(with: commonsFile.thumbnailURL(height: 400), completed: nil)
-                if let imageViewWidth = imageViewWidth, let imageViewHeight = imageViewHeight,
-                    commonsFile.width > 0, commonsFile.height > 0 {
-                    imageViewWidth.constant = imageViewHeight.constant * CGFloat(commonsFile.width / commonsFile.height)
+                imageView?.sd_setImage(with: commonsFile.thumbnailURL(height: 600), completed: nil)
+                if let imageViewWidth = imageViewWidth, let imageViewHeight = imageViewHeight {
+                    imageViewWidth.constant = imageViewHeight.constant * CGFloat(commonsFile.ratio)
                 }
             } else {
                 imageView?.image = nil
