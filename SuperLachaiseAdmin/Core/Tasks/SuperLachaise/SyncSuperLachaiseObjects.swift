@@ -184,8 +184,7 @@ private extension SyncSuperLachaiseObjects {
             localizedEntry.name = name
             localizedEntry.summary = summary
             localizedEntry.defaultSort = wikipediaPage?.defaultSort ?? name
-            localizedEntry.wikipediaTitle = wikipediaPage?.wikipediaId?.title
-            localizedEntry.wikipediaExtract = wikipediaPage?.extract
+            localizedEntry.wikipediaPage = wikipediaPage
         }
 
         return entry

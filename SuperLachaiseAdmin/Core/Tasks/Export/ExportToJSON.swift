@@ -49,6 +49,7 @@ private extension ExportToJSON {
         let pointsOfInterest = try exportPointsOfInterest(realm: realm)
         _ = try exportOpenStreetMapElements(pointsOfInterest: pointsOfInterest, realm: realm)
         let entries = try exportEntries(pointsOfInterest: pointsOfInterest, realm: realm)
+        _ = try exportWikipediaPages(entries: entries, realm: realm)
         _ = try exportCategories(entries: entries, realm: realm)
         _ = try exportCommonsFiles(pointsOfInterest: pointsOfInterest, entries: entries, realm: realm)
     }
@@ -82,6 +83,17 @@ private extension ExportToJSON {
             .sorted { $0.wikidataId < $1.wikidataId }
         try writeObjects(entries, name: "entries")
         return entries
+    }
+
+    func exportWikipediaPages(entries: [Entry], realm: Realm) throws -> [WikipediaPage] {
+        let wikipediaPages = entries
+            .flatMap { entry -> [WikipediaPage] in
+                entry.localizations.compactMap { $0.wikipediaPage }
+            }
+            .uniqueValues()
+            .sorted { $0.rawWikipediaId < $1.rawWikipediaId }
+        try writeObjects(wikipediaPages, name: "wikipedia_pages")
+        return wikipediaPages
     }
 
     func exportCategories(entries: [Entry], realm: Realm) throws -> [Category] {
@@ -243,13 +255,12 @@ extension LocalizedEntry: Encodable {
         try container.encode(name, forKey: .name)
         try container.encode(summary, forKey: .description)
         try container.encode(defaultSort, forKey: .defaultSort)
-        try container.encode(wikipediaTitle, forKey: .wikipediaTitle)
-        try container.encode(wikipediaExtract, forKey: .wikipediaExtract)
+        try container.encode(wikipediaPage?.rawWikipediaId, forKey: .wikipediaPage)
     }
 
     enum CodingKeys: String, CodingKey {
         case language, name, description, defaultSort = "default_sort"
-        case wikipediaTitle = "wikipedia_title", wikipediaExtract = "wikipedia_extract"
+        case wikipediaPage = "wikipedia_page"
     }
 
 }
@@ -308,6 +319,23 @@ extension PointOfInterest: Encodable {
         case openstreetmapElement = "openstreetmap_element"
         case mainEntry = "main_entry", secondaryEntries = "secondary_entries"
         case image
+    }
+
+}
+
+extension WikipediaPage: Encodable {
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(rawWikipediaId, forKey: .id)
+        try container.encode(wikipediaId?.language, forKey: .language)
+        try container.encode(wikipediaId?.title, forKey: .title)
+        try container.encode(extract, forKey: .extract)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, language, title
+        case extract
     }
 
 }
