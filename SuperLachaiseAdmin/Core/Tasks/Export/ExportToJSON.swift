@@ -47,6 +47,7 @@ private extension ExportToJSON {
 
     func exportToJSON(realm: Realm) throws {
         let pointsOfInterest = try exportPointsOfInterest(realm: realm)
+        _ = try exportOpenStreetMapElements(pointsOfInterest: pointsOfInterest, realm: realm)
         let entries = try exportEntries(pointsOfInterest: pointsOfInterest, realm: realm)
         _ = try exportCategories(entries: entries, realm: realm)
         _ = try exportCommonsFiles(pointsOfInterest: pointsOfInterest, entries: entries, realm: realm)
@@ -58,6 +59,16 @@ private extension ExportToJSON {
         let pointsOfInterest = Array(PointOfInterest.all()(realm)).sorted { $0.id < $1.id }
         try writeObjects(pointsOfInterest, name: "points_of_interest")
         return pointsOfInterest
+    }
+
+    func exportOpenStreetMapElements(pointsOfInterest: [PointOfInterest],
+                                     realm: Realm) throws -> [OpenStreetMapElement] {
+        let openStreetMapElements = pointsOfInterest
+            .compactMap { $0.openStreetMapElement }
+            .uniqueValues()
+            .sorted { $0.rawOpenStreetMapId < $1.rawOpenStreetMapId }
+        try writeObjects(openStreetMapElements, name: "openstreetmap_elements")
+        return openStreetMapElements
     }
 
     func exportEntries(pointsOfInterest: [PointOfInterest], realm: Realm) throws -> [Entry] {
@@ -243,11 +254,13 @@ extension LocalizedEntry: Encodable {
 
 }
 
-extension PointOfInterest: Encodable {
+extension OpenStreetMapElement: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
+        try container.encode(rawOpenStreetMapId, forKey: .id)
+        try container.encode(openStreetMapId?.elementType, forKey: .elementType)
+        try container.encode(openStreetMapId?.numericId, forKey: .numericId)
         try container.encode(name, forKey: .name)
 
         let decimalNumberHandler = NSDecimalNumberHandler(
@@ -258,7 +271,31 @@ extension PointOfInterest: Encodable {
 
         try container.encode(latitude.decimalValue, forKey: .latitude)
         try container.encode(longitude.decimalValue, forKey: .longitude)
+    }
 
+    enum CodingKeys: String, CodingKey {
+        case id, elementType = "element_type", numericId = "numeric_id", latitude, longitude, name
+    }
+
+}
+
+extension OpenStreetMapElementType: Encodable {
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
+
+}
+
+extension PointOfInterest: Encodable {
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+
+        try container.encode(openStreetMapElement?.rawOpenStreetMapId, forKey: .openstreetmapElement)
         try container.encode(mainEntry?.wikidataId, forKey: .mainEntry)
         try container.encode(secondaryEntries.map { $0.wikidataId },
                              forKey: .secondaryEntries)
@@ -268,7 +305,9 @@ extension PointOfInterest: Encodable {
     enum CodingKeys: String, CodingKey {
         case id, name
         case latitude, longitude
-        case mainEntry = "main_entry", secondaryEntries = "secondary_entries", image
+        case openstreetmapElement = "openstreetmap_element"
+        case mainEntry = "main_entry", secondaryEntries = "secondary_entries"
+        case image
     }
 
 }

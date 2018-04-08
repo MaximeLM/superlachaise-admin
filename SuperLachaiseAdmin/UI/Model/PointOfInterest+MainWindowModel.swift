@@ -17,10 +17,7 @@ extension PointOfInterest: MainWindowModelType {
                 DetailViewFieldItem(name: "ID", value: id),
             ],
             [
-                DetailViewFieldItem(name: "Latitude", value: latitude),
-                DetailViewFieldItem(name: "Longitude", value: longitude),
-            ],
-            [
+                DetailViewToOneFieldItem(name: "OpenStreetMap element", value: openStreetMapElement),
                 DetailViewToOneFieldItem(name: "Main entry", value: mainEntry),
                 DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)),
                 DetailViewToOneFieldItem(name: "Image", value: image),

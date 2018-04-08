@@ -133,8 +133,7 @@ private extension SyncSuperLachaiseObjects {
         let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
 
         pointOfInterest.name = openStreetMapElement.name
-        pointOfInterest.latitude = openStreetMapElement.latitude
-        pointOfInterest.longitude = openStreetMapElement.longitude
+        pointOfInterest.openStreetMapElement = openStreetMapElement
 
         pointOfInterest.mainEntry = mainEntry
         pointOfInterest.secondaryEntries.removeAll()
