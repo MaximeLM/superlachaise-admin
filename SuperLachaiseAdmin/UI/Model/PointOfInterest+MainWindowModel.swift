@@ -22,8 +22,7 @@ extension PointOfInterest: MainWindowModelType {
             ],
             [
                 DetailViewToOneFieldItem(name: "Main entry", value: mainEntry),
-                DetailViewToManyFieldItem(name: "Secondary entries",
-                                          value: Array(secondaryEntries.sorted(byKeyPath: "name"))),
+                DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)),
                 DetailViewToOneFieldItem(name: "Image", value: image),
             ],
         ])
