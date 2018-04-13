@@ -181,9 +181,9 @@ private extension SyncWikidataEntries {
         }
 
         // Dates
-        wikidataEntry.dateOfBirth = try wikidataEntryDate(
+        wikidataEntry.dateOfBirth = try wikidataDate(
             wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfBirth)
-        wikidataEntry.dateOfDeath = try wikidataEntryDate(
+        wikidataEntry.dateOfDeath = try wikidataDate(
             wikidataEntity: wikidataEntity, kind: kind, claim: .dateOfDeath)
 
         return wikidataEntry
@@ -293,9 +293,9 @@ private extension SyncWikidataEntries {
         return wikidataCategoriesNames.map { $0.rawValue }.uniqueValues()
     }
 
-    func wikidataEntryDate(wikidataEntity: WikidataEntity,
-                           kind: EntryKind?,
-                           claim: WikidataPropertyName) throws -> WikidataEntryDate? {
+    func wikidataDate(wikidataEntity: WikidataEntity,
+                      kind: EntryKind?,
+                      claim: WikidataPropertyName) throws -> EntryDate? {
         guard kind == .person else {
             return nil
         }
@@ -309,7 +309,7 @@ private extension SyncWikidataEntries {
                 return timeValue
             }
             .max { $0.precision < $1.precision }
-            .map { try $0.wikidataEntryDate() }
+            .map { try $0.entryDate() }
     }
 
     func imageCommonsId(wikidataEntity: WikidataEntity, kind: EntryKind?) -> String? {

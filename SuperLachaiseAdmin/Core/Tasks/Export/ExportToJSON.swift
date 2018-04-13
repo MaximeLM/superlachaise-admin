@@ -220,6 +220,20 @@ extension Entry: Encodable {
 
 }
 
+extension EntryDate: Encodable {
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(ISO8601DateFormatter().string(from: date), forKey: .date)
+        try container.encode(precision.rawValue, forKey: .precision)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case date, precision
+    }
+
+}
+
 extension LocalizedCategory: Encodable {
 
     func encode(to encoder: Encoder) throws {
@@ -306,20 +320,6 @@ extension PointOfInterest: Encodable {
         case openstreetmapElement = "openstreetmap_element"
         case mainEntry = "main_entry", secondaryEntries = "secondary_entries"
         case image
-    }
-
-}
-
-extension WikidataEntryDate: Encodable {
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(ISO8601DateFormatter().string(from: date), forKey: .date)
-        try container.encode(precision.rawValue, forKey: .precision)
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case date, precision
     }
 
 }
