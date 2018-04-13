@@ -195,7 +195,7 @@ private extension SyncSuperLachaiseObjects {
             .flatMap { Array($0.categories) }
             .uniqueValues()
             .sorted { $0.id < $1.id }
-        if categories.isEmpty {
+        if wikidataEntry.kind == .person && categories.isEmpty {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry)  has no categories")
         }
         return categories
