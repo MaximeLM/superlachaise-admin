@@ -8,6 +8,7 @@ opt_in_rules:
   - conditional_returns_on_newline
   - contains_over_first_not_nil
   - empty_count
+  - empty_string
   - explicit_init
   - extension_access_modifier
   - implicit_return
