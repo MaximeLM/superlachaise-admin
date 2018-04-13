@@ -52,6 +52,7 @@ private extension ExportToJSON {
         _ = try exportWikipediaPages(entries: entries, realm: realm)
         _ = try exportCategories(entries: entries, realm: realm)
         _ = try exportCommonsFiles(pointsOfInterest: pointsOfInterest, entries: entries, realm: realm)
+        _ = try exportDatabaseV1Mappings(realm: realm)
     }
 
     // MARK: Export objects
@@ -117,6 +118,12 @@ private extension ExportToJSON {
             .sorted { $0.id < $1.id }
         try writeObjects(commonsFiles, name: "commons_files")
         return commonsFiles
+    }
+
+    func exportDatabaseV1Mappings(realm: Realm) throws -> [DatabaseV1Mapping] {
+        let databaseV1Mappings = Array(DatabaseV1Mapping.all()(realm)).sorted { $0.id < $1.id }
+        try writeObjects(databaseV1Mappings, name: "databaseV1_mappings")
+        return databaseV1Mappings
     }
 
     // MARK: Write files
@@ -188,6 +195,20 @@ extension CommonsFile: Encodable {
         case width, height
         case imageURL = "image_url", thumbnailURLTemplate = "thumbnail_url_template"
         case author, license
+    }
+
+}
+
+extension DatabaseV1Mapping: Encodable {
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(pointOfInterest?.id, forKey: .pointOfInterest)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, pointOfInterest = "point_of_interest"
     }
 
 }
