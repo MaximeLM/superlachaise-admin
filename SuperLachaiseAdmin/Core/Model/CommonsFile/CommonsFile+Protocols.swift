@@ -13,7 +13,7 @@ extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syn
     // MARK: Identifiable
 
     var identifier: String {
-        return commonsId
+        return id
     }
 
     // MARK: Deletable
@@ -28,10 +28,10 @@ extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syn
         return { realm in
             var results = all()(realm)
                 .sorted(by: [
-                    SortDescriptor(keyPath: "commonsId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
-                let predicate = NSPredicate(format: "commonsId contains[cd] %@", filter)
+                let predicate = NSPredicate(format: "id contains[cd] %@", filter)
                 results = results.filter(predicate)
             }
             return results
@@ -42,7 +42,7 @@ extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syn
 
     var externalURL: URL? {
         return URL(string: "https://commons.wikimedia.org/wiki")?
-            .appendingPathComponent("File:\(commonsId)")
+            .appendingPathComponent("File:\(id)")
     }
 
     // MARK: Syncable

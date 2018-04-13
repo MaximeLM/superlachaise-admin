@@ -14,14 +14,14 @@ final class SyncWikidataEntries: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(wikidataId: String)
+        case single(id: String)
 
         var description: String {
             switch self {
             case .all:
                 return "all"
-            case let .single(wikidataId):
-                return wikidataId
+            case let .single(id):
+                return id
             }
         }
 
@@ -72,10 +72,10 @@ private extension SyncWikidataEntries {
         case .all:
             // Get wikidata ids from OpenStreetMap elements
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return OpenStreetMapElement.all()(realm).compactMap { $0.wikidataEntry?.wikidataId }
+                return OpenStreetMapElement.all()(realm).compactMap { $0.wikidataEntry?.id }
             }
-        case let .single(wikidataId):
-            return Single.just([wikidataId])
+        case let .single(id):
+            return Single.just([id])
         }
     }
 
@@ -106,8 +106,8 @@ private extension SyncWikidataEntries {
 
     func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            return wikidataIds.compactMap { WikidataEntry.find(wikidataId: $0)(realm) }
-                .flatMap { $0.secondaryWikidataEntries.map { $0.wikidataId } }
+            return wikidataIds.compactMap { WikidataEntry.find(id: $0)(realm) }
+                .flatMap { $0.secondaryWikidataEntries.map { $0.id } }
                 .filter { !wikidataIds.contains($0) }
         }
     }
@@ -131,7 +131,7 @@ private extension SyncWikidataEntries {
 
     func saveWikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [String] {
         return try wikidataEntities.map { wikidataEntity in
-            try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm).wikidataId
+            try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm).id
         }
     }
 
@@ -139,7 +139,7 @@ private extension SyncWikidataEntries {
 
     func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
         // Wikidata Id
-        let wikidataEntry = WikidataEntry.findOrCreate(wikidataId: wikidataEntity.id)(realm)
+        let wikidataEntry = WikidataEntry.findOrCreate(id: wikidataEntity.id)(realm)
 
         // Localizations
         for language in config.languages {
@@ -156,12 +156,12 @@ private extension SyncWikidataEntries {
 
         // Secondary wikidata entries
         let secondaryWikidataEntries = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
-            .map { WikidataEntry.findOrCreate(wikidataId: $0)(realm) }
+            .map { WikidataEntry.findOrCreate(id: $0)(realm) }
         wikidataEntry.secondaryWikidataEntries.replaceAll(objects: secondaryWikidataEntries)
 
         // Wikidata categories
         let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, kind: kind)
-            .map { WikidataCategory.findOrCreate(wikidataId: $0)(realm) }
+            .map { WikidataCategory.findOrCreate(id: $0)(realm) }
         wikidataEntry.wikidataCategories.replaceAll(objects: wikidataCategories)
 
         // Image
@@ -169,7 +169,7 @@ private extension SyncWikidataEntries {
         if imageCommonsId == nil && (kind == .grave || kind == .monument) {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
         }
-        wikidataEntry.image = imageCommonsId.map { CommonsFile.findOrCreate(commonsId: $0)(realm) }
+        wikidataEntry.image = imageCommonsId.map { CommonsFile.findOrCreate(id: $0)(realm) }
 
         // Image of grave
         if kind == .person {
@@ -177,7 +177,7 @@ private extension SyncWikidataEntries {
             if imageOfGraveCommonsId == nil {
                 Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
             }
-            wikidataEntry.imageOfGrave = imageOfGraveCommonsId.map { CommonsFile.findOrCreate(commonsId: $0)(realm) }
+            wikidataEntry.imageOfGrave = imageOfGraveCommonsId.map { CommonsFile.findOrCreate(id: $0)(realm) }
         }
 
         // Dates
@@ -326,15 +326,15 @@ private extension SyncWikidataEntries {
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedWikidataIds: [String]) -> Single<Void> {
+    func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.deleteOrphans(fetchedWikidataIds: fetchedWikidataIds, realm: realm)
+                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
             }
         }
     }
 
-    func deleteOrphans(fetchedWikidataIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<WikidataEntry>
         switch scope {
@@ -344,7 +344,7 @@ private extension SyncWikidataEntries {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter { !fetchedWikidataIds.contains($0.wikidataId) }
+        orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(WikidataEntry.self)(s)")

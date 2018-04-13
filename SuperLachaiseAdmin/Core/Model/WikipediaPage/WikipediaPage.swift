@@ -10,8 +10,8 @@ import RealmSwift
 
 final class WikipediaPage: Object {
 
-    // Serialized as language/title
-    @objc dynamic var rawWikipediaId = ""
+    // "language/title"
+    @objc dynamic var id = ""
 
     @objc dynamic var name: String?
 
@@ -19,11 +19,12 @@ final class WikipediaPage: Object {
     @objc dynamic var extract: String?
 
     override static func primaryKey() -> String {
-        return "rawWikipediaId"
+        return "id"
     }
 
     override var description: String {
-        return rawWikipediaId
+        return (wikipediaId.map { [$0.title, $0.language] } ?? [])
+            .joined(separator: " - ")
     }
 
 }

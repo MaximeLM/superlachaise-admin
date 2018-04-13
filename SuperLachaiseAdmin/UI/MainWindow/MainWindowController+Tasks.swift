@@ -76,14 +76,4 @@ extension MainWindowController {
         taskController.exportToJSON(directoryURL: directoryURL)
     }
 
-    @IBAction func exportToRealm(_ sender: Any?) {
-        let panel = NSSavePanel()
-        panel.allowedFileTypes = ["realm"]
-        panel.canCreateDirectories = true
-        guard panel.runModal() == .OK, let fileURL = panel.url else {
-            return
-        }
-        taskController.exportToRealm(fileURL: fileURL)
-    }
-
 }

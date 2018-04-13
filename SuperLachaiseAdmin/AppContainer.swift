@@ -40,7 +40,7 @@ final class AppContainer {
 
     private init() throws {
         guard let configURL = Bundle.main.url(forResource: "Config", withExtension: "plist") else {
-            throw Errors.configNotFound
+            throw AppContainerError.configNotFound
         }
         let configData = try Data(contentsOf: configURL)
 
@@ -49,4 +49,8 @@ final class AppContainer {
         self.taskController = TaskController(config: config, realmContext: realmContext)
     }
 
+}
+
+enum AppContainerError: Error {
+    case configNotFound
 }

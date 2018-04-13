@@ -10,7 +10,7 @@ import RealmSwift
 
 final class WikidataEntry: Object {
 
-    @objc dynamic var wikidataId = ""
+    @objc dynamic var id = ""
 
     @objc dynamic var name: String?
     @objc dynamic var rawKind = ""
@@ -29,11 +29,11 @@ final class WikidataEntry: Object {
     let localizations = LinkingObjects(fromType: WikidataLocalizedEntry.self, property: "wikidataEntry")
 
     override static func primaryKey() -> String {
-        return "wikidataId"
+        return "id"
     }
 
     override var description: String {
-        return [name, wikidataId]
+        return [name, id]
             .compactMap { $0 }
             .joined(separator: " - ")
     }

@@ -16,8 +16,7 @@ final class LocalizedEntry: Object {
     @objc dynamic var summary = ""
     @objc dynamic var defaultSort = ""
 
-    @objc dynamic var wikipediaTitle: String?
-    @objc dynamic var wikipediaExtract: String?
+    @objc dynamic var wikipediaPage: WikipediaPage?
 
     @objc dynamic var entry: Entry?
 

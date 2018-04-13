@@ -14,14 +14,14 @@ final class SyncCommonsFiles: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(commonsId: String)
+        case single(id: String)
 
         var description: String {
             switch self {
             case .all:
                 return "all"
-            case let .single(commonsId):
-                return commonsId
+            case let .single(id):
+                return id
             }
         }
 
@@ -63,11 +63,11 @@ private extension SyncCommonsFiles {
             // Get Commons ids from Wikidata entries
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
                 return WikidataEntry.all()(realm).flatMap { wikidataEntry in
-                    [wikidataEntry.image?.commonsId, wikidataEntry.imageOfGrave?.commonsId].compactMap { $0 }
+                    [wikidataEntry.image?.id, wikidataEntry.imageOfGrave?.id].compactMap { $0 }
                 }
             }
-        case let .single(commonsId):
-            return Single.just([commonsId])
+        case let .single(id):
+            return Single.just([id])
         }
     }
 
@@ -97,7 +97,7 @@ private extension SyncCommonsFiles {
 
     func saveCommonsFiles(commonsAPIImages: [CommonsAPIImage], realm: Realm) throws -> [String] {
         return try commonsAPIImages.map { commonsAPIImage in
-            try self.commonsFile(commonsAPIImage: commonsAPIImage, realm: realm).commonsId
+            try self.commonsFile(commonsAPIImage: commonsAPIImage, realm: realm).id
         }
     }
 
@@ -109,7 +109,7 @@ private extension SyncCommonsFiles {
             Logger.warning("Invalid \(CommonsAPIImage.self) title: \(commonsAPIImage.title)")
         }
         let commonsId = String(commonsAPIImage.title.dropFirst(5))
-        let commonsFile = CommonsFile.findOrCreate(commonsId: commonsId)(realm)
+        let commonsFile = CommonsFile.findOrCreate(id: commonsId)(realm)
 
         guard let imageInfo = commonsAPIImage.imageinfo?.first else {
             throw SyncCommonsFilesError.missingImageInfo
@@ -188,15 +188,15 @@ private extension SyncCommonsFiles {
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedCommonsIds: [String]) -> Single<Void> {
+    func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
         return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
             try realm.write {
-                try self.deleteOrphans(fetchedCommonsIds: fetchedCommonsIds, realm: realm)
+                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
             }
         }
     }
 
-    func deleteOrphans(fetchedCommonsIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
         // List existing objects
         var orphanedObjects: Set<CommonsFile>
         switch scope {
@@ -206,7 +206,7 @@ private extension SyncCommonsFiles {
             orphanedObjects = Set()
         }
 
-        orphanedObjects = orphanedObjects.filter { !fetchedCommonsIds.contains($0.commonsId) }
+        orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(CommonsFile.self)(s)")

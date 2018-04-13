@@ -28,7 +28,7 @@ extension OpenStreetMapElement {
                 return openStreetMapElement
             } else {
                 return realm.create(OpenStreetMapElement.self,
-                                    value: ["rawOpenStreetMapId": openStreetMapId.rawValue],
+                                    value: ["id": openStreetMapId.rawValue],
                                     update: false)
             }
         }

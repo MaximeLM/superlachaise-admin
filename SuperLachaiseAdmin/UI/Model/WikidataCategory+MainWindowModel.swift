@@ -13,7 +13,7 @@ extension WikidataCategory: MainWindowModelType {
         return DetailViewModel(self, items: [
             [
                 DetailViewFieldItem(name: "Name", value: name),
-                DetailViewFieldItem(name: "ID", value: wikidataId),
+                DetailViewFieldItem(name: "ID", value: id),
             ],
             [
                 DetailViewToManyFieldItem(name: "Categories", value: Array(categories)),

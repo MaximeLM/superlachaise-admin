@@ -16,18 +16,18 @@ extension WikidataCategory {
         }
     }
 
-    static func find(wikidataId: String) -> (Realm) -> WikidataCategory? {
+    static func find(id: String) -> (Realm) -> WikidataCategory? {
         return { realm in
-            realm.object(ofType: WikidataCategory.self, forPrimaryKey: wikidataId)
+            realm.object(ofType: WikidataCategory.self, forPrimaryKey: id)
         }
     }
 
-    static func findOrCreate(wikidataId: String) -> (Realm) -> WikidataCategory {
+    static func findOrCreate(id: String) -> (Realm) -> WikidataCategory {
         return { realm in
-            if let wikidataCategory = find(wikidataId: wikidataId)(realm) {
+            if let wikidataCategory = find(id: id)(realm) {
                 return wikidataCategory
             } else {
-                return realm.create(WikidataCategory.self, value: ["wikidataId": wikidataId], update: false)
+                return realm.create(WikidataCategory.self, value: ["id": id], update: false)
             }
         }
     }

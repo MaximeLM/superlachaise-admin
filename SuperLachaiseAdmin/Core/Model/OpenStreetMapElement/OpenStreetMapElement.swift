@@ -10,8 +10,8 @@ import RealmSwift
 
 final class OpenStreetMapElement: Object {
 
-    // Serialized as type/numericId
-    @objc dynamic var rawOpenStreetMapId = ""
+    // "type/numericId"
+    @objc dynamic var id = ""
 
     @objc dynamic var latitude: Double = 0
     @objc dynamic var longitude: Double = 0
@@ -20,11 +20,11 @@ final class OpenStreetMapElement: Object {
     @objc dynamic var wikidataEntry: WikidataEntry?
 
     override static func primaryKey() -> String {
-        return "rawOpenStreetMapId"
+        return "id"
     }
 
     override var description: String {
-        return [name, rawOpenStreetMapId]
+        return [name, id]
             .compactMap { $0 }
             .joined(separator: " - ")
     }

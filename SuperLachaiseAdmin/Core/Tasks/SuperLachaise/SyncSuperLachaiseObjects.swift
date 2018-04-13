@@ -86,7 +86,7 @@ private extension SyncSuperLachaiseObjects {
             return Array(OpenStreetMapElement.all()(realm))
         case let .single(id):
             return Array(realm.objects(OpenStreetMapElement.self)
-                .filter("wikidataEntry.wikidataId == %@", id))
+                .filter("wikidataEntry.id == %@", id))
         }
     }
 
@@ -130,11 +130,10 @@ private extension SyncSuperLachaiseObjects {
             return nil
         }
 
-        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.wikidataId)(realm)
+        let pointOfInterest = PointOfInterest.findOrCreate(id: wikidataEntry.id)(realm)
 
         pointOfInterest.name = openStreetMapElement.name
-        pointOfInterest.latitude = openStreetMapElement.latitude
-        pointOfInterest.longitude = openStreetMapElement.longitude
+        pointOfInterest.openStreetMapElement = openStreetMapElement
 
         pointOfInterest.mainEntry = mainEntry
         pointOfInterest.secondaryEntries.removeAll()
@@ -157,7 +156,7 @@ private extension SyncSuperLachaiseObjects {
             }
         }
 
-        let entry = Entry.findOrCreate(wikidataId: wikidataEntry.wikidataId)(realm)
+        let entry = Entry.findOrCreate(id: wikidataEntry.id)(realm)
 
         entry.name = wikidataEntry.name
         entry.kind = wikidataEntry.kind
@@ -185,8 +184,7 @@ private extension SyncSuperLachaiseObjects {
             localizedEntry.name = name
             localizedEntry.summary = summary
             localizedEntry.defaultSort = wikipediaPage?.defaultSort ?? name
-            localizedEntry.wikipediaTitle = wikipediaPage?.wikipediaId?.title
-            localizedEntry.wikipediaExtract = wikipediaPage?.extract
+            localizedEntry.wikipediaPage = wikipediaPage
         }
 
         return entry
@@ -197,7 +195,7 @@ private extension SyncSuperLachaiseObjects {
             .flatMap { Array($0.categories) }
             .uniqueValues()
             .sorted { $0.id < $1.id }
-        if categories.isEmpty {
+        if wikidataEntry.kind == .person && categories.isEmpty {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry)  has no categories")
         }
         return categories

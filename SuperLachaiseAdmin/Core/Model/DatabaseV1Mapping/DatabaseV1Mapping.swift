@@ -10,16 +10,17 @@ import RealmSwift
 
 final class DatabaseV1Mapping: Object {
 
-    @objc dynamic var monumentId: Int = 0
+    // monument ID
+    @objc dynamic var id: Int = 0
 
     @objc dynamic var pointOfInterest: PointOfInterest?
 
     override static func primaryKey() -> String {
-        return "monumentId"
+        return "id"
     }
 
     override var description: String {
-        return "\(monumentId) → \(pointOfInterest?.description ?? "nil")"
+        return "\(id) → \(pointOfInterest?.description ?? "nil")"
     }
 
 }

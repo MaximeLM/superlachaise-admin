@@ -46,14 +46,14 @@ extension OpenStreetMapElement {
 
     var openStreetMapId: OpenStreetMapId? {
         get {
-            guard let openStreetMapId = OpenStreetMapId(rawValue: rawOpenStreetMapId) else {
+            guard let openStreetMapId = OpenStreetMapId(rawValue: id) else {
                 assertionFailure()
                 return nil
             }
             return openStreetMapId
         }
         set {
-            rawOpenStreetMapId = newValue?.rawValue ?? ""
+            id = newValue?.rawValue ?? ""
         }
     }
 

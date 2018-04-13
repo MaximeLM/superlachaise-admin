@@ -16,18 +16,18 @@ extension WikidataEntry {
         }
     }
 
-    static func find(wikidataId: String) -> (Realm) -> WikidataEntry? {
+    static func find(id: String) -> (Realm) -> WikidataEntry? {
         return { realm in
-            realm.object(ofType: WikidataEntry.self, forPrimaryKey: wikidataId)
+            realm.object(ofType: WikidataEntry.self, forPrimaryKey: id)
         }
     }
 
-    static func findOrCreate(wikidataId: String) -> (Realm) -> WikidataEntry {
+    static func findOrCreate(id: String) -> (Realm) -> WikidataEntry {
         return { realm in
-            if let wikidataEntry = find(wikidataId: wikidataId)(realm) {
+            if let wikidataEntry = find(id: id)(realm) {
                 return wikidataEntry
             } else {
-                return realm.create(WikidataEntry.self, value: ["wikidataId": wikidataId], update: false)
+                return realm.create(WikidataEntry.self, value: ["id": id], update: false)
             }
         }
     }

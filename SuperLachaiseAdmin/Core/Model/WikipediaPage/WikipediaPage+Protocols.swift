@@ -13,7 +13,7 @@ extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, S
     // MARK: Identifiable
 
     var identifier: String {
-        return rawWikipediaId
+        return id
     }
 
     // MARK: Deletable
@@ -30,7 +30,7 @@ extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, S
                 .sorted(by: [
                     SortDescriptor(keyPath: "defaultSort"),
                     SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "rawWikipediaId"),
+                    SortDescriptor(keyPath: "id"),
                 ])
             if !filter.isEmpty {
                 let predicate = NSPredicate(format: "name contains[cd] %@", filter)
