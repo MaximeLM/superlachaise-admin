@@ -328,7 +328,7 @@ extension PointOfInterest: Encodable {
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
 
-        try container.encode(openStreetMapElement?.id, forKey: .openstreetmapElement)
+        try container.encode(openStreetMapElement?.id, forKey: .openStreetMapElement)
         try container.encode(mainEntry?.id, forKey: .mainWikidataEntry)
         try container.encode(secondaryEntries.map { $0.id },
                              forKey: .secondaryWikidataEntries)
@@ -337,8 +337,7 @@ extension PointOfInterest: Encodable {
 
     enum CodingKeys: String, CodingKey {
         case id, name
-        case latitude, longitude
-        case openstreetmapElement = "openstreetmap_element"
+        case openStreetMapElement = "openstreetmap_element"
         case mainWikidataEntry = "main_wikidata_entry", secondaryWikidataEntries = "secondary_wikidata_entries"
         case image
     }
