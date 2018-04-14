@@ -48,7 +48,7 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
         }
         return URL(string: "https://www.openstreetmap.org")?
             .appendingPathComponent(openStreetMapId.elementType.rawValue)
-            .appendingPathComponent("\(openStreetMapId.elementType)")
+            .appendingPathComponent("\(openStreetMapId.numericId)")
     }
 
     // MARK: Syncable
