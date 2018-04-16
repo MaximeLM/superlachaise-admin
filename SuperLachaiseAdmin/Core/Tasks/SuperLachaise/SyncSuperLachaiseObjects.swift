@@ -107,7 +107,7 @@ private extension SyncSuperLachaiseObjects {
 
         let mainWikidataEntry: WikidataEntry
         let secondaryWikidataEntries: [WikidataEntry]
-        if kind == .grave && !isMainEntryInteresting && interestingSecondaryEntries.count == 1 {
+        if kind == .grave && interestingSecondaryEntries.count == 1 {
             mainWikidataEntry = interestingSecondaryEntries[0]
             secondaryWikidataEntries = []
             Logger.info("Skipping \(wikidataEntry) for interesting secondary entry \(mainWikidataEntry)")
