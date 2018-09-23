@@ -94,7 +94,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
 
         if MainWindowController.isFirstWindow {
             MainWindowController.isFirstWindow = false
-            let autosaveName = NSWindow.FrameAutosaveName("MainWindow")
+            let autosaveName = "MainWindow"
             window?.setFrameUsingName(autosaveName)
             windowFrameAutosaveName = autosaveName
         }

@@ -93,7 +93,7 @@ private extension SyncWikipediaPages {
         case .all:
             // Get wikipedia titles from Wikidata localized entries
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return WikidataLocalizedEntry.all()(realm)
+                WikidataLocalizedEntry.all()(realm)
                     .reduce([:]) { partialResult, wikidataLocalizedEntry in
                         guard let wikipediaTitle = wikidataLocalizedEntry.wikipediaPage?.wikipediaId?.title else {
                             return partialResult

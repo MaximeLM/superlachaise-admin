@@ -10,7 +10,7 @@ import Cocoa
 extension NSNib {
 
     static func instantiate<T>(_ nibName: String, bundle: Bundle? = nil, owner: Any? = nil) -> T? {
-        guard let nib = NSNib(nibNamed: NSNib.Name(rawValue: nibName), bundle: bundle) else {
+        guard let nib = NSNib(nibNamed: nibName, bundle: bundle) else {
             assertionFailure()
             return nil
         }

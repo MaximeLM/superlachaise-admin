@@ -71,7 +71,7 @@ private extension SyncWikidataCategories {
         case .all:
             // Get wikidata ids from Wikidata entries
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return WikidataEntry.all()(realm).flatMap { $0.wikidataCategories.map { $0.id } }
+                WikidataEntry.all()(realm).flatMap { $0.wikidataCategories.map { $0.id } }
             }
         case let .single(wikidataId):
             return Single.just([wikidataId])

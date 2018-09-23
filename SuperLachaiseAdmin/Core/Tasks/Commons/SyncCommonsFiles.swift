@@ -62,7 +62,7 @@ private extension SyncCommonsFiles {
         case .all:
             // Get Commons ids from Wikidata entries
             return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return WikidataEntry.all()(realm).flatMap { wikidataEntry in
+                WikidataEntry.all()(realm).flatMap { wikidataEntry in
                     [wikidataEntry.image?.id, wikidataEntry.imageOfGrave?.id].compactMap { $0 }
                 }
             }

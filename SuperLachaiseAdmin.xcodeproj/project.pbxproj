@@ -1093,6 +1093,7 @@
 				TargetAttributes = {
 					55605C021FC9C6120010BC5F = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1489,7 +1490,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.maximelemoine.SuperLachaiseAdmin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1507,7 +1508,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.maximelemoine.SuperLachaiseAdmin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

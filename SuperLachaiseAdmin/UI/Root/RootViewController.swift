@@ -64,7 +64,7 @@ final class RootViewController: NSSplitViewController, RootViewControllerType {
         super.viewDidLoad()
         if RootViewController.isFirstWindow {
             RootViewController.isFirstWindow = false
-            splitView.autosaveName = NSSplitView.AutosaveName("RootSplitView")
+            splitView.autosaveName = "RootSplitView"
         }
     }
 
