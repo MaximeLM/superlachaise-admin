@@ -222,7 +222,7 @@ extension Entry: Encodable {
         try container.encode(dateOfBirth, forKey: .dateOfBirth)
         try container.encode(dateOfDeath, forKey: .dateOfDeath)
 
-        try container.encode(categories.map { $0.id }, forKey: .categories)
+        try container.encode(categories.map({ $0.id }).sorted(), forKey: .categories)
         try container.encode(image?.id, forKey: .image)
 
         let localizations = Dictionary(uniqueKeysWithValues: self.localizations
@@ -330,7 +330,7 @@ extension PointOfInterest: Encodable {
 
         try container.encode(openStreetMapElement?.id, forKey: .openStreetMapElement)
         try container.encode(mainEntry?.id, forKey: .mainWikidataEntry)
-        try container.encode(secondaryEntries.map { $0.id },
+        try container.encode(secondaryEntries.map({ $0.id }).sorted(),
                              forKey: .secondaryWikidataEntries)
         try container.encode(image?.id, forKey: .image)
     }

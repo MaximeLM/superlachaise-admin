@@ -28,6 +28,7 @@ extension WikidataEntityName {
     static let grave = WikidataEntityName(rawValue: "Q173387")
     static let tomb = WikidataEntityName(rawValue: "Q381885")
     static let cardiotaph = WikidataEntityName(rawValue: "Q18168545")
+    static let cenotaph = WikidataEntityName(rawValue: "Q321053")
 
     static let monument = WikidataEntityName(rawValue: "Q4989906")
     static let memorial = WikidataEntityName(rawValue: "Q5003624")

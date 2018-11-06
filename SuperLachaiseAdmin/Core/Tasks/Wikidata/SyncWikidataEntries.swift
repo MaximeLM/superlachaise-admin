@@ -228,7 +228,7 @@ private extension SyncWikidataEntries {
             if [.human].contains(instanceOf) {
                 return .person
             }
-            if [.grave, .tomb, .cardiotaph].contains(instanceOf) {
+            if [.grave, .tomb, .cardiotaph, .cenotaph].contains(instanceOf) {
                 return .grave
             }
             if [.monument, .memorial, .warMemorial].contains(instanceOf) {
