@@ -719,19 +719,15 @@
 	</dict>
 	<key>wikipedia</key>
 	<dict>
-		<key>extractTrimmedLines</key>
-		<array>
-			<string></string>
-			<string>&lt;p&gt;&lt;/p&gt;</string>
-			<string>&lt;p&gt;&lt;br&gt;&lt;/p&gt;</string>
-			<string>&lt;p&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;</string>
-		</array>
 		<key>extractSubstitutions</key>
 		<array>
 			<dict>
-				<key>
-&lt;/p&gt;</key>
-				<string>&lt;/p&gt;</string>
+				<key>&lt;p&gt;&lt;/p&gt;</key>
+				<string></string>
+				<key>&lt;p&gt;&lt;br&gt;&lt;/p&gt;</key>
+				<string></string>
+				<key>&lt;p&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;</key>
+				<string></string>
 			</dict>
 			<dict>
 				<key>&lt;sup class=&quot;reference cite_virgule&quot;&gt;,&lt;/sup&gt;</key>
@@ -754,8 +750,11 @@
 				<string></string>
 				<key> &lt;span&gt;&lt;span&gt;&lt;span&gt; &lt;/span&gt;listen&lt;/span&gt; &lt;/span&gt;</key>
 				<string></string>
-				<key>&lt;p class=&quot;mw-empty-elt&quot;&gt;&lt;/p&gt;
-</key>
+				<key>&lt;p class=&quot;mw-empty-elt&quot;&gt;&lt;/p&gt;</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>&lt;p&gt;&lt;br&gt;&lt;/p&gt;</key>
 				<string></string>
 			</dict>
 		</array>

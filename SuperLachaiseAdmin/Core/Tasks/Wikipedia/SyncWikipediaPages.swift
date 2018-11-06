@@ -188,18 +188,14 @@ private extension SyncWikipediaPages {
     }
 
     func extract(wikipediaAPIPage: WikipediaAPIPage) -> String? {
-        guard var lines = wikipediaAPIPage.extract?.split(separator: "\n") else {
+        guard var extract = wikipediaAPIPage.extract else {
             return nil
         }
 
-        // Remove leading and trailing white lines and empty paragraphs
-        let trimmedLines = config.extractTrimmedLines
-        lines = lines.filter({ !trimmedLines.contains($0.trimmingCharacters(in: .whitespaces)) })
-
-        guard !lines.isEmpty else {
-            return nil
+        extract = extract.replacingOccurrences(of: "\n", with: "")
+        while extract.contains("  ") {
+            extract = extract.replacingOccurrences(of: "  ", with: " ")
         }
-        var extract = lines.joined(separator: "\n")
 
         // Replace unwanted strings
         for substitutions in config.extractSubstitutions {

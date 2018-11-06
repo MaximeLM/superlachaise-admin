@@ -9,8 +9,6 @@ import Foundation
 
 struct WikipediaConfig: Decodable {
 
-    let extractTrimmedLines: [String]
-
     let extractSubstitutions: [[String: String]]
 
 }
