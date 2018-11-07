@@ -13,3 +13,9 @@ protocol Listable: RealmCollectionValue {
     static func list(filter: String) -> (Realm) -> Results<Self>
 
 }
+
+protocol CoreDataListable {
+
+    static func list(filter: String, context: NSManagedObjectContext) -> [Self]
+
+}

@@ -25,6 +25,10 @@ final class CoreDataDatabase {
 
     // MARK: Contexts
 
+    var viewContextDidSave: Observable<NSManagedObjectContext> {
+        return persistentContainer.asObservable().flatMapLatest({ $0.viewContext.rx.didSave })
+    }
+
     var performInViewContext: Single<NSManagedObjectContext> {
         return persistentContainer.flatMap({ $0.viewContext.rx.perform() })
     }

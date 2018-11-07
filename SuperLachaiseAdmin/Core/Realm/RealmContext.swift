@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import RxRealm
 import RxSwift
 
 final class RealmContext {

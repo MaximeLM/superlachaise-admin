@@ -18,7 +18,7 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Dependencies
 
-    lazy var realmContext = AppContainer.realmContext
+    lazy var database = AppContainer.database
 
     // MARK: Model
 
@@ -30,11 +30,20 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     var searchValue: String? {
         didSet {
-            rootItem?.filter = searchValue ?? ""
+            reload()
         }
     }
 
     let disposeBag = DisposeBag()
+
+    func reload() {
+        database.performInViewContext
+            .subscribe(onSuccess: { context in
+                self.rootItem = ListViewRootItem(filter: self.searchValue ?? "", context: context)
+                self.outlineView?.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
 
     // MARK: Subviews
 
@@ -44,16 +53,15 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        self.rootItem = ListViewRootItem(realm: self.realmContext.viewRealm)
-        outlineView?.reloadData()
+        reload()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        realmContext.viewRealmSaveNotification
+        database.viewContextDidSave
             .subscribe(onNext: { [weak self] _ in
-                self?.outlineView?.reloadData()
+                self?.reload()
             })
             .disposed(by: disposeBag)
 
@@ -92,22 +100,6 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         let text = itemModel.text
         view.textField?.stringValue = text
         view.toolTip = text
-
-        itemModel.reload = { [weak outlineView] item in
-            guard let outlineView = outlineView else {
-                return
-            }
-
-            let selectedItem = outlineView.item(atRow: outlineView.selectedRow) as? ListViewItem
-            let isSelectedItemChildren = (outlineView.parent(forItem: selectedItem) as? ListViewItem)?.isEqual(item)
-                ?? false
-            outlineView.reloadItem(item, reloadChildren: true)
-
-            if isSelectedItemChildren, let selectedItem = selectedItem,
-                let row = item.children?.index(where: { $0.identifier == selectedItem.identifier }) {
-                outlineView.selectRowIndexes([outlineView.row(forItem: item) + row + 1], byExtendingSelection: false)
-            }
-        }
 
         return view
     }

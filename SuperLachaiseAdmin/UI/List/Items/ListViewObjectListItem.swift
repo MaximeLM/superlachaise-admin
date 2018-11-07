@@ -6,53 +6,18 @@
 //
 
 import Cocoa
-import RealmSwift
-import RxCocoa
-import RxRealm
-import RxSwift
+import CoreData
 
-protocol ListViewObjectListItemType: ListViewItem {
-
-    var filter: String { get set }
-
-}
-
-final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObject, ListViewObjectListItemType {
+final class ListViewObjectListItem<Element: MainWindowModel & CoreDataListable>: NSObject, ListViewItem {
 
     let baseText: String
 
-    var filter: String {
-        get {
-            return _filter.value
-        }
-        set {
-            _filter.accept(newValue)
-        }
-    }
-
-    init(baseText: String, realm: Realm, filter: String) {
+    init(baseText: String, context: NSManagedObjectContext, filter: String) {
         self.baseText = baseText
         self.identifier = "ListViewObjectListItem.\(Element.self)"
-        self._filter = BehaviorRelay(value: filter)
-
-        super.init()
-        _filter.asObservable()
-            .flatMapLatest { Observable.array(from: Element.list(filter: $0)(realm)) }
-            .catchErrorJustReturn([])
-            .map { objects in
-                objects.map { ListViewObjectItem(object: $0) }
-            }
-            .bind(to: _children)
-            .disposed(by: disposeBag)
-        _children
-            .asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else {
-                    return
-                }
-                self.reload?(self)
-            })
-            .disposed(by: disposeBag)
+        self.children = Element.list(filter: filter, context: context).map {
+            ListViewObjectItem(object: $0)
+        }
     }
 
     // MARK: ListViewItem
@@ -63,18 +28,6 @@ final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObjec
         return "\(baseText) (\(children?.count ?? 0))"
     }
 
-    var children: [ListViewItem]? {
-        return _children.value
-    }
-
-    var reload: ((ListViewItem) -> Void)?
-
-    // MARK: Private
-
-    private let disposeBag = DisposeBag()
-
-    private let _filter: BehaviorRelay<String>
-
-    private let _children = BehaviorRelay<[ListViewItem]>(value: [])
+    let children: [ListViewItem]?
 
 }

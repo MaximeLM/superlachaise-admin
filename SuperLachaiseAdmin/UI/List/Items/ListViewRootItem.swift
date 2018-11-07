@@ -6,20 +6,15 @@
 //
 
 import Cocoa
-import RealmSwift
+import CoreData
 
 final class ListViewRootItem: NSObject, ListViewItem {
 
-    let realm: Realm
-
-    init(realm: Realm) {
-        self.realm = realm
-    }
-
-    var filter = "" {
-        didSet {
-            _children.forEach { $0.filter = filter }
-        }
+    init(filter: String, context: NSManagedObjectContext) {
+        self.children = [
+            ListViewObjectListItem<CoreDataOpenStreetMapElement>(baseText: "OpenStreetMap elements",
+                                                                 context: context, filter: filter),
+        ]
     }
 
     // MARK: ListViewItem
@@ -28,15 +23,11 @@ final class ListViewRootItem: NSObject, ListViewItem {
 
     let text = ""
 
-    var children: [ListViewItem]? {
-        return _children
-    }
-
-    var reload: ((ListViewItem) -> Void)?
+    let children: [ListViewItem]?
 
     // MARK: Private
 
-    private lazy var _children: [ListViewObjectListItemType] = { [unowned self] in
+    /*private lazy var _children: [ListViewObjectListItemType] = { [unowned self] in
         [
             ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements",
                                                          realm: self.realm, filter: self.filter),
@@ -57,6 +48,6 @@ final class ListViewRootItem: NSObject, ListViewItem {
             ListViewObjectListItem<DatabaseV1Mapping>(baseText: "Database V1 mappings",
                                                       realm: self.realm, filter: self.filter),
         ]
-    }()
+    }()*/
 
 }

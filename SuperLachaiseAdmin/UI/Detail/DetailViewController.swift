@@ -18,7 +18,7 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
 
     // MARK: Dependencies
 
-    lazy var realmContext = AppContainer.realmContext
+    lazy var database = AppContainer.database
 
     // MARK: Model
 
@@ -33,9 +33,6 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
     }
 
     func updateViewsFromModel() {
-        guard !(model?.isInvalidated ?? false) else {
-            return
-        }
         let views = model?.detailViewModel().views() ?? []
         stackView?.setViews(views, in: .top)
     }
@@ -56,7 +53,7 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
         super.viewDidLoad()
 
         updateViewsFromModel()
-        realmContext.viewRealmSaveNotification
+        database.viewContextDidSave
             .subscribe(onNext: { [weak self] _ in
                 self?.updateViewsFromModel()
             })

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension OpenStreetMapElement: MainWindowModelType {
+extension CoreDataOpenStreetMapElement: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
@@ -21,7 +21,7 @@ extension OpenStreetMapElement: MainWindowModelType {
                 DetailViewFieldItem(name: "Longitude", value: longitude),
             ],
             [
-                DetailViewToOneFieldItem(name: "Wikidata entry", value: wikidataEntry),
+                //DetailViewToOneFieldItem(name: "Wikidata entry", value: wikidataEntry),
             ],
         ])
     }

@@ -18,6 +18,10 @@ final class AppContainer {
         return shared.realmContext
     }
 
+    static var database: CoreDataDatabase {
+        return shared.database
+    }
+
     static var taskController: TaskController {
         return shared.taskController
     }
