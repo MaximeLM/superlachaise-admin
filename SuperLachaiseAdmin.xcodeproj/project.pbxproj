@@ -148,6 +148,12 @@
 		55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */; };
 		55B897EE1FCB29C400FC4EF6 /* Operation+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B897ED1FCB29C400FC4EF6 /* Operation+Rx.swift */; };
 		55BD408D1FD30B4B005ACD89 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BD408C1FD30B4B005ACD89 /* ListViewController.swift */; };
+		55C0CB82219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB80219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodeld */; };
+		55C0CB852193676E00F2E34C /* CoreDataOpenStreetMapElement+Id.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB842193676E00F2E34C /* CoreDataOpenStreetMapElement+Id.swift */; };
+		55C0CB8B2193697A00F2E34C /* CoreDataOpenStreetMapElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB8A2193697A00F2E34C /* CoreDataOpenStreetMapElement.swift */; };
+		55C0CB91219371FA00F2E34C /* CoreDataResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB90219371FA00F2E34C /* CoreDataResults.swift */; };
+		55C0CB932193727D00F2E34C /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB922193727D00F2E34C /* NSManagedObjectContext+Extensions.swift */; };
+		55C0CB95219378A500F2E34C /* CoreDataObjectKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB94219378A500F2E34C /* CoreDataObjectKey.swift */; };
 		55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */; };
 		55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47F31FCCD67F003F3610 /* UserAgent.swift */; };
 		55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47F61FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift */; };
@@ -320,6 +326,12 @@
 		55B897E81FCB26A600FC4EF6 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
 		55B897ED1FCB29C400FC4EF6 /* Operation+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Operation+Rx.swift"; sourceTree = "<group>"; };
 		55BD408C1FD30B4B005ACD89 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		55C0CB81219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SuperLachaiseAdmin.xcdatamodel; sourceTree = "<group>"; };
+		55C0CB842193676E00F2E34C /* CoreDataOpenStreetMapElement+Id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataOpenStreetMapElement+Id.swift"; sourceTree = "<group>"; };
+		55C0CB8A2193697A00F2E34C /* CoreDataOpenStreetMapElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataOpenStreetMapElement.swift; sourceTree = "<group>"; };
+		55C0CB90219371FA00F2E34C /* CoreDataResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataResults.swift; sourceTree = "<group>"; };
+		55C0CB922193727D00F2E34C /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
+		55C0CB94219378A500F2E34C /* CoreDataObjectKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataObjectKey.swift; sourceTree = "<group>"; };
 		55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIEndpoint+Overpass.swift"; sourceTree = "<group>"; };
 		55CB47F31FCCD67F003F3610 /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		55CB47F61FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncOpenStreetMapElements.swift; sourceTree = "<group>"; };
@@ -608,6 +620,7 @@
 				55A8D2461FCF5C4400BB00BC /* Config */,
 				55CB47F51FCCD803003F3610 /* Logger */,
 				55CB47F81FCCDA72003F3610 /* Model */,
+				55C0CB7F219366DE00F2E34C /* CoreDataModel */,
 				5570F98A1FEAF9D0000DA3C9 /* Realm */,
 				55A8D24F1FCF5F8000BB00BC /* Tasks */,
 				5570F98B1FEAFA15000DA3C9 /* Utils */,
@@ -626,6 +639,7 @@
 		5570F98B1FEAFA15000DA3C9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				55C0CB8F219371DA00F2E34C /* CoreData */,
 				55B365A71FDDE83E00EB84BD /* Collections */,
 				55CB48011FCCE4B6003F3610 /* Error */,
 				55CB47F21FCCD665003F3610 /* Network */,
@@ -936,6 +950,34 @@
 				55B536E81FD3238200036FFC /* Items */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		55C0CB7F219366DE00F2E34C /* CoreDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				55C0CB80219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodeld */,
+				55C0CB832193674800F2E34C /* OpenStreetMapElement */,
+			);
+			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
+		55C0CB832193674800F2E34C /* OpenStreetMapElement */ = {
+			isa = PBXGroup;
+			children = (
+				55C0CB8A2193697A00F2E34C /* CoreDataOpenStreetMapElement.swift */,
+				55C0CB842193676E00F2E34C /* CoreDataOpenStreetMapElement+Id.swift */,
+			);
+			path = OpenStreetMapElement;
+			sourceTree = "<group>";
+		};
+		55C0CB8F219371DA00F2E34C /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				55C0CB90219371FA00F2E34C /* CoreDataResults.swift */,
+				55C0CB94219378A500F2E34C /* CoreDataObjectKey.swift */,
+				55C0CB922193727D00F2E34C /* NSManagedObjectContext+Extensions.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		55CB47E81FCCD182003F3610 /* OpenStreetMap */ = {
@@ -1260,6 +1302,7 @@
 				55E458BA206F825500785B06 /* ExportToJSON.swift in Sources */,
 				55B537011FD3413800036FFC /* Listable.swift in Sources */,
 				5570F9B31FEC4E3C000DA3C9 /* WikipediaPage+Id.swift in Sources */,
+				55C0CB82219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodeld in Sources */,
 				55B365C51FE07E7F00EB84BD /* WikidataEntityName.swift in Sources */,
 				5513EF611FE6C30F00BD3A22 /* DetailViewURLView.swift in Sources */,
 				5576A26320668A1700F1FC9D /* TaskController+SuperLachaise.swift in Sources */,
@@ -1283,6 +1326,7 @@
 				55AB3DEE1FE092940011AF47 /* OpenStreetMapElement+Requests.swift in Sources */,
 				555CF56D204C53F4005CE48F /* DetailViewToOneFieldItem.swift in Sources */,
 				5570F9A31FEB1B35000DA3C9 /* MainWindowController+Navigation.swift in Sources */,
+				55C0CB91219371FA00F2E34C /* CoreDataResults.swift in Sources */,
 				5513EF5B1FE6BACC00BD3A22 /* DetailViewTitleView.swift in Sources */,
 				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
 				555CF548204A032B005CE48F /* CommonsGetImages.swift in Sources */,
@@ -1306,7 +1350,9 @@
 				5513EF8C1FE6FBC300BD3A22 /* DetailViewInlineFieldView.swift in Sources */,
 				555EB4E42067CAD6009A6054 /* Entry+Requests.swift in Sources */,
 				5579C698206ECF8200D9C802 /* DatabaseV1Mapping.swift in Sources */,
+				55C0CB95219378A500F2E34C /* CoreDataObjectKey.swift in Sources */,
 				555CF55A204B0286005CE48F /* DetailViewURLFieldItem.swift in Sources */,
+				55C0CB932193727D00F2E34C /* NSManagedObjectContext+Extensions.swift in Sources */,
 				5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */,
 				5570F9C41FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift in Sources */,
 				5570F99E1FEB1335000DA3C9 /* MainWindowModel.swift in Sources */,
@@ -1330,6 +1376,7 @@
 				55B536EC1FD326D400036FFC /* ListViewRootItem.swift in Sources */,
 				5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
+				55C0CB852193676E00F2E34C /* CoreDataOpenStreetMapElement+Id.swift in Sources */,
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
 				5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */,
 				55A8D2451FCF5C3A00BB00BC /* OpenStreetMapConfig.swift in Sources */,
@@ -1337,6 +1384,7 @@
 				55B365AE1FDDF38000EB84BD /* WikidataClaim.swift in Sources */,
 				5513EF7A1FE6EDC500BD3A22 /* DetailViewItem.swift in Sources */,
 				55CB48031FCCE4C0003F3610 /* Errors.swift in Sources */,
+				55C0CB8B2193697A00F2E34C /* CoreDataOpenStreetMapElement.swift in Sources */,
 				55348638204CB3550036143D /* DetailViewToManyFieldButton.swift in Sources */,
 				55F59683206C1B530078D5F0 /* Category+Protocols.swift in Sources */,
 				55F59681206C1B0B0078D5F0 /* Category+Requests.swift in Sources */,
@@ -1536,6 +1584,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		55C0CB80219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				55C0CB81219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodel */,
+			);
+			currentVersion = 55C0CB81219366FE00F2E34C /* SuperLachaiseAdmin.xcdatamodel */;
+			path = SuperLachaiseAdmin.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 55605BFB1FC9C6120010BC5F /* Project object */;
 }
