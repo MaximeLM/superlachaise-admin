@@ -7,8 +7,11 @@
 
 import CoreData
 import Foundation
+import RxSwift
 
 extension NSManagedObjectContext {
+
+    // MARK: Objects
 
     func objects<Object: NSManagedObject>(_ type: Object.Type) -> CoreDataResults<Object> {
         return CoreDataResults(context: self)
@@ -34,6 +37,8 @@ extension NSManagedObjectContext {
         }
     }
 
+    // MARK: Transactions
+
     func write<T>(_ block: (() throws -> T)) throws -> T {
         let result: T
         do {
@@ -44,6 +49,48 @@ extension NSManagedObjectContext {
         }
         try save()
         return result
+    }
+
+}
+
+extension Reactive where Base: NSManagedObjectContext {
+
+    var didSave: Observable<NSManagedObjectContext> {
+        return Observable.create { observer in
+            NSManagedObjectContextDidSaveObserver(context: self.base, observer: observer.on)
+        }
+    }
+
+}
+
+extension ObservableConvertibleType where E: NSManagedObjectContext {
+
+    var didSave: Observable<NSManagedObjectContext> {
+        return asObservable().flatMapLatest { $0.rx.didSave }
+    }
+
+}
+
+private final class NSManagedObjectContextDidSaveObserver: NSObject, Disposable {
+
+    let observer: (Event<NSManagedObjectContext>) -> Void
+    let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext, observer: @escaping (Event<NSManagedObjectContext>) -> Void) {
+        self.context = context
+        self.observer = observer
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(contextDidSave(_:)),
+                                               name: .NSManagedObjectContextDidSave, object: context)
+    }
+
+    @objc
+    private func contextDidSave(_ notification: Notification) {
+        observer(.next((context)))
+    }
+
+    func dispose() {
+        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextDidSave, object: context)
     }
 
 }
