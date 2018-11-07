@@ -48,7 +48,7 @@ final class AppContainer {
         self.config = try PropertyListDecoder().decode(Config.self, from: configData)
         self.realmContext = try RealmContext(databaseDirectoryName: "database", databaseFileName: "SuperLachaise")
         self.database = CoreDataDatabase(name: "SuperLachaiseAdmin")
-        self.taskController = TaskController(config: config, realmContext: realmContext)
+        self.taskController = TaskController(config: config, database: database)
     }
 
 }
