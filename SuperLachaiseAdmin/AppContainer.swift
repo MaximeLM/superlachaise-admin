@@ -36,6 +36,7 @@ final class AppContainer {
 
     private let config: Config
     private let realmContext: RealmContext
+    private let database: CoreDataDatabase
     private let taskController: TaskController
 
     private init() throws {
@@ -46,6 +47,7 @@ final class AppContainer {
 
         self.config = try PropertyListDecoder().decode(Config.self, from: configData)
         self.realmContext = try RealmContext(databaseDirectoryName: "database", databaseFileName: "SuperLachaise")
+        self.database = CoreDataDatabase(name: "SuperLachaiseAdmin")
         self.taskController = TaskController(config: config, realmContext: realmContext)
     }
 

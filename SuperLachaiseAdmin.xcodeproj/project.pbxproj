@@ -154,6 +154,7 @@
 		55C0CB91219371FA00F2E34C /* CoreDataResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB90219371FA00F2E34C /* CoreDataResults.swift */; };
 		55C0CB932193727D00F2E34C /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB922193727D00F2E34C /* NSManagedObjectContext+Extensions.swift */; };
 		55C0CB95219378A500F2E34C /* CoreDataObjectKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB94219378A500F2E34C /* CoreDataObjectKey.swift */; };
+		55C0CB9A219381B900F2E34C /* CoreDataDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0CB99219381B900F2E34C /* CoreDataDatabase.swift */; };
 		55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */; };
 		55CB47F41FCCD67F003F3610 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47F31FCCD67F003F3610 /* UserAgent.swift */; };
 		55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB47F61FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift */; };
@@ -332,6 +333,7 @@
 		55C0CB90219371FA00F2E34C /* CoreDataResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataResults.swift; sourceTree = "<group>"; };
 		55C0CB922193727D00F2E34C /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
 		55C0CB94219378A500F2E34C /* CoreDataObjectKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataObjectKey.swift; sourceTree = "<group>"; };
+		55C0CB99219381B900F2E34C /* CoreDataDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabase.swift; sourceTree = "<group>"; };
 		55CB47E91FCCD1AB003F3610 /* APIEndpoint+Overpass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIEndpoint+Overpass.swift"; sourceTree = "<group>"; };
 		55CB47F31FCCD67F003F3610 /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		55CB47F61FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncOpenStreetMapElements.swift; sourceTree = "<group>"; };
@@ -976,6 +978,7 @@
 				55C0CB90219371FA00F2E34C /* CoreDataResults.swift */,
 				55C0CB94219378A500F2E34C /* CoreDataObjectKey.swift */,
 				55C0CB922193727D00F2E34C /* NSManagedObjectContext+Extensions.swift */,
+				55C0CB99219381B900F2E34C /* CoreDataDatabase.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1402,6 +1405,7 @@
 				55E8A3AA1FD8A9EE000B6FC2 /* OpenableInBrowser.swift in Sources */,
 				55CB47F71FCCD8D6003F3610 /* SyncOpenStreetMapElements.swift in Sources */,
 				5576A261206689C600F1FC9D /* SyncSuperLachaiseObjects.swift in Sources */,
+				55C0CB9A219381B900F2E34C /* CoreDataDatabase.swift in Sources */,
 				55B365A31FDDDFEE00EB84BD /* WikidataGetEntities.swift in Sources */,
 				55AB3DF21FE1E5350011AF47 /* RealmList+Replace.swift in Sources */,
 				5570F9CD1FEDA00D000DA3C9 /* WikipediaAPIPage.swift in Sources */,
