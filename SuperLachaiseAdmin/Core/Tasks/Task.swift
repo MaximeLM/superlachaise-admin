@@ -14,9 +14,3 @@ protocol Task: CustomStringConvertible {
     func asSingle() -> Single<Void>
 
 }
-
-protocol CoreDataTask: CustomStringConvertible {
-
-    func asSingle(context: NSManagedObjectContext) -> Single<Void>
-
-}

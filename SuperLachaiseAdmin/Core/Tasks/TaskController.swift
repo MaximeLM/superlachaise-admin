@@ -48,8 +48,4 @@ final class TaskController {
         operationQueue.addOperation(TaskOperation(task: task))
     }
 
-    func enqueue(_ task: CoreDataTask) {
-        operationQueue.addOperation(CoreDataTaskOperation(task: task, database: database))
-    }
-
 }

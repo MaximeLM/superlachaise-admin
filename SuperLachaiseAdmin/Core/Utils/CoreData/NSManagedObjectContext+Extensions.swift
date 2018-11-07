@@ -37,6 +37,26 @@ extension NSManagedObjectContext {
         }
     }
 
+    func find<Object: NSManagedObject & KeyedObject>(_ type: Object.Type, key: Object.Key) -> Object? {
+        var results = objects(type)
+        for (key, value) in type.attributes(key: key) {
+            results = results.filtered(by: "%K == %@", [key, value])
+        }
+        return results.fetch().first
+    }
+
+    func findOrCreate<Object: NSManagedObject & KeyedObject>(_ type: Object.Type, key: Object.Key) -> Object {
+        if let object = find(type, key: key) {
+            return object
+        } else {
+            let object = Object(context: self)
+            for (key, value) in type.attributes(key: key) {
+                object.setValue(value, forKey: key)
+            }
+            return object
+        }
+    }
+
     // MARK: Transactions
 
     func write<T>(_ block: (() throws -> T)) throws -> T {
@@ -61,12 +81,13 @@ extension Reactive where Base: NSManagedObjectContext {
         }
     }
 
-}
-
-extension ObservableConvertibleType where E: NSManagedObjectContext {
-
-    var didSave: Observable<NSManagedObjectContext> {
-        return asObservable().flatMapLatest { $0.rx.didSave }
+    func perform() -> Single<NSManagedObjectContext> {
+        return Single.create { observer in
+            self.base.perform {
+                observer(.success(self.base))
+            }
+            return Disposables.create()
+        }
     }
 
 }

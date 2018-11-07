@@ -17,6 +17,8 @@ final class CoreDataOpenStreetMapElement: NSManagedObject {
     @NSManaged var longitude: Double
     @NSManaged var name: String?
 
+    @NSManaged public var wikidataEntry: CoreDataWikidataEntry?
+
     override var description: String {
         return [name, id]
             .compactMap { $0 }

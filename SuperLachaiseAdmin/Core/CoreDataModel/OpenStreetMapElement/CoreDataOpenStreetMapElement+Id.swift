@@ -23,13 +23,3 @@ extension CoreDataOpenStreetMapElement {
     }
 
 }
-
-extension OpenStreetMapId: CoreDataObjectKey {
-
-    typealias CoreDataObject = CoreDataOpenStreetMapElement
-
-    var coreDataAttributes: [String: Any] {
-        return ["id": rawValue]
-    }
-
-}

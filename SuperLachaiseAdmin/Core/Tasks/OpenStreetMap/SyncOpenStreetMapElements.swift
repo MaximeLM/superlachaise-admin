@@ -5,8 +5,8 @@
 //  Created by Maxime Le Moine on 28/11/2017.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncOpenStreetMapElements: Task {
@@ -31,11 +31,16 @@ final class SyncOpenStreetMapElements: Task {
 
     let config: OpenStreetMapConfig
     let endpoint: APIEndpointType
+    let performInContext: Single<NSManagedObjectContext>
 
-    init(scope: Scope, config: OpenStreetMapConfig, endpoint: APIEndpointType) {
+    init(scope: Scope,
+         config: OpenStreetMapConfig,
+         endpoint: APIEndpointType,
+         performInContext: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
         self.endpoint = endpoint
+        self.performInContext = performInContext
     }
 
     var description: String {
@@ -48,10 +53,6 @@ final class SyncOpenStreetMapElements: Task {
         return openStreetMapElements()
             .flatMap(self.deleteOrphans)
     }
-
-    // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncOpenStreetMapElements.realm")
 
 }
 
@@ -81,28 +82,30 @@ private extension SyncOpenStreetMapElements {
     }
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.saveOpenStreetMapElements(overpassElements: overpassElements, realm: realm)
+        return performInContext.map { context in
+            try context.write {
+                try self.saveOpenStreetMapElements(overpassElements: overpassElements, context: context)
             }
         }
     }
 
-    func saveOpenStreetMapElements(overpassElements: [OverpassElement], realm: Realm) throws -> [String] {
+    func saveOpenStreetMapElements(overpassElements: [OverpassElement],
+                                   context: NSManagedObjectContext) throws -> [String] {
         return try overpassElements.compactMap { overpassElement in
-            try self.openStreetMapElement(overpassElement: overpassElement, realm: realm)?.id
+            try self.openStreetMapElement(overpassElement: overpassElement, context: context)?.id
         }
     }
 
     // MARK: OpenStreetMap element
 
-    func openStreetMapElement(overpassElement: OverpassElement, realm: Realm) throws -> OpenStreetMapElement? {
+    func openStreetMapElement(overpassElement: OverpassElement,
+                              context: NSManagedObjectContext) throws -> CoreDataOpenStreetMapElement? {
         // OpenStreetMapId
         guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
             throw SyncOpenStreetMapElementsError.invalidElementType(overpassElement.type)
         }
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
-        let openStreetMapElement = OpenStreetMapElement.findOrCreate(openStreetMapId: openStreetMapId)(realm)
+        let openStreetMapElement = context.findOrCreate(CoreDataOpenStreetMapElement.self, key: openStreetMapId)
 
         // Coordinate
         switch elementType {
@@ -133,7 +136,8 @@ private extension SyncOpenStreetMapElements {
         if wikidataId == nil {
             Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }
-        openStreetMapElement.wikidataEntry = wikidataId.map { WikidataEntry.findOrCreate(id: $0)(realm) }
+        let wikidataEntry = wikidataId.map { context.findOrCreate(CoreDataWikidataEntry.self, key: $0) }
+        openStreetMapElement.wikidataEntry = wikidataEntry
 
         return openStreetMapElement
     }
@@ -141,19 +145,19 @@ private extension SyncOpenStreetMapElements {
     // MARK: Orphans
 
     func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
+        return performInContext.map { context in
+            try context.write {
+                try self.deleteOrphans(fetchedIds: fetchedIds, context: context)
             }
         }
     }
 
-    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<OpenStreetMapElement>
+        var orphanedObjects: Set<CoreDataOpenStreetMapElement>
         switch scope {
         case .all:
-            orphanedObjects = Set(OpenStreetMapElement.all()(realm))
+            orphanedObjects = Set(context.objects(CoreDataOpenStreetMapElement.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -161,8 +165,8 @@ private extension SyncOpenStreetMapElements {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(OpenStreetMapElement.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataOpenStreetMapElement.self)(s)")
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 

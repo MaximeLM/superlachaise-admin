@@ -25,12 +25,12 @@ final class CoreDataDatabase {
 
     // MARK: Contexts
 
-    var viewContext: Single<NSManagedObjectContext> {
-        return persistentContainer.map({ $0.viewContext })
+    var performInViewContext: Single<NSManagedObjectContext> {
+        return persistentContainer.flatMap({ $0.viewContext.rx.perform() })
     }
 
-    func newBackgroundContext() -> Single<NSManagedObjectContext> {
-        return persistentContainer.map({ $0.newBackgroundContext() })
+    var performInNewBackgroundContext: Single<NSManagedObjectContext> {
+        return persistentContainer.flatMap({ $0.newBackgroundContext().rx.perform() })
     }
 
     // MARK: Private

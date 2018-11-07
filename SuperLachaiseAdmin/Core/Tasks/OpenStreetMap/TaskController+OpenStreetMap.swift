@@ -11,7 +11,10 @@ extension TaskController {
 
     func syncOpenStreetMapElements() {
         let scope: SyncOpenStreetMapElements.Scope = .all
-        let task = SyncOpenStreetMapElements(scope: scope, config: config.openStreetMap, endpoint: overpassAPIEndpoint)
+        let task = SyncOpenStreetMapElements(scope: scope,
+                                             config: config.openStreetMap,
+                                             endpoint: overpassAPIEndpoint,
+                                             performInContext: database.performInNewBackgroundContext)
         enqueue(task)
     }
 
@@ -21,7 +24,8 @@ extension TaskController {
         }
         let task = SyncOpenStreetMapElements(scope: .single(openStreetMapId: openStreetMapId),
                                              config: config.openStreetMap,
-                                             endpoint: overpassAPIEndpoint)
+                                             endpoint: overpassAPIEndpoint,
+                                             performInContext: database.performInNewBackgroundContext)
         enqueue(task)
     }
 
