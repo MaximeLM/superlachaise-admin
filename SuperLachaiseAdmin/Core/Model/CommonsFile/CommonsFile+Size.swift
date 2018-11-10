@@ -2,7 +2,7 @@
 //  CommonsFile+Size.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 04/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
 import Foundation

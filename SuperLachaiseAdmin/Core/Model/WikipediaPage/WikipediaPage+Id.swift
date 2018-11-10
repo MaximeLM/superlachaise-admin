@@ -2,7 +2,7 @@
 //  WikipediaPage+Id.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 21/12/2017.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
 import Foundation
@@ -17,7 +17,7 @@ extension WikipediaId: Equatable, CustomStringConvertible {
     init?(rawValue: String) {
         let components = rawValue.components(separatedBy: "/")
         guard components.count == 2 else {
-                return nil
+            return nil
         }
         self.init(language: components[0], title: components[1])
     }

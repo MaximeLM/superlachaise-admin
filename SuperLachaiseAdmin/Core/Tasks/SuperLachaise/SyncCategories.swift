@@ -5,8 +5,8 @@
 //  Created by Maxime Le Moine on 28/03/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncCategories: Task {
@@ -29,10 +29,12 @@ final class SyncCategories: Task {
 
     let scope: Scope
     let config: SuperLachaiseConfig
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(scope: Scope, config: SuperLachaiseConfig) {
+    init(scope: Scope, config: SuperLachaiseConfig, performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -42,44 +44,41 @@ final class SyncCategories: Task {
     // MARK: Execution
 
     func asSingle() -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                let categories = self.syncCategories(realm: realm)
-                try self.deleteOrphans(fetchedCategoryIds: categories.map { $0.id }, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                let categories = self.syncCategories(context: context)
+                try self.deleteOrphans(fetchedCategoryIds: categories.map { $0.id }, context: context)
             }
         }
     }
-
-    // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncCategories.realm")
 
 }
 
 private extension SyncCategories {
 
-    func syncCategories(realm: Realm) -> [Category] {
+    func syncCategories(context: NSManagedObjectContext) -> [Category] {
         var categoriesIds: [String]
         switch scope {
         case .all:
-            categoriesIds = Category.all()(realm).map { $0.id }
+            categoriesIds = context.objects(Category.self).fetch().map { $0.id }
             categoriesIds.append(contentsOf: config.categoriesNames.map { $0.key })
             categoriesIds = categoriesIds.uniqueValues()
         case let .single(id):
             categoriesIds = [id]
         }
-        return categoriesIds.compactMap { self.syncCategory(id: $0, realm: realm) }
+        return categoriesIds.compactMap { self.syncCategory(id: $0, context: context) }
     }
 
-    func syncCategory(id: String, realm: Realm) -> Category? {
+    func syncCategory(id: String, context: NSManagedObjectContext) -> Category? {
         guard let categoryNames = config.categoriesNames.first(where: { $0.key == id }) else {
             Logger.warning("No category names for \(Category.self) id \(id)")
             return nil
         }
-        let category = Category.findOrCreate(id: id)(realm)
+        let category = context.findOrCreate(Category.self, key: id)
 
         for (language, name) in categoryNames.value {
-            let localization = category.findOrCreateLocalization(language: language)(realm)
+            let localization = context.findOrCreate(LocalizedCategory.self,
+                                                    key: (category: category, language: language))
             localization.name = name
         }
 
@@ -88,12 +87,12 @@ private extension SyncCategories {
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedCategoryIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedCategoryIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
         var orphanedObjects: Set<Category>
         switch scope {
         case .all:
-            orphanedObjects = Set(Category.all()(realm))
+            orphanedObjects = Set(context.objects(Category.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -102,7 +101,7 @@ private extension SyncCategories {
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(Category.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 

@@ -6,19 +6,27 @@
 //
 
 import Cocoa
-import RealmSwift
+import CoreData
 
 final class ListViewRootItem: NSObject, ListViewItem {
 
-    let realm: Realm
-
-    init(realm: Realm) {
-        self.realm = realm
+    override init() {
+        self.children = [
+            ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements"),
+            ListViewObjectListItem<WikidataEntry>(baseText: "Wikidata entries"),
+            ListViewObjectListItem<WikidataCategory>(baseText: "Wikidata categories"),
+            ListViewObjectListItem<WikipediaPage>(baseText: "Wikipedia pages"),
+            ListViewObjectListItem<CommonsFile>(baseText: "Commons files"),
+            ListViewObjectListItem<Category>(baseText: "Categories"),
+            ListViewObjectListItem<PointOfInterest>(baseText: "Points of interest"),
+            ListViewObjectListItem<Entry>(baseText: "Entries"),
+            ListViewObjectListItem<DatabaseV1Mapping>(baseText: "Database V1 mappings"),
+        ]
     }
 
-    var filter = "" {
-        didSet {
-            _children.forEach { $0.filter = filter }
+    func reload(outlineView: NSOutlineView, context: NSManagedObjectContext, filter: String) {
+        children?.compactMap({ $0 as? ListViewObjectListItemType }).forEach { child in
+            child.reload(outlineView: outlineView, context: context, filter: filter)
         }
     }
 
@@ -28,35 +36,6 @@ final class ListViewRootItem: NSObject, ListViewItem {
 
     let text = ""
 
-    var children: [ListViewItem]? {
-        return _children
-    }
-
-    var reload: ((ListViewItem) -> Void)?
-
-    // MARK: Private
-
-    private lazy var _children: [ListViewObjectListItemType] = { [unowned self] in
-        [
-            ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements",
-                                                         realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<WikidataEntry>(baseText: "Wikidata entries",
-                                                  realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<WikidataCategory>(baseText: "Wikidata categories",
-                                                     realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<WikipediaPage>(baseText: "Wikipedia pages",
-                                                  realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<CommonsFile>(baseText: "Commons files",
-                                                realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<Category>(baseText: "Categories",
-                                             realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<PointOfInterest>(baseText: "Points of interest",
-                                                    realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<Entry>(baseText: "Entries",
-                                          realm: self.realm, filter: self.filter),
-            ListViewObjectListItem<DatabaseV1Mapping>(baseText: "Database V1 mappings",
-                                                      realm: self.realm, filter: self.filter),
-        ]
-    }()
+    let children: [ListViewItem]?
 
 }

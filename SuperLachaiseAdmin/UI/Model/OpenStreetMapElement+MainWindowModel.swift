@@ -20,9 +20,9 @@ extension OpenStreetMapElement: MainWindowModelType {
                 DetailViewFieldItem(name: "Latitude", value: latitude),
                 DetailViewFieldItem(name: "Longitude", value: longitude),
             ],
-            [
+            /*[
                 DetailViewToOneFieldItem(name: "Wikidata entry", value: wikidataEntry),
-            ],
+            ],*/
         ])
     }
 

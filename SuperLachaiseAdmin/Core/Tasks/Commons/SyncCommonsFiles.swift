@@ -5,8 +5,8 @@
 //  Created by Maxime Le Moine on 02/03/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncCommonsFiles: Task {
@@ -28,12 +28,13 @@ final class SyncCommonsFiles: Task {
     }
 
     let scope: Scope
-
     let endpoint: APIEndpointType
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(scope: Scope, endpoint: APIEndpointType) {
+    init(scope: Scope, endpoint: APIEndpointType, performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.endpoint = endpoint
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -47,10 +48,6 @@ final class SyncCommonsFiles: Task {
             .flatMap(self.deleteOrphans)
     }
 
-    // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncCommonsFiles.realm")
-
 }
 
 private extension SyncCommonsFiles {
@@ -61,8 +58,8 @@ private extension SyncCommonsFiles {
         switch self.scope {
         case .all:
             // Get Commons ids from Wikidata entries
-            return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                return WikidataEntry.all()(realm).flatMap { wikidataEntry in
+            return performInBackground.map { context in
+                context.objects(WikidataEntry.self).fetch().flatMap { wikidataEntry in
                     [wikidataEntry.image?.id, wikidataEntry.imageOfGrave?.id].compactMap { $0 }
                 }
             }
@@ -88,28 +85,28 @@ private extension SyncCommonsFiles {
     }
 
     func saveCommonsFiles(commonsAPIImages: [CommonsAPIImage]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.saveCommonsFiles(commonsAPIImages: commonsAPIImages, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.saveCommonsFiles(commonsAPIImages: commonsAPIImages, context: context)
             }
         }
     }
 
-    func saveCommonsFiles(commonsAPIImages: [CommonsAPIImage], realm: Realm) throws -> [String] {
+    func saveCommonsFiles(commonsAPIImages: [CommonsAPIImage], context: NSManagedObjectContext) throws -> [String] {
         return try commonsAPIImages.map { commonsAPIImage in
-            try self.commonsFile(commonsAPIImage: commonsAPIImage, realm: realm).id
+            try self.commonsFile(commonsAPIImage: commonsAPIImage, context: context).id
         }
     }
 
     // MARK: Commons file
 
-    func commonsFile(commonsAPIImage: CommonsAPIImage, realm: Realm) throws -> CommonsFile {
+    func commonsFile(commonsAPIImage: CommonsAPIImage, context: NSManagedObjectContext) throws -> CommonsFile {
         // Commons Id
         if !commonsAPIImage.title.hasPrefix("File:") {
             Logger.warning("Invalid \(CommonsAPIImage.self) title: \(commonsAPIImage.title)")
         }
         let commonsId = String(commonsAPIImage.title.dropFirst(5))
-        let commonsFile = CommonsFile.findOrCreate(id: commonsId)(realm)
+        let commonsFile = context.findOrCreate(CommonsFile.self, key: commonsId)
 
         guard let imageInfo = commonsAPIImage.imageinfo?.first else {
             throw SyncCommonsFilesError.missingImageInfo
@@ -189,19 +186,19 @@ private extension SyncCommonsFiles {
     // MARK: Orphans
 
     func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.deleteOrphans(fetchedIds: fetchedIds, context: context)
             }
         }
     }
 
-    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
         var orphanedObjects: Set<CommonsFile>
         switch scope {
         case .all:
-            orphanedObjects = Set(CommonsFile.all()(realm))
+            orphanedObjects = Set(context.objects(CommonsFile.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -210,7 +207,7 @@ private extension SyncCommonsFiles {
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(CommonsFile.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 

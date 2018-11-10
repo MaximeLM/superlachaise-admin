@@ -2,24 +2,20 @@
 //  WikidataCategory.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 03/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class WikidataCategory: Object {
+final class WikidataCategory: NSManagedObject {
 
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
-    @objc dynamic var name: String?
+    @NSManaged var name: String?
 
-    let categories = List<Category>()
-    let wikidataEntries = LinkingObjects(fromType: WikidataEntry.self, property: "wikidataCategories")
-
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var wikidataEntries: Set<WikidataEntry>
+    @NSManaged var categories: Set<Category>
 
     override var description: String {
         return [name, id]

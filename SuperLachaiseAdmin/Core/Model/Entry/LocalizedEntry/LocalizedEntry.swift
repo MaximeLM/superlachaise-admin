@@ -2,23 +2,23 @@
 //  LocalizedEntry.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 25/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class LocalizedEntry: Object {
+final class LocalizedEntry: NSManagedObject {
 
-    @objc dynamic var language = ""
+    @NSManaged var language: String
 
-    @objc dynamic var name = ""
-    @objc dynamic var summary = ""
-    @objc dynamic var defaultSort = ""
+    @NSManaged var name: String
+    @NSManaged var summary: String
+    @NSManaged var defaultSort: String
 
-    @objc dynamic var wikipediaPage: WikipediaPage?
+    @NSManaged var wikipediaPage: WikipediaPage?
 
-    @objc dynamic var entry: Entry?
+    @NSManaged var entry: WikipediaPage?
 
     override var description: String {
         return [name, language]

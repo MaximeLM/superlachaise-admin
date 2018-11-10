@@ -2,21 +2,21 @@
 //  WikidataLocalizedEntry.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 12/12/2017.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class WikidataLocalizedEntry: Object {
+final class WikidataLocalizedEntry: NSManagedObject {
 
-    @objc dynamic var language = ""
+    @NSManaged var language: String
 
-    @objc dynamic var name: String?
-    @objc dynamic var summary: String?
-    @objc dynamic var wikipediaPage: WikipediaPage?
+    @NSManaged var name: String?
+    @NSManaged var summary: String?
+    @NSManaged var wikipediaPage: WikipediaPage?
 
-    @objc dynamic var wikidataEntry: WikidataEntry?
+    @NSManaged var wikidataEntry: WikipediaPage?
 
     override var description: String {
         return [name, language]

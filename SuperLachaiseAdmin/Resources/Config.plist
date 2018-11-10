@@ -97,8 +97,14 @@
 			<array>
 				<string>art</string>
 			</array>
+            <key>Q1285463</key>
+            <array/>
 			<key>Q1297719</key>
 			<array/>
+            <key>Q131062</key>
+            <array>
+                <string>urbanism</string>
+            </array>
 			<key>Q131524</key>
 			<array/>
 			<key>Q133485</key>
@@ -135,6 +141,10 @@
 			<array/>
 			<key>Q14089670</key>
 			<array/>
+            <key>Q1414443</key>
+            <array>
+                <string>cinema</string>
+            </array>
 			<key>Q1415090</key>
 			<array>
 				<string>cinema</string>
@@ -248,7 +258,9 @@
 				<string>music</string>
 			</array>
 			<key>Q17307272</key>
-			<array/>
+            <array>
+                <string>performing_arts</string>
+            </array>
 			<key>Q173950</key>
 			<array>
 				<string>art</string>
@@ -299,6 +311,8 @@
 			</array>
 			<key>Q18939491</key>
 			<array/>
+            <key>Q191808</key>
+            <array/>
 			<key>Q1925963</key>
 			<array>
 				<string>art</string>
@@ -463,6 +477,10 @@
 			</array>
 			<key>Q33999</key>
 			<array/>
+            <key>Q3400985</key>
+            <array>
+                <string>research</string>
+            </array>
 			<key>Q3488528</key>
 			<array/>
 			<key>Q3499072</key>
@@ -559,6 +577,10 @@
 			<array>
 				<string>music</string>
 			</array>
+            <key>Q487596</key>
+            <array>
+                <string>theatre</string>
+            </array>
 			<key>Q488205</key>
 			<array>
 				<string>music</string>
@@ -575,12 +597,16 @@
 			<array>
 				<string>military</string>
 			</array>
+            <key>Q500251</key>
+            <array/>
 			<key>Q520549</key>
 			<array>
 				<string>research</string>
 			</array>
 			<key>Q5322166</key>
 			<array/>
+            <key>Q551835</key>
+            <array/>
 			<key>Q55187</key>
 			<array/>
 			<key>Q5716684</key>
@@ -663,6 +689,8 @@
 			<array/>
 			<key>Q8178443</key>
 			<array/>
+            <key>Q820037</key>
+            <array/>
 			<key>Q822146</key>
 			<array>
 				<string>music</string>
@@ -675,6 +703,10 @@
 			<array>
 				<string>politics</string>
 			</array>
+            <key>Q842811</key>
+            <array>
+                <string>research</string>
+            </array>
 			<key>Q855091</key>
 			<array>
 				<string>music</string>
@@ -697,6 +729,8 @@
 			</array>
 			<key>Q901222</key>
 			<array/>
+            <key>Q9334029</key>
+            <array/>
 			<key>Q9352089</key>
 			<array>
 				<string>military</string>
@@ -719,15 +753,16 @@
 	</dict>
 	<key>wikipedia</key>
 	<dict>
-		<key>extractTrimmedLines</key>
-		<array>
-			<string></string>
-			<string>&lt;p&gt;&lt;/p&gt;</string>
-			<string>&lt;p&gt;&lt;br&gt;&lt;/p&gt;</string>
-			<string>&lt;p&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;</string>
-		</array>
 		<key>extractSubstitutions</key>
 		<array>
+			<dict>
+				<key>&lt;p&gt;&lt;/p&gt;</key>
+				<string></string>
+				<key>&lt;p&gt;&lt;br&gt;&lt;/p&gt;</key>
+				<string></string>
+				<key>&lt;p&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;</key>
+				<string></string>
+			</dict>
 			<dict>
 				<key>&lt;sup class=&quot;reference cite_virgule&quot;&gt;,&lt;/sup&gt;</key>
 				<string></string>
@@ -748,6 +783,12 @@
 				<key> &lt;sup&gt;(&lt;/sup&gt;&lt;sup&gt;)&lt;/sup&gt;</key>
 				<string></string>
 				<key> &lt;span&gt;&lt;span&gt;&lt;span&gt; &lt;/span&gt;listen&lt;/span&gt; &lt;/span&gt;</key>
+				<string></string>
+				<key>&lt;p class=&quot;mw-empty-elt&quot;&gt;&lt;/p&gt;</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>&lt;p&gt;&lt;br&gt;&lt;/p&gt;</key>
 				<string></string>
 			</dict>
 		</array>

@@ -2,26 +2,24 @@
 //  OpenStreetMapElement.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/11/2017.
+//  Created by Maxime Le Moine on 07/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class OpenStreetMapElement: Object {
+final class OpenStreetMapElement: NSManagedObject {
 
     // "type/numericId"
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
-    @objc dynamic var latitude: Double = 0
-    @objc dynamic var longitude: Double = 0
-    @objc dynamic var name: String?
+    @NSManaged var latitude: Double
+    @NSManaged var longitude: Double
+    @NSManaged var name: String?
 
-    @objc dynamic var wikidataEntry: WikidataEntry?
+    @NSManaged var wikidataEntry: WikidataEntry?
 
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var pointsOfInterest: Set<PointOfInterest>
 
     override var description: String {
         return [name, id]

@@ -2,45 +2,45 @@
 //  OpenStreetMapElement+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 07/12/2017.
+//  Created by Maxime Le Moine on 07/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension OpenStreetMapElement: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = OpenStreetMapId
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key.rawValue]
+    }
+
+}
+
+extension OpenStreetMapElement: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(self)
-    }
+extension OpenStreetMapElement: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<OpenStreetMapElement> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
-                                            filter, filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [OpenStreetMapElement] {
+        var results = context.objects(OpenStreetMapElement.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
+                                        filter, filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "name").sorted(byKey: "id").fetch()
     }
 
-    // MARK: OpenableInBrowser
+}
+
+extension OpenStreetMapElement: OpenableInBrowser {
 
     var externalURL: URL? {
         guard let openStreetMapId = openStreetMapId else {
@@ -48,10 +48,12 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
         }
         return URL(string: "https://www.openstreetmap.org")?
             .appendingPathComponent(openStreetMapId.elementType.rawValue)
-            .appendingPathComponent("\(openStreetMapId.elementType)")
+            .appendingPathComponent("\(openStreetMapId.numericId)")
     }
 
-    // MARK: Syncable
+}
+
+extension OpenStreetMapElement: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncOpenStreetMapElement(self)

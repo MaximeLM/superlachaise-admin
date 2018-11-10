@@ -1,46 +1,34 @@
 PODS:
-  - Realm (3.3.2):
-    - Realm/Headers (= 3.3.2)
-  - Realm/Headers (3.3.2)
-  - RealmSwift (3.3.2):
-    - Realm (= 3.3.2)
-  - RxCocoa (4.1.2):
+  - RxAtomic (4.4.0)
+  - RxCocoa (4.4.0):
     - RxSwift (~> 4.0)
-  - RxRealm (0.7.5):
-    - RealmSwift (~> 3.0)
-    - RxSwift (~> 4.0)
-  - RxSwift (4.1.2)
-  - SDWebImage (4.3.3):
-    - SDWebImage/Core (= 4.3.3)
-  - SDWebImage/Core (4.3.3)
-  - SwiftLint (0.25.0)
+  - RxSwift (4.4.0):
+    - RxAtomic (~> 4.4)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+  - SwiftLint (0.27.0)
 
 DEPENDENCIES:
-  - RealmSwift
   - RxCocoa
-  - RxRealm
   - SDWebImage
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - Realm
-    - RealmSwift
+  https://github.com/cocoapods/specs.git:
+    - RxAtomic
     - RxCocoa
-    - RxRealm
     - RxSwift
     - SDWebImage
     - SwiftLint
 
 SPEC CHECKSUMS:
-  Realm: d927fbf66df5532cfafc08afb5f7e53ded37b894
-  RealmSwift: 4e903a494e05d866581d69ad6f7e7b879d446baf
-  RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
-  RxRealm: a6c6c0a07cb61f34209969ca6657734edfdfff30
-  RxSwift: e49536837d9901277638493ea537394d4b55f570
-  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
-  SwiftLint: e14651157288e9e01d6e1a71db7014fb5744a8ea
+  RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
+  RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
+  RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
 
-PODFILE CHECKSUM: 9230b34a00199a338198b1544e92314a91433849
+PODFILE CHECKSUM: 96eb1bd2a55a1ee3750c26c77862864e5b8405f6
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.6.0.beta.2

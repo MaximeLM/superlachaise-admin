@@ -2,45 +2,44 @@
 //  WikipediaPage+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 21/12/2017.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension WikipediaPage: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = WikipediaId
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key.rawValue]
+    }
+
+}
+
+extension WikipediaPage: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(self)
-    }
+extension WikipediaPage: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<WikipediaPage> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "defaultSort"),
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@", filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [WikipediaPage] {
+        var results = context.objects(WikipediaPage.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "name contains[cd] %@", filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "defaultSort").sorted(byKey: "name").sorted(byKey: "id").fetch()
     }
 
-    // MARK: OpenableInBrowser
+}
+
+extension WikipediaPage: OpenableInBrowser {
 
     var externalURL: URL? {
         guard let wikipediaId = wikipediaId else {
@@ -50,7 +49,9 @@ extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, S
             .appendingPathComponent(wikipediaId.title)
     }
 
-    // MARK: Syncable
+}
+
+extension WikipediaPage: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncWikipediaPage(self)
