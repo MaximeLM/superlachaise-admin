@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser {
 
     // MARK: Identifiable
 
@@ -43,12 +43,6 @@ extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syn
     var externalURL: URL? {
         return URL(string: "https://commons.wikimedia.org/wiki")?
             .appendingPathComponent("File:\(id)")
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncCommonsFile(self)
     }
 
 }

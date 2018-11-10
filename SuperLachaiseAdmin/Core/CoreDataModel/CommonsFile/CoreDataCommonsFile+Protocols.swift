@@ -47,3 +47,11 @@ extension CoreDataCommonsFile: OpenableInBrowser {
     }
 
 }
+
+extension CoreDataCommonsFile: Syncable {
+
+    func sync(taskController: TaskController) {
+        taskController.syncCommonsFile(self)
+    }
+
+}
