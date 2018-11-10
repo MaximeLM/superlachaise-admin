@@ -64,7 +64,7 @@ private extension SyncWikidataCategories {
         return wikidataIds()
             .flatMap(self.wikidataEntities)
             .flatMap(self.saveWikidataCategories)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(WikidataCategory.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataWikidataCategory.self)(s)") })
     }
 
     func wikidataIds() -> Single<[String]> {
@@ -115,7 +115,7 @@ private extension SyncWikidataCategories {
         let names = config.languages.compactMap { language -> String? in
             let name = wikidataEntity.labels[language]?.value
             if name == nil {
-                Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no name in \(language)")
+                Logger.warning("\(CoreDataWikidataCategory.self) \(wikidataCategory) has no name in \(language)")
             }
             return name
         }
@@ -128,7 +128,7 @@ private extension SyncWikidataCategories {
             .map({ context.findOrCreate(CoreDataCategory.self, key: $0) }) {
             wikidataCategory.categories = Set(categories)
         } else {
-            Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no categories")
+            Logger.warning("\(CoreDataWikidataCategory.self) \(wikidataCategory) has no categories")
             wikidataCategory.categories = Set()
         }
 

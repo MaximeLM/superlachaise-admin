@@ -65,7 +65,7 @@ private extension SyncWikidataEntries {
         return primaryWikidataIds()
             .flatMap(self.wikidataEntities)
             .flatMap(self.saveWikidataEntries)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) primary \(WikidataEntry.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) primary \(CoreDataWikidataEntry.self)(s)") })
     }
 
     func primaryWikidataIds() -> Single<[String]> {
@@ -96,7 +96,7 @@ private extension SyncWikidataEntries {
                     } else {
                         return self.wikidataEntities(wikidataIds: secondaryWikidataIds)
                             .flatMap(self.saveWikidataEntries)
-                            .do(onSuccess: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
+                            .do(onSuccess: { Logger.info("Fetched \($0.count) secondary \(CoreDataWikidataEntry.self)(s)") })
                             .map { wikidataIds + $0 }
                     }
                 }
@@ -170,7 +170,7 @@ private extension SyncWikidataEntries {
         // Image
         let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, kind: kind)
         if imageCommonsId == nil && (kind == .grave || kind == .monument) {
-            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
+            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no image")
         }
         wikidataEntry.image = imageCommonsId.map { context.findOrCreate(CoreDataCommonsFile.self, key: $0) }
 
@@ -178,7 +178,7 @@ private extension SyncWikidataEntries {
         if kind == .person {
             let imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity, kind: kind)
             if imageOfGraveCommonsId == nil {
-                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
+                Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no image of grave")
             }
             wikidataEntry.imageOfGrave = imageOfGraveCommonsId
                 .map { context.findOrCreate(CoreDataCommonsFile.self, key: $0) }
@@ -204,14 +204,14 @@ private extension SyncWikidataEntries {
         // Name
         let name = wikidataEntity.labels[language]?.value
         if name == nil {
-            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no name in \(language)")
+            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no name in \(language)")
         }
         localization.name = name
 
         // Summary
         let summary = wikidataEntity.descriptions[language]?.value
         if summary == nil {
-            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
+            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
         }
         localization.summary = summary
 

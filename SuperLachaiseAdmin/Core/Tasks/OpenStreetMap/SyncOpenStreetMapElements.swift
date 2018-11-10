@@ -78,7 +78,7 @@ private extension SyncOpenStreetMapElements {
     func openStreetMapElements() -> Single<[String]> {
         return overpassElements()
             .flatMap(self.saveOpenStreetMapElements)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(OpenStreetMapElement.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataOpenStreetMapElement.self)(s)") })
     }
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement]) -> Single<[String]> {
@@ -126,7 +126,7 @@ private extension SyncOpenStreetMapElements {
         // Name
         let name = overpassElement.tags["name"]
         if name == nil {
-            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no name")
+            Logger.warning("\(CoreDataOpenStreetMapElement.self) \(openStreetMapElement) has no name")
         }
         openStreetMapElement.name = name
 
@@ -134,7 +134,7 @@ private extension SyncOpenStreetMapElements {
         let wikidataTags = ["wikidata", "subject:wikidata"]
         let wikidataId = wikidataTags.compactMap { overpassElement.tags[$0] }.first
         if wikidataId == nil {
-            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
+            Logger.warning("\(CoreDataOpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }
         let wikidataEntry = wikidataId.map { context.findOrCreate(CoreDataWikidataEntry.self, key: $0) }
         openStreetMapElement.wikidataEntry = wikidataEntry

@@ -81,7 +81,7 @@ private extension SyncCommonsFiles {
         return commonsIds()
             .flatMap(self.commonsAPIImages)
             .flatMap(self.saveCommonsFiles)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CommonsFile.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataCommonsFile.self)(s)") })
     }
 
     func saveCommonsFiles(commonsAPIImages: [CommonsAPIImage]) -> Single<[String]> {
@@ -120,14 +120,14 @@ private extension SyncCommonsFiles {
         // Author
         let author = self.author(imageInfo: imageInfo)
         if author == nil {
-            Logger.warning("\(CommonsFile.self) \(commonsFile) has no author")
+            Logger.warning("\(CoreDataCommonsFile.self) \(commonsFile) has no author")
         }
         commonsFile.author = author
 
         // License
         let license = self.license(imageInfo: imageInfo)
         if license == nil {
-            Logger.warning("\(CommonsFile.self) \(commonsFile) has no license")
+            Logger.warning("\(CoreDataCommonsFile.self) \(commonsFile) has no license")
         }
         commonsFile.license = license
 

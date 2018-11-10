@@ -116,12 +116,12 @@ private extension SyncSuperLachaiseObjects {
                 ? Array(wikidataEntry.secondaryWikidataEntries)
                 : interestingSecondaryEntries
             if !isMainEntryInteresting && interestingSecondaryEntries.isEmpty {
-                Logger.warning("Main \(WikidataEntry.self) \(wikidataEntry) is not interesting")
+                Logger.warning("Main \(CoreDataWikidataEntry.self) \(wikidataEntry) is not interesting")
             }
             wikidataEntry.secondaryWikidataEntries
                 .filter { !secondaryWikidataEntries.contains($0) }
                 .forEach {
-                    Logger.warning("Secondary \(WikidataEntry.self) \($0) is not interesting; skipping")
+                    Logger.warning("Secondary \(CoreDataWikidataEntry.self) \($0) is not interesting; skipping")
                 }
         }
 
@@ -214,7 +214,7 @@ private extension SyncSuperLachaiseObjects {
         orphanedObjects = orphanedObjects.filter { !fetchedPointOfInterestIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(PointOfInterest.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataPointOfInterest.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
 
@@ -234,20 +234,9 @@ private extension SyncSuperLachaiseObjects {
         }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(Entry.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataEntry.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
-    }
-
-}
-
-private extension WikidataEntry {
-
-    func isInteresting() -> Bool {
-        // An entry is interesting if it has a Wikipedia page on at least one localization
-        return !localizations
-            .compactMap { $0.wikipediaPage?.extract }
-            .isEmpty
     }
 
 }

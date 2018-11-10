@@ -7,8 +7,6 @@ target 'SuperLachaiseAdmin' do
     use_frameworks!
 
     pod 'SDWebImage'
-    pod 'RealmSwift'
     pod 'RxCocoa'
-    pod 'RxRealm'
 
 end

@@ -167,7 +167,7 @@ private extension SyncDatabaseV1Mappings {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(DatabaseV1Mapping.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataDatabaseV1Mapping.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

@@ -127,7 +127,7 @@ private extension SyncWikipediaPages {
     func wikipediaPages() -> Single<[String]> {
         return wikipediaTitlesByLanguage()
             .flatMap(self.wikipediaPages)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(WikipediaPage.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataWikipediaPage.self)(s)") })
     }
 
     func wikipediaPages(wikipediaTitlesByLanguage: [String: [String]]) -> Single<[String]> {
@@ -177,20 +177,20 @@ private extension SyncWikipediaPages {
         // Default sort
         let defaultSort = self.defaultSort(wikipediaAPIPage: wikipediaAPIPage)
         if defaultSort == nil {
-            Logger.warning("\(WikipediaPage.self) \(wikipediaPage) has no default sort")
+            Logger.warning("\(CoreDataWikipediaPage.self) \(wikipediaPage) has no default sort")
         }
         wikipediaPage.defaultSort = defaultSort
 
         // Extract
         let extract = self.extract(wikipediaAPIPage: wikipediaAPIPage)
         if extract == nil {
-            Logger.warning("\(WikipediaPage.self) \(wikipediaPage) has no extract")
+            Logger.warning("\(CoreDataWikipediaPage.self) \(wikipediaPage) has no extract")
         }
         wikipediaPage.extract = extract
 
         // Redirect
         if let redirect = self.redirect(wikipediaAPIPage: wikipediaAPIPage) {
-            Logger.warning("\(WikipediaPage.self) \(wikipediaPage) is a redirect for \(redirect)")
+            Logger.warning("\(CoreDataWikipediaPage.self) \(wikipediaPage) is a redirect for \(redirect)")
         }
 
         return wikipediaPage

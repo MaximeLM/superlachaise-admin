@@ -48,7 +48,7 @@ extension CoreDataEntry: Syncable {
         } else if let pointOfInterest = secondaryEntryOf.first {
             taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
         } else {
-            Logger.info("\(Entry.self) \(self) has no point of interest")
+            Logger.info("\(CoreDataEntry.self) \(self) has no point of interest")
         }
     }
 

@@ -6,16 +6,11 @@
 //
 
 import Foundation
-import RealmSwift
 
 final class AppContainer {
 
     static var config: Config {
         return shared.config
-    }
-
-    static var realmContext: RealmContext {
-        return shared.realmContext
     }
 
     static var database: CoreDataDatabase {
@@ -30,16 +25,13 @@ final class AppContainer {
 
     private static let shared: AppContainer = {
         do {
-            let appContainer = try AppContainer()
-            Realm.Configuration.defaultConfiguration = appContainer.realmContext.configuration
-            return appContainer
+            return try AppContainer()
         } catch {
             fatalError("\(error)")
         }
     }()
 
     private let config: Config
-    private let realmContext: RealmContext
     private let database: CoreDataDatabase
     private let taskController: TaskController
 
@@ -50,7 +42,6 @@ final class AppContainer {
         let configData = try Data(contentsOf: configURL)
 
         self.config = try PropertyListDecoder().decode(Config.self, from: configData)
-        self.realmContext = try RealmContext(databaseDirectoryName: "database", databaseFileName: "SuperLachaise")
         self.database = CoreDataDatabase(name: "SuperLachaiseAdmin")
         self.taskController = TaskController(config: config, database: database)
     }
