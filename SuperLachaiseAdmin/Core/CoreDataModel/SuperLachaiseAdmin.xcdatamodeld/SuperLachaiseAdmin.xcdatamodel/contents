@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="OpenStreetMapElement" representedClassName=".CoreDataOpenStreetMapElement" syncable="YES">
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -11,14 +11,23 @@
         </fetchIndex>
     </entity>
     <entity name="WikidataEntry" representedClassName=".CoreDataWikidataEntry" syncable="YES">
-        <attribute name="id" defaultValueString="" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rawDateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rawDateOfBirthPrecision" defaultValueString="" attributeType="String" syncable="YES"/>
+        <attribute name="rawDateOfBirthPrecision" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="rawDateOfDeath" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rawDateOfDeathPrecision" defaultValueString="" attributeType="String" syncable="YES"/>
-        <attribute name="rawKind" defaultValueString="" attributeType="String" syncable="YES"/>
+        <attribute name="rawDateOfDeathPrecision" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="rawKind" attributeType="String" defaultValueString="" syncable="YES"/>
         <relationship name="openStreetMapElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OpenStreetMapElement" inverseName="wikidataEntry" inverseEntity="OpenStreetMapElement" syncable="YES"/>
+        <fetchIndex name="byId">
+            <fetchIndexElement property="id" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="WikipediaPage" representedClassName=".CoreDataWikipediaPage" syncable="YES">
+        <attribute name="defaultSort" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="extract" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -26,5 +35,6 @@
     <elements>
         <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="165"/>
+        <element name="WikipediaPage" positionX="-27" positionY="99" width="128" height="105"/>
     </elements>
 </model>

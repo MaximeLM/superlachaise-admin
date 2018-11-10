@@ -20,9 +20,9 @@ extension CoreDataOpenStreetMapElement: MainWindowModelType {
                 DetailViewFieldItem(name: "Latitude", value: latitude),
                 DetailViewFieldItem(name: "Longitude", value: longitude),
             ],
-            [
-                //DetailViewToOneFieldItem(name: "Wikidata entry", value: wikidataEntry),
-            ],
+            /*[
+                DetailViewToOneFieldItem(name: "Wikidata entry", value: wikidataEntry),
+            ],*/
         ])
     }
 

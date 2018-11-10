@@ -13,6 +13,8 @@ final class ListViewRootItem: NSObject, ListViewItem {
     override init() {
         self.children = [
             ListViewObjectListItem<CoreDataOpenStreetMapElement>(baseText: "OpenStreetMap elements"),
+            ListViewObjectListItem<CoreDataWikidataEntry>(baseText: "Wikidata entries"),
+            ListViewObjectListItem<CoreDataWikipediaPage>(baseText: "Wikipedia pages"),
         ]
     }
 
