@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension Category: Identifiable, Deletable, Listable, Syncable {
+extension Category: Identifiable, Deletable, Listable {
 
     // MARK: Identifiable
 
@@ -37,12 +37,6 @@ extension Category: Identifiable, Deletable, Listable, Syncable {
             }
             return results
         }
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncCategory(self)
     }
 
 }

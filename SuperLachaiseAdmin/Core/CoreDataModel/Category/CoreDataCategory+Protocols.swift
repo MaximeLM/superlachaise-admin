@@ -38,3 +38,11 @@ extension CoreDataCategory: CoreDataListable {
     }
 
 }
+
+extension CoreDataCategory: Syncable {
+
+    func sync(taskController: TaskController) {
+        taskController.syncCategory(self)
+    }
+
+}

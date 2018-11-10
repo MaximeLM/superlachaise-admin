@@ -49,6 +49,7 @@
 		551DAF342197225C005988DB /* Category+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F59686206C1CE00078D5F0 /* Category+MainWindowModel.swift */; };
 		551DAF362197228E005988DB /* CoreDataCategory+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF352197228E005988DB /* CoreDataCategory+Protocols.swift */; };
 		551DAF38219724E8005988DB /* CoreDataWikidataLocalizedEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF37219724E8005988DB /* CoreDataWikidataLocalizedEntry+Protocols.swift */; };
+		551DAF3A21972FC7005988DB /* CoreDataLocalizedCategory+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF3921972FC7005988DB /* CoreDataLocalizedCategory+Protocols.swift */; };
 		55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */; };
 		55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */; };
 		55348634204CB2440036143D /* DetailViewToManyFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55348633204CB2440036143D /* DetailViewToManyFieldView.xib */; };
@@ -237,6 +238,7 @@
 		551DAF3221972075005988DB /* CoreDataLocalizedCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataLocalizedCategory.swift; sourceTree = "<group>"; };
 		551DAF352197228E005988DB /* CoreDataCategory+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataCategory+Protocols.swift"; sourceTree = "<group>"; };
 		551DAF37219724E8005988DB /* CoreDataWikidataLocalizedEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataWikidataLocalizedEntry+Protocols.swift"; sourceTree = "<group>"; };
+		551DAF3921972FC7005988DB /* CoreDataLocalizedCategory+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataLocalizedCategory+Protocols.swift"; sourceTree = "<group>"; };
 		5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldView.swift; sourceTree = "<group>"; };
 		55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldItem.swift; sourceTree = "<group>"; };
 		55348633204CB2440036143D /* DetailViewToManyFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToManyFieldView.xib; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			isa = PBXGroup;
 			children = (
 				551DAF3221972075005988DB /* CoreDataLocalizedCategory.swift */,
+				551DAF3921972FC7005988DB /* CoreDataLocalizedCategory+Protocols.swift */,
 			);
 			path = LocalizedCategory;
 			sourceTree = "<group>";
@@ -1477,6 +1480,7 @@
 				55C0CB9F2193982100F2E34C /* CoreDataWikidataEntry.swift in Sources */,
 				555CF558204B0234005CE48F /* DetailViewURLFieldView.swift in Sources */,
 				555EB4E22067CAB0009A6054 /* Entry+Kind.swift in Sources */,
+				551DAF3A21972FC7005988DB /* CoreDataLocalizedCategory+Protocols.swift in Sources */,
 				55F5968D206C2FEA0078D5F0 /* LocalizedCategory+Protocols.swift in Sources */,
 				55B537071FD351C800036FFC /* Identifiable.swift in Sources */,
 				55C0CBA1219399D400F2E34C /* CoreDataWikidataEntry+Date.swift in Sources */,

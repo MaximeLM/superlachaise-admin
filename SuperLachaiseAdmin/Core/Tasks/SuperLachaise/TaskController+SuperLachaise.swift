@@ -10,12 +10,16 @@ import Foundation
 extension TaskController {
 
     func syncCategories() {
-        let task = SyncCategories(scope: .all, config: config.superLachaise)
+        let task = SyncCategories(scope: .all,
+                                  config: config.superLachaise,
+                                  performInBackground: database.performInBackground)
         enqueue(task)
     }
 
-    func syncCategory(_ category: Category) {
-        let task = SyncCategories(scope: .single(id: category.id), config: config.superLachaise)
+    func syncCategory(_ category: CoreDataCategory) {
+        let task = SyncCategories(scope: .single(id: category.id),
+                                  config: config.superLachaise,
+                                  performInBackground: database.performInBackground)
         enqueue(task)
     }
 
