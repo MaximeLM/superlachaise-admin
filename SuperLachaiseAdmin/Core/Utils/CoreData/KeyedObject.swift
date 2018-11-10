@@ -15,11 +15,3 @@ protocol KeyedObject {
     static func attributes(key: Key) -> [String: Any]
 
 }
-
-protocol CoreDataObjectKey {
-
-    associatedtype CoreDataObject: NSManagedObject
-
-    var coreDataAttributes: [String: Any] { get }
-
-}

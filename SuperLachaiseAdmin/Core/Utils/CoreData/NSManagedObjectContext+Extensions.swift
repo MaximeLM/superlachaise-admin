@@ -17,26 +17,6 @@ extension NSManagedObjectContext {
         return CoreDataResults(context: self)
     }
 
-    func find<Key: CoreDataObjectKey>(_ type: Key.CoreDataObject.Type, key: Key) -> Key.CoreDataObject? {
-        var results = objects(type)
-        for (key, value) in key.coreDataAttributes {
-            results = results.filtered(by: "%K == %@", [key, value])
-        }
-        return results.fetch().first
-    }
-
-    func findOrCreate<Key: CoreDataObjectKey>(_ type: Key.CoreDataObject.Type, key: Key) -> Key.CoreDataObject {
-        if let object = find(type, key: key) {
-            return object
-        } else {
-            let object = Key.CoreDataObject(context: self)
-            for (key, value) in key.coreDataAttributes {
-                object.setValue(value, forKey: key)
-            }
-            return object
-        }
-    }
-
     func find<Object: NSManagedObject & KeyedObject>(_ type: Object.Type, key: Object.Key) -> Object? {
         var results = objects(type)
         for (key, value) in type.attributes(key: key) {

@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser {
 
     // MARK: Identifiable
 
@@ -46,12 +46,6 @@ extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, S
     var externalURL: URL? {
         return URL(string: "https://www.wikidata.org/wiki")?
             .appendingPathComponent(id)
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncWikidataEntry(self)
     }
 
 }

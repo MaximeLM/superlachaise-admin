@@ -12,14 +12,16 @@ extension TaskController {
     func syncWikidataEntries() {
         let task = SyncWikidataEntries(scope: .all,
                                        config: config.wikidata,
-                                       endpoint: wikidataAPIEndpoint)
+                                       endpoint: wikidataAPIEndpoint,
+                                       performInBackground: database.performInBackground)
         enqueue(task)
     }
 
-    func syncWikidataEntry(_ wikidataEntry: WikidataEntry) {
+    func syncWikidataEntry(_ wikidataEntry: CoreDataWikidataEntry) {
         let task = SyncWikidataEntries(scope: .single(id: wikidataEntry.id),
                                        config: config.wikidata,
-                                       endpoint: wikidataAPIEndpoint)
+                                       endpoint: wikidataAPIEndpoint,
+                                       performInBackground: database.performInBackground)
         enqueue(task)
     }
 

@@ -5,6 +5,7 @@
 //  Created by Maxime Le Moine on 10/12/2017.
 //
 
+import CoreData
 import Foundation
 import RealmSwift
 import RxSwift
@@ -31,11 +32,16 @@ final class SyncWikidataEntries: Task {
 
     let config: WikidataConfig
     let endpoint: APIEndpointType
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(scope: Scope, config: WikidataConfig, endpoint: APIEndpointType) {
+    init(scope: Scope,
+         config: WikidataConfig,
+         endpoint: APIEndpointType,
+         performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
         self.endpoint = endpoint
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -49,10 +55,6 @@ final class SyncWikidataEntries: Task {
             .flatMap(self.withSecondaryWikidataEntries)
             .flatMap(self.deleteOrphans)
     }
-
-    // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncWikidataEntries.realm")
 
 }
 
@@ -71,8 +73,9 @@ private extension SyncWikidataEntries {
         switch self.scope {
         case .all:
             // Get wikidata ids from OpenStreetMap elements
-            return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                OpenStreetMapElement.all()(realm).compactMap { $0.wikidataEntry?.id }
+            return performInBackground.map { context in
+                context.objects(CoreDataOpenStreetMapElement.self).fetch()
+                    .compactMap { $0.wikidataEntry?.id }
             }
         case let .single(id):
             return Single.just([id])
@@ -105,8 +108,8 @@ private extension SyncWikidataEntries {
     }
 
     func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            wikidataIds.compactMap { WikidataEntry.find(id: $0)(realm) }
+        return performInBackground.map { context in
+            wikidataIds.compactMap { context.find(CoreDataWikidataEntry.self, key: $0) }
                 .flatMap { $0.secondaryWikidataEntries.map { $0.id } }
                 .filter { !wikidataIds.contains($0) }
         }
@@ -122,29 +125,30 @@ private extension SyncWikidataEntries {
     // MARK: Wikidata entries
 
     func saveWikidataEntries(wikidataEntities: [WikidataEntity]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.saveWikidataEntries(wikidataEntities: wikidataEntities, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.saveWikidataEntries(wikidataEntities: wikidataEntities, context: context)
             }
         }
     }
 
-    func saveWikidataEntries(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [String] {
+    func saveWikidataEntries(wikidataEntities: [WikidataEntity], context: NSManagedObjectContext) throws -> [String] {
         return try wikidataEntities.map { wikidataEntity in
-            try self.wikidataEntry(wikidataEntity: wikidataEntity, realm: realm).id
+            try self.wikidataEntry(wikidataEntity: wikidataEntity, context: context).id
         }
     }
 
     // MARK: Wikidata entry
 
-    func wikidataEntry(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataEntry {
+    func wikidataEntry(wikidataEntity: WikidataEntity,
+                       context: NSManagedObjectContext) throws -> CoreDataWikidataEntry {
         // Wikidata Id
-        let wikidataEntry = WikidataEntry.findOrCreate(id: wikidataEntity.id)(realm)
+        let wikidataEntry = context.findOrCreate(CoreDataWikidataEntry.self, key: wikidataEntity.id)
 
         // Localizations
         for language in config.languages {
             syncLocalization(
-                wikidataEntry: wikidataEntry, wikidataEntity: wikidataEntity, language: language, realm: realm)
+                wikidataEntry: wikidataEntry, wikidataEntity: wikidataEntity, language: language, context: context)
         }
 
         // Name
@@ -156,20 +160,20 @@ private extension SyncWikidataEntries {
 
         // Secondary wikidata entries
         let secondaryWikidataEntries = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
-            .map { WikidataEntry.findOrCreate(id: $0)(realm) }
-        wikidataEntry.secondaryWikidataEntries.replaceAll(objects: secondaryWikidataEntries)
+            .map { context.findOrCreate(CoreDataWikidataEntry.self, key: $0) }
+        wikidataEntry.secondaryWikidataEntries = Set(secondaryWikidataEntries)
 
         // Wikidata categories
         let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, kind: kind)
-            .map { WikidataCategory.findOrCreate(id: $0)(realm) }
-        wikidataEntry.wikidataCategories.replaceAll(objects: wikidataCategories)
+            .map { context.findOrCreate(CoreDataWikidataCategory.self, key: $0) }
+        wikidataEntry.wikidataCategories = Set(wikidataCategories)
 
         // Image
         let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, kind: kind)
         if imageCommonsId == nil && (kind == .grave || kind == .monument) {
             Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
         }
-        wikidataEntry.image = imageCommonsId.map { CommonsFile.findOrCreate(id: $0)(realm) }
+        wikidataEntry.image = imageCommonsId.map { context.findOrCreate(CoreDataCommonsFile.self, key: $0) }
 
         // Image of grave
         if kind == .person {
@@ -177,7 +181,8 @@ private extension SyncWikidataEntries {
             if imageOfGraveCommonsId == nil {
                 Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
             }
-            wikidataEntry.imageOfGrave = imageOfGraveCommonsId.map { CommonsFile.findOrCreate(id: $0)(realm) }
+            wikidataEntry.imageOfGrave = imageOfGraveCommonsId
+                .map { context.findOrCreate(CoreDataCommonsFile.self, key: $0) }
         }
 
         // Dates
@@ -190,11 +195,12 @@ private extension SyncWikidataEntries {
     }
 
     @discardableResult
-    func syncLocalization(wikidataEntry: WikidataEntry,
+    func syncLocalization(wikidataEntry: CoreDataWikidataEntry,
                           wikidataEntity: WikidataEntity,
                           language: String,
-                          realm: Realm) -> WikidataLocalizedEntry {
-        let localization = wikidataEntry.findOrCreateLocalization(language: language)(realm)
+                          context: NSManagedObjectContext) -> CoreDataWikidataLocalizedEntry {
+        let localization = context.findOrCreate(CoreDataWikidataLocalizedEntry.self,
+                                                key: (wikidataEntry: wikidataEntry, language: language))
 
         // Name
         let name = wikidataEntity.labels[language]?.value
@@ -213,7 +219,7 @@ private extension SyncWikidataEntries {
         // Wikipedia page
         if let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title {
             let wikipediaId = WikipediaId(language: language, title: wikipediaTitle)
-            localization.wikipediaPage = WikipediaPage.findOrCreate(wikipediaId: wikipediaId)(realm)
+            localization.wikipediaPage = context.findOrCreate(CoreDataWikipediaPage.self, key: wikipediaId)
         } else {
             localization.wikipediaPage = nil
         }
@@ -327,19 +333,19 @@ private extension SyncWikidataEntries {
     // MARK: Orphans
 
     func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.deleteOrphans(fetchedIds: fetchedIds, context: context)
             }
         }
     }
 
-    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<WikidataEntry>
+        var orphanedObjects: Set<CoreDataWikidataEntry>
         switch scope {
         case .all:
-            orphanedObjects = Set(WikidataEntry.all()(realm))
+            orphanedObjects = Set(context.objects(CoreDataWikidataEntry.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -347,8 +353,8 @@ private extension SyncWikidataEntries {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(WikidataEntry.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataWikidataEntry.self)(s)")
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 

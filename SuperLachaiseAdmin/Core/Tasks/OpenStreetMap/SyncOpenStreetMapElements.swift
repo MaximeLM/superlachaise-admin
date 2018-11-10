@@ -31,16 +31,16 @@ final class SyncOpenStreetMapElements: Task {
 
     let config: OpenStreetMapConfig
     let endpoint: APIEndpointType
-    let performInContext: Single<NSManagedObjectContext>
+    let performInBackground: Single<NSManagedObjectContext>
 
     init(scope: Scope,
          config: OpenStreetMapConfig,
          endpoint: APIEndpointType,
-         performInContext: Single<NSManagedObjectContext>) {
+         performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
         self.endpoint = endpoint
-        self.performInContext = performInContext
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -82,7 +82,7 @@ private extension SyncOpenStreetMapElements {
     }
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement]) -> Single<[String]> {
-        return performInContext.map { context in
+        return performInBackground.map { context in
             try context.write {
                 try self.saveOpenStreetMapElements(overpassElements: overpassElements, context: context)
             }
@@ -145,7 +145,7 @@ private extension SyncOpenStreetMapElements {
     // MARK: Orphans
 
     func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
-        return performInContext.map { context in
+        return performInBackground.map { context in
             try context.write {
                 try self.deleteOrphans(fetchedIds: fetchedIds, context: context)
             }

@@ -48,3 +48,11 @@ extension CoreDataWikidataEntry: OpenableInBrowser {
     }
 
 }
+
+extension CoreDataWikidataEntry: Syncable {
+
+    func sync(taskController: TaskController) {
+        taskController.syncWikidataEntry(self)
+    }
+
+}

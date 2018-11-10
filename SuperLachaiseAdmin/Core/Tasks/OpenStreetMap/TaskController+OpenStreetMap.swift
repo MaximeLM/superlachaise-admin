@@ -14,7 +14,7 @@ extension TaskController {
         let task = SyncOpenStreetMapElements(scope: scope,
                                              config: config.openStreetMap,
                                              endpoint: overpassAPIEndpoint,
-                                             performInContext: database.performInBackground)
+                                             performInBackground: database.performInBackground)
         enqueue(task)
     }
 
@@ -25,7 +25,7 @@ extension TaskController {
         let task = SyncOpenStreetMapElements(scope: .single(openStreetMapId: openStreetMapId),
                                              config: config.openStreetMap,
                                              endpoint: overpassAPIEndpoint,
-                                             performInContext: database.performInBackground)
+                                             performInBackground: database.performInBackground)
         enqueue(task)
     }
 
