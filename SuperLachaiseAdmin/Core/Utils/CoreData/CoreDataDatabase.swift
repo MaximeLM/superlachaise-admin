@@ -19,22 +19,41 @@ final class CoreDataDatabase {
                 fatalError("\(error)")
             }
             Logger.info("database initialized at \(description.url?.path ?? "nil")")
+            persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
             self.persistentContainerSubject.accept(persistentContainer)
         }
     }
 
     // MARK: Contexts
 
-    var viewContextDidSave: Observable<NSManagedObjectContext> {
-        return persistentContainer.asObservable().flatMapLatest({ $0.viewContext.rx.didSave })
+    var contextDidSave: Observable<Void> {
+        return Observable.create { observer in
+            NSManagedObjectContextDidSaveObserver(observer: observer.on)
+        }
+            .observeOn(MainScheduler.asyncInstance)
     }
 
     var performInViewContext: Single<NSManagedObjectContext> {
-        return persistentContainer.flatMap({ $0.viewContext.rx.perform() })
+        return persistentContainer.flatMap { persistentContainer in
+            Single.create { observer in
+                let context = persistentContainer.viewContext
+                context.perform {
+                    observer(.success(context))
+                }
+                return Disposables.create()
+            }
+        }
     }
 
-    var performInNewBackgroundContext: Single<NSManagedObjectContext> {
-        return persistentContainer.flatMap({ $0.newBackgroundContext().rx.perform() })
+    var performInBackground: Single<NSManagedObjectContext> {
+        return persistentContainer.flatMap { persistentContainer in
+            Single.create { observer in
+                persistentContainer.performBackgroundTask { context in
+                    observer(.success(context))
+                }
+                return Disposables.create()
+            }
+        }
     }
 
     // MARK: Private
@@ -42,6 +61,9 @@ final class CoreDataDatabase {
     private let persistentContainerSubject = BehaviorRelay<NSPersistentContainer?>(value: nil)
 
     private var persistentContainer: Single<NSPersistentContainer> {
+        if let persistentContainer = self.persistentContainerSubject.value {
+            return Single.just(persistentContainer)
+        }
         return Single.create { observer in
             var didFinish = false
             return self.persistentContainerSubject.subscribe(onNext: { persistentContainer in
@@ -51,6 +73,28 @@ final class CoreDataDatabase {
                 }
             })
         }
+    }
+
+}
+
+private final class NSManagedObjectContextDidSaveObserver: NSObject, Disposable {
+
+    let observer: (Event<Void>) -> Void
+
+    init(observer: @escaping (Event<Void>) -> Void) {
+        self.observer = observer
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(contextDidSave(_:)),
+                                               name: .NSManagedObjectContextDidSave, object: nil)
+    }
+
+    @objc
+    private func contextDidSave(_ notification: Notification) {
+        observer(.next(()))
+    }
+
+    func dispose() {
+        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextDidSave, object: nil)
     }
 
 }

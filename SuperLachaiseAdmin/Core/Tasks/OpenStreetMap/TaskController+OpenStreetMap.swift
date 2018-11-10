@@ -14,18 +14,18 @@ extension TaskController {
         let task = SyncOpenStreetMapElements(scope: scope,
                                              config: config.openStreetMap,
                                              endpoint: overpassAPIEndpoint,
-                                             performInContext: database.performInNewBackgroundContext)
+                                             performInContext: database.performInBackground)
         enqueue(task)
     }
 
-    func syncOpenStreetMapElement(_ openStreetMapElement: OpenStreetMapElement) {
+    func syncOpenStreetMapElement(_ openStreetMapElement: CoreDataOpenStreetMapElement) {
         guard let openStreetMapId = openStreetMapElement.openStreetMapId else {
             return
         }
         let task = SyncOpenStreetMapElements(scope: .single(openStreetMapId: openStreetMapId),
                                              config: config.openStreetMap,
                                              endpoint: overpassAPIEndpoint,
-                                             performInContext: database.performInNewBackgroundContext)
+                                             performInContext: database.performInBackground)
         enqueue(task)
     }
 

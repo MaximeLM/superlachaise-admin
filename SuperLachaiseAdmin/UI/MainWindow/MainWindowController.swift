@@ -123,7 +123,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
 
         // Bind title
         Observable.merge(model.asObservable(),
-                         database.viewContextDidSave.map { _ in self.model.value })
+                         database.contextDidSave.map { _ in self.model.value })
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
             .subscribe(onNext: { title in
                 self.window?.title = title

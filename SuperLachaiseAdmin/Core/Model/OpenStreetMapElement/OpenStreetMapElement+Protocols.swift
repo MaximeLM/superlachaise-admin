@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBrowser {
 
     // MARK: Identifiable
 
@@ -49,12 +49,6 @@ extension OpenStreetMapElement: Identifiable, Deletable, Listable, OpenableInBro
         return URL(string: "https://www.openstreetmap.org")?
             .appendingPathComponent(openStreetMapId.elementType.rawValue)
             .appendingPathComponent("\(openStreetMapId.numericId)")
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncOpenStreetMapElement(self)
     }
 
 }

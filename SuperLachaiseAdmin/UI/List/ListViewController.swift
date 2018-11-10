@@ -22,7 +22,7 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Model
 
-    var rootItem: ListViewRootItem?
+    lazy var rootItem = ListViewRootItem()
 
     // MARK: Properties
 
@@ -39,8 +39,10 @@ final class ListViewController: NSViewController, ListViewControllerType {
     func reload() {
         database.performInViewContext
             .subscribe(onSuccess: { context in
-                self.rootItem = ListViewRootItem(filter: self.searchValue ?? "", context: context)
-                self.outlineView?.reloadData()
+                guard let outlineView = self.outlineView else {
+                    return
+                }
+                self.rootItem.reload(outlineView: outlineView, context: context, filter: self.searchValue ?? "")
             })
             .disposed(by: disposeBag)
     }
@@ -59,7 +61,7 @@ final class ListViewController: NSViewController, ListViewControllerType {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        database.viewContextDidSave
+        database.contextDidSave
             .subscribe(onNext: { [weak self] _ in
                 self?.reload()
             })
@@ -73,23 +75,21 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel?.children?.count ?? 0
+        return itemModel.children?.count ?? 0
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel?.children?[index] ?? NSNull()
+        return itemModel.children?[index] ?? NSNull()
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel?.children != nil
+        return itemModel.children != nil
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let itemModel = item as? ListViewItem ?? rootItem else {
-            return nil
-        }
+        let itemModel = item as? ListViewItem ?? rootItem
 
         let viewIdentifier = NSUserInterfaceItemIdentifier(rawValue: "ItemView")
         guard let view = outlineView.makeView(withIdentifier: viewIdentifier, owner: self) as? NSTableCellView else {

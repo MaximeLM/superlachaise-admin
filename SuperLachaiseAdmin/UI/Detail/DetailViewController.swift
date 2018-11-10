@@ -53,7 +53,7 @@ final class DetailViewController: NSViewController, DetailViewControllerType {
         super.viewDidLoad()
 
         updateViewsFromModel()
-        database.viewContextDidSave
+        database.contextDidSave
             .subscribe(onNext: { [weak self] _ in
                 self?.updateViewsFromModel()
             })

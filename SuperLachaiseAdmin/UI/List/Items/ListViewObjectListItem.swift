@@ -8,15 +8,35 @@
 import Cocoa
 import CoreData
 
-final class ListViewObjectListItem<Element: MainWindowModel & CoreDataListable>: NSObject, ListViewItem {
+protocol ListViewObjectListItemType: ListViewItem {
+
+    func reload(outlineView: NSOutlineView, context: NSManagedObjectContext, filter: String)
+
+}
+
+final class ListViewObjectListItem<Element: MainWindowModel & CoreDataListable>: NSObject, ListViewObjectListItemType {
 
     let baseText: String
 
-    init(baseText: String, context: NSManagedObjectContext, filter: String) {
+    init(baseText: String) {
         self.baseText = baseText
         self.identifier = "ListViewObjectListItem.\(Element.self)"
-        self.children = Element.list(filter: filter, context: context).map {
+        self.children = nil
+    }
+
+    func reload(outlineView: NSOutlineView, context: NSManagedObjectContext, filter: String) {
+        children = Element.list(filter: filter, context: context).map {
             ListViewObjectItem(object: $0)
+        }
+
+        let selectedItem = outlineView.item(atRow: outlineView.selectedRow) as? ListViewItem
+        let isSelectedItemChildren = (outlineView.parent(forItem: selectedItem) as? ListViewItem)?.isEqual(self)
+            ?? false
+        outlineView.reloadItem(self, reloadChildren: true)
+
+        if isSelectedItemChildren, let selectedItem = selectedItem,
+            let row = children?.index(where: { $0.identifier == selectedItem.identifier }) {
+            outlineView.selectRowIndexes([outlineView.row(forItem: self) + row + 1], byExtendingSelection: false)
         }
     }
 
@@ -28,6 +48,6 @@ final class ListViewObjectListItem<Element: MainWindowModel & CoreDataListable>:
         return "\(baseText) (\(children?.count ?? 0))"
     }
 
-    let children: [ListViewItem]?
+    var children: [ListViewItem]?
 
 }

@@ -39,3 +39,24 @@ extension CoreDataOpenStreetMapElement: CoreDataListable {
     }
 
 }
+
+extension CoreDataOpenStreetMapElement: OpenableInBrowser {
+
+    var externalURL: URL? {
+        guard let openStreetMapId = openStreetMapId else {
+            return nil
+        }
+        return URL(string: "https://www.openstreetmap.org")?
+            .appendingPathComponent(openStreetMapId.elementType.rawValue)
+            .appendingPathComponent("\(openStreetMapId.numericId)")
+    }
+
+}
+
+extension CoreDataOpenStreetMapElement: Syncable {
+
+    func sync(taskController: TaskController) {
+        taskController.syncOpenStreetMapElement(self)
+    }
+
+}
