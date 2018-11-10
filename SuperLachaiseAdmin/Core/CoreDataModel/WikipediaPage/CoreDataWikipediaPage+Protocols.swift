@@ -31,7 +31,7 @@ extension CoreDataWikipediaPage: CoreDataListable {
     static func list(filter: String, context: NSManagedObjectContext) -> [CoreDataWikipediaPage] {
         var results = context.objects(CoreDataWikipediaPage.self)
         if !filter.isEmpty {
-            let predicate = NSPredicate(format: "name contains[cd]", filter)
+            let predicate = NSPredicate(format: "name contains[cd] %@", filter)
             results = results.filtered(by: predicate)
         }
         return results.sorted(byKey: "defaultSort").sorted(byKey: "name").sorted(byKey: "id").fetch()

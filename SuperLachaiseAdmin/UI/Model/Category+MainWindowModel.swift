@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Category: MainWindowModelType {
+extension CoreDataCategory: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
@@ -16,7 +16,7 @@ extension Category: MainWindowModelType {
             ],
             localizationsFields(),
             [
-                DetailViewToManyFieldItem(name: "Entries", value: Array(entries.sorted(byKeyPath: "name"))),
+                //DetailViewToManyFieldItem(name: "Entries", value: Array(entries.sorted(byKeyPath: "name"))), // TODO
             ],
         ])
     }

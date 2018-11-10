@@ -32,9 +32,8 @@ extension CoreDataWikidataCategory: CoreDataListable {
         var results = context.objects(CoreDataWikidataCategory.self)
         if !filter.isEmpty {
             let predicate = NSPredicate(
-                format: "name contains[cd] %@ OR id contains[cd]",
-                //format: "name contains[cd] %@ OR id contains[cd] %@ OR ANY categories.id contains[cd] %@", // TODO
-                filter, filter)
+                format: "name contains[cd] %@ OR id contains[cd] %@ OR ANY categories.id contains[cd] %@",
+                filter, filter, filter)
             results = results.filtered(by: predicate)
         }
         return results.sorted(byKey: "name").sorted(byKey: "id").fetch()

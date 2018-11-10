@@ -16,7 +16,7 @@ extension CoreDataWikidataCategory: MainWindowModelType {
                 DetailViewFieldItem(name: "ID", value: id),
             ],
             [
-                //DetailViewToManyFieldItem(name: "Categories", value: Array(categories)), // TODO
+                DetailViewToManyFieldItem(name: "Categories", value: Array(categories)),
                 DetailViewToManyFieldItem(name: "Wikidata entries",
                                           value: Array(wikidataEntries.sorted(by: { $0.name ?? "" < $1.name ?? "" }))),
             ],

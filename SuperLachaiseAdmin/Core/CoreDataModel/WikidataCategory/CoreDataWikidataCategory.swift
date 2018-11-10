@@ -15,6 +15,7 @@ final class CoreDataWikidataCategory: NSManagedObject {
     @NSManaged var name: String?
 
     @NSManaged var wikidataEntries: Set<CoreDataWikidataEntry>
+    @NSManaged var categories: Set<CoreDataCategory>
 
     override var description: String {
         return [name, id]

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CommonsFile" representedClassName="CoreDataCommonsFile" syncable="YES">
+    <entity name="Category" representedClassName=".CoreDataCategory" syncable="YES">
+        <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
+        <relationship name="localizations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LocalizedCategory" inverseName="category" inverseEntity="LocalizedCategory" syncable="YES"/>
+        <relationship name="wikidataCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataCategory" inverseName="categories" inverseEntity="WikidataCategory" syncable="YES"/>
+        <fetchIndex name="byId">
+            <fetchIndexElement property="id" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CommonsFile" representedClassName=".CoreDataCommonsFile" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
@@ -13,6 +21,11 @@
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
+    </entity>
+    <entity name="LocalizedCategory" representedClassName=".CoreDataLocalizedCategory" syncable="YES">
+        <attribute name="language" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="" syncable="YES"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="localizations" inverseEntity="Category" syncable="YES"/>
     </entity>
     <entity name="OpenStreetMapElement" representedClassName=".CoreDataOpenStreetMapElement" syncable="YES">
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
@@ -27,6 +40,7 @@
     <entity name="WikidataCategory" representedClassName=".CoreDataWikidataCategory" syncable="YES">
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="wikidataCategories" inverseEntity="Category" syncable="YES"/>
         <relationship name="wikidataEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="wikidataCategories" inverseEntity="WikidataEntry" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
@@ -69,9 +83,11 @@
         </fetchIndex>
     </entity>
     <elements>
+        <element name="Category" positionX="18" positionY="180" width="128" height="90"/>
         <element name="CommonsFile" positionX="9" positionY="153" width="128" height="180"/>
+        <element name="LocalizedCategory" positionX="36" positionY="189" width="128" height="90"/>
         <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="WikidataCategory" positionX="0" positionY="144" width="128" height="90"/>
+        <element name="WikidataCategory" positionX="0" positionY="144" width="128" height="105"/>
         <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="255"/>
         <element name="WikidataLocalizedEntry" positionX="-18" positionY="108" width="128" height="120"/>
         <element name="WikipediaPage" positionX="-27" positionY="99" width="128" height="120"/>
