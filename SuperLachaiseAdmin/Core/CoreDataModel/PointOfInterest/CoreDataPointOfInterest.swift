@@ -17,8 +17,8 @@ final class CoreDataPointOfInterest: NSManagedObject {
     @NSManaged var name: String?
 
     @NSManaged var openStreetMapElement: CoreDataOpenStreetMapElement?
-    //@NSManaged var mainEntry: Entry? // TODO
-    //let secondaryEntries = List<Entry>() // TODO
+    @NSManaged var mainEntry: CoreDataEntry?
+    @NSManaged var secondaryEntries: Set<CoreDataPointOfInterest>
     @NSManaged var image: CoreDataCommonsFile?
 
     override var description: String {

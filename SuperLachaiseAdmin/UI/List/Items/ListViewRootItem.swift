@@ -19,6 +19,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
             ListViewObjectListItem<CoreDataCommonsFile>(baseText: "Commons files"),
             ListViewObjectListItem<CoreDataCategory>(baseText: "Categories"),
             ListViewObjectListItem<CoreDataPointOfInterest>(baseText: "Points of interest"),
+            ListViewObjectListItem<CoreDataEntry>(baseText: "Entries"),
         ]
     }
 

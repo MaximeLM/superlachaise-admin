@@ -14,11 +14,10 @@ final class CoreDataCategory: NSManagedObject {
 
     @NSManaged var localizations: Set<CoreDataLocalizedCategory>
     @NSManaged var wikidataCategories: Set<CoreDataWikidataCategory>
-    //let entries = LinkingObjects(fromType: Entry.self, property: "categories") // TODO
+    @NSManaged var entries: Set<CoreDataEntry>
 
     override var description: String {
-        //return "\(id) (\(entries.count))" // TODO
-        return id
+        return "\(id) (\(entries.count))"
     }
 
 }

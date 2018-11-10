@@ -18,8 +18,8 @@ extension CoreDataPointOfInterest: MainWindowModelType {
             ],
             [
                 DetailViewToOneFieldItem(name: "OpenStreetMap element", value: openStreetMapElement),
-                //DetailViewToOneFieldItem(name: "Main entry", value: mainEntry), // TODO
-                //DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)), // TODO
+                DetailViewToOneFieldItem(name: "Main entry", value: mainEntry),
+                DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)),
                 DetailViewToOneFieldItem(name: "Image", value: image),
             ],
         ])

@@ -53,6 +53,13 @@
 		551DAF3D219730EE005988DB /* CoreDataPointOfInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF3C219730EE005988DB /* CoreDataPointOfInterest.swift */; };
 		551DAF3F2197313E005988DB /* CoreDataPointOfInterest+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF3E2197313E005988DB /* CoreDataPointOfInterest+Protocols.swift */; };
 		551DAF402197329A005988DB /* PointOfInterest+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9A41FEB21C5000DA3C9 /* PointOfInterest+MainWindowModel.swift */; };
+		551DAF442197332D005988DB /* CoreDataEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF432197332D005988DB /* CoreDataEntry.swift */; };
+		551DAF4621973433005988DB /* CoreDataLocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF4521973433005988DB /* CoreDataLocalizedEntry.swift */; };
+		551DAF482197349E005988DB /* CoreDataEntry+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF472197349E005988DB /* CoreDataEntry+Date.swift */; };
+		551DAF4A219734B4005988DB /* CoreDataEntry+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF49219734B4005988DB /* CoreDataEntry+Kind.swift */; };
+		551DAF4C219734D8005988DB /* CoreDataEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF4B219734D8005988DB /* CoreDataEntry+Protocols.swift */; };
+		551DAF4E21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF4D21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift */; };
+		551DAF4F2197370C005988DB /* Entry+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */; };
 		55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */; };
 		55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */; };
 		55348634204CB2440036143D /* DetailViewToManyFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55348633204CB2440036143D /* DetailViewToManyFieldView.xib */; };
@@ -244,6 +251,12 @@
 		551DAF3921972FC7005988DB /* CoreDataLocalizedCategory+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataLocalizedCategory+Protocols.swift"; sourceTree = "<group>"; };
 		551DAF3C219730EE005988DB /* CoreDataPointOfInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPointOfInterest.swift; sourceTree = "<group>"; };
 		551DAF3E2197313E005988DB /* CoreDataPointOfInterest+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataPointOfInterest+Protocols.swift"; sourceTree = "<group>"; };
+		551DAF432197332D005988DB /* CoreDataEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntry.swift; sourceTree = "<group>"; };
+		551DAF4521973433005988DB /* CoreDataLocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataLocalizedEntry.swift; sourceTree = "<group>"; };
+		551DAF472197349E005988DB /* CoreDataEntry+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataEntry+Date.swift"; sourceTree = "<group>"; };
+		551DAF49219734B4005988DB /* CoreDataEntry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataEntry+Kind.swift"; sourceTree = "<group>"; };
+		551DAF4B219734D8005988DB /* CoreDataEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataEntry+Protocols.swift"; sourceTree = "<group>"; };
+		551DAF4D21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataLocalizedEntry+Protocols.swift"; sourceTree = "<group>"; };
 		5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldView.swift; sourceTree = "<group>"; };
 		55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldItem.swift; sourceTree = "<group>"; };
 		55348633204CB2440036143D /* DetailViewToManyFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToManyFieldView.xib; sourceTree = "<group>"; };
@@ -577,6 +590,27 @@
 				551DAF3E2197313E005988DB /* CoreDataPointOfInterest+Protocols.swift */,
 			);
 			path = PointOfInterest;
+			sourceTree = "<group>";
+		};
+		551DAF412197331A005988DB /* Entry */ = {
+			isa = PBXGroup;
+			children = (
+				551DAF432197332D005988DB /* CoreDataEntry.swift */,
+				551DAF472197349E005988DB /* CoreDataEntry+Date.swift */,
+				551DAF49219734B4005988DB /* CoreDataEntry+Kind.swift */,
+				551DAF4B219734D8005988DB /* CoreDataEntry+Protocols.swift */,
+				551DAF4221973322005988DB /* LocalizedEntry */,
+			);
+			path = Entry;
+			sourceTree = "<group>";
+		};
+		551DAF4221973322005988DB /* LocalizedEntry */ = {
+			isa = PBXGroup;
+			children = (
+				551DAF4521973433005988DB /* CoreDataLocalizedEntry.swift */,
+				551DAF4D21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift */,
+			);
+			path = LocalizedEntry;
 			sourceTree = "<group>";
 		};
 		5534862E204CB1A30036143D /* ToMany Field */ = {
@@ -1074,6 +1108,7 @@
 				551DAF2421971DBC005988DB /* CommonsFile */,
 				551DAF2E21972011005988DB /* Category */,
 				551DAF3B219730DE005988DB /* PointOfInterest */,
+				551DAF412197331A005988DB /* Entry */,
 			);
 			path = CoreDataModel;
 			sourceTree = "<group>";
@@ -1403,6 +1438,7 @@
 				55BD408D1FD30B4B005ACD89 /* ListViewController.swift in Sources */,
 				55E458BE206F87A500785B06 /* TaskController+Export.swift in Sources */,
 				555CF5402049F3CC005CE48F /* CommonsFile+Protocols.swift in Sources */,
+				551DAF4621973433005988DB /* CoreDataLocalizedEntry.swift in Sources */,
 				55F46B701FD497FD005B90BF /* ListViewController+Actions.swift in Sources */,
 				55F46B6A1FD488C3005B90BF /* PointOfInterest.swift in Sources */,
 				55B536FF1FD33E0C00036FFC /* ListViewObjectListItem.swift in Sources */,
@@ -1414,6 +1450,7 @@
 				555EB4E92067CB50009A6054 /* LocalizedEntry.swift in Sources */,
 				55A8D2531FCF5FFB00BB00BC /* TaskController+OpenStreetMap.swift in Sources */,
 				55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */,
+				551DAF442197332D005988DB /* CoreDataEntry.swift in Sources */,
 				555CF53C2049F28D005CE48F /* CommonsFile.swift in Sources */,
 				55F5968B206C2E120078D5F0 /* WikidataLocalizedEntry+Protocols.swift in Sources */,
 				55A8D2511FCF5F9C00BB00BC /* TaskController.swift in Sources */,
@@ -1423,7 +1460,9 @@
 				5513EF7C1FE6EE0400BD3A22 /* DetailViewTitleItem.swift in Sources */,
 				55152B4B20723DC300E50522 /* ExportConfig.swift in Sources */,
 				551DAF3321972075005988DB /* CoreDataLocalizedCategory.swift in Sources */,
+				551DAF4F2197370C005988DB /* Entry+MainWindowModel.swift in Sources */,
 				551DAF15219715B2005988DB /* CoreDataWikipediaPage.swift in Sources */,
+				551DAF482197349E005988DB /* CoreDataEntry+Date.swift in Sources */,
 				555CF54A204A0338005CE48F /* CommonsAPIImage.swift in Sources */,
 				555CF564204C156C005CE48F /* DetailViewImageItem.swift in Sources */,
 				5513EF481FE4A62B00BD3A22 /* FlippedClipView.swift in Sources */,
@@ -1444,6 +1483,7 @@
 				5570F9C21FEC6F8C000DA3C9 /* TaskController+Wikipedia.swift in Sources */,
 				55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */,
 				55CB47EA1FCCD1AB003F3610 /* APIEndpoint+Overpass.swift in Sources */,
+				551DAF4A219734B4005988DB /* CoreDataEntry+Kind.swift in Sources */,
 				55B897E21FCB169F00FC4EF6 /* RealmContext.swift in Sources */,
 				55E8A3AE1FD8AED6000B6FC2 /* PointOfInterest+Protocols.swift in Sources */,
 				5570F9A11FEB1AB5000DA3C9 /* MainWindowController+Tasks.swift in Sources */,
@@ -1481,6 +1521,7 @@
 				5513EF7E1FE6EF3700BD3A22 /* DetailViewURLItem.swift in Sources */,
 				555CF53E2049F387005CE48F /* CommonsFile+Requests.swift in Sources */,
 				55F59691206C362B0078D5F0 /* SyncDatabaseV1Mappings.swift in Sources */,
+				551DAF4E21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift in Sources */,
 				555CF56B204C5363005CE48F /* DetailViewToOneFieldView.swift in Sources */,
 				55609F98203CC81E0060E3F9 /* TaskController+Commons.swift in Sources */,
 				55F5967D206C1A4D0078D5F0 /* Category.swift in Sources */,
@@ -1517,6 +1558,7 @@
 				5570F98D1FEAFA35000DA3C9 /* Array+Utils.swift in Sources */,
 				55B897E91FCB26A600FC4EF6 /* ConcurrentOperation.swift in Sources */,
 				55C0CB852193676E00F2E34C /* CoreDataOpenStreetMapElement+Id.swift in Sources */,
+				551DAF4C219734D8005988DB /* CoreDataEntry+Protocols.swift in Sources */,
 				5513EF4B1FE6A54F00BD3A22 /* DetailViewModel.swift in Sources */,
 				5513EF8E1FE6FCAB00BD3A22 /* DetailViewInlineFieldItem.swift in Sources */,
 				551DAF3F2197313E005988DB /* CoreDataPointOfInterest+Protocols.swift in Sources */,

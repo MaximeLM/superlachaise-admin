@@ -16,7 +16,8 @@ extension CoreDataCategory: MainWindowModelType {
             ],
             localizationsFields(),
             [
-                //DetailViewToManyFieldItem(name: "Entries", value: Array(entries.sorted(byKeyPath: "name"))), // TODO
+                DetailViewToManyFieldItem(name: "Entries",
+                                          value: Array(entries.sorted(by: { $0.name ?? "" < $1.name ?? "" }))),
             ],
         ])
     }

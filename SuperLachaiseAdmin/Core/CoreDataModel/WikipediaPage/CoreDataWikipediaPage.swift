@@ -19,6 +19,7 @@ final class CoreDataWikipediaPage: NSManagedObject {
     @NSManaged var extract: String?
 
     @NSManaged var wikidataLocalizedEntries: Set<CoreDataWikidataLocalizedEntry>
+    @NSManaged var localizedEntries: Set<CoreDataLocalizedEntry>
 
     override var description: String {
         return (wikipediaId.map { [$0.title, $0.language] } ?? [])
