@@ -18,6 +18,8 @@ final class CoreDataWikipediaPage: NSManagedObject {
     @NSManaged var defaultSort: String?
     @NSManaged var extract: String?
 
+    @NSManaged var wikidataLocalizedEntries: Set<CoreDataWikidataLocalizedEntry>
+
     override var description: String {
         return (wikipediaId.map { [$0.title, $0.language] } ?? [])
             .joined(separator: " - ")

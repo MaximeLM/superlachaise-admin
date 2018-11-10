@@ -18,23 +18,35 @@
         <attribute name="rawDateOfDeath" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="rawDateOfDeathPrecision" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="rawKind" attributeType="String" defaultValueString="" syncable="YES"/>
+        <relationship name="localizations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WikidataLocalizedEntry" inverseName="wikidataEntry" inverseEntity="WikidataLocalizedEntry" syncable="YES"/>
         <relationship name="openStreetMapElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OpenStreetMapElement" inverseName="wikidataEntry" inverseEntity="OpenStreetMapElement" syncable="YES"/>
+        <relationship name="secondaryWikidataEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="secondaryWikidataEntryOf" inverseEntity="WikidataEntry" syncable="YES"/>
+        <relationship name="secondaryWikidataEntryOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="secondaryWikidataEntries" inverseEntity="WikidataEntry" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
+    </entity>
+    <entity name="WikidataLocalizedEntry" representedClassName="CoreDataWikidataLocalizedEntry" syncable="YES">
+        <attribute name="language" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="wikidataEntry" maxCount="1" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="localizations" inverseEntity="WikidataEntry" syncable="YES"/>
+        <relationship name="wikipediaPage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WikipediaPage" inverseName="wikidataLocalizedEntries" inverseEntity="WikipediaPage" syncable="YES"/>
     </entity>
     <entity name="WikipediaPage" representedClassName=".CoreDataWikipediaPage" syncable="YES">
         <attribute name="defaultSort" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="extract" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="wikidataLocalizedEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataLocalizedEntry" inverseName="wikipediaPage" inverseEntity="WikidataLocalizedEntry" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <elements>
         <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="165"/>
-        <element name="WikipediaPage" positionX="-27" positionY="99" width="128" height="105"/>
+        <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="210"/>
+        <element name="WikidataLocalizedEntry" positionX="-18" positionY="108" width="128" height="120"/>
+        <element name="WikipediaPage" positionX="-27" positionY="99" width="128" height="120"/>
     </elements>
 </model>

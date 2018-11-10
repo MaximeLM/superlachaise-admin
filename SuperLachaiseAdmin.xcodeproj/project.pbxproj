@@ -35,6 +35,7 @@
 		551DAF1721971606005988DB /* CoreDataWikipediaPage+Id.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF1621971606005988DB /* CoreDataWikipediaPage+Id.swift */; };
 		551DAF1921971641005988DB /* CoreDataWikipediaPage+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF1821971641005988DB /* CoreDataWikipediaPage+Protocols.swift */; };
 		551DAF1A219716DA005988DB /* WikipediaPage+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5570F9C31FEC70A1000DA3C9 /* WikipediaPage+MainWindowModel.swift */; };
+		551DAF1D2197175F005988DB /* CoreDataWikidataLocalizedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF1C2197175F005988DB /* CoreDataWikidataLocalizedEntry.swift */; };
 		55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */; };
 		55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */; };
 		55348634204CB2440036143D /* DetailViewToManyFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55348633204CB2440036143D /* DetailViewToManyFieldView.xib */; };
@@ -212,6 +213,7 @@
 		551DAF14219715B2005988DB /* CoreDataWikipediaPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataWikipediaPage.swift; sourceTree = "<group>"; };
 		551DAF1621971606005988DB /* CoreDataWikipediaPage+Id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataWikipediaPage+Id.swift"; sourceTree = "<group>"; };
 		551DAF1821971641005988DB /* CoreDataWikipediaPage+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataWikipediaPage+Protocols.swift"; sourceTree = "<group>"; };
+		551DAF1C2197175F005988DB /* CoreDataWikidataLocalizedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataWikidataLocalizedEntry.swift; sourceTree = "<group>"; };
 		5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldView.swift; sourceTree = "<group>"; };
 		55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldItem.swift; sourceTree = "<group>"; };
 		55348633204CB2440036143D /* DetailViewToManyFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToManyFieldView.xib; sourceTree = "<group>"; };
@@ -488,6 +490,14 @@
 				551DAF1821971641005988DB /* CoreDataWikipediaPage+Protocols.swift */,
 			);
 			path = WikipediaPage;
+			sourceTree = "<group>";
+		};
+		551DAF1B2197174B005988DB /* WikidataLocalizedEntry */ = {
+			isa = PBXGroup;
+			children = (
+				551DAF1C2197175F005988DB /* CoreDataWikidataLocalizedEntry.swift */,
+			);
+			path = WikidataLocalizedEntry;
 			sourceTree = "<group>";
 		};
 		5534862E204CB1A30036143D /* ToMany Field */ = {
@@ -1013,6 +1023,7 @@
 				55C0CBA0219399D400F2E34C /* CoreDataWikidataEntry+Date.swift */,
 				55C0CBA2219399F200F2E34C /* CoreDataWikidataEntry+Kind.swift */,
 				55C0CBA621939DB400F2E34C /* CoreDataWikidataEntry+Protocols.swift */,
+				551DAF1B2197174B005988DB /* WikidataLocalizedEntry */,
 			);
 			path = WikidataEntry;
 			sourceTree = "<group>";
@@ -1364,6 +1375,7 @@
 				555CF56D204C53F4005CE48F /* DetailViewToOneFieldItem.swift in Sources */,
 				5570F9A31FEB1B35000DA3C9 /* MainWindowController+Navigation.swift in Sources */,
 				55C0CB91219371FA00F2E34C /* CoreDataResults.swift in Sources */,
+				551DAF1D2197175F005988DB /* CoreDataWikidataLocalizedEntry.swift in Sources */,
 				5513EF5B1FE6BACC00BD3A22 /* DetailViewTitleView.swift in Sources */,
 				55E8A3AC1FD8AE5A000B6FC2 /* OpenStreetMapElement+Protocols.swift in Sources */,
 				555CF548204A032B005CE48F /* CommonsGetImages.swift in Sources */,

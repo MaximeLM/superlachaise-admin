@@ -25,6 +25,10 @@ final class CoreDataWikidataEntry: NSManagedObject {
     @NSManaged var rawDateOfDeathPrecision: String
 
     @NSManaged var openStreetMapElements: Set<CoreDataOpenStreetMapElement>
+    @NSManaged var secondaryWikidataEntries: Set<CoreDataWikidataEntry>
+    @NSManaged var secondaryWikidataEntryOf: Set<CoreDataWikidataEntry>
+    @NSManaged var localizations: Set<CoreDataWikidataLocalizedEntry>
+    //let wikidataCategories = List<WikidataCategory>()
 
     override var description: String {
         return [name, id]
