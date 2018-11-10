@@ -10,7 +10,10 @@ import Foundation
 extension TaskController {
 
     func syncWikipediaPages() {
-        let task = SyncWikipediaPages(scope: .all, config: config.wikipedia, endpoint: wikipediaAPIEndpoint)
+        let task = SyncWikipediaPages(scope: .all,
+                                      config: config.wikipedia,
+                                      endpoint: wikipediaAPIEndpoint,
+                                      performInBackground: database.performInBackground)
         enqueue(task)
     }
 
@@ -18,8 +21,10 @@ extension TaskController {
         guard let wikipediaId = wikipediaPage.wikipediaId else {
             return
         }
-        let task = SyncWikipediaPages(
-            scope: .single(wikipediaId: wikipediaId), config: config.wikipedia, endpoint: wikipediaAPIEndpoint)
+        let task = SyncWikipediaPages(scope: .single(wikipediaId: wikipediaId),
+                                      config: config.wikipedia,
+                                      endpoint: wikipediaAPIEndpoint,
+                                      performInBackground: database.performInBackground)
         enqueue(task)
     }
 

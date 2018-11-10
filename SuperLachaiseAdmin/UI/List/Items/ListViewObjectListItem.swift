@@ -6,14 +6,11 @@
 //
 
 import Cocoa
-import RealmSwift
-import RxCocoa
-import RxRealm
-import RxSwift
+import CoreData
 
 protocol ListViewObjectListItemType: ListViewItem {
 
-    var filter: String { get set }
+    func reload(outlineView: NSOutlineView, context: NSManagedObjectContext, filter: String)
 
 }
 
@@ -21,38 +18,26 @@ final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObjec
 
     let baseText: String
 
-    var filter: String {
-        get {
-            return _filter.value
-        }
-        set {
-            _filter.accept(newValue)
-        }
-    }
-
-    init(baseText: String, realm: Realm, filter: String) {
+    init(baseText: String) {
         self.baseText = baseText
         self.identifier = "ListViewObjectListItem.\(Element.self)"
-        self._filter = BehaviorRelay(value: filter)
+        self.children = nil
+    }
 
-        super.init()
-        _filter.asObservable()
-            .flatMapLatest { Observable.array(from: Element.list(filter: $0)(realm)) }
-            .catchErrorJustReturn([])
-            .map { objects in
-                objects.map { ListViewObjectItem(object: $0) }
-            }
-            .bind(to: _children)
-            .disposed(by: disposeBag)
-        _children
-            .asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else {
-                    return
-                }
-                self.reload?(self)
-            })
-            .disposed(by: disposeBag)
+    func reload(outlineView: NSOutlineView, context: NSManagedObjectContext, filter: String) {
+        children = Element.list(filter: filter, context: context).map {
+            ListViewObjectItem(object: $0)
+        }
+
+        let selectedItem = outlineView.item(atRow: outlineView.selectedRow) as? ListViewItem
+        let isSelectedItemChildren = (outlineView.parent(forItem: selectedItem) as? ListViewItem)?.isEqual(self)
+            ?? false
+        outlineView.reloadItem(self, reloadChildren: true)
+
+        if isSelectedItemChildren, let selectedItem = selectedItem,
+            let row = children?.index(where: { $0.identifier == selectedItem.identifier }) {
+            outlineView.selectRowIndexes([outlineView.row(forItem: self) + row + 1], byExtendingSelection: false)
+        }
     }
 
     // MARK: ListViewItem
@@ -63,18 +48,6 @@ final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObjec
         return "\(baseText) (\(children?.count ?? 0))"
     }
 
-    var children: [ListViewItem]? {
-        return _children.value
-    }
-
-    var reload: ((ListViewItem) -> Void)?
-
-    // MARK: Private
-
-    private let disposeBag = DisposeBag()
-
-    private let _filter: BehaviorRelay<String>
-
-    private let _children = BehaviorRelay<[ListViewItem]>(value: [])
+    var children: [ListViewItem]?
 
 }

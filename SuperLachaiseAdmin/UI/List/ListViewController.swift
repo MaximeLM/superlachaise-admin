@@ -18,11 +18,11 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     // MARK: Dependencies
 
-    lazy var realmContext = AppContainer.realmContext
+    lazy var database = AppContainer.database
 
     // MARK: Model
 
-    var rootItem: ListViewRootItem?
+    lazy var rootItem = ListViewRootItem()
 
     // MARK: Properties
 
@@ -30,11 +30,22 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     var searchValue: String? {
         didSet {
-            rootItem?.filter = searchValue ?? ""
+            reload()
         }
     }
 
     let disposeBag = DisposeBag()
+
+    func reload() {
+        database.performInViewContext
+            .subscribe(onSuccess: { context in
+                guard let outlineView = self.outlineView else {
+                    return
+                }
+                self.rootItem.reload(outlineView: outlineView, context: context, filter: self.searchValue ?? "")
+            })
+            .disposed(by: disposeBag)
+    }
 
     // MARK: Subviews
 
@@ -44,16 +55,15 @@ final class ListViewController: NSViewController, ListViewControllerType {
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        self.rootItem = ListViewRootItem(realm: self.realmContext.viewRealm)
-        outlineView?.reloadData()
+        reload()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        realmContext.viewRealmSaveNotification
+        database.contextDidSave
             .subscribe(onNext: { [weak self] _ in
-                self?.outlineView?.reloadData()
+                self?.reload()
             })
             .disposed(by: disposeBag)
 
@@ -65,23 +75,21 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel?.children?.count ?? 0
+        return itemModel.children?.count ?? 0
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel?.children?[index] ?? NSNull()
+        return itemModel.children?[index] ?? NSNull()
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         let itemModel = item as? ListViewItem ?? rootItem
-        return itemModel?.children != nil
+        return itemModel.children != nil
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let itemModel = item as? ListViewItem ?? rootItem else {
-            return nil
-        }
+        let itemModel = item as? ListViewItem ?? rootItem
 
         let viewIdentifier = NSUserInterfaceItemIdentifier(rawValue: "ItemView")
         guard let view = outlineView.makeView(withIdentifier: viewIdentifier, owner: self) as? NSTableCellView else {
@@ -92,22 +100,6 @@ extension ListViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         let text = itemModel.text
         view.textField?.stringValue = text
         view.toolTip = text
-
-        itemModel.reload = { [weak outlineView] item in
-            guard let outlineView = outlineView else {
-                return
-            }
-
-            let selectedItem = outlineView.item(atRow: outlineView.selectedRow) as? ListViewItem
-            let isSelectedItemChildren = (outlineView.parent(forItem: selectedItem) as? ListViewItem)?.isEqual(item)
-                ?? false
-            outlineView.reloadItem(item, reloadChildren: true)
-
-            if isSelectedItemChildren, let selectedItem = selectedItem,
-                let row = item.children?.index(where: { $0.identifier == selectedItem.identifier }) {
-                outlineView.selectRowIndexes([outlineView.row(forItem: item) + row + 1], byExtendingSelection: false)
-            }
-        }
 
         return view
     }

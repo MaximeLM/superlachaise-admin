@@ -2,45 +2,45 @@
 //  PointOfInterest+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 07/12/2017.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension PointOfInterest: Identifiable, Deletable, Listable, Syncable {
+extension PointOfInterest: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = String
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key]
+    }
+
+}
+
+extension PointOfInterest: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(self)
-    }
+extension PointOfInterest: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<PointOfInterest> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
-                                            filter, filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [PointOfInterest] {
+        var results = context.objects(PointOfInterest.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
+                                        filter, filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "name").sorted(byKey: "id").fetch()
     }
 
-    // MARK: Syncable
+}
+
+extension PointOfInterest: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncSuperLachaiseObject(pointOfInterest: self)

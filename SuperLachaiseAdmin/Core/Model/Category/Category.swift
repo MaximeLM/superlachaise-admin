@@ -2,22 +2,19 @@
 //  Category.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class Category: Object {
+final class Category: NSManagedObject {
 
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
-    let localizations = LinkingObjects(fromType: LocalizedCategory.self, property: "category")
-    let entries = LinkingObjects(fromType: Entry.self, property: "categories")
-
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var localizations: Set<LocalizedCategory>
+    @NSManaged var wikidataCategories: Set<WikidataCategory>
+    @NSManaged var entries: Set<Entry>
 
     override var description: String {
         return "\(id) (\(entries.count))"

@@ -2,35 +2,33 @@
 //  WikidataEntry.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 10/12/2017.
+//  Created by Maxime Le Moine on 07/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class WikidataEntry: Object {
+final class WikidataEntry: NSManagedObject {
 
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
-    @objc dynamic var name: String?
-    @objc dynamic var rawKind = ""
+    @NSManaged var name: String?
+    @NSManaged var rawKind: String
 
-    @objc dynamic var image: CommonsFile?
-    @objc dynamic var imageOfGrave: CommonsFile? // for persons
+    @NSManaged var image: CommonsFile?
+    @NSManaged var imageOfGrave: CommonsFile? // for persons
 
     // Stored in UTC
-    @objc dynamic var rawDateOfBirth: Date?
-    @objc dynamic var rawDateOfBirthPrecision = ""
-    @objc dynamic var rawDateOfDeath: Date?
-    @objc dynamic var rawDateOfDeathPrecision = ""
+    @NSManaged var rawDateOfBirth: Date?
+    @NSManaged var rawDateOfBirthPrecision: String
+    @NSManaged var rawDateOfDeath: Date?
+    @NSManaged var rawDateOfDeathPrecision: String
 
-    let secondaryWikidataEntries = List<WikidataEntry>()
-    let wikidataCategories = List<WikidataCategory>()
-    let localizations = LinkingObjects(fromType: WikidataLocalizedEntry.self, property: "wikidataEntry")
-
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var openStreetMapElements: Set<OpenStreetMapElement>
+    @NSManaged var secondaryWikidataEntries: Set<WikidataEntry>
+    @NSManaged var secondaryWikidataEntryOf: Set<WikidataEntry>
+    @NSManaged var localizations: Set<WikidataLocalizedEntry>
+    @NSManaged var wikidataCategories: Set<WikidataCategory>
 
     override var description: String {
         return [name, id]

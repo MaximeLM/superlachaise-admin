@@ -2,19 +2,18 @@
 //  LocalizedCategory.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class LocalizedCategory: Object {
+final class LocalizedCategory: NSManagedObject {
 
-    @objc dynamic var language = ""
+    @NSManaged var language: String
+    @NSManaged var name: String
 
-    @objc dynamic var name = ""
-
-    @objc dynamic var category: Category?
+    @NSManaged var category: Category?
 
     override var description: String {
         return [name, language]

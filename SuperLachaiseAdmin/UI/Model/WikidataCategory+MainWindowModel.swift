@@ -18,7 +18,7 @@ extension WikidataCategory: MainWindowModelType {
             [
                 DetailViewToManyFieldItem(name: "Categories", value: Array(categories)),
                 DetailViewToManyFieldItem(name: "Wikidata entries",
-                                          value: Array(wikidataEntries.sorted(byKeyPath: "name"))),
+                                          value: Array(wikidataEntries.sorted(by: { $0.name ?? "" < $1.name ?? "" }))),
             ],
         ])
     }

@@ -2,51 +2,50 @@
 //  Entry+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 25/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension Entry: Identifiable, Deletable, Listable, Syncable {
+extension Entry: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = String
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key]
+    }
+
+}
+
+extension Entry: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(localizations)
-        realm?.delete(self)
-    }
+extension Entry: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<Entry> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
-                                            filter, filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [Entry] {
+        var results = context.objects(Entry.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
+                                        filter, filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "name").sorted(byKey: "id").fetch()
     }
 
-    // MARK: Syncable
+}
+
+extension Entry: Syncable {
 
     func sync(taskController: TaskController) {
         if let pointOfInterest = mainEntryOf.first {
             taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
-        } else if let pointOfInterest = secondayEntryOf.first {
+        } else if let pointOfInterest = secondaryEntryOf.first {
             taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
         } else {
             Logger.info("\(Entry.self) \(self) has no point of interest")

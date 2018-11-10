@@ -2,53 +2,55 @@
 //  WikidataCategory+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 03/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension WikidataCategory: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension WikidataCategory: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = String
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key]
+    }
+
+}
+
+extension WikidataCategory: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(self)
-    }
+extension WikidataCategory: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<WikidataCategory> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(
-                    format: "name contains[cd] %@ OR id contains[cd] %@ OR ANY categories.id contains[cd] %@",
-                    filter, filter, filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [WikidataCategory] {
+        var results = context.objects(WikidataCategory.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(
+                format: "name contains[cd] %@ OR id contains[cd] %@ OR ANY categories.id contains[cd] %@",
+                filter, filter, filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "name").sorted(byKey: "id").fetch()
     }
 
-    // MARK: OpenableInBrowser
+}
+
+extension WikidataCategory: OpenableInBrowser {
 
     var externalURL: URL? {
         return URL(string: "https://www.wikidata.org/wiki")?
             .appendingPathComponent(id)
     }
 
-    // MARK: Syncable
+}
+
+extension WikidataCategory: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncWikidataCategory(self)

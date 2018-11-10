@@ -2,50 +2,53 @@
 //  CommonsFile+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 02/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension CommonsFile: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension CommonsFile: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = String
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key]
+    }
+
+}
+
+extension CommonsFile: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(self)
-    }
+extension CommonsFile: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<CommonsFile> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "id contains[cd] %@", filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [CommonsFile] {
+        var results = context.objects(CommonsFile.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "id contains[cd] %@", filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "id").fetch()
     }
 
-    // MARK: OpenableInBrowser
+}
+
+extension CommonsFile: OpenableInBrowser {
 
     var externalURL: URL? {
         return URL(string: "https://commons.wikimedia.org/wiki")?
             .appendingPathComponent("File:\(id)")
     }
 
-    // MARK: Syncable
+}
+
+extension CommonsFile: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncCommonsFile(self)

@@ -2,18 +2,18 @@
 //  WikidataLocalizedEntry+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension WikidataLocalizedEntry: Deletable {
+extension WikidataLocalizedEntry: KeyedObject {
 
-    // MARK: Deletable
+    typealias Key = (wikidataEntry: WikidataEntry, language: String)
 
-    func delete() {
-        realm?.delete(self)
+    static func attributes(key: Key) -> [String: Any] {
+        return ["wikidataEntry": key.wikidataEntry, "language": key.language]
     }
 
 }

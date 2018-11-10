@@ -5,18 +5,20 @@
 //  Created by Maxime Le Moine on 31/03/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class ExportToJSON: Task {
 
     let directoryURL: URL
     let config: ExportConfig
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(directoryURL: URL, config: ExportConfig) {
+    init(directoryURL: URL, config: ExportConfig, performInBackground: Single<NSManagedObjectContext>) {
         self.directoryURL = directoryURL
         self.config = config
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -26,14 +28,12 @@ final class ExportToJSON: Task {
     // MARK: Execution
 
     func asSingle() -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try self.exportToJSON(realm: realm)
+        return performInBackground.map { context in
+            try self.exportToJSON(context: context)
         }
     }
 
     // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "ExportToJSON.realm")
 
     private lazy var jsonEncoder: JSONEncoder = {
         let jsonEncoder = JSONEncoder()
@@ -45,26 +45,26 @@ final class ExportToJSON: Task {
 
 private extension ExportToJSON {
 
-    func exportToJSON(realm: Realm) throws {
-        let pointsOfInterest = try exportPointsOfInterest(realm: realm)
-        _ = try exportOpenStreetMapElements(pointsOfInterest: pointsOfInterest, realm: realm)
-        let entries = try exportEntries(pointsOfInterest: pointsOfInterest, realm: realm)
-        _ = try exportWikipediaPages(entries: entries, realm: realm)
-        _ = try exportCategories(entries: entries, realm: realm)
-        _ = try exportCommonsFiles(pointsOfInterest: pointsOfInterest, entries: entries, realm: realm)
-        _ = try exportDatabaseV1Mappings(realm: realm)
+    func exportToJSON(context: NSManagedObjectContext) throws {
+        let pointsOfInterest = try exportPointsOfInterest(context: context)
+        _ = try exportOpenStreetMapElements(pointsOfInterest: pointsOfInterest, context: context)
+        let entries = try exportEntries(pointsOfInterest: pointsOfInterest, context: context)
+        _ = try exportWikipediaPages(entries: entries, context: context)
+        _ = try exportCategories(entries: entries, context: context)
+        _ = try exportCommonsFiles(pointsOfInterest: pointsOfInterest, entries: entries, context: context)
+        _ = try exportDatabaseV1Mappings(context: context)
     }
 
     // MARK: Export objects
 
-    func exportPointsOfInterest(realm: Realm) throws -> [PointOfInterest] {
-        let pointsOfInterest = Array(PointOfInterest.all()(realm)).sorted { $0.id < $1.id }
+    func exportPointsOfInterest(context: NSManagedObjectContext) throws -> [PointOfInterest] {
+        let pointsOfInterest = context.objects(PointOfInterest.self).fetch().sorted { $0.id < $1.id }
         try writeObjects(pointsOfInterest, name: "points_of_interest")
         return pointsOfInterest
     }
 
     func exportOpenStreetMapElements(pointsOfInterest: [PointOfInterest],
-                                     realm: Realm) throws -> [OpenStreetMapElement] {
+                                     context: NSManagedObjectContext) throws -> [OpenStreetMapElement] {
         let openStreetMapElements = pointsOfInterest
             .compactMap { $0.openStreetMapElement }
             .uniqueValues()
@@ -73,7 +73,7 @@ private extension ExportToJSON {
         return openStreetMapElements
     }
 
-    func exportEntries(pointsOfInterest: [PointOfInterest], realm: Realm) throws -> [Entry] {
+    func exportEntries(pointsOfInterest: [PointOfInterest], context: NSManagedObjectContext) throws -> [Entry] {
         let entries = pointsOfInterest
             .flatMap { pointOfInterest -> [Entry] in
                 var entries = [pointOfInterest.mainEntry].compactMap { $0 }
@@ -86,7 +86,7 @@ private extension ExportToJSON {
         return entries
     }
 
-    func exportWikipediaPages(entries: [Entry], realm: Realm) throws -> [WikipediaPage] {
+    func exportWikipediaPages(entries: [Entry], context: NSManagedObjectContext) throws -> [WikipediaPage] {
         let wikipediaPages = entries
             .flatMap { entry -> [WikipediaPage] in
                 entry.localizations.compactMap { $0.wikipediaPage }
@@ -97,7 +97,7 @@ private extension ExportToJSON {
         return wikipediaPages
     }
 
-    func exportCategories(entries: [Entry], realm: Realm) throws -> [Category] {
+    func exportCategories(entries: [Entry], context: NSManagedObjectContext) throws -> [Category] {
         let categories = entries
             .flatMap { entry -> [Category] in
                 Array(entry.categories)
@@ -110,7 +110,7 @@ private extension ExportToJSON {
 
     func exportCommonsFiles(pointsOfInterest: [PointOfInterest],
                             entries: [Entry],
-                            realm: Realm) throws -> [CommonsFile] {
+                            context: NSManagedObjectContext) throws -> [CommonsFile] {
         var commonsFiles = pointsOfInterest.compactMap { $0.image }
         commonsFiles.append(contentsOf: entries.compactMap { $0.image })
         commonsFiles = commonsFiles
@@ -120,8 +120,8 @@ private extension ExportToJSON {
         return commonsFiles
     }
 
-    func exportDatabaseV1Mappings(realm: Realm) throws -> [DatabaseV1Mapping] {
-        let databaseV1Mappings = Array(DatabaseV1Mapping.all()(realm)).sorted { $0.id < $1.id }
+    func exportDatabaseV1Mappings(context: NSManagedObjectContext) throws -> [DatabaseV1Mapping] {
+        let databaseV1Mappings = context.objects(DatabaseV1Mapping.self).fetch().sorted { $0.id < $1.id }
         try writeObjects(databaseV1Mappings, name: "databaseV1_mappings")
         return databaseV1Mappings
     }

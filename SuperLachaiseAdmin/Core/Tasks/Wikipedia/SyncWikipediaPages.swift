@@ -5,8 +5,8 @@
 //  Created by Maxime Le Moine on 21/12/2017.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncWikipediaPages: Task {
@@ -30,11 +30,16 @@ final class SyncWikipediaPages: Task {
     let scope: Scope
     let config: WikipediaConfig
     let endpoint: (String) -> APIEndpointType
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(scope: Scope, config: WikipediaConfig, endpoint: @escaping (String) -> APIEndpointType) {
+    init(scope: Scope,
+         config: WikipediaConfig,
+         endpoint: @escaping (String) -> APIEndpointType,
+         performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
         self.endpoint = endpoint
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -49,8 +54,6 @@ final class SyncWikipediaPages: Task {
     }
 
     // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncWikipediaPages.realm")
 
     private lazy var defaultSortRegularExpression: NSRegularExpression? = {
         do {
@@ -92,8 +95,8 @@ private extension SyncWikipediaPages {
         switch scope {
         case .all:
             // Get wikipedia titles from Wikidata localized entries
-            return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                WikidataLocalizedEntry.all()(realm)
+            return performInBackground.map { context in
+                context.objects(WikidataLocalizedEntry.self).fetch()
                     .reduce([:]) { partialResult, wikidataLocalizedEntry in
                         guard let wikipediaTitle = wikidataLocalizedEntry.wikipediaPage?.wikipediaId?.title else {
                             return partialResult
@@ -142,25 +145,31 @@ private extension SyncWikipediaPages {
     }
 
     func saveWikipediaPages(language: String, wikipediaAPIPages: [WikipediaAPIPage]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.saveWikipediaPages(language: language, wikipediaAPIPages: wikipediaAPIPages, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.saveWikipediaPages(language: language,
+                                            wikipediaAPIPages: wikipediaAPIPages,
+                                            context: context)
             }
         }
     }
 
-    func saveWikipediaPages(language: String, wikipediaAPIPages: [WikipediaAPIPage], realm: Realm) throws -> [String] {
+    func saveWikipediaPages(language: String,
+                            wikipediaAPIPages: [WikipediaAPIPage],
+                            context: NSManagedObjectContext) throws -> [String] {
         return try wikipediaAPIPages.map { wikipediaAPIPage in
-            try self.wikipediaPage(language: language, wikipediaAPIPage: wikipediaAPIPage, realm: realm).id
+            try self.wikipediaPage(language: language, wikipediaAPIPage: wikipediaAPIPage, context: context).id
         }
     }
 
     // MARK: Wikipedia page
 
-    func wikipediaPage(language: String, wikipediaAPIPage: WikipediaAPIPage, realm: Realm) throws -> WikipediaPage {
+    func wikipediaPage(language: String,
+                       wikipediaAPIPage: WikipediaAPIPage,
+                       context: NSManagedObjectContext) throws -> WikipediaPage {
         // Wikipedia Id
         let wikipediaId = WikipediaId(language: language, title: wikipediaAPIPage.title)
-        let wikipediaPage = WikipediaPage.findOrCreate(wikipediaId: wikipediaId)(realm)
+        let wikipediaPage = context.findOrCreate(WikipediaPage.self, key: wikipediaId)
 
         // Name
         wikipediaPage.name = wikipediaAPIPage.title
@@ -242,19 +251,19 @@ private extension SyncWikipediaPages {
     // MARK: Orphans
 
     func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.deleteOrphans(fetchedIds: fetchedIds, context: context)
             }
         }
     }
 
-    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
         var orphanedObjects: Set<WikipediaPage>
         switch scope {
         case .all:
-            orphanedObjects = Set(WikipediaPage.all()(realm))
+            orphanedObjects = Set(context.objects(WikipediaPage.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -263,7 +272,7 @@ private extension SyncWikipediaPages {
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(WikipediaPage.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 

@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import RealmSwift
 
 final class ListViewObjectItem: NSObject, ListViewItem {
 
@@ -29,7 +28,5 @@ final class ListViewObjectItem: NSObject, ListViewItem {
     var children: [ListViewItem]? {
         return nil
     }
-
-    var reload: ((ListViewItem) -> Void)?
 
 }

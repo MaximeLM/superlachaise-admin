@@ -2,53 +2,54 @@
 //  WikidataEntry+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 10/12/2017.
+//  Created by Maxime Le Moine on 07/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension WikidataEntry: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension WikidataEntry: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = String
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key]
+    }
+
+}
+
+extension WikidataEntry: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(localizations)
-        realm?.delete(self)
-    }
+extension WikidataEntry: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<WikidataEntry> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "name"),
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
-                                            filter, filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [WikidataEntry] {
+        var results = context.objects(WikidataEntry.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "name contains[cd] %@ OR id contains[cd] %@",
+                                        filter, filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "name").sorted(byKey: "id").fetch()
     }
 
-    // MARK: OpenableInBrowser
+}
+
+extension WikidataEntry: OpenableInBrowser {
 
     var externalURL: URL? {
         return URL(string: "https://www.wikidata.org/wiki")?
             .appendingPathComponent(id)
     }
 
-    // MARK: Syncable
+}
+
+extension WikidataEntry: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncWikidataEntry(self)

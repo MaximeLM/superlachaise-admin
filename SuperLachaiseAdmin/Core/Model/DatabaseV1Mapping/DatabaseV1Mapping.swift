@@ -2,22 +2,18 @@
 //  DatabaseV1Mapping.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 30/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class DatabaseV1Mapping: Object {
+final class DatabaseV1Mapping: NSManagedObject {
 
     // monument ID
-    @objc dynamic var id: Int = 0
+    @NSManaged var id: Int32
 
-    @objc dynamic var pointOfInterest: PointOfInterest?
-
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var pointOfInterest: PointOfInterest?
 
     override var description: String {
         return "\(id) → \(pointOfInterest?.description ?? "nil")"

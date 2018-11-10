@@ -6,9 +6,8 @@
 //
 
 import Cocoa
-import RealmSwift
+import CoreData
 import RxCocoa
-import RxRealm
 import RxSwift
 
 protocol MainWindowControllerType: NSObjectProtocol {
@@ -39,7 +38,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
 
     // MARK: Dependencies
 
-    lazy var realmContext = AppContainer.realmContext
+    lazy var database = AppContainer.database
 
     lazy var taskController = AppContainer.taskController
 
@@ -48,7 +47,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
     let model = BehaviorRelay<MainWindowModel?>(value: nil)
 
     func selectModelIfNeeded(_ model: MainWindowModel) {
-        if (model as Object) != self.model.value {
+        if (model as NSManagedObject) != self.model.value {
             selectNewModel(model)
         }
     }
@@ -113,7 +112,6 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
 
         // Subscribe root view controller to model
         model.asObservable()
-            .map { ($0?.isInvalidated ?? false) ? nil : $0 }
             .subscribe(onNext: { model in
                 self.rootViewController?.model = model
             })
@@ -125,8 +123,7 @@ final class MainWindowController: NSWindowController, MainWindowControllerType, 
 
         // Bind title
         Observable.merge(model.asObservable(),
-                         realmContext.viewRealmSaveNotification.map { _ in self.model.value })
-            .filter({ !($0?.isInvalidated ?? false) })
+                         database.contextDidSave.map { _ in self.model.value })
             .map { $0?.mainWindowTitle ?? "SuperLachaiseAdmin" }
             .subscribe(onNext: { title in
                 self.window?.title = title

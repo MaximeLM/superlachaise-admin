@@ -2,28 +2,26 @@
 //  PointOfInterest.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 03/12/2017.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class PointOfInterest: Object {
+final class PointOfInterest: NSManagedObject {
 
     // Wikidata ID is used (more stable than OpenStreetMap ID)
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
     // For debugging (not localized)
-    @objc dynamic var name: String?
+    @NSManaged var name: String?
 
-    @objc dynamic var openStreetMapElement: OpenStreetMapElement?
-    @objc dynamic var mainEntry: Entry?
-    let secondaryEntries = List<Entry>()
-    @objc dynamic var image: CommonsFile?
+    @NSManaged var openStreetMapElement: OpenStreetMapElement?
+    @NSManaged var mainEntry: Entry?
+    @NSManaged var secondaryEntries: Set<Entry>
+    @NSManaged var image: CommonsFile?
 
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var databaseV1Mappings: Set<DatabaseV1Mapping>
 
     override var description: String {
         return [name, id]

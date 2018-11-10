@@ -2,34 +2,30 @@
 //  Entry.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 25/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class Entry: Object {
+final class Entry: NSManagedObject {
 
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
-    @objc dynamic var name: String?
-    @objc dynamic var rawKind = ""
+    @NSManaged var name: String?
+    @NSManaged var rawKind: String
 
     // Stored in UTC
-    @objc dynamic var rawDateOfBirth: Date?
-    @objc dynamic var rawDateOfBirthPrecision = ""
-    @objc dynamic var rawDateOfDeath: Date?
-    @objc dynamic var rawDateOfDeathPrecision = ""
+    @NSManaged var rawDateOfBirth: Date?
+    @NSManaged var rawDateOfBirthPrecision: String
+    @NSManaged var rawDateOfDeath: Date?
+    @NSManaged var rawDateOfDeathPrecision: String
 
-    let localizations = LinkingObjects(fromType: LocalizedEntry.self, property: "entry")
-    let mainEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "mainEntry")
-    let secondayEntryOf = LinkingObjects(fromType: PointOfInterest.self, property: "secondaryEntries")
-    @objc dynamic var image: CommonsFile?
-    let categories = List<Category>()
-
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var localizations: Set<LocalizedEntry>
+    @NSManaged var mainEntryOf: Set<PointOfInterest>
+    @NSManaged var secondaryEntryOf: Set<PointOfInterest>
+    @NSManaged var image: CommonsFile?
+    @NSManaged var categories: Set<Category>
 
     override var description: String {
         return [name, id]

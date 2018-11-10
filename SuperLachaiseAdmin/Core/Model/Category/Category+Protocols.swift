@@ -2,44 +2,44 @@
 //  Category+Protocols.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 28/03/2018.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-extension Category: Identifiable, Deletable, Listable, Syncable {
+extension Category: KeyedObject {
 
-    // MARK: Identifiable
+    typealias Key = String
+
+    static func attributes(key: Key) -> [String: Any] {
+        return ["id": key]
+    }
+
+}
+
+extension Category: Identifiable {
 
     var identifier: String {
         return id
     }
 
-    // MARK: Deletable
+}
 
-    func delete() {
-        realm?.delete(localizations)
-        realm?.delete(self)
-    }
+extension Category: Listable {
 
-    // MARK: Listable
-
-    static func list(filter: String) -> (Realm) -> Results<Category> {
-        return { realm in
-            var results = all()(realm)
-                .sorted(by: [
-                    SortDescriptor(keyPath: "id"),
-                ])
-            if !filter.isEmpty {
-                let predicate = NSPredicate(format: "id contains[cd] %@", filter)
-                results = results.filter(predicate)
-            }
-            return results
+    static func list(filter: String, context: NSManagedObjectContext) -> [Category] {
+        var results = context.objects(Category.self)
+        if !filter.isEmpty {
+            let predicate = NSPredicate(format: "id contains[cd] %@", filter)
+            results = results.filtered(by: predicate)
         }
+        return results.sorted(byKey: "id").fetch()
     }
 
-    // MARK: Syncable
+}
+
+extension Category: Syncable {
 
     func sync(taskController: TaskController) {
         taskController.syncCategory(self)

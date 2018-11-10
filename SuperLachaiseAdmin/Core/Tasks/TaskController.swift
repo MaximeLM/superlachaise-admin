@@ -12,11 +12,11 @@ import RxSwift
 final class TaskController {
 
     let config: Config
-    let realmContext: RealmContext
+    let database: Database
 
-    init(config: Config, realmContext: RealmContext) {
+    init(config: Config, database: Database) {
         self.config = config
-        self.realmContext = realmContext
+        self.database = database
 
         self.operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
@@ -24,7 +24,7 @@ final class TaskController {
         let runningTasks = self.runningTasks
         self.observation = operationQueue.observe(\OperationQueue.operations) { operationQueue, _ in
             DispatchQueue.main.async {
-                runningTasks.accept(operationQueue.operations.compactMap { $0 as? TaskOperation })
+                runningTasks.accept(operationQueue.operations)
             }
         }
     }
@@ -42,7 +42,7 @@ final class TaskController {
 
     private var observation: NSKeyValueObservation?
 
-    let runningTasks = BehaviorRelay<[TaskOperation]>(value: [])
+    let runningTasks = BehaviorRelay<[Operation]>(value: [])
 
     func enqueue(_ task: Task) {
         operationQueue.addOperation(TaskOperation(task: task))

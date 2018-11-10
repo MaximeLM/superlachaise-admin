@@ -15,8 +15,6 @@ protocol ListViewItem: NSObjectProtocol {
 
     var children: [ListViewItem]? { get }
 
-    var reload: ((ListViewItem) -> Void)? { get set }
-
 }
 
 extension ListViewItem {

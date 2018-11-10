@@ -2,7 +2,7 @@
 //  WikidataEntry+Kind.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 12/12/2017.
+//  Created by Maxime Le Moine on 07/11/2018.
 //
 
 import Foundation

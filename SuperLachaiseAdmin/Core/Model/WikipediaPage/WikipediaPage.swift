@@ -2,25 +2,24 @@
 //  WikipediaPage.swift
 //  SuperLachaiseAdmin
 //
-//  Created by Maxime Le Moine on 21/12/2017.
+//  Created by Maxime Le Moine on 10/11/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 
-final class WikipediaPage: Object {
+final class WikipediaPage: NSManagedObject {
 
     // "language/title"
-    @objc dynamic var id = ""
+    @NSManaged var id: String
 
-    @objc dynamic var name: String?
+    @NSManaged var name: String?
 
-    @objc dynamic var defaultSort: String?
-    @objc dynamic var extract: String?
+    @NSManaged var defaultSort: String?
+    @NSManaged var extract: String?
 
-    override static func primaryKey() -> String {
-        return "id"
-    }
+    @NSManaged var wikidataLocalizedEntries: Set<WikidataLocalizedEntry>
+    @NSManaged var localizedEntries: Set<LocalizedEntry>
 
     override var description: String {
         return (wikipediaId.map { [$0.title, $0.language] } ?? [])
