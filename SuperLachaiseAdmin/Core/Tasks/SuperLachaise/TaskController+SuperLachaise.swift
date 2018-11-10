@@ -36,13 +36,16 @@ extension TaskController {
     }
 
     func syncDatabaseV1Mappings() {
-        let task = SyncDatabaseV1Mappings(scope: .all, config: config.superLachaise)
+        let task = SyncDatabaseV1Mappings(scope: .all,
+                                          config: config.superLachaise,
+                                          performInBackground: database.performInBackground)
         enqueue(task)
     }
 
-    func syncDatabaseV1Mapping(_ databaseV1Mapping: DatabaseV1Mapping) {
+    func syncDatabaseV1Mapping(_ databaseV1Mapping: CoreDataDatabaseV1Mapping) {
         let task = SyncDatabaseV1Mappings(scope: .single(id: databaseV1Mapping.id),
-                                          config: config.superLachaise)
+                                          config: config.superLachaise,
+                                          performInBackground: database.performInBackground)
         enqueue(task)
     }
 

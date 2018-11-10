@@ -5,8 +5,8 @@
 //  Created by Maxime Le Moine on 28/03/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncDatabaseV1Mappings: Task {
@@ -14,7 +14,7 @@ final class SyncDatabaseV1Mappings: Task {
     enum Scope: CustomStringConvertible {
 
         case all
-        case single(id: Int)
+        case single(id: Int32)
 
         var description: String {
             switch self {
@@ -29,10 +29,12 @@ final class SyncDatabaseV1Mappings: Task {
 
     let scope: Scope
     let config: SuperLachaiseConfig
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(scope: Scope, config: SuperLachaiseConfig) {
+    init(scope: Scope, config: SuperLachaiseConfig, performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -42,23 +44,19 @@ final class SyncDatabaseV1Mappings: Task {
     // MARK: Execution
 
     func asSingle() -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                let databaseV1Mappings = try self.syncDatabaseV1Mappings(realm: realm)
-                try self.deleteOrphans(fetchedIds: databaseV1Mappings.map { $0.id }, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                let databaseV1Mappings = try self.syncDatabaseV1Mappings(context: context)
+                try self.deleteOrphans(fetchedIds: databaseV1Mappings.map { $0.id }, context: context)
             }
         }
     }
-
-    // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncDatabaseV1Mappings.realm")
 
 }
 
 private extension SyncDatabaseV1Mappings {
 
-    func syncDatabaseV1Mappings(realm: Realm) throws -> [DatabaseV1Mapping] {
+    func syncDatabaseV1Mappings(context: NSManagedObjectContext) throws -> [CoreDataDatabaseV1Mapping] {
         guard let sourceURL = Bundle.main.url(forResource: "database_v1", withExtension: "json") else {
             throw SyncDatabaseV1MappingsError.sourceJsonNotFound
         }
@@ -71,51 +69,55 @@ private extension SyncDatabaseV1Mappings {
             monuments = monuments.filter { $0.id == id }
         }
 
-        let customMappings = try self.customMappings(realm: realm)
+        let customMappings = try self.customMappings(context: context)
         return monuments.map { monument in
-            syncDatabaseV1Mapping(monument: monument, customMappings: customMappings, realm: realm)
+            syncDatabaseV1Mapping(monument: monument, customMappings: customMappings, context: context)
         }
     }
 
-    func syncDatabaseV1Mapping(
-        monument: DatabaseV1Monument, customMappings: [Int: WikidataEntry], realm: Realm) -> DatabaseV1Mapping {
-        let databaseV1Mapping = DatabaseV1Mapping.findOrCreate(id: monument.id)(realm)
+    func syncDatabaseV1Mapping(monument: DatabaseV1Monument,
+                               customMappings: [Int32: CoreDataWikidataEntry],
+                               context: NSManagedObjectContext) -> CoreDataDatabaseV1Mapping {
+        let databaseV1Mapping = context.findOrCreate(CoreDataDatabaseV1Mapping.self, key: monument.id)
         databaseV1Mapping.pointOfInterest = pointOfInterest(
-            monument: monument, customMappings: customMappings, realm: realm)
+            monument: monument, customMappings: customMappings, context: context)
         return databaseV1Mapping
     }
 
-    func pointOfInterest(
-        monument: DatabaseV1Monument, customMappings: [Int: WikidataEntry], realm: Realm) -> PointOfInterest? {
+    func pointOfInterest(monument: DatabaseV1Monument,
+                         customMappings: [Int32: CoreDataWikidataEntry],
+                         context: NSManagedObjectContext) -> CoreDataPointOfInterest? {
         guard let wikidataEntry = self.wikidataEntry(
-            monument: monument, customMappings: customMappings, realm: realm) else {
+            monument: monument, customMappings: customMappings, context: context) else {
                 return nil
         }
         let sourceName = monument.name
-        let destName = wikidataEntry.localization(language: "fr")?.name
+        let destName = context.find(CoreDataWikidataLocalizedEntry.self,
+                                    key: (wikidataEntry: wikidataEntry, language: "fr"))?.name
         if let destName = destName, sourceName != destName {
             Logger.warning("Name mismatch: \(sourceName) - \(destName)")
         }
-        guard let pointOfInterest = PointOfInterest.find(id: wikidataEntry.id)(realm) else {
+        guard let pointOfInterest = context.find(CoreDataPointOfInterest.self, key: wikidataEntry.id) else {
             Logger.error("No point of interest element for \(wikidataEntry.id)")
             return nil
         }
         return pointOfInterest
     }
 
-    func wikidataEntry(
-        monument: DatabaseV1Monument, customMappings: [Int: WikidataEntry], realm: Realm) -> WikidataEntry? {
+    func wikidataEntry(monument: DatabaseV1Monument,
+                       customMappings: [Int32: CoreDataWikidataEntry],
+                       context: NSManagedObjectContext) -> CoreDataWikidataEntry? {
         if let customValue = customMappings[monument.id] {
             return customValue
         }
 
         let numericId = monument.nodeOSM.id
-        let node = OpenStreetMapElement
-            .find(openStreetMapId: OpenStreetMapId(elementType: .node, numericId: numericId))(realm)
-        let way = OpenStreetMapElement
-            .find(openStreetMapId: OpenStreetMapId(elementType: .way, numericId: numericId))(realm)
-        let relation = OpenStreetMapElement
-            .find(openStreetMapId: OpenStreetMapId(elementType: .relation, numericId: numericId))(realm)
+        let node = context.find(CoreDataOpenStreetMapElement.self,
+                                key: OpenStreetMapId(elementType: .node, numericId: numericId))
+        let way = context.find(CoreDataOpenStreetMapElement.self,
+                               key: OpenStreetMapId(elementType: .way, numericId: numericId))
+        let relation = context.find(CoreDataOpenStreetMapElement.self,
+                                    key: OpenStreetMapId(elementType: .relation, numericId: numericId))
         let existingElements = [node, way, relation].compactMap { $0 }
 
         guard !existingElements.isEmpty else {
@@ -133,31 +135,31 @@ private extension SyncDatabaseV1Mappings {
         return wikidataEntry
     }
 
-    func customMappings(realm: Realm) throws -> [Int: WikidataEntry] {
+    func customMappings(context: NSManagedObjectContext) throws -> [Int32: CoreDataWikidataEntry] {
         guard let customMappings = config.databaseV1CustomMappings else {
             return [:]
         }
         return try Dictionary(customMappings.map {
-            guard let monumentId = Int($0.key) else {
+            guard let monumentId = Int32($0.key) else {
                 throw SyncDatabaseV1MappingsError.invalidCustomMappingId($0.key)
             }
-            guard let wikidataEntry = WikidataEntry.find(id: $0.value)(realm) else {
+            guard let wikidataEntry = context.find(CoreDataWikidataEntry.self, key: $0.value) else {
                 throw SyncDatabaseV1MappingsError.customMappingWikidataEntryNotFound($0.value)
             }
             return (monumentId, wikidataEntry)
         }, uniquingKeysWith: {
-            throw SyncDatabaseV1MappingsError.duplicateCustomMapping($0.id, $1.id)
+                throw SyncDatabaseV1MappingsError.duplicateCustomMapping($0.id, $1.id)
         })
     }
 
     // MARK: Orphans
 
-    func deleteOrphans(fetchedIds: [Int], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [Int32], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<DatabaseV1Mapping>
+        var orphanedObjects: Set<CoreDataDatabaseV1Mapping>
         switch scope {
         case .all:
-            orphanedObjects = Set(DatabaseV1Mapping.all()(realm))
+            orphanedObjects = Set(context.objects(CoreDataDatabaseV1Mapping.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -166,7 +168,7 @@ private extension SyncDatabaseV1Mappings {
 
         if !orphanedObjects.isEmpty {
             Logger.info("Deleting \(orphanedObjects.count) \(DatabaseV1Mapping.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 
@@ -174,7 +176,7 @@ private extension SyncDatabaseV1Mappings {
 
 private struct DatabaseV1Monument: Decodable {
 
-    let id: Int
+    let id: Int32
     let name: String
     let nodeOSM: DatabaseV1NodeOSM
 

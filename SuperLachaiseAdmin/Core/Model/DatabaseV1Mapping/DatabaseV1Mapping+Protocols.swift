@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension DatabaseV1Mapping: Identifiable, Deletable, Listable, Syncable {
+extension DatabaseV1Mapping: Identifiable, Deletable, Listable {
 
     // MARK: Identifiable
 
@@ -38,12 +38,6 @@ extension DatabaseV1Mapping: Identifiable, Deletable, Listable, Syncable {
             }
             return results
         }
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncDatabaseV1Mapping(self)
     }
 
 }

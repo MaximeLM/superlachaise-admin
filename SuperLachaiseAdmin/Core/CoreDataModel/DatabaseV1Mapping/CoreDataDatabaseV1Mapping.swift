@@ -11,7 +11,7 @@ import Foundation
 final class CoreDataDatabaseV1Mapping: NSManagedObject {
 
     // monument ID
-    @NSManaged var id: Int
+    @NSManaged var id: Int32
 
     @NSManaged var pointOfInterest: CoreDataPointOfInterest?
 

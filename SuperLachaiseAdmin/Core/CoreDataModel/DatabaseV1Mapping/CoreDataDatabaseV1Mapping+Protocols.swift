@@ -10,7 +10,7 @@ import Foundation
 
 extension CoreDataDatabaseV1Mapping: KeyedObject {
 
-    typealias Key = Int
+    typealias Key = Int32
 
     static func attributes(key: Key) -> [String: Any] {
         return ["id": key]
@@ -44,7 +44,7 @@ extension CoreDataDatabaseV1Mapping: CoreDataListable {
 extension CoreDataDatabaseV1Mapping: Syncable {
 
     func sync(taskController: TaskController) {
-        //taskController.syncSuperLachaiseObject(pointOfInterest: self) // TODO
+        taskController.syncDatabaseV1Mapping(self)
     }
 
 }
