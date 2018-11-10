@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CoreDataWikidataEntry: MainWindowModelType {
+extension WikidataEntry: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

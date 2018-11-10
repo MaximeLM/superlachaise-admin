@@ -12,7 +12,7 @@ final class DetailViewImageView: NSView {
 
     // MARK: Properties
 
-    var commonsFile: CoreDataCommonsFile? {
+    var commonsFile: CommonsFile? {
         didSet {
             if let commonsFile = commonsFile {
                 imageView?.sd_setImage(with: commonsFile.thumbnailURL(height: 600), completed: nil)

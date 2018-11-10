@@ -17,7 +17,7 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncWikipediaPage(_ wikipediaPage: CoreDataWikipediaPage) {
+    func syncWikipediaPage(_ wikipediaPage: WikipediaPage) {
         guard let wikipediaId = wikipediaPage.wikipediaId else {
             return
         }

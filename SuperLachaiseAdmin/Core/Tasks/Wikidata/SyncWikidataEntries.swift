@@ -65,7 +65,7 @@ private extension SyncWikidataEntries {
         return primaryWikidataIds()
             .flatMap(self.wikidataEntities)
             .flatMap(self.saveWikidataEntries)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) primary \(CoreDataWikidataEntry.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) primary \(WikidataEntry.self)(s)") })
     }
 
     func primaryWikidataIds() -> Single<[String]> {
@@ -73,7 +73,7 @@ private extension SyncWikidataEntries {
         case .all:
             // Get wikidata ids from OpenStreetMap elements
             return performInBackground.map { context in
-                context.objects(CoreDataOpenStreetMapElement.self).fetch()
+                context.objects(OpenStreetMapElement.self).fetch()
                     .compactMap { $0.wikidataEntry?.id }
             }
         case let .single(id):
@@ -96,7 +96,7 @@ private extension SyncWikidataEntries {
                     } else {
                         return self.wikidataEntities(wikidataIds: secondaryWikidataIds)
                             .flatMap(self.saveWikidataEntries)
-                            .do(onSuccess: { Logger.info("Fetched \($0.count) secondary \(CoreDataWikidataEntry.self)(s)") })
+                            .do(onSuccess: { Logger.info("Fetched \($0.count) secondary \(WikidataEntry.self)(s)") })
                             .map { wikidataIds + $0 }
                     }
                 }
@@ -108,7 +108,7 @@ private extension SyncWikidataEntries {
 
     func secondaryWikidataIds(wikidataIds: [String]) -> Single<[String]> {
         return performInBackground.map { context in
-            wikidataIds.compactMap { context.find(CoreDataWikidataEntry.self, key: $0) }
+            wikidataIds.compactMap { context.find(WikidataEntry.self, key: $0) }
                 .flatMap { $0.secondaryWikidataEntries.map { $0.id } }
                 .filter { !wikidataIds.contains($0) }
         }
@@ -140,9 +140,9 @@ private extension SyncWikidataEntries {
     // MARK: Wikidata entry
 
     func wikidataEntry(wikidataEntity: WikidataEntity,
-                       context: NSManagedObjectContext) throws -> CoreDataWikidataEntry {
+                       context: NSManagedObjectContext) throws -> WikidataEntry {
         // Wikidata Id
-        let wikidataEntry = context.findOrCreate(CoreDataWikidataEntry.self, key: wikidataEntity.id)
+        let wikidataEntry = context.findOrCreate(WikidataEntry.self, key: wikidataEntity.id)
 
         // Localizations
         for language in config.languages {
@@ -159,29 +159,29 @@ private extension SyncWikidataEntries {
 
         // Secondary wikidata entries
         let secondaryWikidataEntries = self.secondaryWikidataIds(wikidataEntity: wikidataEntity, kind: kind)
-            .map { context.findOrCreate(CoreDataWikidataEntry.self, key: $0) }
+            .map { context.findOrCreate(WikidataEntry.self, key: $0) }
         wikidataEntry.secondaryWikidataEntries = Set(secondaryWikidataEntries)
 
         // Wikidata categories
         let wikidataCategories = self.wikidataCategoriesIds(wikidataEntity: wikidataEntity, kind: kind)
-            .map { context.findOrCreate(CoreDataWikidataCategory.self, key: $0) }
+            .map { context.findOrCreate(WikidataCategory.self, key: $0) }
         wikidataEntry.wikidataCategories = Set(wikidataCategories)
 
         // Image
         let imageCommonsId = self.imageCommonsId(wikidataEntity: wikidataEntity, kind: kind)
         if imageCommonsId == nil && (kind == .grave || kind == .monument) {
-            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no image")
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image")
         }
-        wikidataEntry.image = imageCommonsId.map { context.findOrCreate(CoreDataCommonsFile.self, key: $0) }
+        wikidataEntry.image = imageCommonsId.map { context.findOrCreate(CommonsFile.self, key: $0) }
 
         // Image of grave
         if kind == .person {
             let imageOfGraveCommonsId = self.imageOfGraveCommonsId(wikidataEntity: wikidataEntity, kind: kind)
             if imageOfGraveCommonsId == nil {
-                Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no image of grave")
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no image of grave")
             }
             wikidataEntry.imageOfGrave = imageOfGraveCommonsId
-                .map { context.findOrCreate(CoreDataCommonsFile.self, key: $0) }
+                .map { context.findOrCreate(CommonsFile.self, key: $0) }
         }
 
         // Dates
@@ -194,31 +194,31 @@ private extension SyncWikidataEntries {
     }
 
     @discardableResult
-    func syncLocalization(wikidataEntry: CoreDataWikidataEntry,
+    func syncLocalization(wikidataEntry: WikidataEntry,
                           wikidataEntity: WikidataEntity,
                           language: String,
-                          context: NSManagedObjectContext) -> CoreDataWikidataLocalizedEntry {
-        let localization = context.findOrCreate(CoreDataWikidataLocalizedEntry.self,
+                          context: NSManagedObjectContext) -> WikidataLocalizedEntry {
+        let localization = context.findOrCreate(WikidataLocalizedEntry.self,
                                                 key: (wikidataEntry: wikidataEntry, language: language))
 
         // Name
         let name = wikidataEntity.labels[language]?.value
         if name == nil {
-            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no name in \(language)")
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no name in \(language)")
         }
         localization.name = name
 
         // Summary
         let summary = wikidataEntity.descriptions[language]?.value
         if summary == nil {
-            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no summary in \(language)")
         }
         localization.summary = summary
 
         // Wikipedia page
         if let wikipediaTitle = wikidataEntity.sitelinks["\(language)wiki"]?.title {
             let wikipediaId = WikipediaId(language: language, title: wikipediaTitle)
-            localization.wikipediaPage = context.findOrCreate(CoreDataWikipediaPage.self, key: wikipediaId)
+            localization.wikipediaPage = context.findOrCreate(WikipediaPage.self, key: wikipediaId)
         } else {
             localization.wikipediaPage = nil
         }
@@ -341,10 +341,10 @@ private extension SyncWikidataEntries {
 
     func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataWikidataEntry>
+        var orphanedObjects: Set<WikidataEntry>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataWikidataEntry.self).fetch())
+            orphanedObjects = Set(context.objects(WikidataEntry.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -352,7 +352,7 @@ private extension SyncWikidataEntries {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataWikidataEntry.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(WikidataEntry.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

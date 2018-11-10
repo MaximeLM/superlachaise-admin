@@ -13,8 +13,8 @@ extension NSManagedObjectContext {
 
     // MARK: Objects
 
-    func objects<Object: NSManagedObject>(_ type: Object.Type) -> CoreDataResults<Object> {
-        return CoreDataResults(context: self)
+    func objects<Object: NSManagedObject>(_ type: Object.Type) -> Results<Object> {
+        return Results(context: self)
     }
 
     func find<Object: NSManagedObject & KeyedObject>(_ type: Object.Type, key: Object.Key) -> Object? {

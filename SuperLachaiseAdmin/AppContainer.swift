@@ -13,7 +13,7 @@ final class AppContainer {
         return shared.config
     }
 
-    static var database: CoreDataDatabase {
+    static var database: Database {
         return shared.database
     }
 
@@ -32,7 +32,7 @@ final class AppContainer {
     }()
 
     private let config: Config
-    private let database: CoreDataDatabase
+    private let database: Database
     private let taskController: TaskController
 
     private init() throws {
@@ -42,7 +42,7 @@ final class AppContainer {
         let configData = try Data(contentsOf: configURL)
 
         self.config = try PropertyListDecoder().decode(Config.self, from: configData)
-        self.database = CoreDataDatabase(name: "SuperLachaiseAdmin")
+        self.database = Database(name: "SuperLachaiseAdmin")
         self.taskController = TaskController(config: config, database: database)
     }
 

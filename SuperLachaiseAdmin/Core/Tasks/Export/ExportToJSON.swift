@@ -57,14 +57,14 @@ private extension ExportToJSON {
 
     // MARK: Export objects
 
-    func exportPointsOfInterest(context: NSManagedObjectContext) throws -> [CoreDataPointOfInterest] {
-        let pointsOfInterest = context.objects(CoreDataPointOfInterest.self).fetch().sorted { $0.id < $1.id }
+    func exportPointsOfInterest(context: NSManagedObjectContext) throws -> [PointOfInterest] {
+        let pointsOfInterest = context.objects(PointOfInterest.self).fetch().sorted { $0.id < $1.id }
         try writeObjects(pointsOfInterest, name: "points_of_interest")
         return pointsOfInterest
     }
 
-    func exportOpenStreetMapElements(pointsOfInterest: [CoreDataPointOfInterest],
-                                     context: NSManagedObjectContext) throws -> [CoreDataOpenStreetMapElement] {
+    func exportOpenStreetMapElements(pointsOfInterest: [PointOfInterest],
+                                     context: NSManagedObjectContext) throws -> [OpenStreetMapElement] {
         let openStreetMapElements = pointsOfInterest
             .compactMap { $0.openStreetMapElement }
             .uniqueValues()
@@ -73,9 +73,9 @@ private extension ExportToJSON {
         return openStreetMapElements
     }
 
-    func exportEntries(pointsOfInterest: [CoreDataPointOfInterest], context: NSManagedObjectContext) throws -> [CoreDataEntry] {
+    func exportEntries(pointsOfInterest: [PointOfInterest], context: NSManagedObjectContext) throws -> [Entry] {
         let entries = pointsOfInterest
-            .flatMap { pointOfInterest -> [CoreDataEntry] in
+            .flatMap { pointOfInterest -> [Entry] in
                 var entries = [pointOfInterest.mainEntry].compactMap { $0 }
                 entries.append(contentsOf: Array(pointOfInterest.secondaryEntries))
                 return entries
@@ -86,9 +86,9 @@ private extension ExportToJSON {
         return entries
     }
 
-    func exportWikipediaPages(entries: [CoreDataEntry], context: NSManagedObjectContext) throws -> [CoreDataWikipediaPage] {
+    func exportWikipediaPages(entries: [Entry], context: NSManagedObjectContext) throws -> [WikipediaPage] {
         let wikipediaPages = entries
-            .flatMap { entry -> [CoreDataWikipediaPage] in
+            .flatMap { entry -> [WikipediaPage] in
                 entry.localizations.compactMap { $0.wikipediaPage }
             }
             .uniqueValues()
@@ -97,9 +97,9 @@ private extension ExportToJSON {
         return wikipediaPages
     }
 
-    func exportCategories(entries: [CoreDataEntry], context: NSManagedObjectContext) throws -> [CoreDataCategory] {
+    func exportCategories(entries: [Entry], context: NSManagedObjectContext) throws -> [Category] {
         let categories = entries
-            .flatMap { entry -> [CoreDataCategory] in
+            .flatMap { entry -> [Category] in
                 Array(entry.categories)
             }
             .uniqueValues()
@@ -108,9 +108,9 @@ private extension ExportToJSON {
         return categories
     }
 
-    func exportCommonsFiles(pointsOfInterest: [CoreDataPointOfInterest],
-                            entries: [CoreDataEntry],
-                            context: NSManagedObjectContext) throws -> [CoreDataCommonsFile] {
+    func exportCommonsFiles(pointsOfInterest: [PointOfInterest],
+                            entries: [Entry],
+                            context: NSManagedObjectContext) throws -> [CommonsFile] {
         var commonsFiles = pointsOfInterest.compactMap { $0.image }
         commonsFiles.append(contentsOf: entries.compactMap { $0.image })
         commonsFiles = commonsFiles
@@ -120,8 +120,8 @@ private extension ExportToJSON {
         return commonsFiles
     }
 
-    func exportDatabaseV1Mappings(context: NSManagedObjectContext) throws -> [CoreDataDatabaseV1Mapping] {
-        let databaseV1Mappings = context.objects(CoreDataDatabaseV1Mapping.self).fetch().sorted { $0.id < $1.id }
+    func exportDatabaseV1Mappings(context: NSManagedObjectContext) throws -> [DatabaseV1Mapping] {
+        let databaseV1Mappings = context.objects(DatabaseV1Mapping.self).fetch().sorted { $0.id < $1.id }
         try writeObjects(databaseV1Mappings, name: "databaseV1_mappings")
         return databaseV1Mappings
     }
@@ -158,14 +158,14 @@ struct Export<O: Encodable>: Encodable {
 
 }
 
-extension CoreDataCategory: Encodable {
+extension Category: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
 
         let localizations = Dictionary(uniqueKeysWithValues: self.localizations
-            .map { localization -> (String, CoreDataLocalizedCategory) in
+            .map { localization -> (String, LocalizedCategory) in
                 (localization.language, localization)
             })
         try container.encode(localizations, forKey: .localizations)
@@ -177,7 +177,7 @@ extension CoreDataCategory: Encodable {
 
 }
 
-extension CoreDataCommonsFile: Encodable {
+extension CommonsFile: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -199,7 +199,7 @@ extension CoreDataCommonsFile: Encodable {
 
 }
 
-extension CoreDataDatabaseV1Mapping: Encodable {
+extension DatabaseV1Mapping: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -213,7 +213,7 @@ extension CoreDataDatabaseV1Mapping: Encodable {
 
 }
 
-extension CoreDataEntry: Encodable {
+extension Entry: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -226,7 +226,7 @@ extension CoreDataEntry: Encodable {
         try container.encode(image?.id, forKey: .image)
 
         let localizations = Dictionary(uniqueKeysWithValues: self.localizations
-            .map { localization -> (String, CoreDataLocalizedEntry) in
+            .map { localization -> (String, LocalizedEntry) in
                 (localization.language, localization)
             })
         try container.encode(localizations, forKey: .localizations)
@@ -255,7 +255,7 @@ extension EntryDate: Encodable {
 
 }
 
-extension CoreDataLocalizedCategory: Encodable {
+extension LocalizedCategory: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -269,7 +269,7 @@ extension CoreDataLocalizedCategory: Encodable {
 
 }
 
-extension CoreDataLocalizedEntry: Encodable {
+extension LocalizedEntry: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -287,7 +287,7 @@ extension CoreDataLocalizedEntry: Encodable {
 
 }
 
-extension CoreDataOpenStreetMapElement: Encodable {
+extension OpenStreetMapElement: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -321,7 +321,7 @@ extension OpenStreetMapElementType: Encodable {
 
 }
 
-extension CoreDataPointOfInterest: Encodable {
+extension PointOfInterest: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -344,7 +344,7 @@ extension CoreDataPointOfInterest: Encodable {
 
 }
 
-extension CoreDataWikipediaPage: Encodable {
+extension WikipediaPage: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

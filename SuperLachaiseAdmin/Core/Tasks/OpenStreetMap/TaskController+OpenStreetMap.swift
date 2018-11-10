@@ -18,7 +18,7 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncOpenStreetMapElement(_ openStreetMapElement: CoreDataOpenStreetMapElement) {
+    func syncOpenStreetMapElement(_ openStreetMapElement: OpenStreetMapElement) {
         guard let openStreetMapId = openStreetMapElement.openStreetMapId else {
             return
         }

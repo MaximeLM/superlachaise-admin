@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CoreDataPointOfInterest: MainWindowModelType {
+extension PointOfInterest: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

@@ -64,7 +64,7 @@ private extension SyncWikidataCategories {
         return wikidataIds()
             .flatMap(self.wikidataEntities)
             .flatMap(self.saveWikidataCategories)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataWikidataCategory.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(WikidataCategory.self)(s)") })
     }
 
     func wikidataIds() -> Single<[String]> {
@@ -72,7 +72,7 @@ private extension SyncWikidataCategories {
         case .all:
             // Get wikidata ids from Wikidata entries
             return performInBackground.map { context in
-                context.objects(CoreDataWikidataEntry.self).fetch().flatMap { $0.wikidataCategories.map { $0.id } }
+                context.objects(WikidataEntry.self).fetch().flatMap { $0.wikidataCategories.map { $0.id } }
             }
         case let .single(wikidataId):
             return Single.just([wikidataId])
@@ -106,16 +106,16 @@ private extension SyncWikidataCategories {
     // MARK: Wikidata category
 
     func wikidataCategory(wikidataEntity: WikidataEntity,
-                          context: NSManagedObjectContext) throws -> CoreDataWikidataCategory {
+                          context: NSManagedObjectContext) throws -> WikidataCategory {
         // Wikidata Id
         let wikidataId = wikidataEntity.id
-        let wikidataCategory = context.findOrCreate(CoreDataWikidataCategory.self, key: wikidataId)
+        let wikidataCategory = context.findOrCreate(WikidataCategory.self, key: wikidataId)
 
         // Localizations
         let names = config.languages.compactMap { language -> String? in
             let name = wikidataEntity.labels[language]?.value
             if name == nil {
-                Logger.warning("\(CoreDataWikidataCategory.self) \(wikidataCategory) has no name in \(language)")
+                Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no name in \(language)")
             }
             return name
         }
@@ -125,10 +125,10 @@ private extension SyncWikidataCategories {
 
         // Categories
         if let categories = config.categories[wikidataId]?
-            .map({ context.findOrCreate(CoreDataCategory.self, key: $0) }) {
+            .map({ context.findOrCreate(Category.self, key: $0) }) {
             wikidataCategory.categories = Set(categories)
         } else {
-            Logger.warning("\(CoreDataWikidataCategory.self) \(wikidataCategory) has no categories")
+            Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no categories")
             wikidataCategory.categories = Set()
         }
 
@@ -147,10 +147,10 @@ private extension SyncWikidataCategories {
 
     func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataWikidataCategory>
+        var orphanedObjects: Set<WikidataCategory>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataWikidataCategory.self).fetch())
+            orphanedObjects = Set(context.objects(WikidataCategory.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -158,7 +158,7 @@ private extension SyncWikidataCategories {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataWikidataCategory.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(WikidataCategory.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

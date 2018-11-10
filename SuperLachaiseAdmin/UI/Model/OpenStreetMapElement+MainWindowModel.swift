@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CoreDataOpenStreetMapElement: MainWindowModelType {
+extension OpenStreetMapElement: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

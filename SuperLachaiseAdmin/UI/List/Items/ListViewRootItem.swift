@@ -12,15 +12,15 @@ final class ListViewRootItem: NSObject, ListViewItem {
 
     override init() {
         self.children = [
-            ListViewObjectListItem<CoreDataOpenStreetMapElement>(baseText: "OpenStreetMap elements"),
-            ListViewObjectListItem<CoreDataWikidataEntry>(baseText: "Wikidata entries"),
-            ListViewObjectListItem<CoreDataWikidataCategory>(baseText: "Wikidata categories"),
-            ListViewObjectListItem<CoreDataWikipediaPage>(baseText: "Wikipedia pages"),
-            ListViewObjectListItem<CoreDataCommonsFile>(baseText: "Commons files"),
-            ListViewObjectListItem<CoreDataCategory>(baseText: "Categories"),
-            ListViewObjectListItem<CoreDataPointOfInterest>(baseText: "Points of interest"),
-            ListViewObjectListItem<CoreDataEntry>(baseText: "Entries"),
-            ListViewObjectListItem<CoreDataDatabaseV1Mapping>(baseText: "Database V1 mappings"),
+            ListViewObjectListItem<OpenStreetMapElement>(baseText: "OpenStreetMap elements"),
+            ListViewObjectListItem<WikidataEntry>(baseText: "Wikidata entries"),
+            ListViewObjectListItem<WikidataCategory>(baseText: "Wikidata categories"),
+            ListViewObjectListItem<WikipediaPage>(baseText: "Wikipedia pages"),
+            ListViewObjectListItem<CommonsFile>(baseText: "Commons files"),
+            ListViewObjectListItem<Category>(baseText: "Categories"),
+            ListViewObjectListItem<PointOfInterest>(baseText: "Points of interest"),
+            ListViewObjectListItem<Entry>(baseText: "Entries"),
+            ListViewObjectListItem<DatabaseV1Mapping>(baseText: "Database V1 mappings"),
         ]
     }
 

@@ -59,7 +59,7 @@ private extension SyncCommonsFiles {
         case .all:
             // Get Commons ids from Wikidata entries
             return performInBackground.map { context in
-                context.objects(CoreDataWikidataEntry.self).fetch().flatMap { wikidataEntry in
+                context.objects(WikidataEntry.self).fetch().flatMap { wikidataEntry in
                     [wikidataEntry.image?.id, wikidataEntry.imageOfGrave?.id].compactMap { $0 }
                 }
             }
@@ -81,7 +81,7 @@ private extension SyncCommonsFiles {
         return commonsIds()
             .flatMap(self.commonsAPIImages)
             .flatMap(self.saveCommonsFiles)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataCommonsFile.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CommonsFile.self)(s)") })
     }
 
     func saveCommonsFiles(commonsAPIImages: [CommonsAPIImage]) -> Single<[String]> {
@@ -100,13 +100,13 @@ private extension SyncCommonsFiles {
 
     // MARK: Commons file
 
-    func commonsFile(commonsAPIImage: CommonsAPIImage, context: NSManagedObjectContext) throws -> CoreDataCommonsFile {
+    func commonsFile(commonsAPIImage: CommonsAPIImage, context: NSManagedObjectContext) throws -> CommonsFile {
         // Commons Id
         if !commonsAPIImage.title.hasPrefix("File:") {
             Logger.warning("Invalid \(CommonsAPIImage.self) title: \(commonsAPIImage.title)")
         }
         let commonsId = String(commonsAPIImage.title.dropFirst(5))
-        let commonsFile = context.findOrCreate(CoreDataCommonsFile.self, key: commonsId)
+        let commonsFile = context.findOrCreate(CommonsFile.self, key: commonsId)
 
         guard let imageInfo = commonsAPIImage.imageinfo?.first else {
             throw SyncCommonsFilesError.missingImageInfo
@@ -120,14 +120,14 @@ private extension SyncCommonsFiles {
         // Author
         let author = self.author(imageInfo: imageInfo)
         if author == nil {
-            Logger.warning("\(CoreDataCommonsFile.self) \(commonsFile) has no author")
+            Logger.warning("\(CommonsFile.self) \(commonsFile) has no author")
         }
         commonsFile.author = author
 
         // License
         let license = self.license(imageInfo: imageInfo)
         if license == nil {
-            Logger.warning("\(CoreDataCommonsFile.self) \(commonsFile) has no license")
+            Logger.warning("\(CommonsFile.self) \(commonsFile) has no license")
         }
         commonsFile.license = license
 
@@ -195,10 +195,10 @@ private extension SyncCommonsFiles {
 
     func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataCommonsFile>
+        var orphanedObjects: Set<CommonsFile>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataCommonsFile.self).fetch())
+            orphanedObjects = Set(context.objects(CommonsFile.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -206,7 +206,7 @@ private extension SyncCommonsFiles {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataCommonsFile.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(CommonsFile.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

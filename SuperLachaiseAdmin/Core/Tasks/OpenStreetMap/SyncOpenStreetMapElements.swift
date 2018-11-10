@@ -78,7 +78,7 @@ private extension SyncOpenStreetMapElements {
     func openStreetMapElements() -> Single<[String]> {
         return overpassElements()
             .flatMap(self.saveOpenStreetMapElements)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataOpenStreetMapElement.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(OpenStreetMapElement.self)(s)") })
     }
 
     func saveOpenStreetMapElements(overpassElements: [OverpassElement]) -> Single<[String]> {
@@ -99,13 +99,13 @@ private extension SyncOpenStreetMapElements {
     // MARK: OpenStreetMap element
 
     func openStreetMapElement(overpassElement: OverpassElement,
-                              context: NSManagedObjectContext) throws -> CoreDataOpenStreetMapElement? {
+                              context: NSManagedObjectContext) throws -> OpenStreetMapElement? {
         // OpenStreetMapId
         guard let elementType = OpenStreetMapElementType(rawValue: overpassElement.type) else {
             throw SyncOpenStreetMapElementsError.invalidElementType(overpassElement.type)
         }
         let openStreetMapId = OpenStreetMapId(elementType: elementType, numericId: overpassElement.id)
-        let openStreetMapElement = context.findOrCreate(CoreDataOpenStreetMapElement.self, key: openStreetMapId)
+        let openStreetMapElement = context.findOrCreate(OpenStreetMapElement.self, key: openStreetMapId)
 
         // Coordinate
         switch elementType {
@@ -126,7 +126,7 @@ private extension SyncOpenStreetMapElements {
         // Name
         let name = overpassElement.tags["name"]
         if name == nil {
-            Logger.warning("\(CoreDataOpenStreetMapElement.self) \(openStreetMapElement) has no name")
+            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no name")
         }
         openStreetMapElement.name = name
 
@@ -134,9 +134,9 @@ private extension SyncOpenStreetMapElements {
         let wikidataTags = ["wikidata", "subject:wikidata"]
         let wikidataId = wikidataTags.compactMap { overpassElement.tags[$0] }.first
         if wikidataId == nil {
-            Logger.warning("\(CoreDataOpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
+            Logger.warning("\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata ID")
         }
-        let wikidataEntry = wikidataId.map { context.findOrCreate(CoreDataWikidataEntry.self, key: $0) }
+        let wikidataEntry = wikidataId.map { context.findOrCreate(WikidataEntry.self, key: $0) }
         openStreetMapElement.wikidataEntry = wikidataEntry
 
         return openStreetMapElement
@@ -154,10 +154,10 @@ private extension SyncOpenStreetMapElements {
 
     func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataOpenStreetMapElement>
+        var orphanedObjects: Set<OpenStreetMapElement>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataOpenStreetMapElement.self).fetch())
+            orphanedObjects = Set(context.objects(OpenStreetMapElement.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -165,7 +165,7 @@ private extension SyncOpenStreetMapElements {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataOpenStreetMapElement.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(OpenStreetMapElement.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

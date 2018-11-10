@@ -54,12 +54,12 @@ final class SyncSuperLachaiseObjects: Task {
 
 private extension SyncSuperLachaiseObjects {
 
-    func syncPointsOfInterest(context: NSManagedObjectContext) -> [CoreDataPointOfInterest] {
+    func syncPointsOfInterest(context: NSManagedObjectContext) -> [PointOfInterest] {
         let pointsOfInterest = openStreetMapElements(context: context)
-            .compactMap { openStreetMapElement -> CoreDataPointOfInterest? in
+            .compactMap { openStreetMapElement -> PointOfInterest? in
                 guard let wikidataEntry = openStreetMapElement.wikidataEntry else {
                     Logger.warning(
-                        "\(CoreDataOpenStreetMapElement.self) \(openStreetMapElement) has no wikidata entry; skipping")
+                        "\(OpenStreetMapElement.self) \(openStreetMapElement) has no wikidata entry; skipping")
                     return nil
                 }
                 return pointOfInterest(openStreetMapElement: openStreetMapElement,
@@ -71,41 +71,41 @@ private extension SyncSuperLachaiseObjects {
         let duplicates = crossReference.filter { $0.value.count > 1 }
         for duplicate in duplicates {
             Logger.warning("""
-                \(CoreDataPointOfInterest.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
+                \(PointOfInterest.self) \(duplicate.key) is referenced by multiple OpenStreetMap elements; \
                 skipping
                 """)
         }
         return pointsOfInterest.filter({ !duplicates.keys.contains($0) })
     }
 
-    func openStreetMapElements(context: NSManagedObjectContext) -> [CoreDataOpenStreetMapElement] {
+    func openStreetMapElements(context: NSManagedObjectContext) -> [OpenStreetMapElement] {
         switch self.scope {
         case .all:
-            return context.objects(CoreDataOpenStreetMapElement.self).fetch()
+            return context.objects(OpenStreetMapElement.self).fetch()
         case let .single(id):
-            return context.objects(CoreDataOpenStreetMapElement.self)
+            return context.objects(OpenStreetMapElement.self)
                 .filtered(by: "wikidataEntry.id == %@", [id])
                 .fetch()
         }
     }
 
-    func pointOfInterest(openStreetMapElement: CoreDataOpenStreetMapElement,
-                         wikidataEntry: CoreDataWikidataEntry,
-                         context: NSManagedObjectContext) -> CoreDataPointOfInterest? {
+    func pointOfInterest(openStreetMapElement: OpenStreetMapElement,
+                         wikidataEntry: WikidataEntry,
+                         context: NSManagedObjectContext) -> PointOfInterest? {
         guard let kind = wikidataEntry.kind else {
-            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) for main entry has no kind; skipping")
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) for main entry has no kind; skipping")
             return nil
         }
         guard let image = (kind == .person) ? wikidataEntry.imageOfGrave : wikidataEntry.image else {
-            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) for main entry has no image; skipping")
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry) for main entry has no image; skipping")
             return nil
         }
 
         let isMainEntryInteresting = wikidataEntry.isInteresting()
         let interestingSecondaryEntries = Array(wikidataEntry.secondaryWikidataEntries.filter { $0.isInteresting() })
 
-        let mainWikidataEntry: CoreDataWikidataEntry
-        let secondaryWikidataEntries: [CoreDataWikidataEntry]
+        let mainWikidataEntry: WikidataEntry
+        let secondaryWikidataEntries: [WikidataEntry]
         if kind == .grave && interestingSecondaryEntries.count == 1 {
             mainWikidataEntry = interestingSecondaryEntries[0]
             secondaryWikidataEntries = []
@@ -116,12 +116,12 @@ private extension SyncSuperLachaiseObjects {
                 ? Array(wikidataEntry.secondaryWikidataEntries)
                 : interestingSecondaryEntries
             if !isMainEntryInteresting && interestingSecondaryEntries.isEmpty {
-                Logger.warning("Main \(CoreDataWikidataEntry.self) \(wikidataEntry) is not interesting")
+                Logger.warning("Main \(WikidataEntry.self) \(wikidataEntry) is not interesting")
             }
             wikidataEntry.secondaryWikidataEntries
                 .filter { !secondaryWikidataEntries.contains($0) }
                 .forEach {
-                    Logger.warning("Secondary \(CoreDataWikidataEntry.self) \($0) is not interesting; skipping")
+                    Logger.warning("Secondary \(WikidataEntry.self) \($0) is not interesting; skipping")
                 }
         }
 
@@ -129,7 +129,7 @@ private extension SyncSuperLachaiseObjects {
             return nil
         }
 
-        let pointOfInterest = context.findOrCreate(CoreDataPointOfInterest.self, key: wikidataEntry.id)
+        let pointOfInterest = context.findOrCreate(PointOfInterest.self, key: wikidataEntry.id)
 
         pointOfInterest.name = openStreetMapElement.name
         pointOfInterest.openStreetMapElement = openStreetMapElement
@@ -142,19 +142,19 @@ private extension SyncSuperLachaiseObjects {
         return pointOfInterest
     }
 
-    func entry(wikidataEntry: CoreDataWikidataEntry, context: NSManagedObjectContext) -> CoreDataEntry? {
+    func entry(wikidataEntry: WikidataEntry, context: NSManagedObjectContext) -> Entry? {
         if wikidataEntry.kind == .person {
             guard wikidataEntry.dateOfBirth != nil else {
-                Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no date of birth; skipping")
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no date of birth; skipping")
                 return nil
             }
             guard wikidataEntry.dateOfDeath != nil else {
-                Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry) has no date of death; skipping")
+                Logger.warning("\(WikidataEntry.self) \(wikidataEntry) has no date of death; skipping")
                 return nil
             }
         }
 
-        let entry = context.findOrCreate(CoreDataEntry.self, key: wikidataEntry.id)
+        let entry = context.findOrCreate(Entry.self, key: wikidataEntry.id)
 
         entry.name = wikidataEntry.name
         entry.kind = wikidataEntry.kind
@@ -169,15 +169,15 @@ private extension SyncSuperLachaiseObjects {
             let wikipediaPage = wikidataLocalizedEntry.wikipediaPage
             guard let name = wikidataLocalizedEntry.wikipediaPage?.wikipediaId?.title ??
                 wikidataLocalizedEntry.name else {
-                    Logger.warning("\(CoreDataWikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no name; skipping")
+                    Logger.warning("\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no name; skipping")
                     return
             }
             guard let summary = wikidataLocalizedEntry.summary else {
-                Logger.warning("\(CoreDataWikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no summary; skipping")
+                Logger.warning("\(WikidataLocalizedEntry.self) \(wikidataLocalizedEntry) has no summary; skipping")
                 return
             }
 
-            let localizedEntry = context.findOrCreate(CoreDataLocalizedEntry.self,
+            let localizedEntry = context.findOrCreate(LocalizedEntry.self,
                                                       key: (entry: entry, language: wikidataLocalizedEntry.language))
             localizedEntry.name = name
             localizedEntry.summary = summary
@@ -188,13 +188,13 @@ private extension SyncSuperLachaiseObjects {
         return entry
     }
 
-    func categories(wikidataEntry: CoreDataWikidataEntry, context: NSManagedObjectContext) -> [CoreDataCategory] {
+    func categories(wikidataEntry: WikidataEntry, context: NSManagedObjectContext) -> [Category] {
         let categories = wikidataEntry.wikidataCategories
             .flatMap { Array($0.categories) }
             .uniqueValues()
             .sorted { $0.id < $1.id }
         if wikidataEntry.kind == .person && categories.isEmpty {
-            Logger.warning("\(CoreDataWikidataEntry.self) \(wikidataEntry)  has no categories")
+            Logger.warning("\(WikidataEntry.self) \(wikidataEntry)  has no categories")
         }
         return categories
     }
@@ -203,10 +203,10 @@ private extension SyncSuperLachaiseObjects {
 
     func deleteOrphans(fetchedPointOfInterestIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataPointOfInterest>
+        var orphanedObjects: Set<PointOfInterest>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataPointOfInterest.self).fetch())
+            orphanedObjects = Set(context.objects(PointOfInterest.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -214,7 +214,7 @@ private extension SyncSuperLachaiseObjects {
         orphanedObjects = orphanedObjects.filter { !fetchedPointOfInterestIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataPointOfInterest.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(PointOfInterest.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
 
@@ -223,10 +223,10 @@ private extension SyncSuperLachaiseObjects {
 
     func deleteOrphanedEntries(context: NSManagedObjectContext) throws {
         // List existing objects
-        let orphanedObjects: Set<CoreDataEntry>
+        let orphanedObjects: Set<Entry>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataEntry.self)
+            orphanedObjects = Set(context.objects(Entry.self)
                 .filtered(by: "mainEntryOf.@count == 0 && secondaryEntryOf.@count == 0")
                 .fetch())
         case .single:
@@ -234,14 +234,14 @@ private extension SyncSuperLachaiseObjects {
         }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataEntry.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(Entry.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }
 
 }
 
-private extension CoreDataWikidataEntry {
+private extension WikidataEntry {
 
     func isInteresting() -> Bool {
         // An entry is interesting if it has a Wikipedia page on at least one localization

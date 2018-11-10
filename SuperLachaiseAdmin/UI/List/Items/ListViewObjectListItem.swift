@@ -14,7 +14,7 @@ protocol ListViewObjectListItemType: ListViewItem {
 
 }
 
-final class ListViewObjectListItem<Element: MainWindowModel & CoreDataListable>: NSObject, ListViewObjectListItemType {
+final class ListViewObjectListItem<Element: MainWindowModel & Listable>: NSObject, ListViewObjectListItemType {
 
     let baseText: String
 

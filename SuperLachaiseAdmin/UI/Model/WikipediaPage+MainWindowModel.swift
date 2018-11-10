@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CoreDataWikipediaPage: MainWindowModelType {
+extension WikipediaPage: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

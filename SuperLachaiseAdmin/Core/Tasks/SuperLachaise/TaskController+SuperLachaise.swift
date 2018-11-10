@@ -16,7 +16,7 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncCategory(_ category: CoreDataCategory) {
+    func syncCategory(_ category: Category) {
         let task = SyncCategories(scope: .single(id: category.id),
                                   config: config.superLachaise,
                                   performInBackground: database.performInBackground)
@@ -29,7 +29,7 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncSuperLachaiseObject(pointOfInterest: CoreDataPointOfInterest) {
+    func syncSuperLachaiseObject(pointOfInterest: PointOfInterest) {
         let task = SyncSuperLachaiseObjects(scope: .single(id: pointOfInterest.id),
                                             performInBackground: database.performInBackground)
         enqueue(task)
@@ -42,7 +42,7 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncDatabaseV1Mapping(_ databaseV1Mapping: CoreDataDatabaseV1Mapping) {
+    func syncDatabaseV1Mapping(_ databaseV1Mapping: DatabaseV1Mapping) {
         let task = SyncDatabaseV1Mappings(scope: .single(id: databaseV1Mapping.id),
                                           config: config.superLachaise,
                                           performInBackground: database.performInBackground)

@@ -12,9 +12,9 @@ import RxSwift
 final class TaskController {
 
     let config: Config
-    let database: CoreDataDatabase
+    let database: Database
 
-    init(config: Config, database: CoreDataDatabase) {
+    init(config: Config, database: Database) {
         self.config = config
         self.database = database
 

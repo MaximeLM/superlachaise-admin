@@ -56,7 +56,7 @@ final class SyncDatabaseV1Mappings: Task {
 
 private extension SyncDatabaseV1Mappings {
 
-    func syncDatabaseV1Mappings(context: NSManagedObjectContext) throws -> [CoreDataDatabaseV1Mapping] {
+    func syncDatabaseV1Mappings(context: NSManagedObjectContext) throws -> [DatabaseV1Mapping] {
         guard let sourceURL = Bundle.main.url(forResource: "database_v1", withExtension: "json") else {
             throw SyncDatabaseV1MappingsError.sourceJsonNotFound
         }
@@ -76,28 +76,28 @@ private extension SyncDatabaseV1Mappings {
     }
 
     func syncDatabaseV1Mapping(monument: DatabaseV1Monument,
-                               customMappings: [Int32: CoreDataWikidataEntry],
-                               context: NSManagedObjectContext) -> CoreDataDatabaseV1Mapping {
-        let databaseV1Mapping = context.findOrCreate(CoreDataDatabaseV1Mapping.self, key: monument.id)
+                               customMappings: [Int32: WikidataEntry],
+                               context: NSManagedObjectContext) -> DatabaseV1Mapping {
+        let databaseV1Mapping = context.findOrCreate(DatabaseV1Mapping.self, key: monument.id)
         databaseV1Mapping.pointOfInterest = pointOfInterest(
             monument: monument, customMappings: customMappings, context: context)
         return databaseV1Mapping
     }
 
     func pointOfInterest(monument: DatabaseV1Monument,
-                         customMappings: [Int32: CoreDataWikidataEntry],
-                         context: NSManagedObjectContext) -> CoreDataPointOfInterest? {
+                         customMappings: [Int32: WikidataEntry],
+                         context: NSManagedObjectContext) -> PointOfInterest? {
         guard let wikidataEntry = self.wikidataEntry(
             monument: monument, customMappings: customMappings, context: context) else {
                 return nil
         }
         let sourceName = monument.name
-        let destName = context.find(CoreDataWikidataLocalizedEntry.self,
+        let destName = context.find(WikidataLocalizedEntry.self,
                                     key: (wikidataEntry: wikidataEntry, language: "fr"))?.name
         if let destName = destName, sourceName != destName {
             Logger.warning("Name mismatch: \(sourceName) - \(destName)")
         }
-        guard let pointOfInterest = context.find(CoreDataPointOfInterest.self, key: wikidataEntry.id) else {
+        guard let pointOfInterest = context.find(PointOfInterest.self, key: wikidataEntry.id) else {
             Logger.error("No point of interest element for \(wikidataEntry.id)")
             return nil
         }
@@ -105,18 +105,18 @@ private extension SyncDatabaseV1Mappings {
     }
 
     func wikidataEntry(monument: DatabaseV1Monument,
-                       customMappings: [Int32: CoreDataWikidataEntry],
-                       context: NSManagedObjectContext) -> CoreDataWikidataEntry? {
+                       customMappings: [Int32: WikidataEntry],
+                       context: NSManagedObjectContext) -> WikidataEntry? {
         if let customValue = customMappings[monument.id] {
             return customValue
         }
 
         let numericId = monument.nodeOSM.id
-        let node = context.find(CoreDataOpenStreetMapElement.self,
+        let node = context.find(OpenStreetMapElement.self,
                                 key: OpenStreetMapId(elementType: .node, numericId: numericId))
-        let way = context.find(CoreDataOpenStreetMapElement.self,
+        let way = context.find(OpenStreetMapElement.self,
                                key: OpenStreetMapId(elementType: .way, numericId: numericId))
-        let relation = context.find(CoreDataOpenStreetMapElement.self,
+        let relation = context.find(OpenStreetMapElement.self,
                                     key: OpenStreetMapId(elementType: .relation, numericId: numericId))
         let existingElements = [node, way, relation].compactMap { $0 }
 
@@ -135,7 +135,7 @@ private extension SyncDatabaseV1Mappings {
         return wikidataEntry
     }
 
-    func customMappings(context: NSManagedObjectContext) throws -> [Int32: CoreDataWikidataEntry] {
+    func customMappings(context: NSManagedObjectContext) throws -> [Int32: WikidataEntry] {
         guard let customMappings = config.databaseV1CustomMappings else {
             return [:]
         }
@@ -143,7 +143,7 @@ private extension SyncDatabaseV1Mappings {
             guard let monumentId = Int32($0.key) else {
                 throw SyncDatabaseV1MappingsError.invalidCustomMappingId($0.key)
             }
-            guard let wikidataEntry = context.find(CoreDataWikidataEntry.self, key: $0.value) else {
+            guard let wikidataEntry = context.find(WikidataEntry.self, key: $0.value) else {
                 throw SyncDatabaseV1MappingsError.customMappingWikidataEntryNotFound($0.value)
             }
             return (monumentId, wikidataEntry)
@@ -156,10 +156,10 @@ private extension SyncDatabaseV1Mappings {
 
     func deleteOrphans(fetchedIds: [Int32], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataDatabaseV1Mapping>
+        var orphanedObjects: Set<DatabaseV1Mapping>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataDatabaseV1Mapping.self).fetch())
+            orphanedObjects = Set(context.objects(DatabaseV1Mapping.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -167,7 +167,7 @@ private extension SyncDatabaseV1Mappings {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataDatabaseV1Mapping.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(DatabaseV1Mapping.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

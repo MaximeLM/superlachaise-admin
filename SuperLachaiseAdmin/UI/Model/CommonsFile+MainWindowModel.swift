@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CoreDataCommonsFile: MainWindowModelType {
+extension CommonsFile: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [

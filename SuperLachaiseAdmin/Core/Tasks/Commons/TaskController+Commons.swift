@@ -16,7 +16,7 @@ extension TaskController {
         enqueue(task)
     }
 
-    func syncCommonsFile(_ commonsFile: CoreDataCommonsFile) {
+    func syncCommonsFile(_ commonsFile: CommonsFile) {
         let task = SyncCommonsFiles(scope: .single(id: commonsFile.id),
                                     endpoint: commonsAPIEndpoint,
                                     performInBackground: database.performInBackground)

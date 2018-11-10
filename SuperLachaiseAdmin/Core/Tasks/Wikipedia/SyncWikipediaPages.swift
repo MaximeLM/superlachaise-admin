@@ -96,7 +96,7 @@ private extension SyncWikipediaPages {
         case .all:
             // Get wikipedia titles from Wikidata localized entries
             return performInBackground.map { context in
-                context.objects(CoreDataWikidataLocalizedEntry.self).fetch()
+                context.objects(WikidataLocalizedEntry.self).fetch()
                     .reduce([:]) { partialResult, wikidataLocalizedEntry in
                         guard let wikipediaTitle = wikidataLocalizedEntry.wikipediaPage?.wikipediaId?.title else {
                             return partialResult
@@ -127,7 +127,7 @@ private extension SyncWikipediaPages {
     func wikipediaPages() -> Single<[String]> {
         return wikipediaTitlesByLanguage()
             .flatMap(self.wikipediaPages)
-            .do(onSuccess: { Logger.info("Fetched \($0.count) \(CoreDataWikipediaPage.self)(s)") })
+            .do(onSuccess: { Logger.info("Fetched \($0.count) \(WikipediaPage.self)(s)") })
     }
 
     func wikipediaPages(wikipediaTitlesByLanguage: [String: [String]]) -> Single<[String]> {
@@ -166,10 +166,10 @@ private extension SyncWikipediaPages {
 
     func wikipediaPage(language: String,
                        wikipediaAPIPage: WikipediaAPIPage,
-                       context: NSManagedObjectContext) throws -> CoreDataWikipediaPage {
+                       context: NSManagedObjectContext) throws -> WikipediaPage {
         // Wikipedia Id
         let wikipediaId = WikipediaId(language: language, title: wikipediaAPIPage.title)
-        let wikipediaPage = context.findOrCreate(CoreDataWikipediaPage.self, key: wikipediaId)
+        let wikipediaPage = context.findOrCreate(WikipediaPage.self, key: wikipediaId)
 
         // Name
         wikipediaPage.name = wikipediaAPIPage.title
@@ -177,20 +177,20 @@ private extension SyncWikipediaPages {
         // Default sort
         let defaultSort = self.defaultSort(wikipediaAPIPage: wikipediaAPIPage)
         if defaultSort == nil {
-            Logger.warning("\(CoreDataWikipediaPage.self) \(wikipediaPage) has no default sort")
+            Logger.warning("\(WikipediaPage.self) \(wikipediaPage) has no default sort")
         }
         wikipediaPage.defaultSort = defaultSort
 
         // Extract
         let extract = self.extract(wikipediaAPIPage: wikipediaAPIPage)
         if extract == nil {
-            Logger.warning("\(CoreDataWikipediaPage.self) \(wikipediaPage) has no extract")
+            Logger.warning("\(WikipediaPage.self) \(wikipediaPage) has no extract")
         }
         wikipediaPage.extract = extract
 
         // Redirect
         if let redirect = self.redirect(wikipediaAPIPage: wikipediaAPIPage) {
-            Logger.warning("\(CoreDataWikipediaPage.self) \(wikipediaPage) is a redirect for \(redirect)")
+            Logger.warning("\(WikipediaPage.self) \(wikipediaPage) is a redirect for \(redirect)")
         }
 
         return wikipediaPage
@@ -260,10 +260,10 @@ private extension SyncWikipediaPages {
 
     func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataWikipediaPage>
+        var orphanedObjects: Set<WikipediaPage>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataWikipediaPage.self).fetch())
+            orphanedObjects = Set(context.objects(WikipediaPage.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -271,7 +271,7 @@ private extension SyncWikipediaPages {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataWikipediaPage.self)(s)")
+            Logger.info("Deleting \(orphanedObjects.count) \(WikipediaPage.self)(s)")
             orphanedObjects.forEach { context.delete($0) }
         }
     }

@@ -56,11 +56,11 @@ final class SyncCategories: Task {
 
 private extension SyncCategories {
 
-    func syncCategories(context: NSManagedObjectContext) -> [CoreDataCategory] {
+    func syncCategories(context: NSManagedObjectContext) -> [Category] {
         var categoriesIds: [String]
         switch scope {
         case .all:
-            categoriesIds = context.objects(CoreDataCategory.self).fetch().map { $0.id }
+            categoriesIds = context.objects(Category.self).fetch().map { $0.id }
             categoriesIds.append(contentsOf: config.categoriesNames.map { $0.key })
             categoriesIds = categoriesIds.uniqueValues()
         case let .single(id):
@@ -69,15 +69,15 @@ private extension SyncCategories {
         return categoriesIds.compactMap { self.syncCategory(id: $0, context: context) }
     }
 
-    func syncCategory(id: String, context: NSManagedObjectContext) -> CoreDataCategory? {
+    func syncCategory(id: String, context: NSManagedObjectContext) -> Category? {
         guard let categoryNames = config.categoriesNames.first(where: { $0.key == id }) else {
             Logger.warning("No category names for \(Category.self) id \(id)")
             return nil
         }
-        let category = context.findOrCreate(CoreDataCategory.self, key: id)
+        let category = context.findOrCreate(Category.self, key: id)
 
         for (language, name) in categoryNames.value {
-            let localization = context.findOrCreate(CoreDataLocalizedCategory.self,
+            let localization = context.findOrCreate(LocalizedCategory.self,
                                                     key: (category: category, language: language))
             localization.name = name
         }
@@ -89,10 +89,10 @@ private extension SyncCategories {
 
     func deleteOrphans(fetchedCategoryIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<CoreDataCategory>
+        var orphanedObjects: Set<Category>
         switch scope {
         case .all:
-            orphanedObjects = Set(context.objects(CoreDataCategory.self).fetch())
+            orphanedObjects = Set(context.objects(Category.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
