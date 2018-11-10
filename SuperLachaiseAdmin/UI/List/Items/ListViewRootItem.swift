@@ -14,6 +14,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
         self.children = [
             ListViewObjectListItem<CoreDataOpenStreetMapElement>(baseText: "OpenStreetMap elements"),
             ListViewObjectListItem<CoreDataWikidataEntry>(baseText: "Wikidata entries"),
+            ListViewObjectListItem<CoreDataWikidataCategory>(baseText: "Wikidata categories"),
             ListViewObjectListItem<CoreDataWikipediaPage>(baseText: "Wikipedia pages"),
         ]
     }

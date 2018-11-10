@@ -10,6 +10,14 @@
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
+    <entity name="WikidataCategory" representedClassName=".CoreDataWikidataCategory" syncable="YES">
+        <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="wikidataEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="wikidataCategories" inverseEntity="WikidataEntry" syncable="YES"/>
+        <fetchIndex name="byId">
+            <fetchIndexElement property="id" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
     <entity name="WikidataEntry" representedClassName=".CoreDataWikidataEntry" syncable="YES">
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,11 +30,12 @@
         <relationship name="openStreetMapElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OpenStreetMapElement" inverseName="wikidataEntry" inverseEntity="OpenStreetMapElement" syncable="YES"/>
         <relationship name="secondaryWikidataEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="secondaryWikidataEntryOf" inverseEntity="WikidataEntry" syncable="YES"/>
         <relationship name="secondaryWikidataEntryOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="secondaryWikidataEntries" inverseEntity="WikidataEntry" syncable="YES"/>
+        <relationship name="wikidataCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataCategory" inverseName="wikidataEntries" inverseEntity="WikidataCategory" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="WikidataLocalizedEntry" representedClassName="CoreDataWikidataLocalizedEntry" syncable="YES">
+    <entity name="WikidataLocalizedEntry" representedClassName=".CoreDataWikidataLocalizedEntry" syncable="YES">
         <attribute name="language" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
@@ -45,7 +54,8 @@
     </entity>
     <elements>
         <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="210"/>
+        <element name="WikidataCategory" positionX="0" positionY="144" width="128" height="90"/>
+        <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="225"/>
         <element name="WikidataLocalizedEntry" positionX="-18" positionY="108" width="128" height="120"/>
         <element name="WikipediaPage" positionX="-27" positionY="99" width="128" height="120"/>
     </elements>

@@ -23,7 +23,7 @@ extension CoreDataWikidataEntry: MainWindowModelType {
             ],
             [
                 DetailViewToManyFieldItem(name: "Secondary Wikidata entries", value: Array(secondaryWikidataEntries)),
-                //DetailViewToManyFieldItem(name: "Wikidata categories", value: Array(wikidataCategories)),
+                DetailViewToManyFieldItem(name: "Wikidata categories", value: Array(wikidataCategories)),
                 //DetailViewToOneFieldItem(name: "Image", value: image),
                 //DetailViewToOneFieldItem(name: "Image of grave", value: imageOfGrave),
             ],
