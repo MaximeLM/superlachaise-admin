@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension PointOfInterest: MainWindowModelType {
+extension CoreDataPointOfInterest: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
@@ -18,8 +18,8 @@ extension PointOfInterest: MainWindowModelType {
             ],
             [
                 DetailViewToOneFieldItem(name: "OpenStreetMap element", value: openStreetMapElement),
-                DetailViewToOneFieldItem(name: "Main entry", value: mainEntry),
-                DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)),
+                //DetailViewToOneFieldItem(name: "Main entry", value: mainEntry), // TODO
+                //DetailViewToManyFieldItem(name: "Secondary entries", value: Array(secondaryEntries)), // TODO
                 DetailViewToOneFieldItem(name: "Image", value: image),
             ],
         ])

@@ -25,6 +25,8 @@ final class CoreDataCommonsFile: NSManagedObject {
     @NSManaged var imageOf: Set<CoreDataWikidataEntry>
     @NSManaged var imageOfGraveOf: Set<CoreDataWikidataEntry>
 
+    @NSManaged var pointsOfInterest: Set<CoreDataPointOfInterest>
+
     override var description: String {
         return id
     }

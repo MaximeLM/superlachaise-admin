@@ -18,6 +18,7 @@
         <attribute name="width" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="imageOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="image" inverseEntity="WikidataEntry" syncable="YES"/>
         <relationship name="imageOfGraveOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="imageOfGrave" inverseEntity="WikidataEntry" syncable="YES"/>
+        <relationship name="pointsOfInterest" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PointOfInterest" inverseName="image" inverseEntity="PointOfInterest" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -32,7 +33,17 @@
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="pointsOfInterest" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PointOfInterest" inverseName="openStreetMapElement" inverseEntity="PointOfInterest" syncable="YES"/>
         <relationship name="wikidataEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="openStreetMapElements" inverseEntity="WikidataEntry" syncable="YES"/>
+        <fetchIndex name="byId">
+            <fetchIndexElement property="id" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="PointOfInterest" representedClassName=".CoreDataPointOfInterest" syncable="YES">
+        <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CommonsFile" inverseName="pointsOfInterest" inverseEntity="CommonsFile" syncable="YES"/>
+        <relationship name="openStreetMapElement" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenStreetMapElement" inverseName="pointsOfInterest" inverseEntity="OpenStreetMapElement" syncable="YES"/>
         <fetchIndex name="byId">
             <fetchIndexElement property="id" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -84,9 +95,10 @@
     </entity>
     <elements>
         <element name="Category" positionX="18" positionY="180" width="128" height="90"/>
-        <element name="CommonsFile" positionX="9" positionY="153" width="128" height="180"/>
+        <element name="CommonsFile" positionX="9" positionY="153" width="128" height="195"/>
         <element name="LocalizedCategory" positionX="36" positionY="189" width="128" height="90"/>
-        <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="PointOfInterest" positionX="-9" positionY="135" width="128" height="105"/>
         <element name="WikidataCategory" positionX="0" positionY="144" width="128" height="105"/>
         <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="255"/>
         <element name="WikidataLocalizedEntry" positionX="-18" positionY="108" width="128" height="120"/>
