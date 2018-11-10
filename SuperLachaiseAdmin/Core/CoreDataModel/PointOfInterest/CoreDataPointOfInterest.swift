@@ -21,6 +21,8 @@ final class CoreDataPointOfInterest: NSManagedObject {
     @NSManaged var secondaryEntries: Set<CoreDataEntry>
     @NSManaged var image: CoreDataCommonsFile?
 
+    @NSManaged var databaseV1Mappings: Set<CoreDataDatabaseV1Mapping>
+
     override var description: String {
         return [name, id]
             .compactMap { $0 }

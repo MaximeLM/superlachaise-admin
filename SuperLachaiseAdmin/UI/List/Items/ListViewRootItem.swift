@@ -20,6 +20,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
             ListViewObjectListItem<CoreDataCategory>(baseText: "Categories"),
             ListViewObjectListItem<CoreDataPointOfInterest>(baseText: "Points of interest"),
             ListViewObjectListItem<CoreDataEntry>(baseText: "Entries"),
+            ListViewObjectListItem<CoreDataDatabaseV1Mapping>(baseText: "Database V1 mappings"),
         ]
     }
 

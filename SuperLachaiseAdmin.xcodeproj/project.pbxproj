@@ -60,6 +60,9 @@
 		551DAF4C219734D8005988DB /* CoreDataEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF4B219734D8005988DB /* CoreDataEntry+Protocols.swift */; };
 		551DAF4E21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF4D21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift */; };
 		551DAF4F2197370C005988DB /* Entry+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EB4EC2067CCD6009A6054 /* Entry+MainWindowModel.swift */; };
+		551DAF5221973D30005988DB /* CoreDataDatabaseV1Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF5121973D30005988DB /* CoreDataDatabaseV1Mapping.swift */; };
+		551DAF5421973D7E005988DB /* CoreDataDatabaseV1Mapping+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551DAF5321973D7E005988DB /* CoreDataDatabaseV1Mapping+Protocols.swift */; };
+		551DAF5521973E38005988DB /* DatabaseV1Mapping+MainWindowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579C69D206ED13600D9C802 /* DatabaseV1Mapping+MainWindowModel.swift */; };
 		55348630204CB1BA0036143D /* DetailViewToManyFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */; };
 		55348632204CB2060036143D /* DetailViewToManyFieldItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */; };
 		55348634204CB2440036143D /* DetailViewToManyFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55348633204CB2440036143D /* DetailViewToManyFieldView.xib */; };
@@ -257,6 +260,8 @@
 		551DAF49219734B4005988DB /* CoreDataEntry+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataEntry+Kind.swift"; sourceTree = "<group>"; };
 		551DAF4B219734D8005988DB /* CoreDataEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataEntry+Protocols.swift"; sourceTree = "<group>"; };
 		551DAF4D21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataLocalizedEntry+Protocols.swift"; sourceTree = "<group>"; };
+		551DAF5121973D30005988DB /* CoreDataDatabaseV1Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabaseV1Mapping.swift; sourceTree = "<group>"; };
+		551DAF5321973D7E005988DB /* CoreDataDatabaseV1Mapping+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataDatabaseV1Mapping+Protocols.swift"; sourceTree = "<group>"; };
 		5534862F204CB1BA0036143D /* DetailViewToManyFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldView.swift; sourceTree = "<group>"; };
 		55348631204CB2060036143D /* DetailViewToManyFieldItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewToManyFieldItem.swift; sourceTree = "<group>"; };
 		55348633204CB2440036143D /* DetailViewToManyFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewToManyFieldView.xib; sourceTree = "<group>"; };
@@ -611,6 +616,15 @@
 				551DAF4D21973531005988DB /* CoreDataLocalizedEntry+Protocols.swift */,
 			);
 			path = LocalizedEntry;
+			sourceTree = "<group>";
+		};
+		551DAF5021973D1D005988DB /* DatabaseV1Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				551DAF5121973D30005988DB /* CoreDataDatabaseV1Mapping.swift */,
+				551DAF5321973D7E005988DB /* CoreDataDatabaseV1Mapping+Protocols.swift */,
+			);
+			path = DatabaseV1Mapping;
 			sourceTree = "<group>";
 		};
 		5534862E204CB1A30036143D /* ToMany Field */ = {
@@ -1109,6 +1123,7 @@
 				551DAF2E21972011005988DB /* Category */,
 				551DAF3B219730DE005988DB /* PointOfInterest */,
 				551DAF412197331A005988DB /* Entry */,
+				551DAF5021973D1D005988DB /* DatabaseV1Mapping */,
 			);
 			path = CoreDataModel;
 			sourceTree = "<group>";
@@ -1422,6 +1437,7 @@
 				55B365911FDDB23300EB84BD /* APIEndpoint+Wikidata.swift in Sources */,
 				55B536FC1FD33D1B00036FFC /* ListViewObjectItem.swift in Sources */,
 				555CF551204AFDE4005CE48F /* WikidataCategory+Protocols.swift in Sources */,
+				551DAF5221973D30005988DB /* CoreDataDatabaseV1Mapping.swift in Sources */,
 				5570F9B51FEC4FE8000DA3C9 /* WikipediaPage+Requests.swift in Sources */,
 				55F59685206C1B990078D5F0 /* SyncCategories.swift in Sources */,
 				55B365931FDDB28800EB84BD /* TaskController+Wikidata.swift in Sources */,
@@ -1529,6 +1545,7 @@
 				555EB4E42067CAD6009A6054 /* Entry+Requests.swift in Sources */,
 				5579C698206ECF8200D9C802 /* DatabaseV1Mapping.swift in Sources */,
 				55C0CB95219378A500F2E34C /* KeyedObject.swift in Sources */,
+				551DAF5421973D7E005988DB /* CoreDataDatabaseV1Mapping+Protocols.swift in Sources */,
 				555CF55A204B0286005CE48F /* DetailViewURLFieldItem.swift in Sources */,
 				55C0CB932193727D00F2E34C /* NSManagedObjectContext+Extensions.swift in Sources */,
 				5570F9CA1FED9249000DA3C9 /* WikipediaGetPages.swift in Sources */,
@@ -1548,6 +1565,7 @@
 				551DAF2321971D0E005988DB /* WikidataCategory+MainWindowModel.swift in Sources */,
 				551DAF2C21971E8F005988DB /* CoreDataCommonsFile+Protocols.swift in Sources */,
 				55AB3DFA1FE306CC0011AF47 /* Realm+Write.swift in Sources */,
+				551DAF5521973E38005988DB /* DatabaseV1Mapping+MainWindowModel.swift in Sources */,
 				55B365881FDDAD1900EB84BD /* ConsoleLogger.swift in Sources */,
 				5513EF801FE6EF9F00BD3A22 /* DetailViewFieldItem.swift in Sources */,
 				55A8D2491FCF5D9D00BB00BC /* BoundingBox.swift in Sources */,

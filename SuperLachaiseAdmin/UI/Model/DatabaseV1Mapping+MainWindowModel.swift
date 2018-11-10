@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension DatabaseV1Mapping: MainWindowModelType {
+extension CoreDataDatabaseV1Mapping: MainWindowModelType {
 
     func detailViewModel() -> DetailViewModel {
         return DetailViewModel(self, items: [
