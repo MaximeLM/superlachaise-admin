@@ -16,6 +16,7 @@ final class ListViewRootItem: NSObject, ListViewItem {
             ListViewObjectListItem<CoreDataWikidataEntry>(baseText: "Wikidata entries"),
             ListViewObjectListItem<CoreDataWikidataCategory>(baseText: "Wikidata categories"),
             ListViewObjectListItem<CoreDataWikipediaPage>(baseText: "Wikipedia pages"),
+            ListViewObjectListItem<CoreDataCommonsFile>(baseText: "Commons files"),
         ]
     }
 
