@@ -50,3 +50,11 @@ extension CoreDataWikipediaPage: OpenableInBrowser {
     }
 
 }
+
+extension CoreDataWikipediaPage: Syncable {
+
+    func sync(taskController: TaskController) {
+        taskController.syncWikipediaPage(self)
+    }
+
+}

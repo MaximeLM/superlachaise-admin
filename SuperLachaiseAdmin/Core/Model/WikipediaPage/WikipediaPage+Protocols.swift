@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, Syncable {
+extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser {
 
     // MARK: Identifiable
 
@@ -48,12 +48,6 @@ extension WikipediaPage: Identifiable, Deletable, Listable, OpenableInBrowser, S
         }
         return URL(string: "https://\(wikipediaId.language).wikipedia.org/wiki")?
             .appendingPathComponent(wikipediaId.title)
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncWikipediaPage(self)
     }
 
 }
