@@ -9,7 +9,7 @@ import Cocoa
 
 struct DetailViewImageItem: DetailViewItem {
 
-    let commonsFile: CommonsFile?
+    let commonsFile: CoreDataCommonsFile?
 
     var view: NSView? {
         let view: DetailViewImageView? = NSNib.instantiate("DetailViewImageView")

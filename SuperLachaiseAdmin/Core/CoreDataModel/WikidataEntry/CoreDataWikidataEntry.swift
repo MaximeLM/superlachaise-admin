@@ -15,8 +15,8 @@ final class CoreDataWikidataEntry: NSManagedObject {
     @NSManaged var name: String?
     @NSManaged var rawKind: String
 
-    //@NSManaged var image: CommonsFile?
-    //@NSManaged var imageOfGrave: CommonsFile? // for persons
+    @NSManaged var image: CoreDataCommonsFile?
+    @NSManaged var imageOfGrave: CoreDataCommonsFile? // for persons
 
     // Stored in UTC
     @NSManaged var rawDateOfBirth: Date?

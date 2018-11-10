@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CommonsFile" representedClassName="CoreDataCommonsFile" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="height" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="license" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rawImageURL" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="thumbnailURLTemplate" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="width" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="imageOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="image" inverseEntity="WikidataEntry" syncable="YES"/>
+        <relationship name="imageOfGraveOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="imageOfGrave" inverseEntity="WikidataEntry" syncable="YES"/>
+        <fetchIndex name="byId">
+            <fetchIndexElement property="id" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
     <entity name="OpenStreetMapElement" representedClassName=".CoreDataOpenStreetMapElement" syncable="YES">
         <attribute name="id" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -26,6 +40,8 @@
         <attribute name="rawDateOfDeath" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="rawDateOfDeathPrecision" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="rawKind" attributeType="String" defaultValueString="" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CommonsFile" inverseName="imageOf" inverseEntity="CommonsFile" syncable="YES"/>
+        <relationship name="imageOfGrave" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CommonsFile" inverseName="imageOfGraveOf" inverseEntity="CommonsFile" syncable="YES"/>
         <relationship name="localizations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WikidataLocalizedEntry" inverseName="wikidataEntry" inverseEntity="WikidataLocalizedEntry" syncable="YES"/>
         <relationship name="openStreetMapElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OpenStreetMapElement" inverseName="wikidataEntry" inverseEntity="OpenStreetMapElement" syncable="YES"/>
         <relationship name="secondaryWikidataEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WikidataEntry" inverseName="secondaryWikidataEntryOf" inverseEntity="WikidataEntry" syncable="YES"/>
@@ -53,9 +69,10 @@
         </fetchIndex>
     </entity>
     <elements>
+        <element name="CommonsFile" positionX="9" positionY="153" width="128" height="180"/>
         <element name="OpenStreetMapElement" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="WikidataCategory" positionX="0" positionY="144" width="128" height="90"/>
-        <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="225"/>
+        <element name="WikidataEntry" positionX="-18" positionY="54" width="128" height="255"/>
         <element name="WikidataLocalizedEntry" positionX="-18" positionY="108" width="128" height="120"/>
         <element name="WikipediaPage" positionX="-27" positionY="99" width="128" height="120"/>
     </elements>
