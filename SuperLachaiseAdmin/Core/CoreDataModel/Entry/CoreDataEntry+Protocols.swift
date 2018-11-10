@@ -43,7 +43,13 @@ extension CoreDataEntry: CoreDataListable {
 extension CoreDataEntry: Syncable {
 
     func sync(taskController: TaskController) {
-        //taskController.syncWikidataEntry(self) // TODO
+        if let pointOfInterest = mainEntryOf.first {
+            taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
+        } else if let pointOfInterest = secondaryEntryOf.first {
+            taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
+        } else {
+            Logger.info("\(Entry.self) \(self) has no point of interest")
+        }
     }
 
 }

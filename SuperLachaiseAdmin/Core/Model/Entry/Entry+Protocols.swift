@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension Entry: Identifiable, Deletable, Listable, Syncable {
+extension Entry: Identifiable, Deletable, Listable {
 
     // MARK: Identifiable
 
@@ -38,18 +38,6 @@ extension Entry: Identifiable, Deletable, Listable, Syncable {
                 results = results.filter(predicate)
             }
             return results
-        }
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        if let pointOfInterest = mainEntryOf.first {
-            taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
-        } else if let pointOfInterest = secondayEntryOf.first {
-            taskController.syncSuperLachaiseObject(pointOfInterest: pointOfInterest)
-        } else {
-            Logger.info("\(Entry.self) \(self) has no point of interest")
         }
     }
 

@@ -24,12 +24,14 @@ extension TaskController {
     }
 
     func syncSuperLachaiseObjects() {
-        let task = SyncSuperLachaiseObjects(scope: .all)
+        let task = SyncSuperLachaiseObjects(scope: .all,
+                                            performInBackground: database.performInBackground)
         enqueue(task)
     }
 
-    func syncSuperLachaiseObject(pointOfInterest: PointOfInterest) {
-        let task = SyncSuperLachaiseObjects(scope: .single(id: pointOfInterest.id))
+    func syncSuperLachaiseObject(pointOfInterest: CoreDataPointOfInterest) {
+        let task = SyncSuperLachaiseObjects(scope: .single(id: pointOfInterest.id),
+                                            performInBackground: database.performInBackground)
         enqueue(task)
     }
 

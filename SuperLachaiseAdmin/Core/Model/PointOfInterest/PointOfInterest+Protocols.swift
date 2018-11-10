@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-extension PointOfInterest: Identifiable, Deletable, Listable, Syncable {
+extension PointOfInterest: Identifiable, Deletable, Listable {
 
     // MARK: Identifiable
 
@@ -38,12 +38,6 @@ extension PointOfInterest: Identifiable, Deletable, Listable, Syncable {
             }
             return results
         }
-    }
-
-    // MARK: Syncable
-
-    func sync(taskController: TaskController) {
-        taskController.syncSuperLachaiseObject(pointOfInterest: self)
     }
 
 }

@@ -43,7 +43,7 @@ extension CoreDataPointOfInterest: CoreDataListable {
 extension CoreDataPointOfInterest: Syncable {
 
     func sync(taskController: TaskController) {
-        //taskController.syncCategory(self) // TODO
+        taskController.syncSuperLachaiseObject(pointOfInterest: self)
     }
 
 }
