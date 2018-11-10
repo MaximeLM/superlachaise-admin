@@ -7,7 +7,6 @@
 
 import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncWikidataEntries: Task {

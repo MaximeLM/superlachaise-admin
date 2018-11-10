@@ -49,3 +49,11 @@ extension CoreDataWikidataCategory: OpenableInBrowser {
     }
 
 }
+
+extension CoreDataWikidataCategory: Syncable {
+
+    func sync(taskController: TaskController) {
+        taskController.syncWikidataCategory(self)
+    }
+
+}

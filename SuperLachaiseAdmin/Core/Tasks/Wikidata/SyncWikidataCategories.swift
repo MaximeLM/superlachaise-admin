@@ -5,8 +5,8 @@
 //  Created by Maxime Le Moine on 03/03/2018.
 //
 
+import CoreData
 import Foundation
-import RealmSwift
 import RxSwift
 
 final class SyncWikidataCategories: Task {
@@ -31,11 +31,16 @@ final class SyncWikidataCategories: Task {
 
     let config: WikidataConfig
     let endpoint: APIEndpointType
+    let performInBackground: Single<NSManagedObjectContext>
 
-    init(scope: Scope, config: WikidataConfig, endpoint: APIEndpointType) {
+    init(scope: Scope,
+         config: WikidataConfig,
+         endpoint: APIEndpointType,
+         performInBackground: Single<NSManagedObjectContext>) {
         self.scope = scope
         self.config = config
         self.endpoint = endpoint
+        self.performInBackground = performInBackground
     }
 
     var description: String {
@@ -48,10 +53,6 @@ final class SyncWikidataCategories: Task {
         return wikidataCategories()
             .flatMap(self.deleteOrphans)
     }
-
-    // MARK: Private properties
-
-    private let realmDispatchQueue = DispatchQueue(label: "SyncWikidataCategories.realm")
 
 }
 
@@ -70,8 +71,8 @@ private extension SyncWikidataCategories {
         switch self.scope {
         case .all:
             // Get wikidata ids from Wikidata entries
-            return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-                WikidataEntry.all()(realm).flatMap { $0.wikidataCategories.map { $0.id } }
+            return performInBackground.map { context in
+                context.objects(CoreDataWikidataEntry.self).fetch().flatMap { $0.wikidataCategories.map { $0.id } }
             }
         case let .single(wikidataId):
             return Single.just([wikidataId])
@@ -88,25 +89,27 @@ private extension SyncWikidataCategories {
     // MARK: Wikidata categories
 
     func saveWikidataCategories(wikidataEntities: [WikidataEntity]) -> Single<[String]> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.saveWikidataCategories(wikidataEntities: wikidataEntities, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.saveWikidataCategories(wikidataEntities: wikidataEntities, context: context)
             }
         }
     }
 
-    func saveWikidataCategories(wikidataEntities: [WikidataEntity], realm: Realm) throws -> [String] {
+    func saveWikidataCategories(wikidataEntities: [WikidataEntity],
+                                context: NSManagedObjectContext) throws -> [String] {
         return try wikidataEntities.map { wikidataEntity in
-            try self.wikidataCategory(wikidataEntity: wikidataEntity, realm: realm).id
+            try self.wikidataCategory(wikidataEntity: wikidataEntity, context: context).id
         }
     }
 
     // MARK: Wikidata category
 
-    func wikidataCategory(wikidataEntity: WikidataEntity, realm: Realm) throws -> WikidataCategory {
+    func wikidataCategory(wikidataEntity: WikidataEntity,
+                          context: NSManagedObjectContext) throws -> CoreDataWikidataCategory {
         // Wikidata Id
         let wikidataId = wikidataEntity.id
-        let wikidataCategory = WikidataCategory.findOrCreate(id: wikidataId)(realm)
+        let wikidataCategory = context.findOrCreate(CoreDataWikidataCategory.self, key: wikidataId)
 
         // Localizations
         let names = config.languages.compactMap { language -> String? in
@@ -121,11 +124,12 @@ private extension SyncWikidataCategories {
         wikidataCategory.name = names.first
 
         // Categories
-        if let categories = config.categories[wikidataId]?.map({ Category.findOrCreate(id: $0)(realm) }) {
-            wikidataCategory.categories.replaceAll(objects: categories)
+        if let categories = config.categories[wikidataId]?
+            .map({ context.findOrCreate(CoreDataCategory.self, key: $0) }) {
+            wikidataCategory.categories = Set(categories)
         } else {
             Logger.warning("\(WikidataCategory.self) \(wikidataCategory) has no categories")
-            wikidataCategory.categories.removeAll()
+            wikidataCategory.categories = Set()
         }
 
         return wikidataCategory
@@ -134,19 +138,19 @@ private extension SyncWikidataCategories {
     // MARK: Orphans
 
     func deleteOrphans(fetchedIds: [String]) -> Single<Void> {
-        return Realm.async(dispatchQueue: realmDispatchQueue) { realm in
-            try realm.write {
-                try self.deleteOrphans(fetchedIds: fetchedIds, realm: realm)
+        return performInBackground.map { context in
+            try context.write {
+                try self.deleteOrphans(fetchedIds: fetchedIds, context: context)
             }
         }
     }
 
-    func deleteOrphans(fetchedIds: [String], realm: Realm) throws {
+    func deleteOrphans(fetchedIds: [String], context: NSManagedObjectContext) throws {
         // List existing objects
-        var orphanedObjects: Set<WikidataCategory>
+        var orphanedObjects: Set<CoreDataWikidataCategory>
         switch scope {
         case .all:
-            orphanedObjects = Set(WikidataCategory.all()(realm))
+            orphanedObjects = Set(context.objects(CoreDataWikidataCategory.self).fetch())
         case .single:
             orphanedObjects = Set()
         }
@@ -154,8 +158,8 @@ private extension SyncWikidataCategories {
         orphanedObjects = orphanedObjects.filter { !fetchedIds.contains($0.id) }
 
         if !orphanedObjects.isEmpty {
-            Logger.info("Deleting \(orphanedObjects.count) \(WikidataCategory.self)(s)")
-            orphanedObjects.forEach { $0.delete() }
+            Logger.info("Deleting \(orphanedObjects.count) \(CoreDataWikidataCategory.self)(s)")
+            orphanedObjects.forEach { context.delete($0) }
         }
     }
 
